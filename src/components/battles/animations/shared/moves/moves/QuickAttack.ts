@@ -8,11 +8,11 @@ import { Move } from "../Move";
 export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        let xvel: number = -7 * this.direction;
+        let xvel: number = this.direction * -7;
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => this.gameStarter.physics.shiftHoriz(this.attackerThing, xvel),
@@ -53,9 +53,9 @@ export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGa
      */
     private animateExplosions(): void {
         const explosions: IThing[] = [
-            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge"),
-            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge"),
-            this.gameStarter.objectMaker.make<IThing>("ExplosionLarge")
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge)
         ];
 
         const startX: number[] = [];

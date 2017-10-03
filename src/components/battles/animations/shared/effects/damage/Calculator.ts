@@ -13,7 +13,7 @@ import { IMoveSchema } from "../../../../../constants/Moves";
 export class Calculator<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Calculates how much damage a move should do to a Pokemon.
-     * 
+     *
      * @param move   The concatenated name of the move.
      * @param attacker   The attacking pokemon.
      * @param defender   The defending Pokemon.
@@ -39,7 +39,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
 
         const damage: number = Math.round(
             Math.max(
-                ((((2 * level + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
+                ((((level * 2 + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
                 1));
 
         return Math.min(teamAndAction.target.actor.statistics.health.current, damage);
@@ -47,7 +47,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Determines the damage modifier against a defending Pokemon.
-     * 
+     *
      * @param move   The concatenated name of the move.
      * @param attacker   The attacking Pokemon.
      * @param defender   The defending Pokemon.
@@ -65,7 +65,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Determines the type effectiveness of a move on a defending Pokemon.
-     * 
+     *
      * @param move   The concatenated name of the move.
      * @param defender   The defending Pokemon.
      * @returns A damage modifier, as a multiplication constant.
@@ -87,7 +87,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Determines whether a move should be a critical hit.
-     * 
+     *
      * @param move   The concatenated name of the move.
      * @param attacker   The attacking Pokemon.
      * @returns Whether the move should be a critical hit.

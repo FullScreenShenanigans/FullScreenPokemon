@@ -39,7 +39,7 @@ export class Transitions<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Plays a transition.
-     * 
+     *
      * @param settings   Settings to play the transition.
      */
     public play<TSettings extends ITransitionSettings>(settings: TSettings): void {

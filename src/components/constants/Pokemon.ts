@@ -1,3 +1,4 @@
+import { IMove } from "battlemovr/lib/Actors";
 import { IPokemonStatistics } from "../Battles";
 
 /**
@@ -6,7 +7,7 @@ import { IPokemonStatistics } from "../Battles";
 export interface IPokemonListing {
     /**
      * How difficult this is to catch, for the canCatchPokemon equation.
-     * 
+     *
      * @todo Make this non-optional, once it's added to the data.
      */
     catchRate?: number;
@@ -20,6 +21,11 @@ export interface IPokemonListing {
      * A short label for the Pokemon, such as "Psi" for Abra.
      */
     label: string;
+
+    /**
+     * The title of the Pokemon.
+     */
+    name: string[];
 
     /**
      * What number the Pokemon is in the Pokedex.
@@ -134,14 +140,14 @@ export interface IPokemonEvolution {
     /**
      * The requirements for the Pokemon to evolve.
      */
-    requirements: IPokemonEvolutionRequirements[];
+    requirements: IPokemonEvolutionRequirement[];
 }
 
 /**
  * The requirements for a Pokemon to be able to evolve.
  */
-export type IPokemonEvolutionRequirements = 
-    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime | 
+export type IPokemonEvolutionRequirement =
+    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime |
     IPokemonEvolutionByTrade | IPokemonEvolutionByItem | IPokemonEvolutionByStats;
 
 /**
@@ -237,7 +243,7 @@ export interface IPokemonEvolutionByStats {
      * The stat that should be smaller to achieve target evolution.
      */
     lesserStat: string;
-    
+
     /**
      * Whether the two stats may be equal.
      */
@@ -294,6 +300,31 @@ export interface IPokedex {
 }
 
 /**
+ * Information on new Pokemon being created.
+ */
+export interface INewPokemon {
+    /**
+     * Items held by Pokemon.
+     */
+     item?: string[];
+
+    /**
+     * Level of Pokemon.
+     */
+     level?: number;
+
+    /**
+     * Moves that Pokemon has.
+     */
+     moves?: IMove[];
+
+    /**
+     * Name of Pokemon.
+     */
+     title: string[];
+}
+
+/**
  * Information on stored Pokemon.
  */
 export class Pokemon {
@@ -312,6 +343,7 @@ export class Pokemon {
      */
     public readonly byName: { [i: string]: IPokemonListing } = {
         "ABRA": {
+            "name": "ABRA".split(""),
             "label": "Psi",
             "sprite": "Water",
             "info": [
@@ -348,76 +380,99 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "AERODACTYL": {
+            "name": "AERODACTYL".split(""),
             "label": "Fossil",
             "sprite": "Water",
             "info": [
@@ -433,22 +488,28 @@ export class Pokemon {
             "special": 60,
             "speed": 130,
             "moves": {
-                "natural": [{
-                    "move": "Agility",
-                    "level": 1
-                }, {
+                "natural": [
+                    {
+                        "move": "Agility",
+                        "level": 1
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 54
                     }],
@@ -456,61 +517,79 @@ export class Pokemon {
                     "move": "Fly",
                     "level": 2
                 }],
-                "tm": [{
-                    "move": "Razor Wind",
-                    "level": 2
-                }, {
+                "tm": [
+                    {
+                        "move": "Razor Wind",
+                        "level": 2
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ALAKAZAM": {
+            "name": "ALAKAZAM".split(""),
             "label": "Psi",
             "sprite": "Water",
             "info": [
@@ -530,28 +609,36 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Recover",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 42
                     }],
@@ -563,82 +650,107 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ARBOK": {
+            "name": "ARBOK".split(""),
             "label": "Cobra",
             "sprite": "Water",
             "info": [
@@ -658,25 +770,32 @@ export class Pokemon {
                     {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Glare",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Acid",
                         "level": 47
                     }],
@@ -688,58 +807,75 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ARCANINE": {
+            "name": "ARCANINE".split(""),
             "label": "Legendary",
             "sprite": "Water",
             "info": [
@@ -759,13 +895,16 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Roar",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 1
                     }],
@@ -773,55 +912,72 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -829,61 +985,79 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ARTICUNO": {
+            "name": "ARTICUNO".split(""),
             "label": "Freeze",
             "sprite": "Water",
             "info": [
@@ -903,16 +1077,20 @@ export class Pokemon {
                     {
                         "move": "Ice Beam",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 51
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 55
-                    }, {
+                    },
+                    {
                         "move": "Mist",
                         "level": 60
                     }],
@@ -924,64 +1102,83 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "BEEDRILL": {
+            "name": "BEEDRILL".split(""),
             "label": "Poison Bee",
             "sprite": "Water",
             "info": [
@@ -1001,22 +1198,28 @@ export class Pokemon {
                     {
                         "move": "Fury Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Twineedle",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Pin Missile",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 35
                     }],
@@ -1031,6 +1234,7 @@ export class Pokemon {
             }
         },
         "BELLSPROUT": {
+            "name": "BELLSPROUT".split(""),
             "label": "Flower",
             "sprite": "Water",
             "info": [
@@ -1059,28 +1263,36 @@ export class Pokemon {
                     {
                         "move": "Growth",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Vine Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Acid",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Razor Leaf",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 42
                     }],
@@ -1092,46 +1304,59 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "BLASTOISE": {
+            "name": "BLASTOISE".split(""),
             "label": "Shellfish",
             "sprite": "Water",
             "info": [
@@ -1151,31 +1376,40 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bubble",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 52
                     }],
@@ -1183,7 +1417,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -1191,82 +1426,107 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "BULBASAUR": {
+            "name": "BULBASAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
             "info": [
@@ -1296,28 +1556,36 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Vine Whip",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Razor Leaf",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Growth",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 48
                     }],
@@ -1329,49 +1597,63 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "BUTTERFREE": {
+            "name": "BUTTERFREE".split(""),
             "label": "Butterfly",
             "sprite": "Water",
             "info": [
@@ -1391,25 +1673,32 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 32
                     }],
@@ -1418,64 +1707,83 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "CATERPIE": {
+            "name": "CATERPIE".split(""),
             "label": "Worm",
             "sprite": "Water",
             "info": [
@@ -1500,18 +1808,22 @@ export class Pokemon {
             "special": 20,
             "speed": 45,
             "moves": {
-                "natural": [{
-                    "move": "String Shot",
-                    "level": 1
-                }, {
+                "natural": [
+                    {
+                        "move": "String Shot",
+                        "level": 1
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }],
+                    }
+                ],
                 "hm": [],
                 "tm": []
             }
         },
         "CHANSEY": {
+            "name": "CHANSEY".split(""),
             "label": "Egg",
             "sprite": "Water",
             "info": [
@@ -1531,25 +1843,32 @@ export class Pokemon {
                     {
                         "move": "Double Slap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sing",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 54
                     }],
@@ -1557,7 +1876,8 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -1565,109 +1885,143 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Egg Bomb",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Soft-Boiled",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "CHARIZARD": {
+            "name": "CHARIZARD".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -1687,31 +2041,40 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Ember",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 55
                     }],
@@ -1719,7 +2082,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -1727,82 +2091,107 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "CHARMANDER": {
+            "name": "CHARMANDER".split(""),
             "label": "Lizard",
             "sprite": "Water",
             "info": [
@@ -1832,25 +2221,32 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Ember",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 46
                     }],
@@ -1858,7 +2254,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -1866,73 +2263,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "CHARMELEON": {
+            "name": "CHARMELEON".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -1961,28 +2380,36 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Ember",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 56
                     }],
@@ -1991,73 +2418,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "CLEFABLE": {
+            "name": "CLEFABLE".split(""),
             "label": "Fairy",
             "sprite": "Water",
             "info": [
@@ -2077,13 +2526,16 @@ export class Pokemon {
                     {
                         "move": "Double Slap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sing",
                         "level": 1
                     }],
@@ -2091,7 +2543,8 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -2099,13 +2552,15 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }]
             }
         },
         "CLEFAIRY": {
+            "name": "CLEFAIRY".split(""),
             "label": "Fairy",
             "sprite": "Water",
             "info": [
@@ -2134,25 +2589,32 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sing",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 48
                     }],
@@ -2160,7 +2622,8 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -2168,100 +2631,131 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "CLOYSTER": {
+            "name": "CLOYSTER".split(""),
             "label": "Bivalve",
             "sprite": "Water",
             "info": [
@@ -2281,16 +2775,20 @@ export class Pokemon {
                     {
                         "move": "Aurora Beam",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Clamp",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Spike Cannon",
                         "level": 50
                     }],
@@ -2302,6 +2800,7 @@ export class Pokemon {
             }
         },
         "CUBONE": {
+            "name": "CUBONE".split(""),
             "label": "Lonely",
             "sprite": "Water",
             "info": [
@@ -2330,22 +2829,28 @@ export class Pokemon {
                     {
                         "move": "Bone Club",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Bonemerang",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 46
                     }],
@@ -2357,79 +2862,103 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DEWGONG": {
+            "name": "DEWGONG".split(""),
             "label": "Sea Lion",
             "sprite": "Water",
             "info": [
@@ -2449,25 +2978,32 @@ export class Pokemon {
                     {
                         "move": "Aurora Beam",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Aurora Beam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 50
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 56
                     }],
@@ -2476,61 +3012,79 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DIGLETT": {
+            "name": "DIGLETT".split(""),
             "label": "Mole",
             "sprite": "Water",
             "info": [
@@ -2559,19 +3113,24 @@ export class Pokemon {
                     {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 40
                     }],
@@ -2579,43 +3138,56 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -2623,25 +3195,31 @@ export class Pokemon {
                     {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 40
                     }]
             }
         },
         "DITTO": {
+            "name": "DITTO".split(""),
             "label": "Transform",
             "sprite": "Water",
             "info": [
@@ -2666,6 +3244,7 @@ export class Pokemon {
             }
         },
         "DODRIO": {
+            "name": "DODRIO".split(""),
             "label": "Triple Bird",
             "sprite": "Water",
             "info": [
@@ -2685,28 +3264,36 @@ export class Pokemon {
                     {
                         "move": "Fury Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Drill Peck",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 51
                     }],
@@ -2715,55 +3302,71 @@ export class Pokemon {
                     {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DODUO": {
+            "name": "DODUO".split(""),
             "label": "Twin Bird",
             "sprite": "Water",
             "info": [
@@ -2792,22 +3395,28 @@ export class Pokemon {
                     {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Drill Peck",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 44
                     }],
@@ -2819,52 +3428,67 @@ export class Pokemon {
                     {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DRAGONAIR": {
+            "name": "DRAGONAIR".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -2893,25 +3517,32 @@ export class Pokemon {
                     {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 55
                     }],
@@ -2920,76 +3551,99 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DRAGONITE": {
+            "name": "DRAGONITE".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -3009,28 +3663,36 @@ export class Pokemon {
                     {
                         "move": "Agility",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 60
                     }],
@@ -3038,7 +3700,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -3046,82 +3709,107 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DRATINI": {
+            "name": "DRATINI".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -3150,22 +3838,28 @@ export class Pokemon {
                     {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 50
                     }],
@@ -3177,73 +3871,95 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DROWZEE": {
+            "name": "DROWZEE".split(""),
             "label": "Hypnosis",
             "sprite": "Water",
             "info": [
@@ -3272,25 +3988,32 @@ export class Pokemon {
                     {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Meditate",
                         "level": 37
                     }],
@@ -3299,79 +4022,103 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "DUGTRIO": {
+            "name": "DUGTRIO".split(""),
             "label": "Mole",
             "sprite": "Water",
             "info": [
@@ -3391,25 +4138,32 @@ export class Pokemon {
                     {
                         "move": "Dig",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 47
                     }],
@@ -3418,31 +4172,39 @@ export class Pokemon {
                     {
                         "move": "Dig",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 47
                     }]
             }
         },
         "EEVEE": {
+            "name": "EEVEE".split(""),
             "label": "evolutions",
             "sprite": "Water",
             "info": [
@@ -3491,19 +4253,24 @@ export class Pokemon {
                     {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 45
                     }],
@@ -3511,40 +4278,52 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -3552,31 +4331,39 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 42
                     }]
             }
         },
         "EKANS": {
+            "name": "EKANS".split(""),
             "label": "Snake",
             "sprite": "Water",
             "info": [
@@ -3605,22 +4392,28 @@ export class Pokemon {
                     {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Glare",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Acid",
                         "level": 38
                     }],
@@ -3629,55 +4422,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ELECTABUZZ": {
+            "name": "ELECTABUZZ".split(""),
             "label": "Electric",
             "sprite": "Water",
             "info": [
@@ -3697,22 +4506,28 @@ export class Pokemon {
                     {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Thunder Punch",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 54
                     }],
@@ -3720,7 +4535,8 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -3728,85 +4544,111 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ELECTRODE": {
+            "name": "ELECTRODE".split(""),
             "label": "Ball",
             "sprite": "Water",
             "info": [
@@ -3826,101 +4668,130 @@ export class Pokemon {
                     {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sonic Boom",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sonic Boom",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 50
                     }],
                 "hm": [],
-                "tm": [{
-                    "move": "Toxic",
-                    "level": 6
-                }, {
+                "tm": [
+                    {
+                        "move": "Toxic",
+                        "level": 6
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
-                    }]
+                    }
+                ]
             }
         },
         "EXEGGCUTE": {
+            "name": "EXEGGCUTE".split(""),
             "label": "Egg",
             "sprite": "Water",
             "info": [
                 "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms."
             ],
-             "evolutions": [{
-                "evolvedForm": ["E", "X", "E", "G", "G", "U", "T", "O", "R"],
-                "requirements": [
-                    {
-                        "method": "item",
-                        "item": "Leaf Stone"
-                    }
-                ]
-            }],
+            "evolutions": [
+                 {
+                    "evolvedForm": ["E", "X", "E", "G", "G", "U", "T", "O", "R"],
+                    "requirements": [
+                        {
+                            "method": "item",
+                            "item": "Leaf Stone"
+                        }
+                    ]
+                }
+            ],
             "number": 102,
             "height": ["1", "4"],
             "weight": 5.5,
@@ -3935,25 +4806,32 @@ export class Pokemon {
                     {
                         "move": "Barrage",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 48
                     }],
@@ -3962,31 +4840,39 @@ export class Pokemon {
                     {
                         "move": "Barrage",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 48
                     }]
             }
         },
         "EXEGGUTOR": {
+            "name": "EXEGGUTOR".split(""),
             "label": "Coconut",
             "sprite": "Water",
             "info": [
@@ -4006,10 +4892,12 @@ export class Pokemon {
                     {
                         "move": "Barrage",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 28
                     }],
@@ -4024,6 +4912,7 @@ export class Pokemon {
             }
         },
         "FARFETCHD": {
+            "name": "FARFETCHD".split(""),
             "label": "Wild Duck",
             "sprite": "Water",
             "info": [
@@ -4043,22 +4932,28 @@ export class Pokemon {
                     {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 39
                     }],
@@ -4067,55 +4962,71 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "FEAROW": {
+            "name": "FEAROW".split(""),
             "label": "Beak",
             "sprite": "Water",
             "info": [
@@ -4135,25 +5046,32 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Mirror Move",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Drill Peck",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 43
                     }],
@@ -4165,49 +5083,63 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "FLAREON": {
+            "name": "FLAREON".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -4227,37 +5159,48 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Ember",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 54
                     }],
@@ -4265,46 +5208,60 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -4312,52 +5269,67 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GASTLY": {
+            "name": "GASTLY".split(""),
             "label": "Gas",
             "sprite": "Water",
             "info": [
@@ -4386,16 +5358,20 @@ export class Pokemon {
                     {
                         "move": "Confuse Ray",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Night Shade",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 35
                     }],
@@ -4404,22 +5380,27 @@ export class Pokemon {
                     {
                         "move": "Confuse Ray",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Night Shade",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 35
                     }]
             }
         },
         "GENGAR": {
+            "name": "GENGAR".split(""),
             "label": "Shadow",
             "sprite": "Water",
             "info": [
@@ -4439,16 +5420,20 @@ export class Pokemon {
                     {
                         "move": "Confuse Ray",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Night Shade",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 38
                     }],
@@ -4460,85 +5445,111 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GEODUDE": {
+            "name": "GEODUDE".split(""),
             "label": "Rock",
             "sprite": "Water",
             "info": [
@@ -4567,22 +5578,28 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Rock Throw",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 36
                     }],
@@ -4591,73 +5608,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GLOOM": {
+            "name": "GLOOM".split(""),
             "label": "Weed",
             "sprite": "Water",
             "info": [
@@ -4686,28 +5725,36 @@ export class Pokemon {
                     {
                         "move": "Absorb",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Acid",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Petal Dance",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 52
                     }],
@@ -4716,46 +5763,59 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GOLBAT": {
+            "name": "GOLBAT".split(""),
             "label": "Bat",
             "sprite": "Water",
             "info": [
@@ -4775,25 +5835,32 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 43
                     }],
@@ -4801,43 +5868,56 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -4845,31 +5925,39 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 43
                     }]
             }
         },
         "GOLDEEN": {
+            "name": "GOLDEEN".split(""),
             "label": "Goldfish",
             "sprite": "Water",
             "info": [
@@ -4898,25 +5986,32 @@ export class Pokemon {
                     {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Waterfall",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 54
                     }],
@@ -4928,55 +6023,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GOLDUCK": {
+            "name": "GOLDUCK".split(""),
             "label": "Duck",
             "sprite": "Water",
             "info": [
@@ -4996,25 +6107,32 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 59
                     }],
@@ -5023,79 +6141,103 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GOLEM": {
+            "name": "GOLEM".split(""),
             "label": "Megaton",
             "sprite": "Water",
             "info": [
@@ -5115,25 +6257,32 @@ export class Pokemon {
                     {
                         "move": "Defense Curl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Rock Throw",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 43
                     }],
@@ -5145,79 +6294,103 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GRAVELER": {
+            "name": "GRAVELER".split(""),
             "label": "Rock",
             "sprite": "Water",
             "info": [
@@ -5245,25 +6418,32 @@ export class Pokemon {
                     {
                         "move": "Defense Curl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Rock Throw",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 43
                     }],
@@ -5272,73 +6452,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "GRIMER": {
+            "name": "GRIMER".split(""),
             "label": "Sludge",
             "sprite": "Water",
             "info": [
@@ -5367,25 +6569,32 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Acid Armor",
                         "level": 55
                     }],
@@ -5393,43 +6602,56 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -5437,31 +6659,39 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Acid Armor",
                         "level": 55
                     }]
             }
         },
         "GROWLITHE": {
+            "name": "GROWLITHE".split(""),
             "label": "Puppy",
             "sprite": "Water",
             "info": [
@@ -5490,22 +6720,28 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Roar",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Ember",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 50
                     }],
@@ -5514,28 +6750,35 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Roar",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Ember",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 50
                     }]
             }
         },
         "GYARADOS": {
+            "name": "GYARADOS".split(""),
             "label": "Atrocious",
             "sprite": "Water",
             "info": [
@@ -5555,28 +6798,36 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 52
                     }],
@@ -5584,7 +6835,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -5592,13 +6844,15 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }]
             }
         },
         "HAUNTER": {
+            "name": "HAUNTER".split(""),
             "label": "Gas",
             "sprite": "Water",
             "info": [
@@ -5626,16 +6880,20 @@ export class Pokemon {
                     {
                         "move": "Confuse Ray",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Night Shade",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 38
                     }],
@@ -5644,22 +6902,27 @@ export class Pokemon {
                     {
                         "move": "Confuse Ray",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Night Shade",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 38
                     }]
             }
         },
         "HITMONCHAN": {
+            "name": "HITMONCHAN".split(""),
             "label": "Punching",
             "sprite": "Water",
             "info": [
@@ -5679,22 +6942,28 @@ export class Pokemon {
                     {
                         "move": "Agility",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Comet Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Fire Punch",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Ice Punch",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Thunder Punch",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Mega Punch",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 53
                     }],
@@ -5706,61 +6975,79 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "HITMONLEE": {
+            "name": "HITMONLEE".split(""),
             "label": "Kicking",
             "sprite": "Water",
             "info": [
@@ -5780,22 +7067,28 @@ export class Pokemon {
                     {
                         "move": "Double Kick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Meditate",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Rolling Kick",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Jump Kick",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "High Jump Kick",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 53
                     }],
@@ -5804,61 +7097,79 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "HORSEA": {
+            "name": "HORSEA".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -5887,19 +7198,24 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 45
                     }],
@@ -5911,52 +7227,67 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "HYPNO": {
+            "name": "HYPNO".split(""),
             "label": "Hypnosis",
             "sprite": "Water",
             "info": [
@@ -5976,31 +7307,40 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Meditate",
                         "level": 43
                     }],
@@ -6009,82 +7349,107 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "IVYSAUR": {
+            "name": "IVYSAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
             "info": [
@@ -6113,31 +7478,40 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Vine Whip",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Razor Leaf",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Growth",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 54
                     }],
@@ -6149,49 +7523,63 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "JIGGLYPUFF": {
+            "name": "JIGGLYPUFF".split(""),
             "label": "Balloon",
             "sprite": "Water",
             "info": [
@@ -6220,25 +7608,32 @@ export class Pokemon {
                     {
                         "move": "Sing",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 39
                     }],
@@ -6246,7 +7641,8 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -6254,97 +7650,127 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "JOLTEON": {
+            "name": "JOLTEON".split(""),
             "label": "Lightning",
             "sprite": "Water",
             "info": [
@@ -6364,37 +7790,48 @@ export class Pokemon {
                     {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Double Kick",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Pin Missile",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 54
                     }],
@@ -6406,6 +7843,7 @@ export class Pokemon {
             }
         },
         "JYNX": {
+            "name": "JYNX".split(""),
             "label": "Human Shape",
             "sprite": "Water",
             "info": [
@@ -6425,25 +7863,32 @@ export class Pokemon {
                     {
                         "move": "Lovely Kiss",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Ice Punch",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 58
                     }],
@@ -6451,79 +7896,104 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -6531,31 +8001,39 @@ export class Pokemon {
                     {
                         "move": "Lovely Kiss",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Lick",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Ice Punch",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 58
                     }]
             }
         },
         "KABUTO": {
+            "name": "KABUTO".split(""),
             "label": "Shellfish",
             "sprite": "Water",
             "info": [
@@ -6584,19 +8062,24 @@ export class Pokemon {
                     {
                         "move": "Harden",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Absorb",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 49
                     }],
@@ -6608,52 +8091,67 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "KABUTOPS": {
+            "name": "KABUTOPS".split(""),
             "label": "Shellfish",
             "sprite": "Water",
             "info": [
@@ -6673,22 +8171,28 @@ export class Pokemon {
                     {
                         "move": "Absorb",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Absorb",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 53
                     }],
@@ -6697,73 +8201,95 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "KADABRA": {
+            "name": "KADABRA".split(""),
             "label": "Psi",
             "sprite": "Water",
             "info": [
@@ -6791,28 +8317,36 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Recover",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 42
                     }],
@@ -6824,79 +8358,103 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "KAKUNA": {
+            "name": "KAKUNA".split(""),
             "label": "Cocoon",
             "sprite": "Water",
             "info": [
@@ -6933,6 +8491,7 @@ export class Pokemon {
             }
         },
         "KANGASKHAN": {
+            "name": "KANGASKHAN".split(""),
             "label": "Parent",
             "sprite": "Water",
             "info": [
@@ -6952,22 +8511,28 @@ export class Pokemon {
                     {
                         "move": "Comet Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Mega Punch",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Dizzy Punch",
                         "level": 46
                     }],
@@ -6976,88 +8541,115 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "KINGLER": {
+            "name": "KINGLER".split(""),
             "label": "Pincer",
             "sprite": "Water",
             "info": [
@@ -7077,25 +8669,32 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Vice Grip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Vice Grip",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Guillotine",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Crabhammer",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 49
                     }],
@@ -7103,10 +8702,12 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -7114,55 +8715,71 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "KOFFING": {
+            "name": "KOFFING".split(""),
             "label": "Poison Gas",
             "sprite": "Water",
             "info": [
@@ -7191,22 +8808,28 @@ export class Pokemon {
                     {
                         "move": "Smog",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 48
                     }],
@@ -7214,37 +8837,48 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -7252,28 +8886,35 @@ export class Pokemon {
                     {
                         "move": "Smog",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 48
                     }]
             }
         },
         "KRABBY": {
+            "name": "KRABBY".split(""),
             "label": "River Crab",
             "sprite": "Water",
             "info": [
@@ -7302,22 +8943,28 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Vice Grip",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Guillotine",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Crabhammer",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 40
                     }],
@@ -7326,52 +8973,67 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "LAPRAS": {
+            "name": "LAPRAS".split(""),
             "label": "Transport",
             "sprite": "Water",
             "info": [
@@ -7391,25 +9053,32 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sing",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Mist",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 46
                     }],
@@ -7417,7 +9086,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -7425,79 +9095,103 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "LICKITUNG": {
+            "name": "LICKITUNG".split(""),
             "label": "Licking",
             "sprite": "Water",
             "info": [
@@ -7517,22 +9211,28 @@ export class Pokemon {
                     {
                         "move": "Supersonic",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Defense Curl",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 39
                     }],
@@ -7541,88 +9241,115 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MACHAMP": {
+            "name": "MACHAMP".split(""),
             "label": "Superpower",
             "sprite": "Water",
             "info": [
@@ -7642,25 +9369,32 @@ export class Pokemon {
                     {
                         "move": "Karate Chop",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Low Kick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Low Kick",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 52
                     }],
@@ -7672,76 +9406,99 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MACHOKE": {
+            "name": "MACHOKE".split(""),
             "label": "Superpower",
             "sprite": "Water",
             "info": [
@@ -7769,25 +9526,32 @@ export class Pokemon {
                     {
                         "move": "Karate Chop",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Low Kick",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Low Kick",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 52
                     }],
@@ -7796,73 +9560,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MACHOP": {
+            "name": "MACHOP".split(""),
             "label": "Superpower",
             "sprite": "Water",
             "info": [
@@ -7891,19 +9677,24 @@ export class Pokemon {
                     {
                         "move": "Karate Chop",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Low Kick",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 46
                     }],
@@ -7915,73 +9706,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MAGIKARP": {
+            "name": "MAGIKARP".split(""),
             "label": "Fish",
             "sprite": "Water",
             "info": [
@@ -8010,7 +9823,8 @@ export class Pokemon {
                     {
                         "move": "Splash",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 15
                     }],
@@ -8019,6 +9833,7 @@ export class Pokemon {
             }
         },
         "MAGMAR": {
+            "name": "MAGMAR".split(""),
             "label": "Spitfire",
             "sprite": "Water",
             "info": [
@@ -8038,22 +9853,28 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Fire Punch",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Smog",
                         "level": 52
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 55
                     }],
@@ -8062,73 +9883,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MAGNEMITE": {
+            "name": "MAGNEMITE".split(""),
             "label": "Magnet",
             "sprite": "Water",
             "info": [
@@ -8157,22 +10000,28 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sonic Boom",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 47
                     }],
@@ -8184,52 +10033,67 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MAGNETON": {
+            "name": "MAGNETON".split(""),
             "label": "Magnet",
             "sprite": "Water",
             "info": [
@@ -8249,28 +10113,36 @@ export class Pokemon {
                     {
                         "move": "Sonic Boom",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sonic Boom",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 54
                     }],
@@ -8279,55 +10151,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MANKEY": {
+            "name": "MANKEY".split(""),
             "label": "Pig Monkey",
             "sprite": "Water",
             "info": [
@@ -8356,22 +10244,28 @@ export class Pokemon {
                     {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Karate Chop",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 39
                     }],
@@ -8383,76 +10277,99 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MAROWAK": {
+            "name": "MAROWAK".split(""),
             "label": "Bone Keeper",
             "sprite": "Water",
             "info": [
@@ -8472,28 +10389,36 @@ export class Pokemon {
                     {
                         "move": "Bone Club",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Bonemerang",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 55
                     }],
@@ -8505,82 +10430,107 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MEOWTH": {
+            "name": "MEOWTH".split(""),
             "label": "Scratch Cat",
             "sprite": "Water",
             "info": [
@@ -8609,22 +10559,28 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 44
                     }],
@@ -8633,28 +10589,35 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 44
                     }]
             }
         },
         "METAPOD": {
+            "name": "METAPOD".split(""),
             "label": "Cocoon",
             "sprite": "Water",
             "info": [
@@ -8688,13 +10651,15 @@ export class Pokemon {
                     {
                         "move": "Harden",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 7
                     }]
             }
         },
         "MEW": {
+            "name": "MEW".split(""),
             "label": "New Species",
             "sprite": "Water",
             "info": [
@@ -8714,16 +10679,20 @@ export class Pokemon {
                     {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Transform",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Mega Punch",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 40
                     }],
@@ -8731,16 +10700,20 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Fly",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -8748,157 +10721,207 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Dragon Rage",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Egg Bomb",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Soft-Boiled",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Dream Eater",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MEWTWO": {
+            "name": "MEWTWO".split(""),
             "label": "Genetic",
             "sprite": "Water",
             "info": [
@@ -8918,28 +10941,36 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Barrier",
                         "level": 63
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 66
-                    }, {
+                    },
+                    {
                         "move": "Recover",
                         "level": 70
-                    }, {
+                    },
+                    {
                         "move": "Mist",
                         "level": 75
-                    }, {
+                    },
+                    {
                         "move": "Amnesia",
                         "level": 81
                     }],
@@ -8947,7 +10978,8 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -8955,109 +10987,143 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MOLTRES": {
+            "name": "MOLTRES".split(""),
             "label": "Flame",
             "sprite": "Water",
             "info": [
@@ -9077,16 +11143,20 @@ export class Pokemon {
                     {
                         "move": "Fire Spin",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 51
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 55
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 60
                     }],
@@ -9095,55 +11165,71 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MrHyphenMime": {
+            "name": ["Mr", "Hyphen", "M", "I", "M", "E"],
             "label": "Barrier",
             "sprite": "Water",
             "info": [
@@ -9163,22 +11249,28 @@ export class Pokemon {
                     {
                         "move": "Barrier",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Meditate",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 47
                     }],
@@ -9190,85 +11282,111 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "MUK": {
+            "name": "MUK".split(""),
             "label": "Sludge",
             "sprite": "Water",
             "info": [
@@ -9288,28 +11406,36 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 53
-                    }, {
+                    },
+                    {
                         "move": "Acid Armor",
                         "level": 60
                     }],
@@ -9318,34 +11444,43 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Pound",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Gas",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 53
-                    }, {
+                    },
+                    {
                         "move": "Acid Armor",
                         "level": 60
                     }]
             }
         },
         "NIDOKING": {
+            "name": "NIDOKING".split(""),
             "label": "Drill",
             "sprite": "Water",
             "info": [
@@ -9365,22 +11500,28 @@ export class Pokemon {
                     {
                         "move": "Horn Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 23
                     }],
@@ -9388,7 +11529,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -9396,13 +11538,15 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }]
             }
         },
         "NIDOQUEEN": {
+            "name": "NIDOQUEEN".split(""),
             "label": "Drill",
             "sprite": "Water",
             "info": [
@@ -9422,22 +11566,28 @@ export class Pokemon {
                     {
                         "move": "Body Slam",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 23
                     }],
@@ -9445,7 +11595,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -9453,13 +11604,15 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }]
             }
         },
         "NIDORANFemaleSymbol": {
+            "name": ["N", "I", "D", "O", "R", "A", "N", "FemaleSymbol"],
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -9522,46 +11675,60 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -9569,52 +11736,67 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "NIDORANMaleSymbol": {
+            "name": ["N", "I", "D", "O", "R", "A", "N", "MaleSymbol"],
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -9643,49 +11825,64 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -9693,49 +11890,64 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -9743,55 +11955,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "NIDORINA": {
+            "name": "NIDORINA".split(""),
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -9820,28 +12048,36 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Double Kick",
                         "level": 50
                     }],
@@ -9850,34 +12086,43 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Double Kick",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 46
                     }]
             }
         },
         "NIDORINO": {
+            "name": "NIDORINO".split(""),
             "label": "Poison Pin",
             "sprite": "Water",
             "info": [
@@ -9906,28 +12151,36 @@ export class Pokemon {
                     {
                         "move": "Horn Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Double Kick",
                         "level": 50
                     }],
@@ -9936,34 +12189,43 @@ export class Pokemon {
                     {
                         "move": "Horn Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Double Kick",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 46
                     }]
             }
         },
         "NINETALES": {
+            "name": "NINETALES".split(""),
             "label": "Fox",
             "sprite": "Water",
             "info": [
@@ -9983,13 +12245,16 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Roar",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
                     }],
@@ -9997,49 +12262,64 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -10047,55 +12327,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ODDISH": {
+            "name": "ODDISH".split(""),
             "label": "Weed",
             "sprite": "Water",
             "info": [
@@ -10124,22 +12420,28 @@ export class Pokemon {
                     {
                         "move": "Absorb",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Acid",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Petal Dance",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 46
                     }],
@@ -10148,46 +12450,59 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "OMANYTE": {
+            "name": "OMANYTE".split(""),
             "label": "Spiral",
             "sprite": "Water",
             "info": [
@@ -10216,19 +12531,24 @@ export class Pokemon {
                     {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Spike Cannon",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 53
                     }],
@@ -10237,52 +12557,67 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "OMASTAR": {
+            "name": "OMASTAR".split(""),
             "label": "Spiral",
             "sprite": "Water",
             "info": [
@@ -10302,22 +12637,28 @@ export class Pokemon {
                     {
                         "move": "Horn Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Spike Cannon",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 49
                     }],
@@ -10329,67 +12670,87 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ONIX": {
+            "name": "ONIX".split(""),
             "label": "Rock Snake",
             "sprite": "Water",
             "info": [
@@ -10409,22 +12770,28 @@ export class Pokemon {
                     {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bind",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rock Throw",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 43
                     }],
@@ -10433,58 +12800,75 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PARAS": {
+            "name": "PARAS".split(""),
             "label": "Mushroom",
             "sprite": "Water",
             "info": [
@@ -10513,19 +12897,24 @@ export class Pokemon {
                     {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Spore",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Growth",
                         "level": 41
                     }],
@@ -10537,55 +12926,71 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PARASECT": {
+            "name": "PARASECT".split(""),
             "label": "Mushroom",
             "sprite": "Water",
             "info": [
@@ -10605,25 +13010,32 @@ export class Pokemon {
                     {
                         "move": "Leech Life",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Spore",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Growth",
                         "level": 48
                     }],
@@ -10632,58 +13044,75 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PERSIAN": {
+            "name": "PERSIAN".split(""),
             "label": "Classy Cat",
             "sprite": "Water",
             "info": [
@@ -10703,28 +13132,36 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 51
                     }],
@@ -10732,55 +13169,72 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -10788,34 +13242,43 @@ export class Pokemon {
                     {
                         "move": "Bite",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 51
                     }]
             }
         },
         "PIDGEOT": {
+            "name": "PIDGEOT".split(""),
             "label": "Bird",
             "sprite": "Water",
             "info": [
@@ -10835,28 +13298,36 @@ export class Pokemon {
                     {
                         "move": "Gust",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Mirror Move",
                         "level": 54
                     }],
@@ -10865,52 +13336,67 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PIDGEOTTO": {
+            "name": "PIDGEOTTO".split(""),
             "label": "Bird",
             "sprite": "Water",
             "info": [
@@ -10939,25 +13425,32 @@ export class Pokemon {
                     {
                         "move": "Gust",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Mirror Move",
                         "level": 49
                     }],
@@ -10969,49 +13462,63 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PIDGEY": {
+            "name": "PIDGEY".split(""),
             "label": "Tiny Bird",
             "sprite": "Water",
             "info": [
@@ -11040,22 +13547,28 @@ export class Pokemon {
                     {
                         "move": "Gust",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Mirror Move",
                         "level": 44
                     }],
@@ -11067,49 +13580,63 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PIKACHU": {
+            "name": "PIKACHU".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -11138,22 +13665,28 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 43
                     }],
@@ -11162,70 +13695,91 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PINSIR": {
+            "name": "PINSIR".split(""),
             "label": "Stag Beetle",
             "sprite": "Water",
             "info": [
@@ -11245,22 +13799,28 @@ export class Pokemon {
                     {
                         "move": "Vice Grip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Guillotine",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 54
                     }],
@@ -11268,7 +13828,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -11276,49 +13837,63 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "POLIWAG": {
+            "name": "POLIWAG".split(""),
             "label": "Tadpole",
             "sprite": "Water",
             "info": [
@@ -11347,22 +13922,28 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Amnesia",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 45
                     }],
@@ -11371,58 +13952,75 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "POLIWHIRL": {
+            "name": "POLIWHIRL".split(""),
             "label": "Tadpole",
             "sprite": "Water",
             "info": [
@@ -11451,28 +14049,36 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Amnesia",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 49
                     }],
@@ -11480,7 +14086,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -11488,82 +14095,107 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "POLIWRATH": {
+            "name": "POLIWRATH".split(""),
             "label": "Tadpole",
             "sprite": "Water",
             "info": [
@@ -11583,19 +14215,24 @@ export class Pokemon {
                     {
                         "move": "Body Slam",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Hypnosis",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 19
                     }],
@@ -11604,13 +14241,15 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }]
             }
         },
         "PONYTA": {
+            "name": "PONYTA".split(""),
             "label": "Fire Horse",
             "sprite": "Water",
             "info": [
@@ -11639,22 +14278,28 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 48
                     }],
@@ -11662,46 +14307,60 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -11709,28 +14368,35 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 48
                     }]
             }
         },
         "PORYGON": {
+            "name": "PORYGON".split(""),
             "label": "Virtual",
             "sprite": "Water",
             "info": [
@@ -11750,22 +14416,28 @@ export class Pokemon {
                     {
                         "move": "Conversion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sharpen",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Recover",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 42
                     }],
@@ -11774,73 +14446,95 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PRIMEAPE": {
+            "name": "PRIMEAPE".split(""),
             "label": "Pig Monkey",
             "sprite": "Water",
             "info": [
@@ -11860,28 +14554,36 @@ export class Pokemon {
                     {
                         "move": "Fury Swipes",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Karate Chop",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Karate Chop",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Thrash",
                         "level": 46
                     }],
@@ -11893,79 +14595,103 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "PSYDUCK": {
+            "name": "PSYDUCK".split(""),
             "label": "Duck",
             "sprite": "Water",
             "info": [
@@ -11994,19 +14720,24 @@ export class Pokemon {
                     {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 52
                     }],
@@ -12015,76 +14746,99 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "RAICHU": {
+            "name": "RAICHU".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -12104,10 +14858,12 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 1
                     }],
@@ -12122,6 +14878,7 @@ export class Pokemon {
             }
         },
         "RAPIDASH": {
+            "name": "RAPIDASH".split(""),
             "label": "Fire Horse",
             "sprite": "Water",
             "info": [
@@ -12141,31 +14898,40 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 55
                     }],
@@ -12174,37 +14940,47 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 55
                     }]
             }
         },
         "RATICATE": {
+            "name": "RATICATE".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -12224,22 +15000,28 @@ export class Pokemon {
                     {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Hyper Fang",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Super Fang",
                         "level": 41
                     }],
@@ -12247,61 +15029,80 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -12309,28 +15110,35 @@ export class Pokemon {
                     {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Hyper Fang",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Super Fang",
                         "level": 41
                     }]
             }
         },
         "RATTATA": {
+            "name": "RATTATA".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -12359,19 +15167,24 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Hyper Fang",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Super Fang",
                         "level": 34
                     }],
@@ -12380,25 +15193,31 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Hyper Fang",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Super Fang",
                         "level": 34
                     }]
             }
         },
         "RHYDON": {
+            "name": "RHYDON".split(""),
             "label": "Drill",
             "sprite": "Water",
             "info": [
@@ -12418,31 +15237,40 @@ export class Pokemon {
                     {
                         "move": "Fury Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 55
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 64
                     }],
@@ -12450,7 +15278,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -12458,97 +15287,127 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "RHYHORN": {
+            "name": "RHYHORN".split(""),
             "label": "Spikes",
             "sprite": "Water",
             "info": [
@@ -12577,22 +15436,28 @@ export class Pokemon {
                     {
                         "move": "Horn Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 50
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 55
                     }],
@@ -12604,64 +15469,83 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SANDSHREW": {
+            "name": "SANDSHREW".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -12690,19 +15574,24 @@ export class Pokemon {
                     {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 38
                     }],
@@ -12710,7 +15599,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -12718,64 +15608,83 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SANDSLASH": {
+            "name": "SANDSLASH".split(""),
             "label": "Mouse",
             "sprite": "Water",
             "info": [
@@ -12795,22 +15704,28 @@ export class Pokemon {
                     {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Scratch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fury Swipes",
                         "level": 47
                     }],
@@ -12818,7 +15733,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -12826,67 +15742,87 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SCYTHER": {
+            "name": "SCYTHER".split(""),
             "label": "Mantis",
             "sprite": "Water",
             "info": [
@@ -12906,22 +15842,28 @@ export class Pokemon {
                     {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Focus Energy",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Slash",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Swords Dance",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 42
                     }],
@@ -12930,46 +15872,59 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SEADRA": {
+            "name": "SEADRA".split(""),
             "label": "Dragon",
             "sprite": "Water",
             "info": [
@@ -12989,22 +15944,28 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 52
                     }],
@@ -13013,55 +15974,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SEAKING": {
+            "name": "SEAKING".split(""),
             "label": "Goldfish",
             "sprite": "Water",
             "info": [
@@ -13081,28 +16058,36 @@ export class Pokemon {
                     {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Horn Attack",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Waterfall",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 54
                     }],
@@ -13114,58 +16099,75 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SEEL": {
+            "name": "SEEL".split(""),
             "label": "Sea Lion",
             "sprite": "Water",
             "info": [
@@ -13194,19 +16196,24 @@ export class Pokemon {
                     {
                         "move": "Headbutt",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Aurora Beam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 50
                     }],
@@ -13215,58 +16222,75 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SHELLDER": {
+            "name": "SHELLDER".split(""),
             "label": "Bivalve",
             "sprite": "Water",
             "info": [
@@ -13295,22 +16319,28 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Clamp",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Aurora Beam",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 50
                     }],
@@ -13322,64 +16352,83 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SLOWBRO": {
+            "name": "SLOWBRO".split(""),
             "label": "Hermit Crab",
             "sprite": "Water",
             "info": [
@@ -13399,31 +16448,40 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Amnesia",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 55
                     }],
@@ -13432,106 +16490,139 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
-        "Slowpoke": {
+        "SLOWPOKE": {
+            "name": "SLOWPOKE".split(""),
             "label": "Dopey",
             "sprite": "Water",
             "info": [
@@ -13560,22 +16651,28 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Growl",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Amnesia",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 48
                     }],
@@ -13583,10 +16680,12 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -13594,88 +16693,115 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SNORLAX": {
+            "name": "SNORLAX".split(""),
             "label": "Sleeping",
             "sprite": "Water",
             "info": [
@@ -13695,22 +16821,28 @@ export class Pokemon {
                     {
                         "move": "Amnesia",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Headbutt",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 41
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 56
                     }],
@@ -13718,7 +16850,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Strength",
                         "level": 4
                     }],
@@ -13726,109 +16859,143 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Pay Day",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Metronome",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Rock Slide",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SPEAROW": {
+            "name": "SPEAROW".split(""),
             "label": "Tiny Bird",
             "sprite": "Water",
             "info": [
@@ -13857,22 +17024,28 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Fury Attack",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Mirror Move",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Drill Peck",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 36
                     }],
@@ -13881,46 +17054,59 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "SQUIRTLE": {
+            "name": "SQUIRTLE".split(""),
             "label": "TinyTurtle",
             "sprite": "Water",
             "info": [
@@ -13950,25 +17136,32 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bubble",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 42
                     }],
@@ -13977,73 +17170,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "STARMIE": {
+            "name": "STARMIE".split(""),
             "label": "Mysterious",
             "sprite": "Water",
             "info": [
@@ -14063,10 +17278,12 @@ export class Pokemon {
                     {
                         "move": "Harden",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
                     }],
@@ -14074,7 +17291,8 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -14082,13 +17300,15 @@ export class Pokemon {
                     {
                         "move": "Surf",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }]
             }
         },
         "STARYU": {
+            "name": "STARYU".split(""),
             "label": "Star Shape",
             "sprite": "Water",
             "info": [
@@ -14117,25 +17337,32 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Harden",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Recover",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Minimize",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 47
                     }],
@@ -14144,76 +17371,99 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Tri Attack",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "TANGELA": {
+            "name": "TANGELA".split(""),
             "label": "Vine",
             "sprite": "Water",
             "info": [
@@ -14233,25 +17483,32 @@ export class Pokemon {
                     {
                         "move": "Bind",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Constrict",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Absorb",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Growth",
                         "level": 49
                     }],
@@ -14263,52 +17520,67 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "TAUROS": {
+            "name": "TAUROS".split(""),
             "label": "Wild Bull",
             "sprite": "Water",
             "info": [
@@ -14328,19 +17600,24 @@ export class Pokemon {
                     {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stomp",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Leer",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 51
                     }],
@@ -14349,67 +17626,87 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Horn Drill",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Earthquake",
                         "level": 26
-                    }, {
+                    },
+                    {
                         "move": "Fissure",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "TENTACOOL": {
+            "name": "TENTACOOL".split(""),
             "label": "Jellyfish",
             "sprite": "Water",
             "info": [
@@ -14438,28 +17735,36 @@ export class Pokemon {
                     {
                         "move": "Acid",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Constrict",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Barrier",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 48
                     }],
@@ -14467,7 +17772,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Surf",
                         "level": 3
                     }],
@@ -14475,58 +17781,75 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "TENTACRUEL": {
+            "name": "TENTACRUEL".split(""),
             "label": "Jellyfish",
             "sprite": "Water",
             "info": [
@@ -14546,34 +17869,44 @@ export class Pokemon {
                     {
                         "move": "Acid",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Sting",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Constrict",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Barrier",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Screech",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 50
                     }],
@@ -14581,7 +17914,8 @@ export class Pokemon {
                     {
                         "move": "Cut",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Surf",
                         "level": 3
                     }],
@@ -14589,61 +17923,79 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "VAPOREON": {
+            "name": "VAPOREON".split(""),
             "label": "Bubble Jet",
             "sprite": "Water",
             "info": [
@@ -14663,37 +18015,48 @@ export class Pokemon {
                     {
                         "move": "Quick Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sand Attack",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 37
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Acid Armor",
                         "level": 42
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Mist",
                         "level": 48
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 54
                     }],
@@ -14708,6 +18071,7 @@ export class Pokemon {
             }
         },
         "VENOMOTH": {
+            "name": "VENOMOTH".split(""),
             "label": "Poison Moth",
             "sprite": "Water",
             "info": [
@@ -14727,31 +18091,40 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 50
                     }],
@@ -14760,37 +18133,47 @@ export class Pokemon {
                     {
                         "move": "Confusion",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 50
                     }]
             }
         },
         "VENONAT": {
+            "name": "VENONAT".split(""),
             "label": "Insect",
             "sprite": "Water",
             "info": [
@@ -14819,25 +18202,32 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 43
                     }],
@@ -14845,43 +18235,56 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Psywave",
                         "level": 46
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -14889,37 +18292,47 @@ export class Pokemon {
                     {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Confusion",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Leech Life",
                         "level": 27
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Psybeam",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Psychic",
                         "level": 43
                     }]
             }
         },
         "VENUSAUR": {
+            "name": "VENUSAUR".split(""),
             "label": "Seed",
             "sprite": "Water",
             "info": [
@@ -14939,34 +18352,44 @@ export class Pokemon {
                     {
                         "move": "Growl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Vine Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Leech Seed",
                         "level": 7
-                    }, {
+                    },
+                    {
                         "move": "Vine Whip",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Razor Leaf",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Growth",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 55
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 65
                     }],
@@ -14975,52 +18398,67 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "VICTREEBEL": {
+            "name": "VICTREEBEL".split(""),
             "label": "Flycatcher",
             "sprite": "Water",
             "info": [
@@ -15040,22 +18478,28 @@ export class Pokemon {
                     {
                         "move": "Acid",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Razor Leaf",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 18
                     }],
@@ -15070,6 +18514,7 @@ export class Pokemon {
             }
         },
         "VILEPLUME": {
+            "name": "VILEPLUME".split(""),
             "label": "Flower",
             "sprite": "Water",
             "info": [
@@ -15089,22 +18534,28 @@ export class Pokemon {
                     {
                         "move": "Acid",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Petal Dance",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 19
                     }],
@@ -15116,6 +18567,7 @@ export class Pokemon {
             }
         },
         "VOLTORB": {
+            "name": "VOLTORB".split(""),
             "label": "Ball",
             "sprite": "Water",
             "info": [
@@ -15144,22 +18596,28 @@ export class Pokemon {
                     {
                         "move": "Screech",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sonic Boom",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 43
                     }],
@@ -15168,55 +18626,71 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Teleport",
                         "level": 30
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "VULPIX": {
+            "name": "VULPIX".split(""),
             "label": "Fox",
             "sprite": "Water",
             "info": [
@@ -15245,22 +18719,28 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Roar",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 42
                     }],
@@ -15268,46 +18748,60 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -15315,28 +18809,35 @@ export class Pokemon {
                     {
                         "move": "Ember",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Quick Attack",
                         "level": 16
-                    }, {
+                    },
+                    {
                         "move": "Roar",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Flamethrower",
                         "level": 35
-                    }, {
+                    },
+                    {
                         "move": "Fire Spin",
                         "level": 42
                     }]
             }
         },
         "WARTORTLE": {
+            "name": "WARTORTLE".split(""),
             "label": "Turtle",
             "sprite": "Water",
             "info": [
@@ -15365,28 +18866,36 @@ export class Pokemon {
                     {
                         "move": "Bubble",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tail Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Bubble",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Withdraw",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Hydro Pump",
                         "level": 47
                     }],
@@ -15395,73 +18904,95 @@ export class Pokemon {
                     {
                         "move": "Mega Punch",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Mega Kick",
                         "level": 5
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Body Slam",
                         "level": 8
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bubble Beam",
                         "level": 11
-                    }, {
+                    },
+                    {
                         "move": "Water Gun",
                         "level": 12
-                    }, {
+                    },
+                    {
                         "move": "Ice Beam",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Blizzard",
                         "level": 14
-                    }, {
+                    },
+                    {
                         "move": "Submission",
                         "level": 17
-                    }, {
+                    },
+                    {
                         "move": "Counter",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Seismic Toss",
                         "level": 19
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Dig",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Skull Bash",
                         "level": 40
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "WEEDLE": {
+            "name": "WEEDLE".split(""),
             "label": "Hairy Bug",
             "sprite": "Water",
             "info": [
@@ -15490,7 +19021,8 @@ export class Pokemon {
                     {
                         "move": "Poison Sting",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "String Shot",
                         "level": 1
                     }],
@@ -15499,6 +19031,7 @@ export class Pokemon {
             }
         },
         "WEEPINBELL": {
+            "name": "WEEPINBELL".split(""),
             "label": "Flycatcher",
             "sprite": "Water",
             "info": [
@@ -15527,31 +19060,40 @@ export class Pokemon {
                     {
                         "move": "Growth",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Vine Whip",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Wrap",
                         "level": 13
-                    }, {
+                    },
+                    {
                         "move": "Poison Powder",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Sleep Powder",
                         "level": 18
-                    }, {
+                    },
+                    {
                         "move": "Stun Spore",
                         "level": 23
-                    }, {
+                    },
+                    {
                         "move": "Acid",
                         "level": 29
-                    }, {
+                    },
+                    {
                         "move": "Razor Leaf",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Slam",
                         "level": 49
                     }],
@@ -15560,46 +19102,59 @@ export class Pokemon {
                     {
                         "move": "Swords Dance",
                         "level": 3
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Mega Drain",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Solar Beam",
                         "level": 22
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "WEEZING": {
+            "name": "WEEZING".split(""),
             "label": "Poison Gas",
             "sprite": "Water",
             "info": [
@@ -15619,25 +19174,32 @@ export class Pokemon {
                     {
                         "move": "Sludge",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Smog",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 53
                     }],
@@ -15645,40 +19207,52 @@ export class Pokemon {
                     {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 36
-                    }, {
+                    },
+                    {
                         "move": "Fire Blast",
                         "level": 38
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 47
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }],
@@ -15686,31 +19260,39 @@ export class Pokemon {
                     {
                         "move": "Sludge",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Smog",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Tackle",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sludge",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Smokescreen",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Self-Destruct",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 49
-                    }, {
+                    },
+                    {
                         "move": "Explosion",
                         "level": 53
                     }]
             }
         },
         "WIGGLYTUFF": {
+            "name": "WIGGLYTUFF".split(""),
             "label": "Balloon",
             "sprite": "Water",
             "info": [
@@ -15730,13 +19312,16 @@ export class Pokemon {
                     {
                         "move": "Defense Curl",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Disable",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Double Slap",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Sing",
                         "level": 1
                     }],
@@ -15745,13 +19330,15 @@ export class Pokemon {
                     {
                         "move": "Strength",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }]
             }
         },
         "ZAPDOS": {
+            "name": "ZAPDOS".split(""),
             "label": "Electric",
             "sprite": "Water",
             "info": [
@@ -15771,16 +19358,20 @@ export class Pokemon {
                     {
                         "move": "Drill Peck",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder Shock",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 51
-                    }, {
+                    },
+                    {
                         "move": "Agility",
                         "level": 55
-                    }, {
+                    },
+                    {
                         "move": "Light Screen",
                         "level": 60
                     }],
@@ -15788,7 +19379,8 @@ export class Pokemon {
                     {
                         "move": "Fly",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Flash",
                         "level": 5
                     }],
@@ -15796,61 +19388,79 @@ export class Pokemon {
                     {
                         "move": "Razor Wind",
                         "level": 2
-                    }, {
+                    },
+                    {
                         "move": "Whirlwind",
                         "level": 4
-                    }, {
+                    },
+                    {
                         "move": "Toxic",
                         "level": 6
-                    }, {
+                    },
+                    {
                         "move": "Take Down",
                         "level": 9
-                    }, {
+                    },
+                    {
                         "move": "Double-Edge",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Hyper Beam",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Rage",
                         "level": 20
-                    }, {
+                    },
+                    {
                         "move": "Thunderbolt",
                         "level": 24
-                    }, {
+                    },
+                    {
                         "move": "Thunder",
                         "level": 25
-                    }, {
+                    },
+                    {
                         "move": "Mimic",
                         "level": 31
-                    }, {
+                    },
+                    {
                         "move": "Double Team",
                         "level": 32
-                    }, {
+                    },
+                    {
                         "move": "Reflect",
                         "level": 33
-                    }, {
+                    },
+                    {
                         "move": "Bide",
                         "level": 34
-                    }, {
+                    },
+                    {
                         "move": "Swift",
                         "level": 39
-                    }, {
+                    },
+                    {
                         "move": "Sky Attack",
                         "level": 43
-                    }, {
+                    },
+                    {
                         "move": "Rest",
                         "level": 44
-                    }, {
+                    },
+                    {
                         "move": "Thunder Wave",
                         "level": 45
-                    }, {
+                    },
+                    {
                         "move": "Substitute",
                         "level": 50
                     }]
             }
         },
         "ZUBAT": {
+            "name": "ZUBAT".split(""),
             "label": "Bat",
             "sprite": "Water",
             "info": [
@@ -15879,19 +19489,24 @@ export class Pokemon {
                     {
                         "move": "Leech Life",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 36
                     }],
@@ -15900,19 +19515,24 @@ export class Pokemon {
                     {
                         "move": "Leech Life",
                         "level": 1
-                    }, {
+                    },
+                    {
                         "move": "Supersonic",
                         "level": 10
-                    }, {
+                    },
+                    {
                         "move": "Bite",
                         "level": 15
-                    }, {
+                    },
+                    {
                         "move": "Confuse Ray",
                         "level": 21
-                    }, {
+                    },
+                    {
                         "move": "Wing Attack",
                         "level": 28
-                    }, {
+                    },
+                    {
                         "move": "Haze",
                         "level": 36
                     }]

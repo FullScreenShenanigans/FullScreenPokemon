@@ -13,7 +13,7 @@ export class Health<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Adds a Pokemon's health display to its appropriate menu.
-     * 
+     *
      * @param battlerName   Which battler to add the display for.
      */
     public addPokemonHealth(pokemon: IPokemon, team: Team): void {
@@ -35,7 +35,7 @@ export class Health<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Slides a Pokemon's health bar to reflect changing health amounts.
-     * 
+     *
      * @param team   Team whose actor's health is changing.
      * @param from   Original health amount.
      * @param to   New health amount.
@@ -63,7 +63,7 @@ export class Health<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Adds a health bar to a battle display, with an appropriate width.
-     * 
+     *
      * @param team   Which team to add the display for.
      * @param statistic   Health summary for the team's selected actor.
      */

@@ -9,7 +9,7 @@ export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extend
     /**
      * Cutscene for the old man battling a Weedle.
      *
-     * @param settings   Settings used for the cutscene. 
+     * @param settings   Settings used for the cutscene.
      */
     public StartBattle(settings: any): void {
         console.log("Should start battle with", settings);

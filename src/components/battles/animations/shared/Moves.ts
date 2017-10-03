@@ -30,7 +30,7 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Plays a battle move.
-     * 
+     *
      * @param teamAndAction   Team and action for the move.
      * @param source   Team whose Pokemon is using the move.
      * @param target   Team whose Pokemon is being targeted.

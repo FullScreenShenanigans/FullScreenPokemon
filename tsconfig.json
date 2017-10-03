@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "declaration": true,
+        "lib": ["dom", "es2015.collection", "es2015.promise", "es5"],
         "module": "amd",
         "moduleResolution": "node",
         "noImplicitAny": true,

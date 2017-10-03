@@ -9,7 +9,7 @@ import { IThing } from "../Things";
 export class Sliding<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Slides a Thing across the screen horizontally over time.
-     * 
+     *
      * @param thing   A Thing to slide across the screen.
      * @param change   How far to move each tick.
      * @param goal   A midX location to stop sliding at.
@@ -51,7 +51,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Slides a Thing across the screen vertically over time.
-     * 
+     *
      * @param thing   A Thing to slide across the screen.
      * @param change   How far to move each tick.
      * @param goal   A midY location to stop sliding at.
@@ -93,7 +93,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Slides a Thing across the screen horizontally and fades it over time.
-     * 
+     *
      * @param thing   A Thing to slide across the screen.
      * @param goal   A midX location to stop sliding at.
      * @param timeout   How many ticks the animation should last.

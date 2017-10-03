@@ -66,7 +66,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
      * flag for a little while.
-     * 
+     *
      * @param settings   Settings for the flicker effect.
      */
     public flicker(settings: IFlickerSettings): void {
@@ -95,7 +95,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Shakes all Things on the screen for a little bit.
-     * 
+     *
      * @param Settings for the shake animation.
      */
     public shake(settings: IShakeSettings): void {

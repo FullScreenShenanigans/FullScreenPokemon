@@ -55,39 +55,48 @@ export const PalletTown: IMapRaw = {
             "width": 608,
             "height": 544,
             "wildPokemon": {
-                "grass": [{
-                    "title": "PIDGEY".split(""),
-                    "levels": [2, 3, 4, 5],
-                    "rate": .55
-                }, {
-                    "title": "RATTATA".split(""),
-                    "levels": [2, 3, 4],
-                    "rate": .45
-                }],
+                "grass": [
+                    {
+                        "title": "PIDGEY".split(""),
+                        "levels": [2, 3, 4, 5],
+                        "rate": .55
+                    },
+                    {
+                        "title": "RATTATA".split(""),
+                        "levels": [2, 3, 4],
+                        "rate": .45
+                    }
+                ],
                 "fishing": {
                     "old": [{
                         "title": "MAGIKARP".split(""),
                         "levels": [5],
                         "rate": 1
                     }],
-                    "good": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }, {
-                        "title": "GOLDEEN".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }],
-                    "super": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [15],
-                        "rate": .5
-                    }, {
-                        "title": "TENTACOOL".split(""),
-                        "levels": [15],
-                        "rate": .5
-                    }]
+                    "good": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        },
+                        {
+                            "title": "GOLDEEN".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        }
+                    ],
+                    "super": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [15],
+                            "rate": .5
+                        },
+                        {
+                            "title": "TENTACOOL".split(""),
+                            "levels": [15],
+                            "rate": .5
+                        }
+                    ]
                 }
             },
             "creation": [

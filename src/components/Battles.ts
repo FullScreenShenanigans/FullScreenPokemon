@@ -36,6 +36,11 @@ export interface IPokemon extends IActor, IStateSaveable {
     ev: IValuePoints;
 
     /**
+     * Item held by the actor.
+     */
+    item?: string[];
+
+    /**
      * Accumulated individual value points.
      */
     iv: IValuePoints;
@@ -305,7 +310,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Heals a Pokemon back to full health.
-     * 
+     *
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
@@ -321,8 +326,32 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
+     * Tests to see if all party Pokemon have fainted.
+     *
+     * @returns Whether a player's party is wiped.
+     */
+    public isPartyWiped(): boolean {
+        for (const chosenPokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+            if (chosenPokemon.statistics.health.current !== 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Heals party back to full health.
+     */
+    public healParty(): void {
+        for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+            this.gameStarter.battles.healPokemon(pokemon);
+        }
+    }
+
+    /**
      * Checks whether a team is allowed to flee (not facing a trainer).
-     * 
+     *
      * @param team   A team in battle.
      * @returns Whether the team can flee.
      */
@@ -333,7 +362,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Fills in default values for battle options.
-     * 
+     *
      * @param partialBattleOptions   Partial options to start a battle.
      * @returns Completed options to start a battle.
      */
@@ -351,7 +380,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
                 selector: "opponent"
             },
             player: {
-                 actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
+                actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
                 leader: {
                     nickname: this.gameStarter.itemsHolder.getItem("name"),
                     title: "PlayerBack".split("")

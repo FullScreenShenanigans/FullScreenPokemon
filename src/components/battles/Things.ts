@@ -11,7 +11,7 @@ import { IThing } from "../Things";
 export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Sets a team's visual Pokemon Thing.
-     * 
+     *
      * @param thing   Title for the Thing.
      * @param settings   Any additional settings for the thing.
      */
@@ -23,7 +23,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Sets the visual opponent Pokemon Thing.
-     * 
+     *
      * @param thing   Title for the Thing.
      * @param settings   Any additional settings for the Thing.
      */
@@ -42,7 +42,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Sets the visual player Pokemon Thing.
-     * 
+     *
      * @param thing   Title for the Thing.
      * @param settings   Any additional settings for the Thing.
      */

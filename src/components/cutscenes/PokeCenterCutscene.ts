@@ -2,6 +2,7 @@ import { Component } from "eightbittr/lib/Component";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
+import { IMap } from "../Maps";
 import { IThing } from "../Things";
 
 /**
@@ -11,7 +12,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
     /**
      * Cutscene for a nurse's welcome at the Pokemon Center.
      *
-     * @param settings   Settings used for the cutscene. 
+     * @param settings   Settings used for the cutscene.
      */
     public Welcome(settings: any): void {
         settings.nurse = this.gameStarter.utilities.getThingById(settings.nurseId || "Nurse");
@@ -76,7 +77,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
     /**
      * Cutscene for placing Pokeballs into the healing machine.
      *
-     * @param settings   Settings used for the cutscene. 
+     * @param settings   Settings used for the cutscene.
      */
     public Healing(settings: any): void {
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
@@ -93,7 +94,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
             (): void => {
                 balls.push(
                     this.gameStarter.things.add(
-                        "HealingMachineBall",
+                        this.gameStarter.things.names.healingMachineBall,
                         left + (i % 2) * 12,
                         top + Math.floor(i / 2) * 10)
                 );
@@ -177,6 +178,12 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                 this.gameStarter.scenePlayer.stopCutscene();
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+
+        const map: string = this.gameStarter.itemsHolder.getItem("map");
+        const mapInfo: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
+        const location: string | undefined = mapInfo.locationDefault;
+
+        this.gameStarter.itemsHolder.setItem("lastPokecenter", { map, location });
     }
 
     /**

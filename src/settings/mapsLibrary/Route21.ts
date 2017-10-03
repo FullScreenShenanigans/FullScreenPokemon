@@ -22,32 +22,40 @@ export const Route21: IMapRaw = {
                         "levels": [5],
                         "rate": 1
                     }],
-                    "good": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }, {
-                        "title": "GOLDEEN".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }],
-                    "super": [{
-                        "title": "SHELLDER".split(""),
-                        "levels": [15],
-                        "rate": .25
-                    }, {
-                        "title": "HORSEA".split(""),
-                        "levels": [15],
-                        "rate": .25
-                    }, {
-                        "title": "GOLDEEN".split(""),
-                        "levels": [15],
-                        "rate": .25
-                    }, {
-                        "title": "STARYU".split(""),
-                        "levels": [15],
-                        "rate": .25
-                    }]
+                    "good": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        },
+                        {
+                            "title": "GOLDEEN".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        }
+                    ],
+                    "super": [
+                        {
+                            "title": "SHELLDER".split(""),
+                            "levels": [15],
+                            "rate": .25
+                        },
+                        {
+                            "title": "HORSEA".split(""),
+                            "levels": [15],
+                            "rate": .25
+                        },
+                        {
+                            "title": "GOLDEEN".split(""),
+                            "levels": [15],
+                            "rate": .25
+                        },
+                        {
+                            "title": "STARYU".split(""),
+                            "levels": [15],
+                            "rate": .25
+                        }
+                    ]
                 }
             },
             "creation": [

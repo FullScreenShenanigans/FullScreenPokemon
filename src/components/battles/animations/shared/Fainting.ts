@@ -11,7 +11,7 @@ import { IThing } from "../../../Things";
 export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Runs a fainting animation.
-     * 
+     *
      * @param pokemon   Pokemon fainting.
      * @param team   The Pokemon's team.
      * @param onComplete   Handler for when this is done.
@@ -35,25 +35,26 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
 
         this.gameStarter.actions.sliding.slideVertically(
             thing,
-            4 * 2,
+            8,
             this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
             1,
             (): void => {
+                const playerName = this.gameStarter.itemsHolder.getItem("name");
+                const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
+
                 this.gameStarter.physics.killNormal(thing);
                 this.gameStarter.physics.killNormal(blank);
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
-                this.gameStarter.menuGrapher.addMenuDialog(
-                    "GeneralText",
-                    [
-                        [
-                            pokemon.nickname, " fainted!"
-                        ]
-                    ],
-                    onComplete
-                );
+                if (this.gameStarter.battles.isPartyWiped()) {
+                    partyIsWipedText.push(
+                        [playerName, " is out of useable Pokemon!"],
+                        [playerName, " blacked out!"]);
+                }
+
+                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });
 
-        this.gameStarter.modAttacher.fireEvent("onFaint", pokemon, battleInfo.teams.player.actors);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }
 }

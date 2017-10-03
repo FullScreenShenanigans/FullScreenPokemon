@@ -325,22 +325,28 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "menu",
                         "name": "PokedexListingSprite"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingName"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingLabel"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingHeight"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingWeight"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingNumber"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingInfo"
                     } as imenugraphr.IMenuChildSchema,
@@ -425,10 +431,12 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "text",
                         "words": ["HT"]
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingHeightFeet"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokedexListingHeightInches"
                     } as imenugraphr.IMenuChildSchema,
@@ -495,7 +503,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "text",
                         "words": ["WT"]
-                    }, {
+                    },
+                    {
                         "type": "text",
                         "words": ["lb"],
                         "position": {
@@ -622,28 +631,36 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "menu",
                         "name": "PokemonMenuStatsTitle"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsLevel"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsHPBar"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsHP"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsNumber"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsStatus"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsType1"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsID"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsOT"
                     } as imenugraphr.IMenuChildSchema,
@@ -972,7 +989,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 12
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": ["LEVEL UP"],
                         "position": {
@@ -980,13 +998,16 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 44
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsExperienceFrom"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PokemonMenuStatsExperienceNext"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": [["To"]],
                         "position": {
@@ -1100,14 +1121,16 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "menu",
                         "name": "PlayerTop"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "DirtWhite",
                         "position": {
                             "horizontal": "stretch",
                             "vertical": "center"
                         }
-                    } as imenugraphr.IMenuThingSchema, {
+                    } as imenugraphr.IMenuThingSchema,
+                    {
                         "type": "text",
                         "words": ["BADGES"],
                         "position": {
@@ -1116,7 +1139,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 142
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": [["Circle"]],
                         "position": {
@@ -1125,7 +1149,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 148
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": [["Circle"]],
                         "position": {
@@ -1134,7 +1159,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 148
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "PlayerBottom"
                     } as imenugraphr.IMenuChildSchema],
@@ -1170,7 +1196,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 24
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "PlayerPortrait",
                         "position": {
@@ -1210,7 +1237,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 12
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "BrockPortrait",
                         "position": {
@@ -1219,7 +1247,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 26
                             }
                         }
-                    } as imenugraphr.IMenuThingSchema, {
+                    } as imenugraphr.IMenuThingSchema,
+                    {
                         "type": "thing",
                         "thing": "MistyPortrait",
                         "position": {
@@ -1228,7 +1257,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 26
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "LtSurgePortrait",
                         "position": {
@@ -1237,7 +1267,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 26
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "ErikaPortrait",
                         "position": {
@@ -1246,7 +1277,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 26
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "KogaPortrait",
                         "position": {
@@ -1255,7 +1287,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 72
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "SabrinaPortrait",
                         "position": {
@@ -1264,7 +1297,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 72
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "BlainePortrait",
                         "position": {
@@ -1273,7 +1307,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 72
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "thing",
                         "thing": "GiovanniPortrait",
                         "position": {
@@ -1462,7 +1497,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": -1
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": [{
                             "command": "padLeft",
@@ -1474,7 +1510,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 16
                             }
                         }
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "text",
                         "words": [{
                             "command": "padLeft",
@@ -1617,7 +1654,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 8
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "position": {
@@ -1629,7 +1667,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                         "args": {
                             "flipHoriz": true
                         }
-                    }],
+                    }
+                ],
                 "container": "Battle",
                 "hidden": true,
                 "textXOffset": 34,
@@ -1726,7 +1765,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "left": 32
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "LightGraySquare",
                         "args": {
@@ -1739,7 +1779,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 2
                             }
                         }
-                    }],
+                    }
+                ],
                 "container": "BattlePlayerHealth",
                 "hidden": true,
                 "textSpeed": 0
@@ -1792,14 +1833,16 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "left": 2
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "HalfArrowHorizontal",
                         "position": {
                             "vertical": "bottom",
                             "horizontal": "right"
                         }
-                    }],
+                    }
+                ],
                 "container": "Battle",
                 "hidden": true,
                 "textXOffset": 28,
@@ -1884,7 +1927,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "left": 28
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "LightGraySquare",
                         "args": {
@@ -1897,7 +1941,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 2
                             }
                         }
-                    }],
+                    }
+                ],
                 "container": "BattleOpponentHealth",
                 "hidden": true,
                 "height": 16,
@@ -1969,7 +2014,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 40
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "CharHP",
                         "position": {
@@ -1978,7 +2024,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 40
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "CharSlash",
                         "position": {
@@ -1987,7 +2034,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 50
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "HalfArrowLeft",
                         "position": {
@@ -1996,7 +2044,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 70
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "Line",
                         "args": {
@@ -2008,7 +2057,8 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 74
                             }
                         }
-                    }, {
+                    },
+                    {
                         "type": "thing",
                         "thing": "Line",
                         "args": {
@@ -2020,7 +2070,7 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                                 "top": 36
                             }
                         }
-                    }],
+                }],
                 "container": "Battle",
                 "hidden": true
             } as IMenuSchema,
@@ -2097,13 +2147,16 @@ export function GenerateMenusSettings(fsp: FullScreenPokemon): IMenusModuleSetti
                     {
                         "type": "menu",
                         "name": "KeyboardKeys"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "KeyboardTitle"
-                    } as imenugraphr.IMenuChildSchema, {
+                    } as imenugraphr.IMenuChildSchema,
+                    {
                         "type": "menu",
                         "name": "KeyboardResult"
-                    } as imenugraphr.IMenuChildSchema],
+                    } as imenugraphr.IMenuChildSchema
+                ],
                 "plain": true
             } as IMenuBase,
             "KeyboardKeys": {

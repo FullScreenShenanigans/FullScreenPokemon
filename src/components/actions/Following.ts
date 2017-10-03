@@ -10,7 +10,7 @@ import { ICharacter } from "../Things";
 export class Following<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Starts a Character following another Character.
-     * 
+     *
      * @param follow   The following Character.
      * @param lead   The leading Character.
      */
@@ -48,7 +48,7 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Handles a follow needing to continue following after a block.
-     * 
+     *
      * @param follow   The following Character.
      * @param direction   What direction to walk in next.
      */
@@ -59,7 +59,7 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Handles a following Charcater's lead stopping walking.
-     * 
+     *
      * @param follow   The following Character.
      */
     public pauseFollowing(follow: ICharacter): void {
@@ -68,7 +68,7 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Handles a following Character ceasing to follow.
-     * 
+     *
      * @param follow   The following Character.
      * @param lead   The leading Character.
      */

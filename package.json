@@ -21,6 +21,7 @@
     "changelinr": "0.6.X",
     "devicelayr": "0.6.X",
     "eightbittr": "0.6.X",
+    "flagswappr": "0.6.X",
     "fpsanalyzr": "0.6.X",
     "gamesrunnr": "0.6.X",
     "gamestartr": "0.6.X",
@@ -47,7 +48,7 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.10"
+    "gulp-shenanigans": "^0.6.16"
   },
   "scripts": {
     "gulp": "gulp",

@@ -116,7 +116,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
 
     /**
      * Determines the in-game measurements of the boundaries of the current Area.
-     * 
+     *
      * @returns The boundaries of the current Area.
      */
     public getAreaBoundariesReal(): IAreaBoundaries {
@@ -145,7 +145,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
 
     /**
      * Determines the scrollable directions.
-     * 
+     *
      * @returns The direction(s) that are scrollable.
      */
     public getScreenScrollability(): Scrollability {
@@ -211,7 +211,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
 
     /**
      * Expands the MapScreener boundaries for a newly added Area.
-     * 
+     *
      * @param _area   The newly added Area.
      * @param _x   The x-location of the expansion.
      * @param _y   The y-location of the expansion.

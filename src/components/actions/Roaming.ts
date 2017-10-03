@@ -10,7 +10,7 @@ import { ICharacter } from "../Things";
 export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Starts a Character roaming in random directions.
-     * 
+     *
      * @param thing   A Character to start roaming.
      */
     public startRoaming(thing: ICharacter): void {
@@ -20,7 +20,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.startRoaming(thing),
-            70 + this.gameStarter.numberMaker.randomInt(210));
+            this.gameStarter.numberMaker.randomInt(210) + 70);
 
         if (!thing.talking && !this.gameStarter.menuGrapher.getActiveMenu()) {
             this.takeRoamingStep(thing);
@@ -30,7 +30,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
     /**
      * Starts a roaming Character walking in a random direction, determined
      * by the allowed directions it may use (that aren't blocked).
-     * 
+     *
      * @param thing   A roaming Character.
      */
     protected takeRoamingStep(thing: ICharacter): void {
@@ -52,7 +52,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Determines the next direction a Character should roam, if possible.
-     * 
+     *
      * @param thing   A roaming Character.
      * @returns The next direction it should roam, if any.
      */

@@ -8,7 +8,7 @@ import { Move } from "../Move";
 export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
@@ -53,32 +53,32 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
     /**
      * Animates the first cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
     private animateGroupOne(x: number, y: number): void {
-        const bubbleLarge: IThing = this.gameStarter.things.add("BubbleLarge", x, y);
+        const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.bubbleLarge, x, y);
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 this.gameStarter.physics.killNormal(bubbleLarge);
             },
-            4 * 24);
+            96);
     }
 
     /**
      * Animates the second cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
     private animateGroupTwo(x: number, y: number): void {
-        const bubbleLarge: IThing = this.gameStarter.things.add("BubbleLarge", x, y);
+        const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.bubbleLarge, x, y);
         const bubblesSmall: IThing[] = [];
 
         for (let j: number = 0; j < 4; j += 1) {
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
+            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         }
 
         this.gameStarter.things.add(bubblesSmall[0], x, y - 4);
@@ -93,12 +93,12 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }
             },
-            3 * 24);
+            72);
     }
 
     /**
      * Animates the third cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
@@ -107,8 +107,8 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesSmall: IThing[] = [];
 
         for (let j: number = 0; j < 3; j += 1) {
-            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>("BubbleLarge");
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
+            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleLarge);
+            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         }
 
         this.gameStarter.things.add(bubblesLarge[0], x, y - 4);
@@ -125,12 +125,12 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }
             },
-            2 * 24);
+            42);
     }
 
     /**
      * Animates the fourth cluster of bubbles.
-     * 
+     *
      * @param x   Horizontal position to animate on.
      * @param y   Vertical position to animate on.
      */
@@ -139,8 +139,8 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesSmall: IThing[] = [];
 
         for (let j: number = 0; j < 4; j += 1) {
-            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>("BubbleLarge");
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>("BubbleSmall");
+            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleLarge);
+            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         }
 
         this.gameStarter.things.add(bubblesLarge[0], x + 4, y + 12);

@@ -6,10 +6,10 @@ import { IPokemon } from "./Battles";
 /**
  * Handles logic related to Pokemon level ups.
  */
-export class Experience<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {  
+export class Experience<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Levels up a specified pokemon.
-     * 
+     *
      * @param pokemon   The pokemon in the party to level up.
      */
     public levelup(pokemon: IPokemon): void {
@@ -21,12 +21,12 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends Component
         const evolvedForm: string[] | undefined = this.gameStarter.evolution.checkEvolutions(pokemon);
         if (evolvedForm) {
             this.gameStarter.evolution.evolve(pokemon, evolvedForm);
-        }            
+        }
     }
 
     /**
      * Gives experience to a specified pokemon
-     * 
+     *
      * @param pokemon   The pokemon to give experience to.
      * @param experience   The amount of experience to give.
      */

@@ -1,12 +1,13 @@
 import { Component } from "eightbittr/lib/Component";
 
+import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IItemSchema } from "../constants/Items";
 import { IMenuSchema } from "../Menus";
 
 /**
  * A single item's listing in an inventory.
- * 
+ *
  * @todo When items get their own component(s), move this there.
  */
 export interface IInventoryListing {
@@ -23,7 +24,7 @@ export interface IInventoryListing {
 
 /**
  * Callback for peforming an action with an item's listing.
- * 
+ *
  * @param listing   A selected item listing.
  */
 export interface IOnListingSelect {
@@ -66,7 +67,7 @@ export interface IItemsMenuSettings extends IItemMenuSettings {
 export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Opens the Items menu for the items in the player's inventory.
-     * 
+     *
      * @param settings   Custom attributes to apply to the menu.
      */
     public openItemsMenu(settings: IItemsMenuSettings = {}): void {
@@ -80,7 +81,8 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                         text: [["Times"]],
                         x: 32,
                         y: 4.5
-                    }, {
+                    },
+                    {
                         text: this.gameStarter.utilities.makeDigit(listing.amount, 2, " "),
                         x: 36.5,
                         y: 4
@@ -94,7 +96,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
             callback: () => this.gameStarter.menuGrapher.registerB()
         });
 
-        this.gameStarter.modAttacher.fireEvent("onOpenItemsMenu", listings);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onOpenItemsMenu, listings);
 
         this.gameStarter.menuGrapher.createMenu("Items", settings);
         this.gameStarter.menuGrapher.addMenuList("Items", { options });
@@ -105,12 +107,12 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Opens the Item menu for the item the player selected from the inventory.
-     * 
+     *
      * @param listing   Item listing being displayed.
      * @param settings   Custom attributes to apply to the menu.
      */
     public openItemMenu(listing: IInventoryListing, settings: IItemMenuSettings): void {
-        const options: any[] = [
+        const options = [
             {
                 callback: (): void => {
                     if (!settings.onUse) {
@@ -120,7 +122,8 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     settings.onUse(listing);
                 },
                 text: "USE"
-            }, {
+            },
+            {
                 callback: (): void => {
                     if (!settings.onToss) {
                         throw new Error("No onToss defined for items.");
@@ -132,7 +135,19 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
             }
         ];
 
-        this.gameStarter.modAttacher.fireEvent("onOpenItemMenu", listing);
+        if (this.gameStarter.flagSwapper.flags.heldItems) {
+            options.push({
+                callback: (): void => {
+                    const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+                    const chosenPokemon = partyPokemon[0];
+                    chosenPokemon.item = listing.item.split("");
+                    listing.amount = listing.amount - 1;
+                },
+                text: "GIVE"
+            });
+        }
+
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onOpenItemMenu, listing);
 
         this.gameStarter.menuGrapher.createMenu("Item", settings);
         this.gameStarter.menuGrapher.addMenuList("Item", { options });

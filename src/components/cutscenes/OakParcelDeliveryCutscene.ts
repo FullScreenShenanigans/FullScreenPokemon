@@ -77,7 +77,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      */
     public RivalWalksUp(settings: any): void {
         const doormat: IThing = this.gameStarter.utilities.getThingById("DoormatLeft");
-        const rival: ICharacter = this.gameStarter.things.add("Rival", doormat.left, doormat.top) as ICharacter;
+        const rival: ICharacter = this.gameStarter.things.add(this.gameStarter.things.names.rival, doormat.left, doormat.top) as ICharacter;
 
         rival.alive = true;
         settings.rival = rival;
@@ -208,7 +208,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
     }
 
     /**
-     * Cutscene for the rival accepting the Pokedex and challenge to complete Oak's goal. 
+     * Cutscene for the rival accepting the Pokedex and challenge to complete Oak's goal.
      *
      * @param settings   Settings used for the cutscene.
      */

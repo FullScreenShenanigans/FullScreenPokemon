@@ -8,7 +8,7 @@ import { Move } from "../Move";
 export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
@@ -31,7 +31,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                 (): void => {
                     this.animateEmbers(xPositions[i], yPosition);
                 },
-                24 * i);
+                i * 24);
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -47,7 +47,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
 
     /**
      * Creates a small and then a large ember.
-     * 
+     *
      * @param x   Horizontal midpoint of the embers.
      * @param y   Vertical midpoint of the embers.
      */
@@ -63,7 +63,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
 
     /**
      * Creates a flickering ember.
-     * 
+     *
      * @param title   Title of the ember's Thing.
      */
     private createEmber(title: "EmberSmall" | "EmberLarge", x: number, y: number): void {

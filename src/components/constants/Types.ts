@@ -4,7 +4,7 @@
 export class Types {
     /**
      * Names of types Pokemon may be.
-     * 
+     *
      * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
     public readonly names: string[] = [
@@ -15,7 +15,7 @@ export class Types {
     /**
      * Type names mapped to their location in the type effectiveness table.
      */
-    public readonly indices: { [i: string]: number; } = {
+    public readonly indices: { [i: string]: number } = {
         Normal: 0,
         Fighting: 1,
         Flying: 2,

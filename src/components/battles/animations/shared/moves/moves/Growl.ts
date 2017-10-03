@@ -38,13 +38,13 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
 
     /**
      * Runs the move's animation.
-     * 
+     *
      * @param onComplete   Callback for when the animation is done.
      */
     public runAnimation(onComplete: () => void): void {
         const notes: [IThing, IThing] = [
-            this.gameStarter.objectMaker.make<IThing>("Note"),
-            this.gameStarter.objectMaker.make<IThing>("Note")
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note)
         ];
 
         this.animateNote(notes[0], 10);
@@ -63,7 +63,7 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
 
     /**
      * Schedules a note's animations.
-     * 
+     *
      * @param note   A note Thing.
      * @param dt   Time delay between changes.
      */
@@ -86,7 +86,7 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
 
     /**
      * Shifts a note.
-     * 
+     *
      * @param note   A note Thing.
      * @param flip   Whether it's flipped.
      */
