@@ -12,6 +12,10 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends ModCompo
      * Name of the mod.
      */
     public readonly name: string = "Level 100";
+    public readonly readBoolean: boolean = false;
+    public readonly readString: boolean = true;
+    public readonly selectString: boolean = true;
+    public level: number = 100; //set pokemon.level = level, modify level w/ MOption
 
     /**
      * Mod events, keyed by name.
