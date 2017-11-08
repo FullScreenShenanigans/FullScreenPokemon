@@ -42,8 +42,8 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
      *
-     * @param {String} string   The characters to repeat.
-     * @param {Number} [times]   How many times to repeat (by default, 1).
+     * @param string   The characters to repeat.
+     * @param times   How many times to repeat (by default, 1).
      */
     public stringOf(str: string, times: number = 1): string {
         return (times === 0) ? "" : new Array((times || 1) + 1).join(str);
@@ -53,10 +53,9 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
      * Turns a Number into a String with a prefix added to pad it to a certain
      * number of digits.
      *
-     * @param {Mixed} number   The original Number being padded.
-     * @param {Number} size   How many digits the output must contain.
-     * @param {Mixed} [prefix]   A prefix to repeat for padding (by default, "0").
-     * @returns {String}
+     * @param number   The original Number being padded.
+     * @param size   How many digits the output must contain.
+     * @param [prefix]   A prefix to repeat for padding (by default, "0").
      * @example
      * makeDigit(7, 3); // '007'
      * makeDigit(7, 3, 1); // '117'
