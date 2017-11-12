@@ -28,7 +28,6 @@
         "no-non-null-assertion": [false],
         "no-object-literal-type-assertion": [false],
         "no-submodule-imports": [false],
-        "no-redundant-jsdoc": [false],
         "no-require-imports": false,
         "no-unbound-method": [false],
         "no-unsafe-any": [false],
