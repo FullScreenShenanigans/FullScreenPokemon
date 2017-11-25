@@ -18,7 +18,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
 
     /**
      * Reacts to an actor getting knocked out.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when this is done.
@@ -29,7 +29,12 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
                 return actor.statistics.health.current !== 0;
             })
             [0] as IPokemon | undefined;
-
+        const teamName: "player" | "opponent" = Team[team] as "player" | "opponent";
+        if (teamName === "opponent") {
+            const pkmn: IPokemon = this.gameStarter.itemsHolder.getItem("PokemonInParty")[0];
+            const gainedExp: number = this.gameStarter.equations.experienceGained(battleInfo.teams[Team[team]]);
+            this.gameStarter.experience.gainExperience(pkmn, gainedExp);
+        }
         if (newPokemon) {
             this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
             this.gameStarter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
@@ -43,7 +48,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
 
     /**
      * Determines the next action to take.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param onChoice   Callback for when an action is chosen.
      * @see http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI

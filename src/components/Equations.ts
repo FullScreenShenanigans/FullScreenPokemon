@@ -4,7 +4,7 @@ import { Component } from "eightbittr/lib/Component";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
 import { IBattleBall } from "./constants/Items";
-import { IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
+import { INewPokemon, IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 import { Moves } from "./equations/Moves";
 import { IWildPokemonSchema } from "./Maps";
 import { ICharacter, IGrass } from "./Things";
@@ -20,7 +20,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.
-     * 
+     *
      * @param thing   A walking Character.
      * @returns how many game ticks it will take for thing to traverse a block.
      */
@@ -73,7 +73,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Chooses a random wild Pokemon schema from the given ones.
-     * 
+     *
      * @param options   Potential Pokemon schemas to choose from.
      * @returns One of the potential Pokemon schemas at random.
      */
@@ -93,38 +93,40 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Generates a new Pokemon with the given traits.
-     * 
+     *
      * @param title   The type of Pokemon to create.
      * @param level   The level of the new Pokemon (by default, 1).
      * @param moves   What moves the Pokemon has (by default, generated from its type
      *                and level).
-     * @param iv   What IV points the Pokemon should start with (by default, generated 
+     * @param iv   What IV points the Pokemon should start with (by default, generated
      *             from the newPokemonIVs equation.
      * @param ev   What EV points the Pokemon should start with (by default, generated
      *             from the newPokemonEVs equation).
      * @returns A newly created Pokemon.
      */
-    public newPokemon(title: string[], level?: number, moves?: IMove[]): IPokemon {
+    public newPokemon(chosenInfo: INewPokemon): IPokemon {
         const ev: IValuePoints = this.newPokemonEVs();
         const iv: IValuePoints = this.newPokemonIVs();
-        level = level || 1;
+
+        this.gameStarter.modAttacher.fireEvent("onNewPokemonCreation", chosenInfo);
 
         return {
-            experience: this.experienceStarting(title, level || 1),
+            experience: this.experienceStarting(chosenInfo.title, chosenInfo.level || 1),
             ev,
+            item: chosenInfo.item,
             iv,
-            level,
-            moves: moves || this.newPokemonMoves(title, level || 1),
-            nickname: title,
-            statistics: this.newPokemonStatistics(title, level, ev, iv),
-            title: title,
-            types: this.gameStarter.constants.pokemon.byName[title.join("")].types
+            level: chosenInfo.level || 1,
+            moves: chosenInfo.moves || this.newPokemonMoves(chosenInfo.title, chosenInfo.level || 1),
+            nickname: chosenInfo.title,
+            statistics: this.newPokemonStatistics(chosenInfo.title, chosenInfo.level || 1, ev, iv),
+            title: chosenInfo.title,
+            types: this.gameStarter.constants.pokemon.byName[chosenInfo.title.join("")].types
         };
     }
 
     /**
      * Generates statistics for a Pokemon.
-     * 
+     *
      * @param title   The type of Pokemon to create.
      * @param level   The level of the new Pokemon (by default, 1).
      * @param iv   What IV points the Pokemon should start with.
@@ -146,7 +148,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes the default new moves for a Pokemon based on its type and level.
-     * 
+     *
      * @param title   The type of Pokemon.
      * @param level   The level of the Pokemon.
      * @returns The default moves of the Pokemon.
@@ -181,7 +183,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes a random set of IV points for a new Pokemon.
-     * 
+     *
      * @returns A random set of IV points.
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @todo Implement the bit procedure for health.
@@ -198,7 +200,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes a blank set of EV points for a new Pokemon.
-     * 
+     *
      * @returns A blank set of EV points.
      */
     public newPokemonEVs(): IValuePoints {
@@ -213,7 +215,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes a Pokemon's new statistic based on its IVs and EVs.
-     * 
+     *
      * @param statistic   Which statistic to compute.
      * @param base   Base modifier for the statistic.
      * @param level   Pokemon level getting the statistic.
@@ -221,7 +223,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @param iv   Individual value points for the statistic.
      * @returns A new value for the statistic.
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
-     * @remarks Note: the page mentions rounding errors... 
+     * @remarks Note: the page mentions rounding errors...
      */
     public pokemonStatistic(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): IStatistic {
         const normal: number = this.pokemonStatisticNormal(statistic, base, level, ev, iv);
@@ -234,7 +236,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes a Pokemon's new statistic based on its IVs and EVs.
-     * 
+     *
      * @param statistic   Which statistic to compute.
      * @param base   Base modifier for the statistic.
      * @param level   Pokemon level getting the statistic.
@@ -242,7 +244,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @param iv   Individual value points for the statistic.
      * @returns A new value for the statistic.
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
-     * @remarks Note: the page mentions rounding errors... 
+     * @remarks Note: the page mentions rounding errors...
      */
     public pokemonStatisticNormal(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): number {
         const numerator: number = ((base + iv) * 2 + Math.floor(Math.ceil(Math.sqrt(ev)) / 4)) * level;
@@ -256,7 +258,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Determines whether a wild encounter should occur when walking through grass.
-     * 
+     *
      * @param grass   The grass Thing being walked through.
      * @returns Whether a wild encounter should occur.
      * @see http://bulbapedia.bulbagarden.net/wiki/Tall_grass
@@ -267,7 +269,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Determines whether a Pokemon may be caught by a ball.
-     * 
+     *
      * @param pokemon   The Pokemon the ball is attempting to catch.
      * @param ball   The ball attempting to catch the Pokemon.
      * @returns Whether the Pokemon may be caught.
@@ -320,7 +322,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Calculates how many times a failed Pokeball should shake.
-     * 
+     *
      * @param pokemon   The wild Pokemon the ball is failing to catch.
      * @param ball   The Pokeball attempting to catch the wild Pokemon.
      * @returns How many times the ball should shake.
@@ -349,7 +351,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
             1);
         const x: number = d * f / 255 + this.gameStarter.constants.statuses.shaking[pokemon.status || "normal"];
 
-        // 4. If... 
+        // 4. If...
         if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
             return 0;
         }
@@ -370,14 +372,14 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Checks whether a Pokemon contains any of the given types.
-     * 
+     *
      * @param pokemon   A Pokemon.
      * @param types   The types to check.
      * @returns Whether the Pokemon's types includes any of the given types.
      */
     public pokemonMatchesTypes(pokemon: IPokemon, types: string[]): boolean {
-        for (let i: number = 0; i < types.length; i += 1) {
-            if (pokemon.types.indexOf(types[i]) !== -1) {
+        for (const type of types) {
+            if (pokemon.types.indexOf(type) !== -1) {
                 return true;
             }
         }
@@ -387,7 +389,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes how much experience a new Pokemon should start with.
-     * 
+     *
      * @param title   The name of the Pokemon.
      * @param level   The level of the Pokemon.
      * @returns An amount of experience.
@@ -401,15 +403,15 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         // TODO: remove defaulting to mediumFast
         switch (reference.experienceType) {
             case "fast":
-                return (4 * Math.pow(level, 3)) / 5;
+                return (Math.pow(level, 3) * 4) / 5;
             case "mediumSlow":
                 return (
                     (6 / 5) * Math.pow(level, 3)
-                    - (15 * Math.pow(level, 2))
-                    + (100 * level)
+                    - (Math.pow(level, 2) * 15)
+                    + (level * 100)
                     - 140);
             case "slow":
-                return (5 * Math.pow(level, 3)) / 4;
+                return (Math.pow(level, 3) * 5) / 4;
             // case "mediumFast":
             default:
                 return Math.pow(level, 3);
@@ -418,34 +420,39 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Computes how much experience should be gained from defeating a Pokemon.
-     * 
+     *
      * @returns How much experience is to be gained.
      * @remarks This will need to be changed to accomodate rewarding multiple Pokemon.
      * @see http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      */
-    public experienceGained(player: any /* IBattler */, opponent: any /* IBattler */): number {
+    public experienceGained(opponent: any /* IBattler */): number {
         // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
-        const a: number = opponent.category === "Trainer" ? 1.5 : 1;
+        // const a: number = opponent.category === "Trainer" ? 1.5 : 1;
+        // Todo: Account for trainer-based exp modification.
+        const a: number = 1;
 
         // b is the base experience yield of the fainted Pokemon's species
         const b: number = 64; // (Bulbasaur) Todo: add this in
 
         // lf is the level of the fainted Pokemon
-        const lf: number = opponent.selectedActor!.level;
+        const defeated: IPokemon = opponent.selectedActor as IPokemon;
+        const lf: number = defeated.level;
 
         // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
         // Todo: Account for modifies like Exp. All
         const s: number = 1;
 
         // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
-        const t: number = player.selectedActor!.traded ? 1.5 : 1;
+        // const t: number = player.selectedActor.traded ? 1.5 : 1;
+        // Todo: Account for trade-based exp modification.
+        const t: number = 1;
 
-        return (((a * t * b * lf) | 0) / ((7 * s) | 0)) | 0;
+        return (((a * t * b * lf) | 0) / ((s * 7) | 0)) | 0;
     }
 
     /**
      * Computes how wide a health bar should be.
-     * 
+     *
      * @param widthFullBar   The maximum possible width.
      * @param statistic   Statistic for the displayed health.
      * @returns How wide the health bar should be.
