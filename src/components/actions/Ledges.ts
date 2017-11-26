@@ -9,7 +9,7 @@ import { ICharacter, IThing } from "../Things";
 export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Starts a Character hopping over a ledge.
-     * 
+     *
      * @param thing   A Character hopping over a ledge.
      * @param other   The ledge the Character is hopping over.
      */
@@ -30,7 +30,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Finishes a Character hopping over a ledge.
-     * 
+     *
      * @param thing   A Character done hopping over a ledge.
      * @param other   The ledge the Character is done hopping over.
      */
@@ -44,7 +44,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Adds a visual "hop" to a hopping Character.
-     * 
+     *
      * @param thing   A Character hopping over a ledge.
      */
     protected addHopOffset(thing: ICharacter): void {
@@ -67,11 +67,11 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Adds a visual shadow to a hopping Character.
-     * 
+     *
      * @param thing   A Character hopping over a ledge.
      */
     protected addHopShadow(thing: ICharacter): void {
-        thing.shadow = this.gameStarter.things.add("Shadow");
+        thing.shadow = this.gameStarter.things.add(this.gameStarter.things.names.shadow);
 
         this.gameStarter.timeHandler.addEventInterval(
             (): boolean => this.updateShadowPosition(thing),
@@ -81,7 +81,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Updates a hopping Character's shadow.
-     * 
+     *
      * @param thing   A Character hopping over a ledge.
      * @param other   The ledge the Character is hopping over.
      */

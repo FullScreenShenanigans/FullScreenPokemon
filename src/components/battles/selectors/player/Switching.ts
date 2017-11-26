@@ -13,7 +13,7 @@ import { FleeAttempt } from "../../animations/shared/actions/FleeAttempt";
 export class Switching<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Offers to switch Pokemon after one is knocked out.
-     * 
+     *
      * @param team   Which team is being offered to switch.
      * @param onChoice   Callback for when this is done.
      */
@@ -61,7 +61,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Opens the in-battle Pokemon menu.
-     * 
+     *
      * @param team   Team opening the menu.
      * @param onChoice   Callback for selecting a new Pokemon.
      * @param onClose   Callback for closing the menu if nothing is chosen.
@@ -92,7 +92,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Attempts to switch to a Pokemon.
-     * 
+     *
      * @param team   Which team is attempting to switch.
      * @param pokemon   Selected Pokemon to try to switch to.
      * @param onSuccess   Callback if the Pokemon can be switched.
@@ -107,7 +107,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
 
     /**
      * Handler for the trying to switch to the current Pokemon.
-     * 
+     *
      * @param pokemon   The current Pokemon.
      */
     private rejectSwitch(pokemon: IPokemon): void {

@@ -30,7 +30,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Animation for a battle starting.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public readonly start = (onComplete: () => void): void => {
@@ -39,7 +39,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Animation for a battle ending.
-     * 
+     *
      * @param outcome   Descriptor of what finished the battle.
      * @param onComplete   Callback for when this is done.
      */
@@ -49,7 +49,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Retrieves the animator for a team.
-     * 
+     *
      * @param team   Which team's animator to retrieve.
      * @returns The team's animator.
      */

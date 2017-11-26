@@ -1,10 +1,11 @@
 import { ISizeSettings } from "gamestartr/lib/IGameStartr";
+import { stub } from "sinon";
 
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
 
 /**
- * Creates a new instance of the FullScreenPokemon class.
- * 
+ * Creates a stubbed instance of the FullScreenPokemon class.
+ *
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class.
  */
@@ -14,19 +15,26 @@ export function stubFullScreenPokemon(settings?: ISizeSettings): FullScreenPokem
         height: 256
     };
 
-    return new FullScreenPokemon({
+    const fsp = new FullScreenPokemon({
         moduleSettings: {
             audio: {
                 fileTypes: []
             }
         },
-        ...settings,
+        ...settings
     });
-};
+
+    stub(fsp.audioPlayer, "play");
+    stub(fsp.audioPlayer, "playLocal");
+    stub(fsp.audioPlayer, "playTheme");
+    stub(fsp.audioPlayer, "playThemePrefixed");
+
+    return fsp;
+}
 
 /**
  * Creates a new instance of the FullScreenPokemon class with an in-progress game.
- * 
+ *
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class with an in-progress game.
  */

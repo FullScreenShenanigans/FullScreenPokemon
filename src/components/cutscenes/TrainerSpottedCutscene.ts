@@ -10,7 +10,7 @@ import { ICharacter, IPlayer } from "../Things";
 export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Cutscene for when a trainer is encountered for battle.
-     * 
+     *
      * @param settings   Settings used for the cutscene.
      */
     public Exclamation(settings: any): void {
@@ -22,7 +22,7 @@ export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> exten
     }
 
     /**
-     * Cutscene for when a trainer approaches the player after being encountered. 
+     * Cutscene for when a trainer approaches the player after being encountered.
      *
      * @param settings   Settings used for the cutscene.
      */

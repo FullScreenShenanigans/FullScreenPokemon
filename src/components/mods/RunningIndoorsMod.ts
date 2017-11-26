@@ -1,13 +1,13 @@
-import { Component } from "eightbittr/lib/Component";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { IArea } from "../../components/Maps";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow cycling indoors.
  */
-export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -17,7 +17,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Co
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        onModEnable: (): void => {
+        [this.eventNames.onModEnable]: (): void => {
             const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
             if (!area) {
                 return;
@@ -27,7 +27,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Co
             area.allowCycling = true;
             this.gameStarter.mapScreener.variables.allowCycling = true;
         },
-        onModDisable: (): void => {
+        [this.eventNames.onModDisable]: (): void => {
             const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
             if (!area) {
                 return;
@@ -40,7 +40,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Co
             }
             this.gameStarter.mapScreener.variables.allowCycling = area.allowCycling;
         },
-        onSetLocation: (): void => {
+        [this.eventNames.onSetLocation]: (): void => {
             this.events.onModEnable!();
         }
     };

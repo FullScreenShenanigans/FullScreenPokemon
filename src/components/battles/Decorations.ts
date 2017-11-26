@@ -23,7 +23,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Creates the initial Things displayed in a battle.
-     * 
+     *
      * @param battleInfo   Info for the current battle.
      */
     public createInitialThings(battleInfo: IBattleInfo): IBattleThings {
@@ -60,7 +60,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Adds Pokeballs to a menu.
-     * 
+     *
      * @param menu   Name of the container menu.
      * @param filled   How many balls are filled.
      * @param reverse   Whether to reverse the balls order.
@@ -85,7 +85,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Adds a new Thing and moves it to the Text group.
-     * 
+     *
      * @param title   Title of the Thing to add.
      * @param attributes   Any attributes for the Thing.
      * @returns The newly created Thing.
@@ -100,7 +100,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Moves a Thing to behind all text other than the battle background.
-     * 
+     *
      * @param thing   A placed Thing in the Text group.
      */
     public moveToBeforeBackground(thing: IThing): void {
@@ -113,7 +113,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Determines which sprite to initially show for a team.
-     * 
+     *
      * @param team   A new battle team.
      * @param suffix   Direction modifier to add if the sprite is for a Pokemon.
      * @returns The initial sprite for the team.

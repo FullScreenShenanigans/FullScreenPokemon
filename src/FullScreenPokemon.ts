@@ -1,5 +1,7 @@
 import { BattleMovr } from "battlemovr/lib/BattleMovr";
 import { IBattleMovr } from "battlemovr/lib/IBattleMovr";
+import { FlagSwappr } from "flagswappr/lib/FlagSwappr";
+import { IFlagSwappr } from "flagswappr/lib/IFlagSwappr";
 import { GameStartr } from "gamestartr/lib/GameStartr";
 import { IProcessedSizeSettings, ISizeSettings } from "gamestartr/lib/IGameStartr";
 import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
@@ -34,10 +36,11 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
+import { IFlags } from "./settings/Flags";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
 /**
- * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web. 
+ * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
 export class FullScreenPokemon extends GameStartr {
     /**
@@ -56,7 +59,12 @@ export class FullScreenPokemon extends GameStartr {
     public battleMover: IBattleMovr;
 
     /**
-     * A simple container for Map attributes given by switching to an Area within 
+     * Gates flags behind generational gaps.
+     */
+    public flagSwapper: IFlagSwappr<IFlags>;
+
+    /**
+     * A simple container for Map attributes given by switching to an Area within
      * that map.
      */
     public mapScreener: IMapScreenr;
@@ -243,7 +251,7 @@ export class FullScreenPokemon extends GameStartr {
 
     /**
      * Resets the system modules.
-     * 
+     *
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      */
     protected resetModules(settings: IProcessedSizeSettings): void {
@@ -267,7 +275,7 @@ export class FullScreenPokemon extends GameStartr {
 
     /**
      * Creates the settings for individual modules.
-     * 
+     *
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns Settings for individual modules.
      */
@@ -275,7 +283,7 @@ export class FullScreenPokemon extends GameStartr {
         return {
             ...new ModuleSettingsGenerator().generate(this),
             ...settings.moduleSettings
-        };
+        } as IModuleSettings;
     }
 
     /**
@@ -284,11 +292,16 @@ export class FullScreenPokemon extends GameStartr {
      * @returns A new internal BattleMovr.
      */
     protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
-        return new BattleMovr({
-            gameStarter: this,
-            menuGrapher: this.menuGrapher,
-            ...moduleSettings.battles
-        });
+        return new BattleMovr(moduleSettings.battles);
+    }
+
+    /**
+     * @param moduleSettings   Stored settings to generate modules.
+     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
+     * @returns A new internal FlagSwappr.
+     */
+    protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFlags> {
+        return new FlagSwappr<IFlags>(moduleSettings.flags);
     }
 
     /**
@@ -299,7 +312,6 @@ export class FullScreenPokemon extends GameStartr {
     protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
-            modifierScope: this,
             ...moduleSettings.menus
         });
     }

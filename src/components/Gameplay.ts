@@ -23,7 +23,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public gameStart(): void {
         this.startOptions();
-        this.gameStarter.modAttacher.fireEvent("onGameStart");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStart);
     }
 
     /**
@@ -34,7 +34,8 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
             {
                 text: "NEW GAME",
                 callback: (): void => this.startIntro()
-            }, {
+            },
+            {
                 text: "LOAD FILE",
                 callback: (): void => this.loadFile()
             }];
@@ -65,7 +66,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
             true);
         this.gameStarter.maps.entranceResume();
 
-        this.gameStarter.modAttacher.fireEvent("onGameStartPlay");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartPlay);
     }
 
     /**
@@ -77,7 +78,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
             disablePauseMenu: true
         });
 
-        this.gameStarter.modAttacher.fireEvent("onGameStartIntro");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartIntro);
     }
 
     /**
@@ -109,12 +110,12 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
         dummy.click();
 
-        this.gameStarter.modAttacher.fireEvent("onGameStartIntro");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartIntro);
     }
 
     /**
      * Checks whether inputs may trigger, which is always true, and prevents the event.
-     * 
+     *
      * @returns Whether inputs may trigger (true).
      */
     public canInputsTrigger(): boolean {

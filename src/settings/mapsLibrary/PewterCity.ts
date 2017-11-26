@@ -237,13 +237,16 @@ export const PewterCity: IMapRaw = {
                     "giftAfterBattle": "TM136",
                     "textAfterBattle": ["Wait! Take this with you!", "%%%%%%%PLAYER%%%%%%% received TM136!", "A TM contains a technique that can be taught to %%%%%%%POKEMON%%%%%%%!", "A TM is good only once! So when you use one to teach a new technique, pick the %%%%%%%POKEMON%%%%%%% carefully!", "TM136 contains BIDE! Your %%%%%%%POKEMON%%%%%%% will absorb damage in battle then pay it back double!"],
                     "dialogNext": ["There are all kinds of trainers in the world!", "You appear to be very gifted as a %%%%%%%POKEMON%%%%%%% trainer!", "Go to the GYM in CERULEAN and test your abilities!"],
-                    "actors": [{
-                        "title": "Geodude",
-                        "level": 48
-                    }, {
-                        "title": "Onix",
-                        "level": 56
-                    }]
+                    "actors": [
+                        {
+                            "title": "Geodude",
+                            "level": 48
+                        },
+                        {
+                            "title": "Onix",
+                            "level": 56
+                        }
+                    ]
                 },
                 { "thing": "Rock", "x": 288, "y": 32, "height": 288 },
                 { "thing": "Rock", "x": 32, "y": 96, "width": 96 },
@@ -255,13 +258,16 @@ export const PewterCity: IMapRaw = {
                     "reward": 880,
                     "textDefeat": ["Darn!", "Light years isn't time! It measures distance!"],
                     "dialogNext": "You're pretty hot, but not as hot as BROCK!",
-                    "actors": [{
-                        "title": "Diglett",
-                        "level": 44
-                    }, {
-                        "title": "Sandshrew",
-                        "level": 44
-                    }]
+                    "actors": [
+                        {
+                            "title": "Diglett",
+                            "level": 44
+                        },
+                        {
+                            "title": "Sandshrew",
+                            "level": 44
+                        }
+                    ]
                 },
                 { "thing": "Rock", "x": 64, "y": 224 },
                 { "thing": "Rock", "x": 160, "y": 224, "width": 96 },

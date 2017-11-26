@@ -16,7 +16,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Runs starting battle animations.
-     * 
+     *
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
@@ -38,7 +38,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Sets up the initial team Things.
-     * 
+     *
      * @param battleInfo   Info for the current battle.
      */
     private setupThings(battleInfo: IBattleInfo): void {
@@ -52,18 +52,18 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Animations teams entering the battle.
-     * 
+     *
      * @param battleInfo   Info for the current battle.
      * @param onComplete   Callback for when this is done.
      */
     private runTeamEntrances(battleInfo: IBattleInfo, onComplete: () => void): void {
         const { menu, opponent, player }: IBattleThings = battleInfo.things;
+        const timeout: number = 70;
 
         let playerX: number;
         let opponentX: number;
         let playerGoal: number;
         let opponentGoal: number;
-        let timeout: number = 70;
 
         // They should be visible halfway through (2 * (1 / timeout))
         this.gameStarter.actions.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
@@ -99,7 +99,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Adds the player's Pokeball display for party size.
-     * 
+     *
      * @param battleInfo   Info for the current battle.
      */
     private showPlayerPokeballs(battleInfo: IBattleInfo): void {
@@ -123,7 +123,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
 
     /**
      * Shows the introductory text.
-     * 
+     *
      * @param battleInfo   Info for the current battle.
      * @param onComplete   Callback for when this is done.
      */

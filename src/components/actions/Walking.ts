@@ -21,7 +21,7 @@ export interface IWalkingInstruction {
 
 /**
  * Generates a walking instruction for a path.
- * 
+ *
  * @param thing   A Thing walking on a path.
  */
 export interface IWalkingInstructionGenerator {
@@ -39,7 +39,7 @@ export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGen
 export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Starts a Character walking on a predetermined path.
-     * 
+     *
      * @param thing   The walking Character.
      * @param path   A path to walk along.
      */
@@ -88,7 +88,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Starts a Character walking in a direction.
-     * 
+     *
      * @param thing   A Character to start walking.
      * @param commands   Instructions on how to walk.
      * @param onContinueWalking   Callback to run before continuing walking.
@@ -100,7 +100,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.setWalkingGraphics(thing);
 
         if (thing.follower) {
-            this.startWalking(thing.follower, this.gameStarter.physics.getDirectionBetween(thing.follower, thing)!);
+            this.startWalking(thing.follower, this.gameStarter.physics.getDirectionBetween(thing.follower, thing));
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -110,7 +110,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Checks whether a Character should continue walking after a block.
-     * 
+     *
      * @param thing   A Character to continue walking.
      * @param ticksPerBlock   How many ticks it takes to span a block.
      * @param onContinueWalking   Callback to run before continuing walking.
@@ -132,7 +132,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
         if (thing.follower) {
             this.gameStarter.actions.following.continueFollowing(
                 thing.follower,
-                this.gameStarter.physics.getDirectionBetween(thing.follower, thing)!);
+                this.gameStarter.physics.getDirectionBetween(thing.follower, thing));
         }
 
         this.gameStarter.physics.snapToGrid(thing);
@@ -144,7 +144,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Stops a Character walking.
-     * 
+     *
      * @param thing   A Character to start walking.
      */
     public stopWalking(thing: ICharacter): void {
@@ -172,7 +172,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Animates a Character to no longer be able to walk.
-     * 
+     *
      * @param thing   A Character that shouldn't be able to walk.
      */
     public animateCharacterPreventWalking(thing: ICharacter): void {
@@ -187,7 +187,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Sets the logical attributes of a walking Character.
-     * 
+     *
      * @param thing   The walking Character.
      * @param direction   What direction to walk in.
      */
@@ -228,7 +228,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
     /**
      * Sets the visual attributes of a walking Character.
-     * 
+     *
      * @param thing   The walking Character.
      */
     protected setWalkingGraphics(thing: ICharacter): void {
@@ -260,7 +260,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
     }
 
     /**
-     * 
+     *
      */
     protected parseWalkingInstruction(
         instruction: IWalkingInstruction | IWalkingInstructionGenerator,

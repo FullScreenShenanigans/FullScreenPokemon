@@ -11,7 +11,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
     /**
      * Generic maintenance Function for a group of Things. For each Thing, if
      * it isn't alive, it's removed from the group.
-     * 
+     *
      * @param things   A group of Things to maintain.
      */
     public maintainGeneric(things: IThing[]): void {
@@ -25,8 +25,8 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
 
     /**
      * Maintenance for all active Characters. Walking, grass maintenance, alive
-     * checking, and quadrant maintenance are performed. 
-     * 
+     * checking, and quadrant maintenance are performed.
+     *
      * @param characters   The Characters group of Things.
      */
     public maintainCharacters(characters: ICharacter[]): void {
@@ -64,7 +64,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
     /**
      * Maintenance for a Player. The screen is scrolled according to the global
      * MapScreener.scrollability.
-     * 
+     *
      * @param player   An in-game Player Thing.
      */
     public maintainPlayer(player: IPlayer): void {

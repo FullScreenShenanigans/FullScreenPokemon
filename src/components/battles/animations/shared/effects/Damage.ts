@@ -19,7 +19,7 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Runs the damage animation for a battle move effect.
-     * 
+     *
      * @param teamAndAction   Team and move being performed.
      * @param effect   Effect of the move whose damage is being calculated.
      * @param onComplete   Handler for when this is done.

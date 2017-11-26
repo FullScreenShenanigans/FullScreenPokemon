@@ -13,13 +13,13 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
      * different Thing types.
-     * 
+     *
      * @returns A Function that generates a canThingCollide checker.
      */
     public generateCanThingCollide(): (thing: IThing) => boolean {
         /**
          * Generic checker for canCollide. This just returns if the Thing is alive.
-         * 
+         *
          * @param thing
          * @returns Whether the thing can collide.
          */
@@ -30,15 +30,15 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
      * Function generator for the generic isCharacterTouchingCharacter checker.
      * This is used repeatedly by ThingHittr to generate separately optimized
      * Functions for different Thing types.
-     * 
-     * @returns A Function that generates isCharacterTouchingCharacter. 
+     *
+     * @returns A Function that generates isCharacterTouchingCharacter.
      */
     public generateIsCharacterTouchingCharacter(): (thing: ICharacter, other: ICharacter) => boolean {
         /**
          * Generic checker for whether two characters are touching each other.
          * This checks to see if either has the nocollide flag, or if they're
          * overlapping, respecting tolerances.
-         * 
+         *
          * @param thing
          * @param other
          * @returns Whether thing is touching other.
@@ -57,14 +57,14 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
      * Function generator for the generic isCharacterTouchingSolid checker. This
      * is used repeatedly by ThingHittr to generate separately optimized
      * Functions for different Thing types.
-     * 
+     *
      * @returns A Function that generates isCharacterTouchingSolid.
      */
     public generateIsCharacterTouchingSolid(): (thing: ICharacter, other: IThing) => boolean {
         /**
          * Generic checker for whether a character is touching a solid. The
          * hidden, collideHidden, and nocollidesolid flags are most relevant.
-         * 
+         *
          * @param thing
          * @param other
          * @returns Whether thing is touching other.
@@ -78,17 +78,17 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
     }
 
     /**
-     * Function generator for the generic hitCharacterThing callback. This is 
+     * Function generator for the generic hitCharacterThing callback. This is
      * used repeatedly by ThingHittr to generate separately optimized Functions
      * for different Thing types.
-     * 
+     *
      * @returns A Function that generates hitCharacterThing.
      */
     public generateHitCharacterThing(): (thing: ICharacter, other: IThing) => boolean {
         /**
          * Generic callback for when a Character touches a Thing. Other may have a
          * .collide to override with, but normally this just sets thing's position.
-         * 
+         *
          * @param thing
          * @param other
          * @returns Whether thing is hitting other.
@@ -96,6 +96,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
         return (thing: ICharacter, other: IThing): boolean => {
             // If either Thing is the player, it should be the first
             if ((other as ICharacter).player && !thing.player) {
+                // tslint:disable-next-line:no-parameter-reassignment
                 [thing, other] = [other as ICharacter, thing];
             }
 
@@ -151,7 +152,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Marks other as being a border of thing in the given direction, respecting borderPrimary.
-     * 
+     *
      * @param thing   A Thing whose borders are being checked.
      * @param other   A new border for thing.
      * @param direction   The direction border being changed.
@@ -167,7 +168,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
     /**
      * Collision callback for a Character and a CollisionDetector. Only Players may
      * trigger the detector, which has to be active to do anything.
-     * 
+     *
      * @param thing   A Character triggering other.
      * @param other   A Detector triggered by thing.
      * @returns Whether to override normal positioning logic in hitCharacterThing.
@@ -214,7 +215,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
     /**
      * Collision callback for a Player and a dialog-containing Character. The
      * dialog is started if it exists, as with a cutscene from other.
-     * 
+     *
      * @param thing   A Player triggering other.
      * @param other   A Character with dialog triggered by thing.
      */
@@ -264,7 +265,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Collision callback for a Player and a Pokeball it's interacting with.
-     * 
+     *
      * @param thing   A Player interacting with other.
      * @param other   A Pokeball being interacted with by thing.
      */
@@ -335,7 +336,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
                         {
                             text: "YES",
                             callback: (): void => console.log("What do, yes?")
-                        }, {
+                        },
+                        {
                             text: "NO",
                             callback: (): void => console.log("What do, no?")
                         }]
@@ -350,7 +352,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
     /**
      * Marks a Character as being visually within grass.
-     * 
+     *
      * @param thing   A Character within grass.
      * @param other   The specific Grass that thing is within.
      * @returns true, to allow for passing through.
@@ -368,7 +370,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
     /**
      * Collision callback for a Character and a Ledge. If possible, the Character
      * is animated to start hopping over the Ledge.
-     * 
+     *
      * @param thing   A Character walking to other.
      * @param other   A Ledge walked to by thing.
      */

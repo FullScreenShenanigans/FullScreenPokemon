@@ -17,47 +17,58 @@ export const Route22: IMapRaw = {
             "width": 1280,
             "height": 576,
             "wildPokemon": {
-                "grass": [{
-                    "title": "RATTATA".split(""),
-                    "levels": [2, 3, 4],
-                    "rate": .5
-                }, {
-                    "title": "SPEAROW".split(""),
-                    "levels": [3, 5],
-                    "rate": 0.1
-                }, {
-                    "title": ["N", "I", "D", "O", "R", "A", "N", "FemaleSymbol"],
-                    "levels": [2, 3, 4],
-                    "rate": 0.35
-                }, {
-                    "title": ["N", "I", "D", "O", "R", "A", "N", "MaleSymbol"],
-                    "levels": [3, 4],
-                    "rate": 0.05
-                }],
+                "grass": [
+                    {
+                        "title": "RATTATA".split(""),
+                        "levels": [2, 3, 4],
+                        "rate": .5
+                    },
+                    {
+                        "title": "SPEAROW".split(""),
+                        "levels": [3, 5],
+                        "rate": 0.1
+                    },
+                    {
+                        "title": ["N", "I", "D", "O", "R", "A", "N", "FemaleSymbol"],
+                        "levels": [2, 3, 4],
+                        "rate": 0.35
+                    },
+                    {
+                        "title": ["N", "I", "D", "O", "R", "A", "N", "MaleSymbol"],
+                        "levels": [3, 4],
+                        "rate": 0.05
+                    }
+                ],
                 "fishing": {
                     "old": [{
                         "title": "MAGIKARP".split(""),
                         "levels": [5],
                         "rate": 1
                     }],
-                    "good": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }, {
-                        "title": "GOLDEEN".split(""),
-                        "levels": [10],
-                        "rate": .5
-                    }],
-                    "super": [{
-                        "title": "POLIWAG".split(""),
-                        "levels": [20],
-                        "rate": .5
-                    }, {
-                        "title": "GOLDEEN".split(""),
-                        "levels": [20],
-                        "rate": .5
-                    }]
+                    "good": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        },
+                        {
+                            "title": "GOLDEEN".split(""),
+                            "levels": [10],
+                            "rate": .5
+                        }
+                    ],
+                    "super": [
+                        {
+                            "title": "POLIWAG".split(""),
+                            "levels": [20],
+                            "rate": .5
+                        },
+                        {
+                            "title": "GOLDEEN".split(""),
+                            "levels": [20],
+                            "rate": .5
+                        }
+                    ]
                 }
             },
             "creation": [

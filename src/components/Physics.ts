@@ -10,7 +10,7 @@ import { ICharacter, IGrass, IThing } from "./Things";
 export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPhysics<TGameStartr> {
     /**
      * Determines the bordering direction from one Thing to another.
-     * 
+     *
      * @param thing   The source Thing.
      * @param other   The destination Thing.
      * @returns The direction from thing to other.
@@ -37,7 +37,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
     /**
      * Determines the direction from one Thing to another.
-     * 
+     *
      * @param thing   The source Thing.
      * @param other   The destination Thing.
      * @returns The direction from thing to other.
@@ -61,7 +61,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
     /**
      * Checks whether one Thing is overlapping another.
-     * 
+     *
      * @param thing   An in-game Thing.
      * @param other   An in-game Thing.
      * @returns Whether thing and other are overlapping.
@@ -76,7 +76,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
     /**
      * Determines whether a Character is visually within grass.
-     * 
+     *
      * @param thing   An in-game Character.
      * @param other   Grass that thing might be in.
      * @returns Whether thing is visually within other.
@@ -103,7 +103,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
     /**
      * Shifts a Character according to its xvel and yvel.
-     * 
+     *
      * @param thing   A Character to shift.
      */
     public shiftCharacter(thing: ICharacter): void {
@@ -128,7 +128,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
     /**
      * Snaps a moving Thing to a predictable grid position.
-     * 
+     *
      * @param thing   A Thing to snap the position of.
      */
     public snapToGrid(thing: IThing): void {
@@ -144,7 +144,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
      * Standard Function to kill a Thing, which means marking it as dead and
      * clearing its numquads, resting, movement, and cycles. It will later be
      * removed by its maintain* Function.
-     * 
+     *
      * @param thing   A Thing to kill.
      */
     public killNormal(thing: IThing): void {
@@ -158,7 +158,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
         thing.movement = undefined;
 
         this.gameStarter.timeHandler.cancelAllCycles(thing);
-        this.gameStarter.modAttacher.fireEvent("onKillNormal", thing);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKillNormal, thing);
 
         if (thing.id) {
             delete (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id];

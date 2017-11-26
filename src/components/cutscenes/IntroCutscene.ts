@@ -14,7 +14,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * @param settings   Settings used for the cutscene.
      */
     public FadeIn(settings: any): void {
-        const oak: IThing = this.gameStarter.objectMaker.make<IThing>("OakPortrait", {
+        const oak: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.oakPortrait, {
             opacity: 0
         });
 
@@ -22,7 +22,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         console.warn("Cannot find Introduction audio theme!");
         // this.gameStarter.audioPlayer.playTheme("Introduction");
-        this.gameStarter.modAttacher.fireEvent("onIntroFadeIn", oak);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onIntroFadeIn, oak);
 
         this.gameStarter.maps.setMap("Blank", "White");
         this.gameStarter.menuGrapher.deleteActiveMenu();
@@ -64,7 +64,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene for Oak's introduction exit.
      */
     public FirstDialogFade(): void {
-        let blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0
@@ -89,7 +89,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene for transitioning Nidorino onto the screen.
      */
     public PokemonExpo(): void {
-        let pokemon: IThing = this.gameStarter.objectMaker.make<IThing>("NIDORINOFront", {
+        const pokemon: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.nIDORINOFront, {
             flipHoriz: true,
             opacity: .01
         });
@@ -137,7 +137,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      */
     public PlayerAppear(settings: any): void {
         const middleX: number = this.gameStarter.mapScreener.middleX | 0;
-        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>("PlayerPortrait", {
+        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.playerPortrait, {
             flipHoriz: true,
             opacity: .01
         });
@@ -202,13 +202,16 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                         title: "YOUR NAME?",
                         callback: fromKeyboard
                     })
-                }, {
+                },
+                {
                     text: "BLUE".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "GARY".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "JOHN".split(""),
                     callback: fromMenu
                 }]
@@ -280,7 +283,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene fading the player out.
      */
     public PlayerNameComplete(): void {
-        const blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0
@@ -307,7 +310,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * @param settings   Settings used for the cutscene.
      */
     public RivalAppear(settings: any): void {
-        const rival: IThing = this.gameStarter.objectMaker.make<IThing>("RivalPortrait", {
+        const rival: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.rivalPortrait, {
             opacity: 0
         });
 
@@ -373,13 +376,16 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                         title: "RIVAL's NAME?",
                         callback: fromKeyboard
                     })
-                }, {
+                },
+                {
                     text: "RED".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "ASH".split(""),
                     callback: fromMenu
-                }, {
+                },
+                {
                     text: "JACK".split(""),
                     callback: fromMenu
                 }]
@@ -448,7 +454,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene fading the rival out.
      */
     public RivalNameComplete(): void {
-        let blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0
@@ -475,7 +481,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * @param settings   Settings used for the cutscene.
      */
     public LastDialogAppear(settings: any): void {
-        const portrait: IThing = this.gameStarter.objectMaker.make<IThing>("PlayerPortrait", {
+        const portrait: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.playerPortrait, {
             flipHoriz: true,
             opacity: 0
         });
@@ -519,9 +525,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * @param settings   Settings used for the cutscene.
      */
     public ShrinkPlayer(settings: any): void {
-        const silhouetteLarge: IThing = this.gameStarter.objectMaker.make<IThing>("PlayerSilhouetteLarge");
-        const silhouetteSmall: IThing = this.gameStarter.objectMaker.make<IThing>("PlayerSilhouetteSmall");
-        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>("Player");
+        const silhouetteLarge: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.playerSilhouetteLarge);
+        const silhouetteSmall: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.playerSilhouetteSmall);
+        const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.player);
         const timeDelay: number = 49;
 
         this.gameStarter.timeHandler.addEvent(
@@ -557,7 +563,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene for completing the introduction and fading it out.
      */
     public FadeOut(): void {
-        const blank: IThing = this.gameStarter.objectMaker.make<IThing>("WhiteSquare", {
+        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
             opacity: 0

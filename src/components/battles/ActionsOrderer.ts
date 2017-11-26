@@ -8,7 +8,7 @@ import { IMoveSchema } from "../constants/Moves";
 
 /**
  * Filters an action for whether it should go before another.
- * 
+ *
  * @param a   A team's action.
  * @param b   The opposing team's action.
  * @returns Whether the action should go first.
@@ -28,7 +28,7 @@ type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Orders teams' chosen actions.
-     * 
+     *
      * @param actions   Actions chosen by each team.
      * @param battleInfo   Info on the current battle.
      * @returns Team actions ordered for battle.
@@ -74,7 +74,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Orders actions by putting the first filter-matching one first.
-     * 
+     *
      * @param unorderedActions   Actions to be ordered.
      * @param filters   Filters to apply, in order.
      * @returns Actions ordered by the filters.
@@ -95,7 +95,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Filters an action for being the player fleeing.
-     * 
+     *
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
@@ -105,7 +105,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Filters an action for being a switch.
-     * 
+     *
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
@@ -115,7 +115,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Filters an action for being a switch.
-     * 
+     *
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
@@ -125,7 +125,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Filters an action for having a higher priority.
-     * 
+     *
      * @param a   A team's action.
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
@@ -143,7 +143,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Filters an action for having a higher Pokemon speed.
-     * 
+     *
      * @param a   A team's action.
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
@@ -170,7 +170,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Compo
 
     /**
      * Filters an action for being a move.
-     * 
+     *
      * @param a   A team's action.
      * @returns Whether the action should go first.
      * @remarks This is added last so player moves go before wild Pokemon fleeing.

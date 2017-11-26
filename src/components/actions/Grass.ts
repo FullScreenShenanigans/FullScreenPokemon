@@ -11,7 +11,7 @@ import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
 export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
     /**
      * Marks a Character as being visually within grass.
-     * 
+     *
      * @param thing   A Character in grass.
      * @param other   Grass that thing is in.
      */
@@ -23,7 +23,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         thing.shadow = this.gameStarter.objectMaker.make<IThing>(thing.title, {
             nocollide: true,
             id: thing.id + " shadow"
-        }) as IThing;
+        });
 
         if (thing.shadow.className !== thing.className) {
             this.gameStarter.graphics.setClass(thing.shadow, thing.className);
@@ -35,7 +35,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Maintenance for a Character visually in grass.
-     * 
+     *
      * @param thing   A Character in grass.
      * @param other   Grass that thing is in.
      */
@@ -69,7 +69,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
     /**
      * Starts grass battle if a Player is in grass, using the doesGrassEncounterHappen
      * equation.
-     * 
+     *
      * @param thing   An in-game Player.
      * @returns Whether a battle was started.
      */
@@ -95,7 +95,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Freezes a Character in grass and calls startBattle.
-     * 
+     *
      * @param thing   A Character about to start a battle.
      * @param grass   Grass the Character is walking in.
      */
@@ -124,20 +124,20 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
     /**
      * Chooses a wild Pokemon to start a battle with.
-     * 
+     *
      * @param grass   Grass Scenery the player is in.
      * @returns A wild Pokemon to start a battle with.
      */
     protected chooseWildPokemonForBattle(grass: IThing): IPokemon {
         const grassMap: IMap = this.gameStarter.areaSpawner.getMap(grass.mapName) as IMap;
-        const grassArea: IArea = grassMap.areas[grass.areaName] as IArea;
+        const grassArea: IArea = grassMap.areas[grass.areaName];
         const options: IWildPokemonSchema[] | undefined = grassArea.wildPokemon.grass;
         if (!options) {
             throw new Error("Grass doesn't have any wild Pokemon options defined.");
         }
 
         const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
-
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onWildGrassPokemonChosen, chosen);
         return this.gameStarter.utilities.createPokemon(chosen);
     }
 }

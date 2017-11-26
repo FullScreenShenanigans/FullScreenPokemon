@@ -1,4 +1,4 @@
-import { IScenesModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IModuleSettingsObject } from "gamestartr/lib/IGameStartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -6,7 +6,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
  * @param fsp   A generating FullScreenPokemon instance.
  * @returns Scene settings for the FullScreenPokemon instance.
  */
-export function GenerateScenesSettings(fsp: FullScreenPokemon): IScenesModuleSettings {
+export function GenerateScenesSettings(fsp: FullScreenPokemon): IModuleSettingsObject {
     "use strict";
 
     return {
@@ -57,6 +57,10 @@ export function GenerateScenesSettings(fsp: FullScreenPokemon): IScenesModuleSet
             RivalRoute22: {
                 firstRoutine: "RivalEmerges",
                 routines: fsp.cutscenes.rivalRoute22
+            },
+            RivalRoute22Leaves: {
+                firstRoutine: "AfterBattle",
+                routines: fsp.cutscenes.rivalRoute22Leaves
             },
             TrainerSpotted: {
                 firstRoutine: "Exclamation",

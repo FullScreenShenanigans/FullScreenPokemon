@@ -16,7 +16,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Checks whether direction keys such as up may trigger for a Character.
-     * 
+     *
      * @param thing   A Character that wants to move.
      * @returns Whether direction keys may trigger.
      */
@@ -39,7 +39,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating an up key press. If possible, this causes
      * walking in the up direction. The onKeyDownUp mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -56,7 +56,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Top),
             this.inputTimeTolerance);
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownUpReal");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownUp);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -66,7 +66,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating a right key press. If possible, this causes
      * walking in the right direction. The onKeyDownRight mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -91,7 +91,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating a down key press. If possible, this causes
      * walking in the down direction. The onKeyDownDown mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -108,7 +108,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Bottom),
             this.inputTimeTolerance);
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownDown");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownDown);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -118,7 +118,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to a Character simulating a left key press. If possible, this causes
      * walking in the left direction. The onKeyDownLeft mod trigger is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -135,7 +135,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Left),
             this.inputTimeTolerance);
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownLeft");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownLeft);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -146,7 +146,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * Driver for a direction key being pressed. The MenuGraphr's active menu reacts
      * to the movement if it exists, or the triggering Character attempts to walk
      * if not. The onKeyDownDirectionReal mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -167,13 +167,13 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
         }
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownDirectionReal", direction);
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownDirectionReal, direction);
     }
 
     /**
      * Reacts to the A key being pressed. The MenuGraphr's active menu reacts to
      * the selection if it exists. The onKeyDownA mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -197,7 +197,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             }
         }
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownA");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownA);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -207,7 +207,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the B key being pressed. The MenuGraphr's active menu reacts to
      * the deselection if it exists. The onKeyDownB mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
@@ -222,7 +222,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             (thing as IPlayer).keys.b = true;
         }
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownB");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownB);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -230,15 +230,15 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     }
 
     /**
-     * Reacts to the pause key being pressed. The game is paused if it isn't 
+     * Reacts to the pause key being pressed. The game is paused if it isn't
      * already. The onKeyDownPause mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyDownPause(_thing: ICharacter, event?: Event): void {
         this.gameStarter.menus.togglePauseMenu();
-        this.gameStarter.modAttacher.fireEvent("onKeyDownPause");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownPause);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -248,13 +248,13 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the mute key being pressed. The game has mute toggled, and the
      * onKeyDownMute mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyDownMute(_thing: ICharacter, event?: Event): void {
         this.gameStarter.audioPlayer.toggleMuted();
-        this.gameStarter.modAttacher.fireEvent("onKeyDownMute");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownMute);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -263,7 +263,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the select key being pressed. Toggles the use of the registered item.
-     * 
+     *
      * @param thing   The triggering Player.
      * @param event   The original user-caused Event.
      * @todo Extend the use for any registered item, not just the bicycle.
@@ -273,7 +273,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
             return;
         }
 
-        this.gameStarter.modAttacher.fireEvent("onKeyDownSelect");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownSelect);
 
         const selectItem: string = this.gameStarter.itemsHolder.getItem("SelectItem");
         if (!selectItem) {
@@ -296,12 +296,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the left key being lifted. The onKeyUpLeft mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpLeft(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpLeft");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpLeft);
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Left] = false;
@@ -321,12 +321,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the right key being lifted. The onKeyUpRight mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpRight(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpRight");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpRight);
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Right] = false;
@@ -346,12 +346,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the up key being lifted. The onKeyUpUp mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpUp(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpUp");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpUp);
 
         if (thing.player) {
             (thing as IPlayer).keys[0] = false;
@@ -371,12 +371,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the down key being lifted. The onKeyUpDown mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpDown(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpDown");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpDown);
 
         if (thing.player) {
             (thing as IPlayer).keys[2] = false;
@@ -396,12 +396,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the A key being lifted. The onKeyUpA mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpA(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpA");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpA);
 
         if (thing.player) {
             (thing as IPlayer).keys.a = false;
@@ -414,12 +414,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the B key being lifted. The onKeyUpB mod event is fired.
-     * 
+     *
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpB(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpB");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpB);
 
         if (thing.player) {
             (thing as IPlayer).keys.b = false;
@@ -432,12 +432,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
     /**
      * Reacts to the pause key being lifted. The onKeyUpPause mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public keyUpPause(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent("onKeyUpPause");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpPause);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -447,13 +447,13 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
     /**
      * Reacts to the context menu being activated. The pause menu is opened,
      * and the onMouseDownRight mod event is fired.
-     * 
+     *
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
     public mouseDownRight(_thing: ICharacter, event?: Event): void {
         this.gameStarter.menus.togglePauseMenu();
-        this.gameStarter.modAttacher.fireEvent("onMouseDownRight");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onMouseDownRight);
 
         if (event && event.preventDefault) {
             event.preventDefault();
