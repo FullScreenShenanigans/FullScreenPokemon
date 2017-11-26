@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.17"
+    "gulp-shenanigans": "^0.6.19"
   },
   "scripts": {
     "gulp": "gulp",

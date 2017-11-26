@@ -20,7 +20,6 @@ import { GenerateRunnerSettings } from "./Runner";
 import { GenerateScenesSettings } from "./Scenes";
 import { GenerateSpritesSettings } from "./Sprites";
 import { GenerateStateSettings, IStateModuleSettings } from "./State";
-import { GenerateUISettings, IUserWrapprSettings } from "./Ui";
 
 /**
  * Stored settings to generate modules.
@@ -51,11 +50,6 @@ export interface IModuleSettings extends igamestartr.IModuleSettings {
      * Settings regarding large-scale state storage, particularly for an IStateHoldr.
      */
     state: IStateModuleSettings;
-
-    /**
-     * Settings regarding front-facing UI.
-     */
-    ui: IUserWrapprSettings;
 }
 
 /**
@@ -88,8 +82,7 @@ export class ModuleSettingsGenerator {
             scenes: GenerateScenesSettings(fsp),
             sprites: GenerateSpritesSettings(fsp),
             state: GenerateStateSettings(fsp),
-            touch: {},
-            ui: GenerateUISettings(fsp)
+            touch: {}
         };
     }
 }
