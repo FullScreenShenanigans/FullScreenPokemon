@@ -221,6 +221,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                 },
                 option: {
                     alignItems: "center",
+                    margin: "auto",
                     padding: "7px 0",
                     maxWidth: "calc(100% - 14px)"
                 },
