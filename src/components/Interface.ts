@@ -111,8 +111,8 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                         {
                             getInitialValue: () => this.defaultSize,
                             options: Object.keys(this.sizes),
-                            saveValue: (value: string): void => {
-                                this.gameStarter.userWrapper.resetSize(this.sizes[value]);
+                            saveValue: async (value: string): Promise<void> => {
+                                await this.gameStarter.userWrapper.resetSize(this.sizes[value]);
                             },
                             title: "View Mode",
                             type: OptionType.Select
