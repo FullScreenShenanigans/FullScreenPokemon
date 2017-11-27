@@ -394,7 +394,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
                 teams.opponent = {
                     ...teams.opponent,
                     ...partialBattleOptions.teams.opponent
-                };
+                } as ITeamDescriptor;
             }
 
             if (partialBattleOptions.teams.player) {

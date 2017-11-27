@@ -3,7 +3,7 @@ import { IPipe } from "inputwritr/lib/IInputWritr";
 import { IMod } from "modattachr/lib/IModAttachr";
 import {
     IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrapprSettings, OptionType
-} from "userwrappr/lib/index";
+} from "userwrappr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -36,10 +36,6 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
             height: 464
         },
         [this.defaultSize]: {
-            width: "100%",
-            height: "100%"
-        },
-        "Full!": {
             width: "100%",
             height: "100%"
         }
@@ -137,7 +133,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                             return {
                                 getInitialValue: () => false,
                                 saveValue: (value: boolean): void => {
-                                    if (value === true) {
+                                    if (value) {
                                         deviceMotionPipe = this.gameStarter.inputWriter.makePipe("ondevicemotion", "type");
                                         window.addEventListener("devicemotion", deviceMotionPipe);
                                     } else if (deviceMotionPipe !== undefined) {

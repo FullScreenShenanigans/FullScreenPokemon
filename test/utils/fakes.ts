@@ -15,13 +15,17 @@ export function stubFullScreenPokemon(settings?: ISizeSettings): FullScreenPokem
         height: 256
     };
 
-    const fsp = new FullScreenPokemon({
+    const fsp = new FullScreenPokemon(/*{
         moduleSettings: {
             audio: {
                 fileTypes: []
             }
-        },
-        ...settings
+        }
+    }*/);
+
+    fsp.reset({
+        height: settings.height || 256,
+        width: settings.width || 256
     });
 
     stub(fsp.audioPlayer, "play");

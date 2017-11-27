@@ -86,7 +86,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * game state. The onGameStartIntro mod event is triggered.
      */
     public loadFile(): void {
-        const dummy: HTMLInputElement = this.gameStarter.utilities.createElement(
+        const dummy = this.gameStarter.utilities.createElement(
             "input",
             {
                 type: "file",
