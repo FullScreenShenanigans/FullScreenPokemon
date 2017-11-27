@@ -1,3 +1,5 @@
+import { expect } from "chai";
+
 import { FullScreenPokemon } from "../../../src/FullScreenPokemon";
 import { it } from "../../main";
 import { stubBlankGame } from "../../utils/fakes";
@@ -11,7 +13,7 @@ it("opens when pause is pressed", (): void => {
     fsp.inputs.keyUpPause(fsp.players[0]);
 
     // Assert
-    chai.expect(fsp.menuGrapher.getActiveMenuName()).to.be.equal("Pause");
+    expect(fsp.menuGrapher.getActiveMenuName()).to.be.equal("Pause");
 });
 
 it("closes after B is pressed", (): void => {
@@ -25,5 +27,5 @@ it("closes after B is pressed", (): void => {
     fsp.inputs.keyUpB(fsp.players[0]);
 
     // Assert
-    chai.expect(fsp.menuGrapher.getActiveMenu()).to.be.undefined;
+    expect(fsp.menuGrapher.getActiveMenu()).to.be.undefined;
 });

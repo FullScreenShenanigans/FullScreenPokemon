@@ -1,3 +1,5 @@
+import { expect } from "chai";
+
 import { ICharacter } from "../../../src/components/Things";
 import { FullScreenPokemon } from "../../../src/FullScreenPokemon";
 import { it } from "../../main";
@@ -21,7 +23,7 @@ it("returns true when characters are touching", (): void => {
     const touching: boolean = isCharacterTouchingCharacter(a, b);
 
     // Assert
-    chai.expect(touching).to.be.true;
+    expect(touching).to.be.equal(true);
 });
 
 it("returns false when characters aren't touching", (): void => {
@@ -37,7 +39,7 @@ it("returns false when characters aren't touching", (): void => {
     const touching: boolean = isCharacterTouchingCharacter(a, b);
 
     // Assert
-    chai.expect(touching).to.be.false;
+    expect(touching).to.be.equal(false);
 });
 
 it("returns false when a character is following another", (): void => {
@@ -54,5 +56,5 @@ it("returns false when a character is following another", (): void => {
     const touching: boolean = isCharacterTouchingCharacter(a, b);
 
     // Assert
-    chai.expect(touching).to.be.false;
+    expect(touching).to.be.equal(false);
 });

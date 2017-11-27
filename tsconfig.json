@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
         "declaration": true,
+        "experimentalDecorators": true,
+        "jsx": "react",
         "lib": ["dom", "es2015.collection", "es2015.promise", "es5"],
         "module": "amd",
         "moduleResolution": "node",
@@ -14,6 +16,7 @@
         "target": "es5"
     },
     "include": [
-        "./src/**/*.ts"
+        "./src/**/*.ts",
+        "./src/**/*.tsx"
     ]
 }

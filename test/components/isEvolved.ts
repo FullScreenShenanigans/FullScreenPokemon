@@ -1,3 +1,5 @@
+import { expect } from "chai";
+
 import { IPokemon } from "../../src/components/Battles";
 import { IPokemonEvolution, IPokemonEvolutionByLevel } from "../../src/components/constants/Pokemon";
 import { FullScreenPokemon } from "../../src/FullScreenPokemon";
@@ -19,7 +21,7 @@ it("evolves a Pokemon at exactly its level requirement", (): void => {
     fsp.experience.levelup(pokemon);
 
     // Assert
-    chai.expect(pokemon.title.toString()).to.be.equal("CHARMELEON".split("").toString());
+    expect(pokemon.title.toString()).to.be.equal("CHARMELEON".split("").toString());
 });
 
 it("evolves a Pokemon that exceeds its level requirement", (): void => {
@@ -37,7 +39,7 @@ it("evolves a Pokemon that exceeds its level requirement", (): void => {
     fsp.experience.levelup(pokemon);
 
     // Assert
-    chai.expect(pokemon.title.toString()).to.be.equal("CHARMELEON".split("").toString());
+    expect(pokemon.title.toString()).to.be.equal("CHARMELEON".split("").toString());
 });
 
 it("does not evolve a Pokemon that has not yet reached its level requirement", (): void => {
@@ -55,5 +57,5 @@ it("does not evolve a Pokemon that has not yet reached its level requirement", (
     fsp.experience.levelup(pokemon);
 
     // Assert
-    chai.expect(pokemon.title.toString()).to.be.equal("CHARMANDER".split("").toString());
+    expect(pokemon.title.toString()).to.be.equal("CHARMANDER".split("").toString());
 });

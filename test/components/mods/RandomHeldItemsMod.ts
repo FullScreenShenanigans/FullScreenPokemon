@@ -1,3 +1,5 @@
+import { expect } from "chai";
+
 import { INewPokemon } from "./../../../src/components/constants/Pokemon";
 import { FullScreenPokemon } from "./../../../src/FullScreenPokemon";
 import { it } from "./../../main";
@@ -24,7 +26,7 @@ it("gives a newly spawned Pokemon a random item when generated probability is va
     const chosenPokemon = fsp.equations.newPokemon(chosenInfo);
 
     // Assert
-    chai.expect(chosenPokemon.item).to.deep.equal("Burn Heal".split(""));
+    expect(chosenPokemon.item).to.deep.equal("Burn Heal".split(""));
 });
 
 it("does not give a newly spawned Pokemon a random item when generated probability is invalid", (): void => {
@@ -39,5 +41,5 @@ it("does not give a newly spawned Pokemon a random item when generated probabili
     const chosenPokemon = fsp.equations.newPokemon(chosenInfo);
 
     // Assert
-    chai.expect(chosenPokemon.item).to.be.equal(undefined);
+    expect(chosenPokemon.item).to.be.equal(undefined);
 });

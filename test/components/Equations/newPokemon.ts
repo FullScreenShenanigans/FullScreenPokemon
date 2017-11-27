@@ -1,3 +1,5 @@
+import { expect } from "chai";
+
 import { IPokemon } from "./../../../src/components/Battles";
 import { FullScreenPokemon } from "./../../../src/FullScreenPokemon";
 import { it } from "./../../main";
@@ -18,5 +20,5 @@ it("gives a new Pokemon a provided item", (): void => {
     });
 
     // Assert
-    chai.expect(pokemon.item).to.deep.equal(chosenItem);
+    expect(pokemon.item).to.deep.equal(chosenItem);
 });
