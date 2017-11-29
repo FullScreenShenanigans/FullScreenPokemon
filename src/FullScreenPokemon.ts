@@ -39,6 +39,9 @@ import { Utilities } from "./components/Utilities";
 import { IFlags } from "./settings/Flags";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
+/**
+ * Reset settings for a FullScreenPokemon instance.
+ */
 export interface IFullScreenPokemonSettings extends IGameStartrSettings {
     /**
      * Module settings overrides.
