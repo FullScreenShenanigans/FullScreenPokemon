@@ -20,7 +20,7 @@
     "battlemovr": "0.6.X",
     "changelinr": "0.6.X",
     "devicelayr": "0.6.X",
-    "eightbittr": "^0.6.9",
+    "eightbittr": "0.6.9",
     "flagswappr": "0.6.X",
     "fpsanalyzr": "0.6.X",
     "gamesrunnr": "0.6.X",
@@ -43,7 +43,7 @@
     "thinghittr": "0.6.X",
     "timehandlr": "0.6.X",
     "touchpassr": "0.6.X",
-    "userwrappr": "0.6.X",
+    "userwrappr": "0.6.4",
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
