@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";

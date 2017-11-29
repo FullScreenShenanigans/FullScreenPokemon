@@ -1,4 +1,4 @@
-import { Gameplay as GameStartrGameplay } from "gamestartr/lib/components/Gameplay";
+import { Gameplay as GameStartrGameplay } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

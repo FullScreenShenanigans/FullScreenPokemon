@@ -1,7 +1,6 @@
-import { ISizeSettings } from "gamestartr/lib/IGameStartr";
 import { stub } from "sinon";
 
-import { FullScreenPokemon } from "../../src/FullScreenPokemon";
+import { FullScreenPokemon, IFullScreenPokemonSettings } from "../../src/FullScreenPokemon";
 
 /**
  * Creates a stubbed instance of the FullScreenPokemon class.
@@ -9,7 +8,7 @@ import { FullScreenPokemon } from "../../src/FullScreenPokemon";
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class.
  */
-export function stubFullScreenPokemon(settings?: ISizeSettings): FullScreenPokemon {
+export function stubFullScreenPokemon(settings?: IFullScreenPokemonSettings): FullScreenPokemon {
     settings = settings || {
         width: 256,
         height: 256
@@ -41,7 +40,7 @@ export function stubFullScreenPokemon(settings?: ISizeSettings): FullScreenPokem
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class with an in-progress game.
  */
-export function stubBlankGame(settings?: ISizeSettings): FullScreenPokemon {
+export function stubBlankGame(settings?: IFullScreenPokemonSettings): FullScreenPokemon {
     const fsp: FullScreenPokemon = stubFullScreenPokemon(settings);
 
     fsp.itemsHolder.setItem("name", "Test".split(""));

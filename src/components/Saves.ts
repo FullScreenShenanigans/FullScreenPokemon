@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";

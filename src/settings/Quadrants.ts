@@ -1,4 +1,4 @@
-import { IQuadrantsModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IQuadrantsModuleSettings } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

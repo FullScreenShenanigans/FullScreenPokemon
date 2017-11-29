@@ -39,6 +39,13 @@ import { Utilities } from "./components/Utilities";
 import { IFlags } from "./settings/Flags";
 import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
 
+export interface IFullScreenPokemonSettings extends IGameStartrSettings {
+    /**
+     * Module settings overrides.
+     */
+    moduleSettings?: Partial<IModuleSettings>;
+}
+
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
@@ -259,7 +266,7 @@ export class FullScreenPokemon extends GameStartr {
      *
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      */
-    protected resetModules(settings: IProcessedSizeSettings): void {
+    protected resetModules(settings: IFullScreenPokemonSettings): void {
         super.resetModules(settings);
 
         this.stateHolder = this.createStateHolder(this.moduleSettings, settings);
@@ -283,7 +290,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns Settings for individual modules.
      */
-    protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
+    protected createModuleSettings(settings: IFullScreenPokemonSettings): IModuleSettings {
         return {
             ...new ModuleSettingsGenerator().generate(this),
             ...settings.moduleSettings
@@ -295,7 +302,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal BattleMovr.
      */
-    protected createBattleMover(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IBattleMovr {
+    protected createBattleMover(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IBattleMovr {
         return new BattleMovr(moduleSettings.battles);
     }
 
@@ -304,7 +311,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal FlagSwappr.
      */
-    protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IFlagSwappr<IFlags> {
+    protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IFlagSwappr<IFlags> {
         return new FlagSwappr<IFlags>(moduleSettings.flags);
     }
 
@@ -313,7 +320,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal MenuGraphr.
      */
-    protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMenuGraphr {
+    protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
             ...moduleSettings.menus
@@ -325,7 +332,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal ScenePlayer.
      */
-    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IScenePlayr {
+    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IScenePlayr {
         return new ScenePlayr({
             scope: this.cutscenes,
             ...moduleSettings.scenes
@@ -337,7 +344,7 @@ export class FullScreenPokemon extends GameStartr {
      * @param settings   Settings to reset an instance of the FullScreenPokemon class.
      * @returns A new internal StateHoldr.
      */
-    protected createStateHolder(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IStateHoldr {
+    protected createStateHolder(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IStateHoldr {
         return new StateHoldr({
             itemsHolder: this.itemsHolder,
             ...moduleSettings.state

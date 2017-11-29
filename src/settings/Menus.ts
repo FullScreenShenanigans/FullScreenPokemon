@@ -1,4 +1,4 @@
-import * as igamestartr from "gamestartr/lib/IGameStartr";
+import * as igamestartr from "gamestartr";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 
 import { IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";

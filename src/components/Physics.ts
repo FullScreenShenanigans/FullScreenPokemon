@@ -1,4 +1,6 @@
-import { Physics as GameStartrPhysics } from "gamestartr/lib/components/Physics";
+
+import { Physics as EightBittrPhysics } from "eightbittr";
+import { Physics as GameStartrPhysics } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";

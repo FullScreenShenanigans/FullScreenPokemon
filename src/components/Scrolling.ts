@@ -1,4 +1,4 @@
-import { Scrolling as GameStartrScrolling } from "gamestartr/lib/components/Scrolling";
+import { Scrolling as GameStartrScrolling } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IArea, IAreaBoundaries } from "./Maps";

@@ -2,7 +2,7 @@ import { IMove } from "battlemovr/lib/Actors";
 import { BattleOutcome } from "battlemovr/lib/Animations";
 import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
 import { Team } from "battlemovr/lib/Teams";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";

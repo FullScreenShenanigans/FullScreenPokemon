@@ -1,4 +1,4 @@
-import { Graphics as GameStartrGraphics } from "gamestartr/lib/components/Graphics";
+import { Graphics as GameStartrGraphics } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IThing } from "./Things";

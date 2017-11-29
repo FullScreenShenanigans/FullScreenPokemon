@@ -1,6 +1,6 @@
 import { BattleOutcome } from "battlemovr/lib/Animations";
 import { Queue } from "battlemovr/lib/animators/Queue";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";

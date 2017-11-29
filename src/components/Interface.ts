@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { IPipe } from "inputwritr/lib/IInputWritr";
 import { IMod } from "modattachr/lib/IModAttachr";
 import {

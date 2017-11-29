@@ -1,5 +1,5 @@
-import { Things as GameStartrThings } from "gamestartr/lib/components/Things";
-import * as igamestartr from "gamestartr/lib/IGameStartr";
+import { Things as GameStartrThings } from "gamestartr";
+import * as igamestartr from "gamestartr";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 
