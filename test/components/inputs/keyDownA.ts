@@ -17,6 +17,7 @@ it("activates a bordering activatable solid", (): void => {
     fsp.actions.animateCharacterSetDirection(player, Direction.Top);
     fsp.physics.setMidXObj(player, solid);
     fsp.physics.setTop(player, solid.bottom);
+    player.bordering[player.direction] = solid;
 
     // Act
     fsp.inputs.keyDownA(player);
