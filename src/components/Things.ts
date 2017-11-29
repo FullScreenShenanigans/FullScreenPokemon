@@ -1,5 +1,4 @@
-import { Things as GameStartrThings } from "gamestartr";
-import * as igamestartr from "gamestartr";
+import { IThing as IGameStartrThing, Things as GameStartrThings } from "gamestartr";
 import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
 import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
 
@@ -22,7 +21,7 @@ export interface IThingsById {
 /**
  * An in-game Thing with size, velocity, position, and other information.
  */
-export interface IThing extends igamestartr.IThing, IStateSaveable {
+export interface IThing extends IGameStartrThing, IStateSaveable {
     /**
      * What to do when a Character, commonly a Player, activates this Thing.
      *
