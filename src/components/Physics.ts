@@ -1,5 +1,4 @@
 
-import { Physics as EightBittrPhysics } from "eightbittr";
 import { Physics as GameStartrPhysics } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
