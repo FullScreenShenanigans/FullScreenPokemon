@@ -15,7 +15,7 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Speed Runner";
+    public readonly name: string = "Speed Running";
 
     /**
      * Mod events, keyed by name.
