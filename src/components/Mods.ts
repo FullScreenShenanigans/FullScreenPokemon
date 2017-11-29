@@ -13,7 +13,7 @@ import { RandomizeWildPokemonMod } from "./mods/RandomizeWildPokemonMod";
 import { RepeatTrainersMod } from "./mods/RepeatTrainersMod";
 import { RunningIndoorsMod } from "./mods/RunningIndoorsMod";
 import { ScalingLevelsMod } from "./mods/ScalingLevelsMod";
-import { SpeedRunnerMod } from "./mods/SpeedRunnerMod";
+import { SpeedRunningMod } from "./mods/SpeedRunningMod";
 import { WalkThroughWallsMod } from "./mods/WalkThroughWallsMod";
 
 /**
@@ -39,7 +39,7 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGame
         new RepeatTrainersMod(this.gameStarter, this.eventNames),
         new RunningIndoorsMod(this.gameStarter, this.eventNames),
         new ScalingLevelsMod(this.gameStarter, this.eventNames),
-        new SpeedRunnerMod(this.gameStarter, this.eventNames),
+        new SpeedRunningMod(this.gameStarter, this.eventNames),
         new WalkThroughWallsMod(this.gameStarter, this.eventNames)
     ];
 }
