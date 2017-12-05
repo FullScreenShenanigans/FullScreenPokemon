@@ -31,10 +31,11 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
             [0] as IPokemon | undefined;
         const teamName: "player" | "opponent" = Team[team] as "player" | "opponent";
         if (teamName === "opponent") {
-            const pkmn: IPokemon = this.gameStarter.itemsHolder.getItem("PokemonInParty")[0];
+            const pokemon: IPokemon = this.gameStarter.itemsHolder.getItem("PokemonInParty")[0];
             const gainedExp: number = this.gameStarter.equations.experienceGained(battleInfo.teams[Team[team]]);
-            this.gameStarter.experience.gainExperience(pkmn, gainedExp);
+            this.gameStarter.experience.gainExperience(pokemon, gainedExp);
         }
+
         if (newPokemon) {
             this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
             this.gameStarter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
