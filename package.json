@@ -43,7 +43,7 @@
     "thinghittr": "0.6.X",
     "timehandlr": "0.6.X",
     "touchpassr": "0.6.X",
-    "userwrappr": "0.6.4",
+    "userwrappr": "^0.6.5",
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
