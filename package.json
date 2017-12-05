@@ -24,7 +24,7 @@
     "flagswappr": "0.6.X",
     "fpsanalyzr": "0.6.X",
     "gamesrunnr": "0.6.X",
-    "gamestartr": "0.6.X",
+    "gamestartr": "0.6.5",
     "groupholdr": "0.6.X",
     "inputwritr": "0.6.X",
     "itemsholdr": "0.6.X",
@@ -43,15 +43,33 @@
     "thinghittr": "0.6.X",
     "timehandlr": "0.6.X",
     "touchpassr": "0.6.X",
-    "userwrappr": "0.6.X",
+    "userwrappr": "0.6.4",
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.16"
+    "gulp-shenanigans": "^0.6.17"
   },
   "scripts": {
     "gulp": "gulp",
     "test": "gulp test"
+  },
+  "shenanigans": {
+    "name": "FullScreenPokemon",
+    "web": {
+      "drivingObject": "FSP",
+      "sections": {
+        "credits": [
+          "Full Screen Pokemon was made possible first and foremost by Nintendo, who originally created Pokemon and has since maintained the series.",
+          "It would also not have been possible without the dedicated efforts of the Pokemon fan community over the past two decades, in particular <a href=\"http://bulbapedia.bulbagarden.net/\">Bulbapedia</a>."
+        ],
+        "explanation": [
+          "Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.",
+          "It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods."
+        ],
+        "legal": "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
+      },
+      "url": "fullscreenpokemon.com"
+    }
   }
 }
