@@ -1,4 +1,4 @@
-import { IAudioModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IAudioModuleSettings } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

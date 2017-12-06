@@ -2,7 +2,7 @@ import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
 import { IOnBattleComplete } from "battlemovr/lib/Animations";
 import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
 import { ITeamBase, ITeamDescriptor, IUnderEachTeam, Team } from "battlemovr/lib/Teams";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ActionsOrderer } from "./battles/ActionsOrderer";
@@ -394,7 +394,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
                 teams.opponent = {
                     ...teams.opponent,
                     ...partialBattleOptions.teams.opponent
-                };
+                } as ITeamDescriptor;
             }
 
             if (partialBattleOptions.teams.player) {

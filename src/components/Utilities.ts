@@ -1,4 +1,4 @@
-import { Utilities as GameStartrUtilities } from "gamestartr/lib/components/Utilities";
+import { Utilities as GameStartrUtilities } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";

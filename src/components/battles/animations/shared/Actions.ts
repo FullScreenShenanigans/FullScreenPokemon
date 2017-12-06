@@ -1,6 +1,6 @@
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction } from "battlemovr/lib/Actions";
 import { ITeamAndAction } from "battlemovr/lib/Teams";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { FleeAttempt } from "./actions/FleeAttempt";

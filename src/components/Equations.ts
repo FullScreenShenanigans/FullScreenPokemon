@@ -1,5 +1,5 @@
 import { IMove, IStatistic } from "battlemovr/lib/Actors";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";

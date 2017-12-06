@@ -1,5 +1,5 @@
 import { IMove } from "battlemovr/lib/Actors";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";

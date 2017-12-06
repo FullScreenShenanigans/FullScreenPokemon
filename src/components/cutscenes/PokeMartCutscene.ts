@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";

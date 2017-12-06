@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { IItems } from "itemsholdr/lib/IItemsHoldr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -56,8 +56,6 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.itemsHolder.setItem("oldLocalStorage", oldLocalStorage);
         this.gameStarter.itemsHolder.saveItem("oldLocalStorage");
         this.gameStarter.itemsHolder.setItem("stateCollectionKeys", []);
-
-        this.gameStarter.userWrapper.resetControls();
     }
 
     /**
@@ -83,8 +81,6 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
         }
 
         this.gameStarter.itemsHolder.saveAll();
-
-        this.gameStarter.userWrapper.resetControls();
     }
 
     /**
@@ -171,7 +167,6 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
         }
 
         this.gameStarter.menuGrapher.deleteActiveMenu();
-        this.gameStarter.userWrapper.resetControls();
         this.gameStarter.gameplay.startPlay();
         this.gameStarter.itemsHolder.setItem("gameStarted", true);
     }

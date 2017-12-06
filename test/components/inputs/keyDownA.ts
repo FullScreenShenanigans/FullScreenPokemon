@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { spy } from "sinon";
 
 import { Direction } from "../../../src/components/Constants";
@@ -16,12 +17,13 @@ it("activates a bordering activatable solid", (): void => {
     fsp.actions.animateCharacterSetDirection(player, Direction.Top);
     fsp.physics.setMidXObj(player, solid);
     fsp.physics.setTop(player, solid.bottom);
+    player.bordering[player.direction] = solid;
 
     // Act
     fsp.inputs.keyDownA(player);
 
     // Assert
-    chai.expect(solid.activate).to.have.been.called;
+    expect(solid.activate).to.have.been.called;
 });
 
 it("does not activate a non-bordering activatable solid", (): void => {
@@ -39,5 +41,5 @@ it("does not activate a non-bordering activatable solid", (): void => {
     fsp.inputs.keyDownA(player);
 
     // Assert
-    chai.expect(solid.activate).to.not.have.been.called;
+    expect(solid.activate).to.not.have.been.called;
 });

@@ -1,4 +1,4 @@
-import { Maps as GameStartrMaps } from "gamestartr/lib/components/Maps";
+import { Maps as GameStartrMaps } from "gamestartr";
 import * as imapscreatr from "mapscreatr/lib/IMapsCreatr";
 import { IPreThing as IMapsCreatrPreThing } from "mapscreatr/lib/IPreThing";
 import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";

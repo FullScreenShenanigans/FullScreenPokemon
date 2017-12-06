@@ -1,4 +1,4 @@
-import { IModuleSettingsObject } from "gamestartr/lib/IGameStartr";
+import { IModuleSettingsObject } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

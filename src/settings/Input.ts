@@ -1,4 +1,4 @@
-import { IInputModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IInputModuleSettings } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

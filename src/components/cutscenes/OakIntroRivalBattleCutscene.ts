@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr/lib/Animations";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPartialBattleOptions } from "../Battles";

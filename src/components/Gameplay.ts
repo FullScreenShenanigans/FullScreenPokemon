@@ -1,4 +1,4 @@
-import { Gameplay as GameStartrGameplay } from "gamestartr/lib/components/Gameplay";
+import { Gameplay as GameStartrGameplay } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -106,7 +106,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
                     };
                     reader.readAsText(file);
                 }
-            }) as HTMLInputElement;
+            });
 
         dummy.click();
 

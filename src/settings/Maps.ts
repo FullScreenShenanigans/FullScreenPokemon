@@ -1,4 +1,4 @@
-import * as igamestartr from "gamestartr/lib/IGameStartr";
+import * as igamestartr from "gamestartr";
 
 import { IMapRaw } from "../components/Maps";
 import { FullScreenPokemon } from "../FullScreenPokemon";

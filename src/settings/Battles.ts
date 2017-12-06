@@ -1,7 +1,7 @@
 import { IAction } from "battlemovr/lib/Actions";
 import { IBattleMovrSettings } from "battlemovr/lib/IBattleMovr";
 import { ITeamAndAction, IUnderEachTeam } from "battlemovr/lib/Teams";
-import * as igamestartr from "gamestartr/lib/IGameStartr";
+import * as igamestartr from "gamestartr";
 
 import { IBattleInfo } from "../components/Battles";
 import { FullScreenPokemon } from "../FullScreenPokemon";

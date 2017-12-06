@@ -20,11 +20,11 @@
     "battlemovr": "0.6.X",
     "changelinr": "0.6.X",
     "devicelayr": "0.6.X",
-    "eightbittr": "0.6.X",
+    "eightbittr": "0.6.9",
     "flagswappr": "0.6.X",
     "fpsanalyzr": "0.6.X",
     "gamesrunnr": "0.6.X",
-    "gamestartr": "0.6.5",
+    "gamestartr": "0.6.9",
     "groupholdr": "0.6.X",
     "inputwritr": "0.6.X",
     "itemsholdr": "0.6.X",
@@ -43,12 +43,12 @@
     "thinghittr": "0.6.X",
     "timehandlr": "0.6.X",
     "touchpassr": "0.6.X",
-    "userwrappr": "0.6.4",
+    "userwrappr": "^0.6.5",
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.17"
+    "gulp-shenanigans": "^0.6.21"
   },
   "scripts": {
     "gulp": "gulp",

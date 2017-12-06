@@ -1,5 +1,5 @@
 import { IMove } from "battlemovr/lib/Actors";
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../../../Battles";

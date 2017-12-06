@@ -1,4 +1,4 @@
-import { IRunnerModuleSettings } from "gamestartr/lib/IGameStartr";
+import { IRunnerModuleSettings } from "gamestartr";
 
 import { ICharacter, IThing } from "../components/Things";
 import { FullScreenPokemon } from "../FullScreenPokemon";

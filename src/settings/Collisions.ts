@@ -1,4 +1,4 @@
-import { ICollisionsModuleSettings } from "gamestartr/lib/IGameStartr";
+import { ICollisionsModuleSettings } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/Component";
+import { Component } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
 import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
 
@@ -639,7 +639,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const options: IDialogOptions = dialog.options;
         const generateCallback: (inDialog: string | IDialog) => void = (callbackDialog: string | IDialog): (() => void) | void => {
             if (!callbackDialog) {
-                return;
+                return undefined;
             }
 
             let callback: (...args: any[]) => void;
