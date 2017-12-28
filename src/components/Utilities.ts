@@ -32,8 +32,8 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
             ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
             : schema.level!;
         const chosenInfo: INewPokemon = {
-            level: level,
-            title: schema.title
+            level,
+            title: schema.title,
         };
         return this.gameStarter.equations.newPokemon(chosenInfo);
     }
@@ -63,7 +63,7 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
     public makeDigit(num: number | string, size: number, prefix?: any): string {
         return this.stringOf(
             prefix ? prefix.toString() : "0",
-            Math.max(0, size - String(num).length)
+            Math.max(0, size - String(num).length),
         ) + num;
     }
 
@@ -105,7 +105,7 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
 
         array.push({
             [keyTitle]: title,
-            [keyCount]: count
+            [keyCount]: count,
         });
 
         return true;

@@ -19,7 +19,7 @@ export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameSt
         const scratches: IThing[] = [
             this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall),
             this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall)
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall),
         ];
         let startX: number;
         let startY: number;
@@ -75,7 +75,7 @@ export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameSt
                     callback,
                     clearTime: 14,
                     interval: 5,
-                    thing: this.defenderThing
+                    thing: this.defenderThing,
                 });
             },
             17);

@@ -26,15 +26,15 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         let y: number;
 
         y = yStart;
-        for (let i: number = 0; i < ynum; i += 1) {
+        for (let i = 0; i < ynum; i += 1) {
             let x: number = xStart;
-            for (let j: number = 0; j < xnum; j += 1) {
+            for (let j = 0; j < xnum; j += 1) {
                 const thing: string = reference.things[(i + j + offset) % mod];
                 if (thing !== "") {
                     output.push({
-                        x: x,
-                        y: y,
-                        thing: thing
+                        x,
+                        y,
+                        thing,
                     });
                 }
                 x += xwidth;
@@ -59,18 +59,18 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const open: boolean[] = reference.open || [true, true, true, true];
         const output: any[] = [{
             thing: "Water",
-            x: x,
-            y: y,
-            width: width,
-            height: height
+            x,
+            y,
+            width,
+            height,
         }];
 
         if (!open[0]) {
             output.push({
                 thing: "WaterEdgeTop",
-                x: x,
-                y: y,
-                width: width
+                x,
+                y,
+                width,
             });
         }
 
@@ -79,25 +79,25 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "WaterEdgeRight",
                 x: x + width - 16,
                 y: open[0] ? y : y + 16,
-                height: open[0] ? height : height - 16
+                height: open[0] ? height : height - 16,
             });
         }
 
         if (!open[2]) {
             output.push({
                 thing: "WaterEdgeBottom",
-                x: x,
+                x,
                 y: y + height - 16,
-                width: width
+                width,
             });
         }
 
         if (!open[3]) {
             output.push({
                 thing: "WaterEdgeLeft",
-                x: x,
-                y: y,
-                height: height
+                x,
+                y,
+                height,
             });
         }
 
@@ -120,29 +120,29 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (stories === 1) {
             output.push({
                 thing: "HouseTopRoofLeft",
-                x: x,
-                y: y
+                x,
+                y,
             });
             output.push({
                 thing: "HouseTopRoof",
                 x: x + 32,
-                y: y,
-                width: width - 64
+                y,
+                width: width - 64,
             });
             output.push({
                 thing: "HouseTopRoofRight",
                 x: x + width - 32,
-                y: y
+                y,
             });
             output.push({
                 thing: "HouseLeft",
-                x: x,
-                y: y + 32
+                x,
+                y: y + 32,
             });
             output.push({
                 thing: "HouseRight",
                 x: x + width - 32,
-                y: y + 32
+                y: y + 32,
             });
 
             if (reference.door) {
@@ -150,36 +150,36 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                     thing: "HouseMiddle",
                     x: x + 64,
                     y: y + 32,
-                    width: width - 96
+                    width: width - 96,
                 });
             } else {
                 output.push({
                     thing: "HouseMiddle",
                     x: x + 32,
                     y: y + 32,
-                    width: width - 64
+                    width: width - 64,
                 });
             }
         } else {
             output.push({
                 thing: "HouseTop",
-                x: x,
-                y: y
+                x,
+                y,
             });
         }
 
         y += 64;
-        for (let i: number = 1; i < stories; i += 1) {
+        for (let i = 1; i < stories; i += 1) {
             output.push({
                 thing: "HouseCenterLeft",
-                x: x,
-                y: y
+                x,
+                y,
             });
             output.push({
                 thing: "HouseCenterRight",
                 x: x + 64,
-                y: y,
-                width: width - 64
+                y,
+                width: width - 64,
             });
             y += 32;
         }
@@ -189,7 +189,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "Door",
                 x: x + 32,
                 y: y - 32,
-                requireDirection: 0
+                requireDirection: 0,
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -218,37 +218,37 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const output: any[] = [
             {
                 thing: "HouseLargeTopLeft",
-                x: x,
-                y: y
+                x,
+                y,
             },
             {
                 thing: "HouseLargeTopMiddle",
                 x: x + 32,
-                y: y,
-                width: width - 64
+                y,
+                width: width - 64,
             },
             {
                 thing: "HouseLargeTopRight",
                 x: x + width - 32,
-                y: y
+                y,
             }];
 
         y += 80;
-        for (let i: number = 2; i < stories; i += 1) {
+        for (let i = 2; i < stories; i += 1) {
             output.push({
                 thing: "HouseLargeCenter",
-                x: x,
-                y: y,
-                width: width
+                x,
+                y,
+                width,
             });
 
             if (reference.white) {
                 output.push({
                     thing: "HouseWallWhitewash",
                     x: reference.white.start,
-                    y: y,
+                    y,
                     width: reference.white.end - reference.white.start,
-                    position: "end"
+                    position: "end",
                 });
             }
 
@@ -258,49 +258,49 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (!reference.door) {
             output.push({
                 thing: "HouseLargeCenterLeft",
-                x: x,
-                y: y,
-                width: 64
+                x,
+                y,
+                width: 64,
             });
             output.push({
                 thing: "HouseLargeCenterMiddle",
                 x: x + 64,
-                y: y,
-                width: 32
+                y,
+                width: 32,
             });
             output.push({
                 thing: "HouseLargeCenterRight",
                 x: x + 96,
-                y: y,
-                width: width - 96
+                y,
+                width: width - 96,
             });
         } else {
             output.push({
                 thing: "HouseLargeCenterLeft",
-                x: x,
-                y: y,
-                width: doorOffset
+                x,
+                y,
+                width: doorOffset,
             });
             output.push({
                 thing: "HouseLargeCenterMiddle",
                 x: x + doorOffset,
-                y: y,
+                y,
                 width: 32,
-                height: 16
+                height: 16,
             });
             output.push({
                 thing: "HouseLargeCenterRight",
                 x: x + doorOffset + 32,
-                y: y,
-                width: width - doorOffset - 32
+                y,
+                width: width - doorOffset - 32,
             });
             if (reference.white) {
                 output.push({
                     thing: "HouseWallWhitewash",
                     x: reference.white.start,
-                    y: y,
+                    y,
                     width: reference.white.end - reference.white.start,
-                    position: "end"
+                    position: "end",
                 });
             }
 
@@ -311,7 +311,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 x: x + doorOffset,
                 y: y - 48,
                 requireDirection: 0,
-                id: reference.id
+                id: reference.id,
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -340,24 +340,24 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         return [
             {
                 macro: "HouseLarge",
-                x: x,
-                y: y,
-                width: width,
-                stories: stories,
+                x,
+                y,
+                width,
+                stories,
                 white: {
                     start: x + 16,
-                    end: x + width - 16
+                    end: x + width - 16,
                 },
                 transport: reference.transport,
                 entrance: reference.entrance,
                 door: true,
-                doorOffset: width - 64
+                doorOffset: width - 64,
             },
             {
                 thing: "GymLabel",
                 x: x + 64,
                 y: y + 64,
-                width: width - 128
+                width: width - 128,
             }];
     }
 
@@ -376,47 +376,47 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const output: any[] = [
             {
                 thing: "BuildingTopLeft",
-                x: x,
-                y: y
+                x,
+                y,
             },
             {
                 thing: "BuildingTopMiddle",
                 x: x + 16,
-                y: y,
-                width: width - 32
+                y,
+                width: width - 32,
             },
             {
                 thing: "BuildingTopRight",
                 x: x + width - 16,
-                y: y
+                y,
             }];
 
         y += 64;
 
-        for (let i: number = 0; i < stories; i += 1) {
+        for (let i = 0; i < stories; i += 1) {
             output.push({
                 thing: "BuildingMiddleLeft",
-                x: x,
-                y: y
+                x,
+                y,
             });
             output.push({
                 thing: "BuildingMiddleWindow",
                 x: x + 16,
-                y: y,
+                y,
                 width: width - 32,
-                height: 16
+                height: 16,
             });
             output.push({
                 thing: "BuildingMiddleMiddle",
                 x: x + 16,
                 y: y + 16,
                 width: width - 32,
-                height: 16
+                height: 16,
             });
             output.push({
                 thing: "BuildingMiddleRight",
                 x: x + width - 16,
-                y: y
+                y,
             });
 
             y += 32;
@@ -424,23 +424,23 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         output.push({
             thing: "BuildingMiddleLeft",
-            x: x,
-            y: y,
-            height: 16
+            x,
+            y,
+            height: 16,
         });
         output.push({
             thing: "BuildingMiddleRight",
             x: x + width - 16,
-            y: y,
-            height: 16
+            y,
+            height: 16,
         });
 
         if (reference.door) {
             const door: any = {
                 thing: "Door",
                 x: x + doorOffset,
-                y: y,
-                entrance: reference.entrance
+                y,
+                entrance: reference.entrance,
             };
             if (reference.entrance) {
                 door.entrance = reference.entrance;
@@ -452,43 +452,43 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             output.push({
                 thing: "BuildingMiddleMiddle",
                 x: x + 16,
-                y: y,
+                y,
                 height: 16,
-                width: doorOffset - 16
+                width: doorOffset - 16,
             });
             output.push(door);
             output.push({
                 thing: "BuildingMiddleMiddle",
                 x: x + doorOffset + 32,
-                y: y,
+                y,
                 height: 16,
-                width: width - doorOffset - 48
+                width: width - doorOffset - 48,
             });
             output.push({
                 thing: "BuildingBottomLeft",
-                x: x,
+                x,
                 y: y + 16,
-                width: doorOffset
+                width: doorOffset,
             });
             output.push({
                 thing: "BuildingBottomRight",
                 x: x + doorOffset + 32,
                 y: y + 16,
-                width: width - doorOffset - 32
+                width: width - doorOffset - 32,
             });
         } else {
             output.push({
                 thing: "BuildingMiddleMiddle",
                 x: x + 16,
-                y: y,
+                y,
                 width: width - 32,
-                height: 16
+                height: 16,
             });
             output.push({
                 thing: "BuildingBottom",
-                x: x,
+                x,
                 y: y + 16,
-                width: width
+                width,
             });
         }
 
@@ -496,7 +496,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
             output.push({
                 thing: reference.label + "Label",
                 x: x + 64,
-                y: y
+                y,
             });
         }
 
@@ -522,25 +522,25 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 output.push({
                     thing: "MountainTopRight",
                     x: x + width - 32,
-                    y: y
+                    y,
                 });
                 output.push({
                     thing: "MountainRight",
                     x: x + width - 32,
-                    y: y + 16
+                    y: y + 16,
                 });
                 output.push({
                     thing: "MountainTopRight",
                     x: x + width - 16,
-                    y: y + 16
+                    y: y + 16,
                 });
             } else {
                 output.push({
                     thing: "MountainRight",
                     x: x + width - 32,
-                    y: y,
+                    y,
                     width: 32,
-                    height: 32
+                    height: 32,
                 });
             }
 
@@ -548,22 +548,22 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 output.push({
                     thing: "MountainBottomRight",
                     x: x + width - 32,
-                    y: y + height - 32
+                    y: y + height - 32,
                 });
                 output.push({
                     thing: "MountainRight",
                     x: x + width - 16,
-                    y: y + height - 32
+                    y: y + height - 32,
                 });
                 output.push({
                     thing: "MountainBottom",
                     x: x + width - 32,
-                    y: y + height - 16
+                    y: y + height - 16,
                 });
                 output.push({
                     thing: "MountainBottomRight",
                     x: x + width - 16,
-                    y: y + height - 16
+                    y: y + height - 16,
                 });
             } else {
                 output.push({
@@ -571,7 +571,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                     x: x + width - 32,
                     y: y + height - 32,
                     width: 32,
-                    height: 32
+                    height: 32,
                 });
             }
 
@@ -581,7 +581,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                     x: x + width - 32,
                     y: y + 32,
                     width: 32,
-                    height: height - 64
+                    height: height - 64,
                 });
             }
 
@@ -593,66 +593,66 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 output.push({
                     thing: "MountainTopLeft",
                     x: x + 16,
-                    y: y
+                    y,
                 });
                 output.push({
                     thing: "MountainTopLeft",
-                    x: x,
-                    y: y + 16
+                    x,
+                    y: y + 16,
                 });
                 output.push({
                     thing: "MountainLeft",
                     x: x + 16,
-                    y: y + 16
+                    y: y + 16,
                 });
             } else {
                 output.push({
                     thing: "MountainLeft",
-                    x: x,
-                    y: y,
+                    x,
+                    y,
                     width: 32,
-                    height: 32
+                    height: 32,
                 });
             }
 
             if (reference.bottom) {
                 output.push({
                     thing: "MountainLeft",
-                    x: x,
-                    y: y + height - 32
+                    x,
+                    y: y + height - 32,
                 });
                 output.push({
                     thing: "MountainBottomLeft",
                     x: x + 16,
-                    y: y + height - 32
+                    y: y + height - 32,
                 });
                 output.push({
                     thing: "MountainBottomLeft",
-                    x: x,
-                    y: y + height - 16
+                    x,
+                    y: y + height - 16,
                 });
                 output.push({
                     thing: "MountainBottom",
                     x: x + 16,
-                    y: y + height - 16
+                    y: y + height - 16,
                 });
             } else {
                 output.push({
                     thing: "MountainLeft",
-                    x: x,
+                    x,
                     y: y + height - 32,
                     width: 32,
-                    height: 32
+                    height: 32,
                 });
             }
 
             if (height > 64) {
                 output.push({
                     thing: "MountainLeft",
-                    x: x,
+                    x,
                     y: y + 32,
                     width: 32,
-                    height: height - 64
+                    height: height - 64,
                 });
             }
 
@@ -663,9 +663,9 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (reference.top && width > 0) {
             output.push({
                 thing: "MountainTop",
-                x: x,
-                y: y,
-                width: width
+                x,
+                y,
+                width,
             });
             y += 20;
             height -= 20;
@@ -676,10 +676,10 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 if (openingOffset > 0) {
                     output.push({
                         thing: "MountainBottom",
-                        x: x,
+                        x,
                         y: y + height - 32,
                         width: openingOffset,
-                        height: 32
+                        height: 32,
                     });
                 }
                 output.push({
@@ -687,7 +687,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                     x: x + openingOffset,
                     y: y + height - 32,
                     entrance: reference.entrance,
-                    transport: reference.transport
+                    transport: reference.transport,
                 });
                 if (openingOffset < width) {
                     output.push({
@@ -695,16 +695,16 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                         x: x + openingOffset + 32,
                         y: y + height - 32,
                         width: width - openingOffset - 32,
-                        height: 32
+                        height: 32,
                     });
                 }
             } else {
                 output.push({
                     thing: "MountainBottom",
-                    x: x,
+                    x,
                     y: y + height - 32,
-                    width: width,
-                    height: 32
+                    width,
+                    height: 32,
                 });
             }
             height -= 32;
@@ -713,10 +713,10 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         if (width > 0 && height > 0) {
             output.push({
                 thing: "Mountain",
-                x: x,
-                y: y,
-                width: width,
-                height: height
+                x,
+                y,
+                width,
+                height,
             });
         }
 
@@ -737,108 +737,108 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 thing: "FloorDiamonds",
                 width: 448,
                 height: 256,
-                x: x,
-                y: y
+                x,
+                y,
             },
             {
                 thing: "SquareWallTop",
-                x: x,
-                y: y,
-                height: 64
+                x,
+                y,
+                height: 64,
             },
             {
                 thing: "HealingMachine",
                 x: x + 32,
-                y: y,
-                id: "HealingMachine"
+                y,
+                id: "HealingMachine",
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x + 32,
-                y: y,
-                width: 128
+                y,
+                width: 128,
             },
             {
                 thing: "PokeCenterPoster",
                 x: x + 112,
-                y: y
+                y,
             },
             {
                 thing: "SquareWallTop",
                 x: x + 160,
-                y: y,
-                height: 64
+                y,
+                height: 64,
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x + 192,
-                y: y,
-                width: 128
+                y,
+                width: 128,
             },
             {
                 thing: "StairsVertical",
                 x: x + 320,
-                y: y
+                y,
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x + 352,
-                y: y
+                y,
             },
             {
                 thing: "StairsVertical",
                 x: x + 384,
-                y: y
+                y,
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x + 416,
-                y: y
+                y,
             },
             {
                 thing: "Nurse",
                 id: "Nurse",
                 x: x + 96,
-                y: y + 32
+                y: y + 32,
             },
             {
                 thing: "SquareWallFront",
-                x: x,
-                y: y + 64
+                x,
+                y: y + 64,
             },
             {
                 thing: "PokeCenterDeskLeft",
                 x: x + 32,
-                y: y + 64
+                y: y + 64,
             },
             {
                 thing: "PokeCenterDesk",
                 x: x + 48,
                 y: y + 64,
-                width: 128
+                width: 128,
             },
             {
                 thing: "CutsceneResponder",
                 x: x + 96,
                 y: y + 64,
                 cutscene: "PokeCenter",
-                keepAlive: true
+                keepAlive: true,
             },
             {
                 thing: "SquareWallFront",
                 x: x + 160,
-                y: y + 64
+                y: y + 64,
             },
             {
                 thing: "PokeCenterDesk",
                 x: x + 192,
                 y: y + 64,
-                width: 128
+                width: 128,
             },
             {
                 thing: "PokeCenterDeskBlocker",
                 x: x + 320,
-                y: y + 64
+                y: y + 64,
             },
             {
                 thing: "DeskWoman",
@@ -846,58 +846,58 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 y: y + 64,
                 dialog: [
                     "Welcome to the Cable Club!",
-                    "This area is reserved for 2 friends who are linked by cable."
-                ]
+                    "This area is reserved for 2 friends who are linked by cable.",
+                ],
             },
             {
                 thing: "PokeCenterDeskBlocker",
                 x: x + 384,
-                y: y + 64
+                y: y + 64,
             },
             {
                 thing: "PokeCenterDesk",
                 x: x + 416,
-                y: y + 64
+                y: y + 64,
             },
             {
                 thing: "Buzzer",
                 x: x + 112,
-                y: y + 76
+                y: y + 76,
             },
             {
                 thing: "Computer",
                 x: x + 416,
-                y: y + 96
+                y: y + 96,
             },
             {
                 thing: "SofaLeft",
-                x: x,
-                y: y + 128
+                x,
+                y: y + 128,
             },
             {
                 thing: "PottedPalmTree",
-                x: x,
+                x,
                 y: y + 192,
-                width: 64
+                width: 64,
             },
             {
                 thing: "PottedPalmTree",
                 x: x + 192,
                 y: y + 192,
-                width: 64
+                width: 64,
             },
             {
                 thing: "PottedPalmTree",
                 x: x + 384,
                 y: y + 192,
-                width: 64
+                width: 64,
             },
             {
                 thing: "Doormat",
                 x: x + 96,
                 y: y + 224,
                 width: 64,
-                entrance: reference.entrance
+                entrance: reference.entrance,
             }];
 
         if (reference.transport) {
@@ -907,14 +907,14 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 y: y + 224,
                 width: 64,
                 transport: reference.transport,
-                requireDirection: 2
+                requireDirection: 2,
             });
         }
 
         if (!reference.excludeCoolTrainer) {
             output.push({
                 thing: "CoolTrainerM",
-                x: x,
+                x,
                 y: y + 128,
                 offsetX: 7,
                 offsetY: 0,
@@ -925,8 +925,8 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                     "",
                     "%%%%%%%POKEMON%%%%%%% CENTERs heal your tired, hurt, or fainted %%%%%%%POKEMON%%%%%%%!",
                     "",
-                    ""
-                ]
+                    "",
+                ],
             });
         }
 
@@ -945,94 +945,94 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
         const output: any[] = [
             {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x,
-                y: y,
+                x,
+                y,
                 width: 64,
-                height: 16
+                height: 16,
             },
             {
                 thing: "FloorDiamonds",
-                x: x,
+                x,
                 y: y + 32,
                 width: 256,
-                height: 224
+                height: 224,
             },
             {
                 thing: "FloorDiamondsDark",
-                x: x,
+                x,
                 y: y + 64,
-                height: 32
+                height: 32,
             },
             {
                 thing: "StoreFridge",
                 x: x + 64,
-                y: y,
-                width: 128
+                y,
+                width: 128,
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x + 192,
-                y: y,
+                y,
                 width: 64,
-                height: 16
+                height: 16,
             },
             {
                 thing: "StoreSaleBin",
-                x: x,
+                x,
                 y: y + 16,
-                width: 64
+                width: 64,
             },
             {
                 thing: "StoreSaleBin",
                 x: x + 192,
                 y: y + 16,
-                width: 64
+                width: 64,
             },
             {
                 thing: "StoreAisle",
-                x: x,
+                x,
                 y: y + 96,
-                height: 32
+                height: 32,
             },
             {
                 thing: "StoreAisle",
                 x: x + 128,
                 y: y + 96,
-                width: 128
+                width: 128,
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
-                x: x,
-                y: y + 128
+                x,
+                y: y + 128,
             },
             {
                 thing: "WallIndoorHorizontalBandsDark",
                 x: x + 32,
                 y: y + 128,
-                height: 16
+                height: 16,
             },
             {
                 thing: "FloorDiamondsDark",
                 x: x + 64,
                 y: y + 128,
-                height: 96
+                height: 96,
             },
             {
                 thing: "SquareWallTop",
                 x: x + 32,
                 y: y + 144,
-                height: 64
+                height: 64,
             },
             {
                 thing: "Cashier",
-                x: x,
+                x,
                 y: y + 160,
-                direction: 1
+                direction: 1,
             },
             {
                 thing: "FloorDiamondsDark",
-                x: x,
-                y: y + 160
+                x,
+                y: y + 160,
             },
             {
                 thing: "Register",
@@ -1043,30 +1043,30 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 cutscene: "PokeMart",
                 keepAlive: true,
                 items: reference.items,
-                dialog: reference.responderDialog
+                dialog: reference.responderDialog,
             },
             {
                 thing: "PokeCenterDeskLeft",
-                x: x,
-                y: y + 192
+                x,
+                y: y + 192,
             },
             {
                 thing: "PokeCenterDesk",
                 x: x + 16,
                 y: y + 192,
-                width: 48
+                width: 48,
             },
             {
                 thing: "FloorDiamondsDark",
-                x: x,
-                y: y + 224
+                x,
+                y: y + 224,
             },
             {
                 thing: "Doormat",
                 x: x + 96,
                 y: y + 224,
                 width: 64,
-                entrance: reference.entrance
+                entrance: reference.entrance,
             }];
 
         if (reference.transport) {
@@ -1076,7 +1076,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 y: y + 224,
                 width: 64,
                 transport: reference.transport,
-                requireDirection: 2
+                requireDirection: 2,
             });
         }
 

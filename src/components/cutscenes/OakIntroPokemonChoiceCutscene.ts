@@ -24,7 +24,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!"
+                    "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!",
                 ]);
             this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
@@ -46,9 +46,9 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                 position: {
                     vertical: "center",
                     offset: {
-                        left: 0
-                    }
-                }
+                        left: 0,
+                    },
+                },
             });
     }
 
@@ -63,23 +63,23 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             "GeneralText",
             [
                 [
-                    "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, ", settings.chosen, "?"
-                ]
+                    "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, ", settings.chosen, "?",
+                ],
             ],
             (): void => {
                 this.gameStarter.menuGrapher.createMenu("Yes/No", {
-                    killOnB: ["GeneralText"]
+                    killOnB: ["GeneralText"],
                 });
                 this.gameStarter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: this.gameStarter.scenePlayer.bindRoutine("PlayerTakesPokemon")
+                            callback: this.gameStarter.scenePlayer.bindRoutine("PlayerTakesPokemon"),
                         },
                         {
                             text: "NO",
-                            callback: this.gameStarter.menuGrapher.registerB
-                        }]
+                            callback: this.gameStarter.menuGrapher.registerB,
+                        }],
                 });
                 this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
             });
@@ -94,8 +94,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
     public PlayerTakesPokemon(settings: any): void {
         const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
         const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
-        const dialogOak: string = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
-        const dialogRival: string = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
+        const dialogOak = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
+        const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
         settings.oak = oak;
         oak.dialog = dialogOak;
@@ -117,12 +117,12 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             "GeneralText",
             [
                 [
-                    "%%%%%%%PLAYER%%%%%%% received a ", settings.chosen, "!"
+                    "%%%%%%%PLAYER%%%%%%% received a ", settings.chosen, "!",
                 ],
                 "This %%%%%%%POKEMON%%%%%%% is really energetic!",
                 [
-                    "Do you want to give a nickname to ", settings.chosen, "?"
-                ]
+                    "Do you want to give a nickname to ", settings.chosen, "?",
+                ],
             ],
             this.gameStarter.scenePlayer.bindRoutine("PlayerChoosesNickname"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -131,8 +131,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         this.gameStarter.itemsHolder.setItem("PokemonInParty", [
             this.gameStarter.equations.newPokemon({
                 level: 5,
-                title: settings.chosen
-            })
+                title: settings.chosen,
+            }),
         ]);
         this.gameStarter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
     }
@@ -145,7 +145,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
     public PlayerChoosesNickname(settings: any): void {
         this.gameStarter.menuGrapher.createMenu("Yes/No", {
             ignoreB: true,
-            killOnB: ["GeneralText"]
+            killOnB: ["GeneralText"],
         });
         this.gameStarter.menuGrapher.addMenuList("Yes/No", {
             options: [
@@ -153,13 +153,13 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                     text: "YES",
                     callback: (): void => this.gameStarter.menus.keyboards.openKeyboardMenu({
                         title: settings.chosen,
-                        callback: this.gameStarter.scenePlayer.bindRoutine("PlayerSetsNickname")
-                    })
+                        callback: this.gameStarter.scenePlayer.bindRoutine("PlayerSetsNickname"),
+                    }),
                 },
                 {
                     text: "NO",
-                    callback: this.gameStarter.scenePlayer.bindRoutine("RivalWalksToPokemon")
-                }]
+                    callback: this.gameStarter.scenePlayer.bindRoutine("RivalWalksToPokemon"),
+                }],
         });
         this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
     }
@@ -222,17 +222,17 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             [
                 {
                     blocks: 2,
-                    direction: Direction.Bottom
+                    direction: Direction.Bottom,
                 },
                 {
                     blocks: steps,
-                    direction: Direction.Right
+                    direction: Direction.Right,
                 },
                 {
                     blocks: 1,
-                    direction: Direction.Top
+                    direction: Direction.Top,
                 },
-                this.gameStarter.scenePlayer.bindRoutine("RivalTakesPokemon")
+                this.gameStarter.scenePlayer.bindRoutine("RivalTakesPokemon"),
             ]);
     }
 
@@ -259,8 +259,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             [
                 "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
                 [
-                    "%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!"
-                ]
+                    "%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!",
+                ],
             ],
             (): void => {
                 settings.rivalPokeball.hidden = true;

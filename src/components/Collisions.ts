@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
+import { IMenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
@@ -142,7 +142,6 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
                     break;
 
                 default:
-                    break;
             }
 
             // Todo: investigate why this never returns true?
@@ -225,8 +224,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
         if (other.cutscene) {
             this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
-                thing: thing,
-                triggerer: other
+                thing,
+                triggerer: other,
             });
         }
 
@@ -248,13 +247,13 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
         if (!this.gameStarter.menuGrapher.getActiveMenu()) {
             this.gameStarter.menuGrapher.createMenu("GeneralText", {
-                deleteOnFinish: !other.dialogOptions
+                deleteOnFinish: !other.dialogOptions,
             });
             this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                (): void => this.gameStarter.actions.animateCharacterDialogFinish(thing, other)
+                (): void => this.gameStarter.actions.animateCharacterDialogFinish(thing, other),
             );
         }
 
@@ -280,15 +279,15 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
                 this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
-                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!"
+                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!",
                     ],
                     (): void => {
                         this.gameStarter.menuGrapher.deleteActiveMenu();
                         this.gameStarter.physics.killNormal(other);
                         this.gameStarter.stateHolder.addChange(
-                            other.id, "alive", false
+                            other.id, "alive", false,
                         );
-                    }
+                    },
                 );
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
@@ -302,7 +301,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
                 this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
                     player: thing,
-                    triggerer: other
+                    triggerer: other,
                 });
                 if (other.routine) {
                     this.gameStarter.scenePlayer.playRoutine(other.routine);
@@ -329,18 +328,18 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
             case "yes/no":
                 this.gameStarter.menuGrapher.createMenu("Yes/No", {
-                    killOnB: ["GeneralText"]
+                    killOnB: ["GeneralText"],
                 });
                 this.gameStarter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: (): void => console.log("What do, yes?")
+                            callback: (): void => console.log("What do, yes?"),
                         },
                         {
                             text: "NO",
-                            callback: (): void => console.log("What do, no?")
-                        }]
+                            callback: (): void => console.log("What do, no?"),
+                        }],
                 });
                 this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
                 break;
@@ -415,7 +414,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
 
         this.gameStarter.actions.walking.startWalkingOnPath(thing, [{
             blocks: 2,
-            direction: thing.direction
+            direction: thing.direction,
         }]);
         thing.surfing = false;
         this.gameStarter.graphics.removeClass(thing, "surfing");

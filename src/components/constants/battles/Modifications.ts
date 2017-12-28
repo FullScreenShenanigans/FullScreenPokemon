@@ -39,7 +39,7 @@ export class Modifications {
             "Chief",
             "Scientist",
             "Gentleman",
-            "Lorelei"
+            "Lorelei",
         ],
         preferences: [
             ["Statistic", "Attack", 1],
@@ -60,8 +60,8 @@ export class Modifications {
             ["Effect", "Heal"],
             ["Statistic", "Defense", -2],
             ["Move", "Light Screen"],
-            ["Move", "Reflect"]
-        ]
+            ["Move", "Reflect"],
+        ],
     };
 
     /**
@@ -91,7 +91,7 @@ export class Modifications {
             "Rival2",
             "Rival3",
             "Lorelei",
-            "Lance"
+            "Lance",
         ],
         preferences: [
             ["Super", "Water", "Fire"],
@@ -174,7 +174,7 @@ export class Modifications {
             ["Weak", "Electric", "Dragon"],
             ["Weak", "Grass", "Dragon"],
             ["Super", "Ice", "Dragon"],
-            ["Super", "Dragon", "Dragon"]
-        ]
+            ["Super", "Dragon", "Dragon"],
+        ],
     };
 }

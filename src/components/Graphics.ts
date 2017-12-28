@@ -16,7 +16,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
     public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
         const things: IThing[] = [this.gameStarter.players[0]];
         const used: { [i: string]: IThing } = {
-            [this.gameStarter.players[0].title]: this.gameStarter.players[0]
+            [this.gameStarter.players[0].title]: this.gameStarter.players[0],
         };
 
         for (const thingRaw of thingsRaw) {

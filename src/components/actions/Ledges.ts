@@ -49,7 +49,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGa
      */
     protected addHopOffset(thing: ICharacter): void {
         const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
-        let dy: number = -2;
+        let dy = -2;
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {

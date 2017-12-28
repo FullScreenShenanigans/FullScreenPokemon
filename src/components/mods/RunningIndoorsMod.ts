@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { IMod } from "modattachr";
 
 import { IArea } from "../../components/Maps";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -16,7 +16,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Mo
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
             const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
             if (!area) {
@@ -41,7 +41,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Mo
             this.gameStarter.mapScreener.variables.allowCycling = area.allowCycling;
         },
         [this.eventNames.onSetLocation]: (): void => {
-            this.events.onModEnable!();
-        }
+            this.events.onModEnable();
+        },
     };
 }

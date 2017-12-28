@@ -1,4 +1,4 @@
-import { IBattleTeam } from "battlemovr/lib/Battles";
+import { IBattleTeam } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -14,7 +14,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
     /**
      * Id for the background Thing.
      */
-    private static backgroundId: string = "BattleDecorationBackground";
+    private static backgroundId = "BattleDecorationBackground";
 
     /**
      * Decorations for health displays.
@@ -32,7 +32,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
             {
                 height: this.gameStarter.mapScreener.height,
                 id: Decorations.backgroundId,
-                width: this.gameStarter.mapScreener.width
+                width: this.gameStarter.mapScreener.width,
             });
         this.gameStarter.utilities.arrayToBeginning(background, this.gameStarter.groupHolder.getGroup("Text") as IThing[]);
 
@@ -41,13 +41,13 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
         const opponent: IThing = this.addThingAsText(
             this.getInitialTitle(battleInfo.teams.opponent, "Front"),
             {
-                opacity: 0
+                opacity: 0,
             });
 
         const player: IThing = this.addThingAsText(
             this.getInitialTitle(battleInfo.teams.player, "Back"),
             {
-                opacity: 0
+                opacity: 0,
             });
         this.gameStarter.physics.setLeft(player, menu.right + player.width);
         this.gameStarter.physics.setBottom(player, menu.bottom - player.height);
@@ -68,7 +68,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
     public addPokeballs(menu: string, filled: number, reverse?: boolean): void {
         const text: string[][] = [];
 
-        for (let i: number = 0; i < filled; i += 1) {
+        for (let i = 0; i < filled; i += 1) {
             text.push(["Ball"]);
         }
 

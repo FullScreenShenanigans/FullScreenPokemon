@@ -1,8 +1,8 @@
 language: node_js
 
 node_js:
-  - "7"
+  - "node"
   - "5"
 
 script:
-  node_modules/gulp/bin/gulp.js
+  npm run verify

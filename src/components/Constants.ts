@@ -36,7 +36,7 @@ export enum Direction {
     Top = 0,
     Right = 1,
     Bottom = 2,
-    Left = 3
+    Left = 3,
 }
 
 /**
@@ -45,7 +45,7 @@ export enum Direction {
 export enum PokedexListingStatus {
     Unknown = 0,
     Caught = 1,
-    Seen = 2
+    Seen = 2,
 }
 
 /**
@@ -103,7 +103,7 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
         "F", "O", "X", "[", "/",
         "G", "P", "Y", "]", ".",
         "H", "Q", "Z", "Poke", ",",
-        "I", "R", " ", "Mon", "ED"
+        "I", "R", " ", "Mon", "ED",
     ];
 
     /**
@@ -118,7 +118,7 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
         "f", "o", "x", "[", "/",
         "g", "p", "y", "]", ".",
         "h", "q", "z", "Poke", ",",
-        "i", "r", " ", "Mon", "ED"
+        "i", "r", " ", "Mon", "ED",
     ];
 
     /**
@@ -132,7 +132,7 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
         Bottom: "Top",
         bottom: "top",
         Left: "Right",
-        left: "right"
+        left: "right",
     };
 
     /**
@@ -142,7 +142,7 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends Component<
         top: Direction.Top,
         right: Direction.Right,
         bottom: Direction.Bottom,
-        left: Direction.Left
+        left: Direction.Left,
     };
 
     /**

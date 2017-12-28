@@ -1,5 +1,4 @@
-import { ITeamAnimations } from "battlemovr/lib/Animations";
-import { Team } from "battlemovr/lib/Teams";
+import { ITeamAnimations, Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -29,16 +28,13 @@ export class Player<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
                 return menu.left - player.width / 2;
             },
-            getSelectedPokemonSprite: (battleInfo: IBattleInfo): string => {
-                return battleInfo.teams.player.selectedActor.title.join("") + "Back";
-            },
-            getSmokeLeft: (battleInfo: IBattleInfo): number => {
-                return battleInfo.things.menu.left + 32;
-            },
-            getSmokeTop: (battleInfo: IBattleInfo): number => {
-                return battleInfo.things.menu.bottom - 32;
-            }
-        }
+            getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
+                battleInfo.teams.player.selectedActor.title.join("") + "Back",
+            getSmokeLeft: (battleInfo: IBattleInfo): number =>
+                battleInfo.things.menu.left + 32,
+            getSmokeTop: (battleInfo: IBattleInfo): number =>
+                battleInfo.things.menu.bottom - 32,
+        },
     });
 
     /**

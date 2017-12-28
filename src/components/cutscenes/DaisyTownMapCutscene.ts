@@ -15,7 +15,7 @@ export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Grandpa asked you to run an errand? Here, this will help you!"
+                "Grandpa asked you to run an errand? Here, this will help you!",
             ],
             this.gameStarter.scenePlayer.bindRoutine("ReceiveMap"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -37,7 +37,7 @@ export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends
         this.gameStarter.stateHolder.addChange(daisy.id, "cutscene", undefined);
 
         daisy.dialog = [
-            "Use the TOWN MAP to find out where you are."
+            "Use the TOWN MAP to find out where you are.",
         ];
         this.gameStarter.stateHolder.addChange(daisy.id, "dialog", daisy.dialog);
 
@@ -45,7 +45,7 @@ export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%% got a TOWN MAP!"
+                "%%%%%%%PLAYER%%%%%%% got a TOWN MAP!",
             ],
             (): void => {
                 this.gameStarter.scenePlayer.stopCutscene();

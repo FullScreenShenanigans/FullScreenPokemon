@@ -24,9 +24,7 @@ export interface IWalkingInstruction {
  *
  * @param thing   A Thing walking on a path.
  */
-export interface IWalkingInstructionGenerator {
-    (thing: ICharacter): IWalkingInstruction | void;
-}
+export type IWalkingInstructionGenerator = (thing: ICharacter) => IWalkingInstruction | void;
 
 /**
  * Instructions to generate a walking path.
@@ -48,7 +46,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
             throw new Error("Walking path must have instructions.");
         }
 
-        let instructionIndex: number = 0;
+        let instructionIndex = 0;
         let currentInstruction: IWalkingInstruction = this.parseWalkingInstruction(path[0], thing);
         let remainingBlocks: number = currentInstruction.blocks;
 
@@ -271,7 +269,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         return instruction(thing) || {
             blocks: 0,
-            direction: thing.direction
+            direction: thing.direction,
         };
     }
 }

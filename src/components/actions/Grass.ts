@@ -22,7 +22,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
         thing.shadow = this.gameStarter.objectMaker.make<IThing>(thing.title, {
             nocollide: true,
-            id: thing.id + " shadow"
+            id: thing.id + " shadow",
         });
 
         if (thing.shadow.className !== thing.className) {
@@ -111,14 +111,13 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.battles.startBattle({
             teams: {
                 opponent: {
-                    actors: [wildPokemon]
-                }
+                    actors: [wildPokemon],
+                },
             },
             texts: {
-                start: (team: IBattleTeam): string => {
-                    return `Wild ${team.selectedActor.nickname.join("")} appeared!`;
-                }
-            }
+                start: (team: IBattleTeam): string =>
+                    `Wild ${team.selectedActor.nickname.join("")} appeared!`,
+            },
         });
     }
 

@@ -24,9 +24,9 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
             [
                 "Welcome to our %%%%%%%POKEMON%%%%%%% CENTER!",
                 "We heal your %%%%%%%POKEMON%%%%%%% back to perfect health!",
-                "Shall we heal your %%%%%%%POKEMON%%%%%%%?"
+                "Shall we heal your %%%%%%%POKEMON%%%%%%%?",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Choose")
+            this.gameStarter.scenePlayer.bindRoutine("Choose"),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -42,14 +42,14 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                 options: [
                     {
                         text: "HEAL",
-                        callback: this.gameStarter.scenePlayer.bindRoutine("ChooseHeal")
+                        callback: this.gameStarter.scenePlayer.bindRoutine("ChooseHeal"),
                     },
                     {
                         text: "CANCEL",
-                        callback: this.gameStarter.scenePlayer.bindRoutine("ChooseCancel")
-                    }
-                ]
-            }
+                        callback: this.gameStarter.scenePlayer.bindRoutine("ChooseCancel"),
+                    },
+                ],
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("Heal/Cancel");
     }
@@ -62,14 +62,14 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             ignoreA: true,
-            finishAutomatically: true
+            finishAutomatically: true,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Ok. We'll need your %%%%%%%POKEMON%%%%%%%."
+                "Ok. We'll need your %%%%%%%POKEMON%%%%%%%.",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Healing")
+            this.gameStarter.scenePlayer.bindRoutine("Healing"),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -82,10 +82,10 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
     public Healing(settings: any): void {
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
         const balls: IThing[] = [];
-        const dt: number = 35;
+        const dt = 35;
         const left: number = settings.machine.left + 20;
         const top: number = settings.machine.top + 28;
-        let i: number = 0;
+        let i = 0;
 
         settings.balls = balls;
         this.gameStarter.actions.animateCharacterSetDirection(settings.nurse, 3);
@@ -96,7 +96,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
                     this.gameStarter.things.add(
                         this.gameStarter.things.names.healingMachineBall,
                         left + (i % 2) * 12,
-                        top + Math.floor(i / 2) * 10)
+                        top + Math.floor(i / 2) * 10),
                 );
                 i += 1;
             },
@@ -107,7 +107,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
             (): void => this.gameStarter.scenePlayer.playRoutine(
                 "HealingAction",
                 {
-                    balls: balls
+                    balls,
                 }),
             dt * (party.length + 1));
     }
@@ -120,8 +120,8 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
      */
     public HealingAction(settings: any, args: any): void {
         const balls: IThing[] = args.balls;
-        const numFlashes: number = 8;
-        let i: number = 0;
+        const numFlashes = 8;
+        let i = 0;
         let changer: Function;
 
         this.gameStarter.timeHandler.addEventInterval(
@@ -171,7 +171,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
             "GeneralText",
             [
                 "Thank you! \n Your %%%%%%%POKEMON%%%%%%% are fighting fit!",
-                "We hope to see you again!"
+                "We hope to see you again!",
             ],
             (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("GeneralText");
@@ -196,7 +196,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends C
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "We hope to see you again!"
+                "We hope to see you again!",
             ],
             (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("GeneralText");

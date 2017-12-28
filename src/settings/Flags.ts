@@ -1,6 +1,4 @@
-import { IFlagSwapprSettings } from "flagswappr/lib/IFlagSwappr";
-
-import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IFlagSwapprSettings } from "flagswappr";
 
 /**
  * Generation-specific flags.
@@ -23,23 +21,18 @@ export interface IFlags {
 export type IFlagsModuleSettings = IFlagSwapprSettings<IFlags>;
 
 /**
- * @param _fsp   A generating FullScreenPokemon instance.
  * @returns Flag settings for the FullScreenPokemon instance.
  */
-export function GenerateFlagsSettings(_fsp: FullScreenPokemon): IFlagsModuleSettings {
-    "use strict";
-
-    return {
-        generations: {
-            I: {
-                keyActivatedHmMoves: false,
-                heldItems: false
-            },
-            II: {
-                keyActivatedHmMoves: true,
-                heldItems: true
-            }
+export const GenerateFlagsSettings = (): IFlagsModuleSettings => ({
+    generation: "I",
+    generations: {
+        I: {
+            keyActivatedHmMoves: false,
+            heldItems: false,
         },
-        generation: "I"
-    };
-}
+        II: {
+            keyActivatedHmMoves: true,
+            heldItems: true,
+        },
+    },
+});

@@ -1,4 +1,4 @@
-import { Team } from "battlemovr/lib/Teams";
+import { Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
@@ -96,7 +96,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
     private runWithLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
         const thing: IThing = battleInfo.things[Team[this.settings.team]];
         const goal: number = this.settings.getLeaderSlideToGoal(battleInfo);
-        const timeout: number = 24;
+        const timeout = 24;
 
         this.gameStarter.actions.sliding.slideHorizontallyAndFadeOut(
             thing,
@@ -105,7 +105,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
             (): void => this.poofSmoke(battleInfo, onComplete));
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
-            finishAutomatically: true
+            finishAutomatically: true,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",

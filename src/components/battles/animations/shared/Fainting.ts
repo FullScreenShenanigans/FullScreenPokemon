@@ -1,4 +1,4 @@
-import { Team } from "battlemovr/lib/Teams";
+import { Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
@@ -20,23 +20,26 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<T
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
         const teamName: "player" | "opponent" = Team[team] as "player" | "opponent";
         const thing: IThing = battleInfo.things[teamName];
+        const scale = thing.scale === undefined
+            ? 1
+            : thing.scale;
         const blank: IThing = this.gameStarter.battles.decorations.addThingAsText(
             "WhiteSquare",
             {
-                width: thing.width * thing.scale!,
-                height: thing.height * thing.scale!
+                width: thing.width * scale,
+                height: thing.height * scale,
             });
 
         this.gameStarter.battles.decorations.moveToBeforeBackground(blank);
         this.gameStarter.battles.decorations.moveToBeforeBackground(thing);
 
         this.gameStarter.physics.setLeft(blank, thing.left);
-        this.gameStarter.physics.setTop(blank, thing.top + thing.height * thing.scale!);
+        this.gameStarter.physics.setTop(blank, thing.top + thing.height * scale);
 
         this.gameStarter.actions.sliding.slideVertically(
             thing,
             8,
-            this.gameStarter.physics.getMidY(thing) + thing.height * thing.scale!,
+            this.gameStarter.physics.getMidY(thing) + thing.height * scale,
             1,
             (): void => {
                 const playerName = this.gameStarter.itemsHolder.getItem("name");

@@ -42,7 +42,6 @@ export class Following<TGameStartr extends FullScreenPokemon> extends Component<
                 this.gameStarter.physics.setLeft(follow, lead.right);
                 break;
             default:
-                break;
         }
     }
 

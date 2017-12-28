@@ -1,6 +1,6 @@
 import { Component } from "eightbittr";
-import { IMenuDialogRaw } from "menugraphr/lib/IMenuGraphr";
-import { ITimeEvent } from "timehandlr/lib/ITimeHandlr";
+import { IMenuDialogRaw } from "menugraphr";
+import { ITimeEvent } from "timehandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Following } from "./actions/Following";
@@ -18,7 +18,7 @@ import { IDialog, IDialogOptions } from "./Menus";
 import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
     IMenuTriggerer, IPlayer, ISightDetector, IThemeDetector, IThing, ITransporter,
-    ITransportSchema
+    ITransportSchema,
 } from "./Things";
 
 /**
@@ -43,7 +43,7 @@ export interface IColorFadeSettings {
     /**
      * A callback for when the animation completes.
      */
-    callback?: () => void;
+    callback?(): void;
 }
 
 /**
@@ -97,8 +97,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                     this.gameStarter.things.names.sightDetector,
                     {
                         direction: thing.direction,
-                        width: thing.sight * 8
-                    }
+                        width: thing.sight * 8,
+                    },
                 ]) as ISightDetector;
             thing.sightDetector.viewer = thing;
             this.animatePositionSightDetector(thing);
@@ -245,7 +245,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         groupType?: string): [IThing, IThing, IThing, IThing] {
         const things: IThing[] = [];
 
-        for (let i: number = 0; i < 4; i += 1) {
+        for (let i = 0; i < 4; i += 1) {
             things.push(this.gameStarter.things.add([title, settings]));
         }
 
@@ -407,12 +407,12 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     public animateFadeToColor(settings: IColorFadeSettings = {}): IThing {
         const color: string = settings.color || "White";
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
-        const change: number = settings.change || .33;
+        const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
         const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + this.gameStarter.things.names.square, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
-            opacity: 0
+            opacity: 0,
         });
 
         this.gameStarter.things.add(blank);
@@ -442,12 +442,12 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
     public animateFadeFromColor(settings: IColorFadeSettings = {}, ...args: any[]): IThing {
         const color: string = settings.color || "White";
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
-        const change: number = settings.change || .33;
+        const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
         const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + this.gameStarter.things.names.square, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
-            opacity: 1
+            opacity: 1,
         });
 
         this.gameStarter.things.add(blank);
@@ -577,7 +577,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         if (other.gift) {
             this.gameStarter.menuGrapher.createMenu("GeneralText", {
-                deleteOnFinish: true
+                deleteOnFinish: true,
             });
             this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText",
@@ -657,7 +657,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                         (callbackDialog as IDialog).cutscene!,
                         {
                             player: thing,
-                            tirggerer: other
+                            tirggerer: other,
                         });
                 }
             }
@@ -665,7 +665,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             return (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("Yes/No");
                 this.gameStarter.menuGrapher.createMenu("GeneralText", {
-                    "deleteOnFinish": true
+                    deleteOnFinish: true,
                 });
                 this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText", words, callback);
@@ -678,20 +678,20 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.menuGrapher.createMenu("Yes/No", {
             position: {
                 offset: {
-                    left: 28
-                }
-            }
+                    left: 28,
+                },
+            },
         });
         this.gameStarter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
-                    callback: generateCallback(options.Yes)
+                    callback: generateCallback(options.Yes),
                 },
                 {
                     text: "NO",
-                    callback: generateCallback(options.No)
-                }]
+                    callback: generateCallback(options.No),
+                }],
         });
         this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
     }
@@ -724,7 +724,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         if (other.cutscene) {
             this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
                 player: thing,
-                triggerer: other
+                triggerer: other,
             });
         }
 
@@ -765,7 +765,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.gameStarter.scenePlayer.startCutscene(other.cutscene!, {
             player: thing,
-            triggerer: other
+            triggerer: other,
         });
     }
 
@@ -815,7 +815,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
                             thing,
                             [
                                 ...other.pushSteps,
-                                complete
+                                complete,
                             ]);
                     } else {
                         complete();
@@ -846,7 +846,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.scenePlayer.startCutscene("TrainerSpotted", {
             player: thing,
             sightDetector: other,
-            triggerer: other.viewer
+            triggerer: other.viewer,
         });
     }
 
@@ -890,7 +890,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         this.animateFadeToColor({
             callback,
-            color: "Black"
+            color: "Black",
         });
     }
 
@@ -910,7 +910,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         const leader: string = other.leader;
         const dialog: string[] = [
             `${gym.toUpperCase()}\n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: ${leader.toUpperCase()}`,
-            "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%"
+            "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%",
         ];
 
         if (this.gameStarter.itemsHolder.getItem("badges")[leader]) {
@@ -1116,8 +1116,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             return;
         }
 
-        let xvel: number = 0;
-        let yvel: number = 0;
+        let xvel = 0;
+        let yvel = 0;
 
         switch (player.direction) {
             case 0:
@@ -1145,7 +1145,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
             1,
             8);
 
-        for (let i: number = 0; i < boulder.bordering.length; i += 1) {
+        for (let i = 0; i < boulder.bordering.length; i += 1) {
             boulder.bordering[i] = undefined;
         }
     }
@@ -1167,7 +1167,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         player.bordering[player.direction] = undefined;
         this.gameStarter.graphics.addClass(player, "surfing");
         console.log("Should start walking");
-        // this.animateCharacterStartWalking(player, player.direction, [1]);
+        // This.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
     }
 }

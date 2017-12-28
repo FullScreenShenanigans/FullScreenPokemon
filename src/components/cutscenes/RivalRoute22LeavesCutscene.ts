@@ -27,41 +27,41 @@ export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> e
         const walkingInstructions: IWalkingInstructions = [
             {
                 blocks: 1,
-                direction: Direction.Top
+                direction: Direction.Top,
             },
             {
                 blocks: 3,
-                direction: Direction.Right
+                direction: Direction.Right,
             },
             {
                 blocks: 8,
-                direction: Direction.Bottom
+                direction: Direction.Bottom,
             },
             {
                 blocks: 6,
-                direction: Direction.Right
+                direction: Direction.Right,
             },
             {
                 blocks: 3,
-                direction: Direction.Top
+                direction: Direction.Top,
             },
             {
                 blocks: 19,
-                direction: Direction.Right
+                direction: Direction.Right,
             },
             {
                 blocks: 1,
-                direction: Direction.Top
+                direction: Direction.Top,
             },
             {
                 blocks: 5,
-                direction: Direction.Right
+                direction: Direction.Right,
             },
             (): void => {
                 this.gameStarter.physics.killNormal(rival);
                 this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
                 this.gameStarter.mapScreener.blockInputs = false;
-            }
+            },
         ];
 
         rival.nocollide = true;

@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWildPokemonSchema } from "../Maps";
@@ -31,6 +31,6 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
 
             chosen.title = this.gameStarter.numberMaker.randomArrayMember(randomPokemon);
             return chosen;
-        }
+        },
     };
 }

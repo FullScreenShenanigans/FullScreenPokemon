@@ -30,12 +30,12 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!"
+                "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!",
             ],
             (): void => {
                 this.gameStarter.menuGrapher.deleteActiveMenu();
                 this.gameStarter.timeHandler.addEvent(this.gameStarter.scenePlayer.bindRoutine("Goodbye"), 21);
-            }
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -48,7 +48,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!"
+                "%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!",
             ],
             this.gameStarter.scenePlayer.bindRoutine("Walking"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -64,11 +64,11 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
         const walkingInstructions: IWalkingInstructions = [
             {
                 blocks: 1,
-                direction: isRight ? Direction.Left : Direction.Right
+                direction: isRight ? Direction.Left : Direction.Right,
             },
             {
                 blocks: 6,
-                direction: Direction.Bottom
+                direction: Direction.Bottom,
             },
             (): void => {
                 this.gameStarter.physics.killNormal(rival);
@@ -82,7 +82,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
                         this.gameStarter.mapScreener.blockInputs = false;
                     },
                     10);
-            }
+            },
         ];
 
         rival.nocollide = true;

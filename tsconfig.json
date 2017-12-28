@@ -10,11 +10,14 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
+        "pretty": true,
         "strictNullChecks": true,
         "target": "es5"
     },
+    "exclude": [
+        "dist",
+        "node_modules"
+    ],
     "include": [
         "./src/**/*.ts",
         "./src/**/*.tsx"

@@ -1,17 +1,20 @@
+import { IBattleMovrSettings } from "battlemovr";
+import { IFlagSwapprSettings } from "flagswappr";
 import * as igamestartr from "gamestartr";
+import { IMenuGraphrSettings } from "menugraphr";
+import { IStateHoldrSettings } from "stateholdr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { GenerateAudioSettings } from "./Audio";
-import { GenerateBattlesSettings, IBattlesModuleSettings } from "./Battles";
+import { GenerateBattlesSettings } from "./Battles";
 import { GenerateCollisionsSettings } from "./Collisions";
 import { GenerateEventsSettings } from "./Events";
-import { GenerateFlagsSettings, IFlagsModuleSettings } from "./Flags";
-import { GenerateGeneratorSettings } from "./Generator";
+import { GenerateFlagsSettings, IFlags } from "./Flags";
 import { GenerateGroupsSettings } from "./Groups";
 import { GenerateInputSettings } from "./Input";
 import { GenerateItemsSettings } from "./Items";
 import { GenerateMapsSettings, IMapsModuleSettings } from "./Maps";
-import { GenerateMenusSettings, IMenusModuleSettings } from "./Menus";
+import { GenerateMenusSettings } from "./Menus";
 import { GenerateModsSettings } from "./Mods";
 import { GenerateObjectsSettings } from "./Objects";
 import { GenerateQuadrantsSettings } from "./Quadrants";
@@ -19,7 +22,7 @@ import { GenerateRendererSettings } from "./Renderer";
 import { GenerateRunnerSettings } from "./Runner";
 import { GenerateScenesSettings } from "./Scenes";
 import { GenerateSpritesSettings } from "./Sprites";
-import { GenerateStateSettings, IStateModuleSettings } from "./State";
+import { GenerateStateSettings } from "./State";
 
 /**
  * Stored settings to generate modules.
@@ -28,28 +31,28 @@ export interface IModuleSettings extends igamestartr.IModuleSettings {
     /**
      * Settings regarding in-game battles, particularly for an IBattleMovr.
      */
-    battles: IBattlesModuleSettings;
+    battles: IBattleMovrSettings;
 
     /**
      * Settings regarding generation-specific flags, particularly for an IFlagSwappr.
      */
-    flags: IFlagsModuleSettings;
+    flags: IFlagSwapprSettings<IFlags>;
 
     /**
      * Settings regarding maps, particularly for an IAreaSpawnr, an
-     * IMapScreenr, and an IMapsCreatr.
+     * IMapsCreatr, and an IMapScreenr.
      */
     maps: IMapsModuleSettings;
 
     /**
      * Settings regarding a menu system, particularly for an IMenuGraphr.
      */
-    menus: IMenusModuleSettings;
+    menus: Partial<IMenuGraphrSettings>;
 
     /**
      * Settings regarding large-scale state storage, particularly for an IStateHoldr.
      */
-    state: IStateModuleSettings;
+    state: Partial<IStateHoldrSettings>;
 }
 
 /**
@@ -62,27 +65,26 @@ export class ModuleSettingsGenerator {
      */
     public generate(fsp: FullScreenPokemon): IModuleSettings {
         return {
-            audio: GenerateAudioSettings(fsp),
+            audio: GenerateAudioSettings(),
             battles: GenerateBattlesSettings(fsp),
             collisions: GenerateCollisionsSettings(fsp),
             devices: {},
-            events: GenerateEventsSettings(fsp),
-            flags: GenerateFlagsSettings(fsp),
-            generator: GenerateGeneratorSettings(fsp),
-            groups: GenerateGroupsSettings(fsp),
+            events: GenerateEventsSettings(),
+            flags: GenerateFlagsSettings(),
+            groups: GenerateGroupsSettings(),
             input: GenerateInputSettings(fsp),
-            items: GenerateItemsSettings(fsp),
+            items: GenerateItemsSettings(),
             maps: GenerateMapsSettings(fsp),
             menus: GenerateMenusSettings(fsp),
             mods: GenerateModsSettings(fsp),
             objects: GenerateObjectsSettings(fsp),
-            quadrants: GenerateQuadrantsSettings(fsp),
+            quadrants: GenerateQuadrantsSettings(),
             renderer: GenerateRendererSettings(fsp),
             runner: GenerateRunnerSettings(fsp),
             scenes: GenerateScenesSettings(fsp),
-            sprites: GenerateSpritesSettings(fsp),
-            state: GenerateStateSettings(fsp),
-            touch: {}
+            sprites: GenerateSpritesSettings(),
+            state: GenerateStateSettings(),
+            touch: {},
         };
     }
 }
