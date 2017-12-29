@@ -1,5 +1,10 @@
 {
     "extends": "./node_modules/shenanigans-manager/setup/tslint.json",
+    "linterOptions": {
+        "exclude": [ 
+            "./node_modules/**/*"
+        ]
+    },
     "rules": {
         "ban-types": false,
         "comment-format": false,
