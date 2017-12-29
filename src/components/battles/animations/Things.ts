@@ -10,7 +10,7 @@ export interface IFlickerSettings {
     /**
      * Handler for when this is done.
      */
-    callback?: () => void;
+    callback?(): void;
 
     /**
      * How long to wait to stop the effect.
@@ -35,7 +35,7 @@ export interface IShakeSettings {
     /**
      * Handler for when this is done.
      */
-    callback?: () => void;
+    callback?(): void;
 
     /**
      * How long until the screen is done shaking.
@@ -101,8 +101,8 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
     public shake(settings: IShakeSettings): void {
         const clearTime: number = settings.clearTime || 8;
         const interval: number = settings.interval || 8;
-        let dx: number = 0;
-        let dy: number = 0;
+        let dx = 0;
+        let dy = 0;
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {

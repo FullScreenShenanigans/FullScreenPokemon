@@ -1,15 +1,18 @@
-dist/**
-docs/generated/**
-lib/**
-test/*.ts
-test/index.html
-test/utils/MochaLoader.ts
+dist/
+docs/generated/
+test/
+node_modules/
 *.css
 *.d.ts
 *.js*
+!./*.js
 !*.json
-!gulpfile.js
 *.html
-node_modules/
+Maps.test.ts
 npm-debug.log
 debug.log
+
+# Local development typically uses npm install --link
+# Package lock files aren't updated by linked installs
+package-lock.json
+yarn.lock

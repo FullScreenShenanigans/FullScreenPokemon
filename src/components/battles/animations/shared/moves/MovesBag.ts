@@ -23,12 +23,12 @@ export interface IMovesBag {
  * Built-in battle move runners used by FullScreenPokemon instances.
  */
 export const DefaultMovesBag: IMovesBag = {
-    BUBBLE: Bubble,
-    EMBER: Ember,
-    GROWL: Growl,
+    "BUBBLE": Bubble,
+    "EMBER": Ember,
+    "GROWL": Growl,
     "QUICK ATTACK": QuickAttack,
-    SCRATCH: Scratch,
-    TACKLE: Tackle,
+    "SCRATCH": Scratch,
+    "TACKLE": Tackle,
     "TAIL WHIP": TailWhip,
-    default: Move
+    "default": Move,
 };

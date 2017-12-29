@@ -15,7 +15,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
      * @param things   A group of Things to maintain.
      */
     public maintainGeneric(things: IThing[]): void {
-        for (let i: number = 0; i < things.length; i += 1) {
+        for (let i = 0; i < things.length; i += 1) {
             if (!things[i].alive) {
                 this.gameStarter.utilities.arrayDeleteThing(things[i], things, i);
                 i -= 1;
@@ -30,7 +30,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
      * @param characters   The Characters group of Things.
      */
     public maintainCharacters(characters: ICharacter[]): void {
-        for (let i: number = 0; i < characters.length; i += 1) {
+        for (let i = 0; i < characters.length; i += 1) {
             const character: ICharacter = characters[i];
             this.gameStarter.physics.shiftCharacter(character);
 
@@ -52,7 +52,7 @@ export class Maintenance<TGameStartr extends FullScreenPokemon> extends Componen
                 continue;
             }
 
-            for (let j: number = 0; j < 4; j += 1) {
+            for (let j = 0; j < 4; j += 1) {
                 character.bordering[j] = undefined;
             }
 

@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 import {
     IPokemonEvolution, IPokemonEvolutionByItem, IPokemonEvolutionByLevel,
-    IPokemonEvolutionByStats, IPokemonEvolutionByTrade, IPokemonEvolutionRequirement
+    IPokemonEvolutionByStats, IPokemonEvolutionByTrade, IPokemonEvolutionRequirement,
 } from "./constants/Pokemon";
 
 /**
@@ -70,14 +70,7 @@ export interface IRequirementHandlers {
 /**
  * Handler that takes in a pokemon and the requirements for its evolution, and outputs if it is eligible to evolve.
  */
-export interface IRequirementHandler {
-    /**
-     * Outputs true if the input pokemon is ready to evolve, and false otherwise.
-     *
-     * @param args   Arguments for this evolution check.
-     */
-    (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>): boolean;
-}
+export type IRequirementHandler = (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>) => boolean;
 
 /**
  * Handles logic related to Pokemon evolution.
@@ -87,9 +80,8 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
     private readonly requirementHandlers: IRequirementHandlers = {
-        level: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean => {
-            return args.pokemon.level >= args.requirement.level;
-        },
+        level: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean =>
+            args.pokemon.level >= args.requirement.level,
         item: (args: IRequirementHandlerArgs<IItemModifier, IPokemonEvolutionByItem>): boolean => {
             if (args.modifier) {
                 return args.requirement.item === args.modifier.item.join("");
@@ -104,14 +96,10 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             // Trading is not implemented yet (Issue #440)
             return false;
         },
-        happiness: (): boolean => {
-            // currently no happiness value of a Pokemon (Issue #439)
-            return false;
-        },
-        time: (): boolean => {
-            // Time of day does not seem to be implemented yet (#441)
-            return false;
-        },
+        // No happiness value of a Pokemon yet (Issue #439)
+        happiness: (): boolean => false,
+        // Time of day does not seem to be implemented yet (#441)
+        time: (): boolean => false,
         stats: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
             const difference: number =
                 args.pokemon.statistics[args.requirement.greaterStat].normal
@@ -121,7 +109,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
             }
 
             return difference > 0;
-        }
+        },
     };
 
     /**

@@ -1,11 +1,8 @@
-import { IModuleSettingsObject } from "gamestartr";
-
-import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /**
  * Settings regarding large-scale state storage, particularly for an IStateHoldr.
  */
-export interface IStateModuleSettings extends IModuleSettingsObject {
+export interface IStateModuleSettings {
     /**
      * A prefix to prepend keys for the itemsHolder.
      */
@@ -13,13 +10,8 @@ export interface IStateModuleSettings extends IModuleSettingsObject {
 }
 
 /**
- * @param fsp   A generating FullScreenPokemon instance.
- * @returns State settings for the FullScreenPokemon instance.
+ * @returns State settings for a FullScreenPokemon instance.
  */
-export function GenerateStateSettings(_fsp: FullScreenPokemon): IStateModuleSettings {
-    "use strict";
-
-    return {
-        prefix: "StateHolder::"
-    };
-}
+export const GenerateStateSettings = (): IStateModuleSettings => ({
+    prefix: "StateHolder::",
+});

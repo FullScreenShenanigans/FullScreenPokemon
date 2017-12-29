@@ -9,7 +9,7 @@ export class FlashTransition<TGameStartr extends FullScreenPokemon> extends Tran
     /**
      * How much to change the visible opacity each change.
      */
-    private readonly change: number = .33;
+    private readonly change: number = 0.33;
 
     /**
      * Colors to flash in.
@@ -29,7 +29,7 @@ export class FlashTransition<TGameStartr extends FullScreenPokemon> extends Tran
     /**
      * How many flashes have been completed.
      */
-    private completed: number = 0;
+    private completed = 0;
 
     /**
      * Plays the transition.
@@ -59,9 +59,9 @@ export class FlashTransition<TGameStartr extends FullScreenPokemon> extends Tran
                     color,
                     change: this.change,
                     speed: this.speed,
-                    callback: (): void => this.play()
+                    callback: (): void => this.play(),
                 });
-            }
+            },
         });
     }
 }

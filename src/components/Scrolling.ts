@@ -129,7 +129,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
                 bottom: 0,
                 left: 0,
                 width: 0,
-                height: 0
+                height: 0,
             };
         }
 
@@ -139,7 +139,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
             bottom: area.boundaries.bottom,
             left: area.boundaries.left,
             width: (area.boundaries.right - area.boundaries.left),
-            height: (area.boundaries.bottom - area.boundaries.top)
+            height: (area.boundaries.bottom - area.boundaries.top),
         };
     }
 

@@ -27,9 +27,7 @@ export interface IInventoryListing {
  *
  * @param listing   A selected item listing.
  */
-export interface IOnListingSelect {
-    (listing: IInventoryListing): void;
-}
+export type IOnListingSelect = (listing: IInventoryListing) => void;
 
 /**
  * Settings to open an individual item's menu.
@@ -72,28 +70,27 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public openItemsMenu(settings: IItemsMenuSettings = {}): void {
         const listings: IInventoryListing[] = settings.items || this.gameStarter.itemsHolder.getItem("items").slice();
-        const options: any[] = listings.map((listing: IInventoryListing): any => {
-            return {
+        const options: any[] = listings.map((listing: IInventoryListing): any =>
+            ({
                 text: listing.item,
                 callback: (): void => this.openItemMenu(listing, settings),
                 textsFloating: [
                     {
                         text: [["Times"]],
                         x: 32,
-                        y: 4.5
+                        y: 4.5,
                     },
                     {
                         text: this.gameStarter.utilities.makeDigit(listing.amount, 2, " "),
                         x: 36.5,
-                        y: 4
-                    }
-                ]
-            };
-        });
+                        y: 4,
+                    },
+                ],
+            }));
 
         options.push({
             text: "CANCEL",
-            callback: () => this.gameStarter.menuGrapher.registerB()
+            callback: () => this.gameStarter.menuGrapher.registerB(),
         });
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onOpenItemsMenu, listings);
@@ -121,7 +118,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
                     settings.onUse(listing);
                 },
-                text: "USE"
+                text: "USE",
             },
             {
                 callback: (): void => {
@@ -131,8 +128,8 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
                     settings.onToss(listing);
                 },
-                text: "TOSS"
-            }
+                text: "TOSS",
+            },
         ];
 
         if (this.gameStarter.flagSwapper.flags.heldItems) {
@@ -143,7 +140,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     chosenPokemon.item = listing.item.split("");
                     listing.amount = listing.amount - 1;
                 },
-                text: "GIVE"
+                text: "GIVE",
             });
         }
 

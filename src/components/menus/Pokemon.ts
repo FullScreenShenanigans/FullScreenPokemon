@@ -1,6 +1,6 @@
-import { IMove } from "battlemovr/lib/Actors";
+import { IMove } from "battlemovr";
 import { Component } from "eightbittr";
-import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr/lib/IMenuGraphr";
+import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -13,9 +13,7 @@ import { IMenuSchema } from "../Menus";
  *
  * @param pokemon   A selected Pokemon.
  */
-export interface IOnPokemonSwitch {
-    (pokemon: IPokemon): void;
-}
+export type IOnPokemonSwitch = (pokemon: IPokemon) => void;
 
 /**
  * Settings to open the items menu.
@@ -49,7 +47,7 @@ export interface ILevelUpStatsMenuSettings {
     /**
      * A callback for when the menu is deleted.
      */
-    onMenuDelete?: () => void;
+    onMenuDelete?(): void;
 
     /**
      * How to position the menu within its container.
@@ -84,14 +82,14 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             options: listings.map((listing: IPokemon): any => {
                 const title: string = listing.title.join("");
                 const sprite: string = this.gameStarter.constants.pokemon.byName[title].sprite + "Pokemon";
-                const barWidth: number = 100;
+                const barWidth = 100;
                 const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.statistics.health);
 
                 return {
                     text: listing.title,
                     callback: (): void => this.openPokemonMenuContext({
                         pokemon: listing,
-                        onSwitch: (): void => settings.onSwitch(listing)
+                        onSwitch: (): void => settings.onSwitch(listing),
                     }),
                     things: [
                         {
@@ -99,67 +97,67 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                             position: {
                                 offset: {
                                     left: 16,
-                                    top: 8
-                                }
-                            }
+                                    top: 8,
+                                },
+                            },
                         },
                         {
                             thing: "CharLevel",
                             position: {
                                 offset: {
                                     left: 194,
-                                    top: 6
-                                }
-                            }
+                                    top: 6,
+                                },
+                            },
                         },
                         {
                             thing: "CharHP",
                             position: {
                                 offset: {
                                     left: 66,
-                                    top: 22
-                                }
-                            }
+                                    top: 22,
+                                },
+                            },
                         },
                         {
                             thing: "HPBar",
                             args: {
-                                width: barWidth
+                                width: barWidth,
                             },
                             position: {
                                 offset: {
                                     left: 94,
-                                    top: 22
-                                }
-                            }
+                                    top: 22,
+                                },
+                            },
                         },
                         {
                             thing: "LightGraySquare",
                             args: {
                                 width: Math.max(health, 1),
                                 height: 4,
-                                hidden: health === 0
+                                hidden: health === 0,
                             },
                             position: {
                                 offset: {
                                     left: 96,
-                                    top: 24
-                                }
-                            }
+                                    top: 24,
+                                },
+                            },
                         }],
                     textsFloating: [
                         {
                             text: listing.level.toString(),
                             x: 160,
-                            y: 0
+                            y: 0,
                         },
                         {
                             text: listing.statistics.health.current + "/ " + listing.statistics.health.normal,
                             x: 160,
-                            y: 16
-                        }]
+                            y: 16,
+                        }],
                 };
-            })
+            }),
         });
         this.gameStarter.menuGrapher.setActiveMenu("Pokemon");
     }
@@ -180,7 +178,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                     text: action.title.toUpperCase(),
                     callback: (): void => {
                         this.gameStarter.actions.partyActivateCheckThing(this.gameStarter.players[0], settings.pokemon, move);
-                    }
+                    },
                 });
             }
         }
@@ -188,22 +186,22 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
         options.push(
             {
                 text: "STATS",
-                callback: (): void => this.openPokemonMenuStats(settings.pokemon)
+                callback: (): void => this.openPokemonMenuStats(settings.pokemon),
             },
             {
                 text: "SWITCH",
-                callback: settings.onSwitch
+                callback: settings.onSwitch,
             },
             {
                 text: "CANCEL",
-                callback: this.gameStarter.menuGrapher.registerB
+                callback: this.gameStarter.menuGrapher.registerB,
             });
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuContext", {
-            backMenu: "Pokemon"
+            backMenu: "Pokemon",
         });
         this.gameStarter.menuGrapher.addMenuList("PokemonMenuContext", {
-            options: options
+            options,
         });
         this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
     }
@@ -215,31 +213,31 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
      */
     public openPokemonMenuStats(pokemon: IPokemon): void {
         const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")];
-        const barWidth: number = 100;
+        const barWidth = 100;
         const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.statistics.health);
 
         this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
             backMenu: "PokemonMenuContext",
             callback: (): void => this.addSecondaryStats(pokemon),
-            container: "Pokemon"
+            container: "Pokemon",
         });
 
         this.addPrimaryStats({
-            pokemon: pokemon,
+            pokemon,
             container: "PokemonMenuStats",
             size: {
                 width: 160,
-                height: 168
+                height: 168,
             },
             position: {
                 vertical: "bottom",
                 horizontal: "left",
                 offset: {
                     left: 3,
-                    top: -3
-                }
+                    top: -3,
+                },
             },
-            textXOffset: 16
+            textXOffset: 16,
         });
 
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
@@ -258,8 +256,8 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsOT",
             [
-                "%%%%%%%PLAYER%%%%%%%"
-            ]
+                "%%%%%%%PLAYER%%%%%%%",
+            ],
         );
 
         this.gameStarter.menuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
@@ -269,29 +267,29 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 horizontal: "left",
                 offset: {
                     top: 2,
-                    left: 34
-                }
+                    left: 34,
+                },
             },
             args: {
                 width: Math.max(health, 1),
                 height: 4,
-                hidden: health === 0
-            }
+                hidden: health === 0,
+            },
         });
 
         this.gameStarter.menuGrapher.createMenuThing("PokemonMenuStats", {
             type: "thing",
             thing: pokemon.title.join("") + "Front",
             args: {
-                flipHoriz: true
+                flipHoriz: true,
             },
             position: {
                 vertical: "bottom",
                 offset: {
                     left: 36,
-                    top: -192
-                }
-            }
+                    top: -192,
+                },
+            },
         });
 
         this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuStats");
@@ -312,13 +310,13 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
             onMenuDelete: settings.onMenuDelete,
             position: settings.position || {
                 horizontal: "center",
-                vertical: "center"
-            }
+                vertical: "center",
+            },
         };
         let top: number;
         let left: number;
 
-        for (let i: number = 0; i < numStatistics; i += 1) {
+        for (let i = 0; i < numStatistics; i += 1) {
             statistics.push(this.gameStarter.utilities.makeDigit(pokemon.statistics[statistics[i]].normal, 7, "\t"));
             statistics[i] = statistics[i].toUpperCase();
         }
@@ -338,9 +336,9 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 position: {
                     offset: {
                         top: top - 2,
-                        left: left
-                    }
-                }
+                        left,
+                    },
+                },
             };
         });
 
@@ -370,17 +368,17 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 text.push({
                     command: true,
                     x: 160,
-                    y: 16
+                    y: 16,
                 });
 
                 text.push({
                     command: true,
-                    y: 2
+                    y: 2,
                 });
                 text.push("PP", " ");
                 text.push({
                     command: true,
-                    y: -2
+                    y: -2,
                 });
                 text.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
                 text.push("/");
@@ -392,7 +390,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                 text.push({
                     command: true,
                     x: -300,
-                    y: -16
+                    y: -16,
                 });
 
                 // TODO: Moves should always be uppercase...
@@ -409,11 +407,11 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends Component<TG
                     {
                         command: true,
                         x: 160,
-                        y: 16
+                        y: 16,
                     },
                     "-",
-                    "-"
-                ]
+                    "-",
+                ],
             });
         }
 

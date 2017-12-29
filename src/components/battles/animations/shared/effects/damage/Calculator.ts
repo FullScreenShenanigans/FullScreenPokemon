@@ -1,6 +1,4 @@
-import { IMoveAction } from "battlemovr/lib/Actions";
-import { IDamageEffect } from "battlemovr/lib/Effects";
-import { ITeamAndAction } from "battlemovr/lib/Teams";
+import { IDamageEffect, IMoveAction, ITeamAndAction } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
@@ -60,7 +58,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
         const stab: number = attacker.types.indexOf(moveSchema.type) !== -1 ? 1.5 : 1;
         const type: number = this.getTypeEffectiveness(move, defender);
 
-        return stab * type * this.gameStarter.numberMaker.randomWithin(.85, 1);
+        return stab * type * this.gameStarter.numberMaker.randomWithin(0.85, 1);
     }
 
     /**
@@ -75,7 +73,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
         const defenderTypes: string[] = this.gameStarter.constants.pokemon.byName[defender.title.join("")].types;
         const typeIndices: { [i: string]: number } = this.gameStarter.constants.types.indices;
         const moveIndex: number = typeIndices[this.gameStarter.constants.moves.byName[move].type];
-        let total: number = 1;
+        let total = 1;
 
         for (const defenderType of defenderTypes) {
             const effectivenesses: number[] = this.gameStarter.constants.types.effectivenessTable[moveIndex];
@@ -96,7 +94,7 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends Component
     public isCriticalHit(move: string, attacker: IPokemon): boolean {
         const moveInfo: IMoveSchema = this.gameStarter.constants.moves.byName[move];
         const baseSpeed: number = this.gameStarter.constants.pokemon.byName[attacker.title.join("")].speed;
-        let denominator: number = 512;
+        let denominator = 512;
 
         // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit,
         // resulting in a probability of BaseSpeed / 64.

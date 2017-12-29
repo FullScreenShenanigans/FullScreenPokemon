@@ -33,11 +33,11 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
         const options: any[] = [
             {
                 text: "NEW GAME",
-                callback: (): void => this.startIntro()
+                callback: (): void => this.startIntro(),
             },
             {
                 text: "LOAD FILE",
-                callback: (): void => this.loadFile()
+                callback: (): void => this.loadFile(),
             }];
 
         this.gameStarter.saves.checkForOldStorageData();
@@ -45,7 +45,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
         if (this.gameStarter.itemsHolder.getItem("gameStarted")) {
             options.unshift({
                 text: "CONTINUE",
-                callback: (): void => this.startPlay()
+                callback: (): void => this.startPlay(),
             });
         }
 
@@ -75,7 +75,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
     public startIntro(): void {
         this.gameStarter.saves.clearSavedData();
         this.gameStarter.scenePlayer.startCutscene("Intro", {
-            disablePauseMenu: true
+            disablePauseMenu: true,
         });
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartIntro);
@@ -105,7 +105,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
                         delete reader.onloadend;
                     };
                     reader.readAsText(file);
-                }
+                },
             });
 
         dummy.click();

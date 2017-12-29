@@ -1,7 +1,4 @@
-import { IMove } from "battlemovr/lib/Actors";
-import { BattleOutcome } from "battlemovr/lib/Animations";
-import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
-import { Team } from "battlemovr/lib/Teams";
+import { BattleOutcome, IMove, IOnChoice, ISelector, Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -27,9 +24,8 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      */
     public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
         const remaining: boolean = battleInfo.teams[Team[team]].actors
-            .filter((actor: IPokemon): boolean => {
-                return actor.statistics.health.current !== 0;
-            })
+            .filter((actor: IPokemon): boolean =>
+                actor.statistics.health.current !== 0)
             .length > 0;
 
         if (remaining) {
@@ -66,24 +62,24 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
             options: [
                 {
                     text: "FIGHT",
-                    callback: (): void => this.openBattleMovesMenu(battleInfo, onChoice)
+                    callback: (): void => this.openBattleMovesMenu(battleInfo, onChoice),
                 },
                 {
                     text: "ITEM",
-                    callback: (): void => this.openBattleItemsMenu(onChoice)
+                    callback: (): void => this.openBattleItemsMenu(onChoice),
                 },
                 {
                     text: ["Poke", "Mon"],
                     callback: (): void => this.switching.openBattlePokemonMenu(
                         team,
                         onChoice,
-                        (): void => this.resetGui(battleInfo, team, onChoice))
+                        (): void => this.resetGui(battleInfo, team, onChoice)),
                 },
                 {
                     text: "RUN",
-                    callback: (): void => this.attemptToFlee(onChoice)
-                }
-            ]
+                    callback: (): void => this.attemptToFlee(onChoice),
+                },
+            ],
         });
         this.gameStarter.menuGrapher.setActiveMenu("BattleOptions");
     }
@@ -96,21 +92,20 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      */
     private openBattleMovesMenu(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
         const moves: IMove[] = battleInfo.teams.player.selectedActor.moves;
-        const options: any[] = moves.map((move: IMove): any => {
-            return {
+        const options: any[] = moves.map((move: IMove): any =>
+            ({
                 text: move.title.toUpperCase(),
                 callback: (): void => {
                     onChoice({
                         move: move.title,
-                        type: "move"
+                        type: "move",
                     });
-                }
-            };
-        });
+                },
+            }));
 
         for (let i: number = moves.length; i < 4; i += 1) {
             options.push({
-                text: "-"
+                text: "-",
             });
         }
 
@@ -133,9 +128,9 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
             onUse: (listing: IInventoryListing): void => {
                 onChoice({
                     item: listing.item,
-                    type: "item"
+                    type: "item",
                 });
-            }
+            },
         });
     }
 
@@ -144,7 +139,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      */
     private attemptToFlee(onChoice: IOnChoice): void {
         onChoice({
-            type: "flee"
+            type: "flee",
         });
     }
 }

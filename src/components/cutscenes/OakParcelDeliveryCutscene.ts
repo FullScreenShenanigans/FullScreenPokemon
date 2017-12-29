@@ -29,13 +29,13 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "You must be talented as a %%%%%%%POKEMON%%%%%%% trainer!",
                 "What? You have something for me?",
                 "%%%%%%%PLAYER%%%%%%% delivered OAK's PARCEL.",
-                "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!"
+                "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!",
             ],
             (): void => {
                 this.gameStarter.timeHandler.addEvent(
                     this.gameStarter.scenePlayer.bindRoutine("RivalInterrupts"),
                     14);
-            }
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
@@ -63,9 +63,9 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Gramps!"
+                "%%%%%%%RIVAL%%%%%%%: Gramps!",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("RivalWalksUp")
+            this.gameStarter.scenePlayer.bindRoutine("RivalWalksUp"),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -89,9 +89,9 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
             [
                 {
                     blocks: 8,
-                    direction: Direction.Top
+                    direction: Direction.Top,
                 },
-                this.gameStarter.scenePlayer.bindRoutine("RivalInquires")
+                this.gameStarter.scenePlayer.bindRoutine("RivalInquires"),
             ]);
     }
 
@@ -103,13 +103,13 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: What did you call me for?"
+                "%%%%%%%RIVAL%%%%%%%: What did you call me for?",
             ],
             (): void => {
                 this.gameStarter.timeHandler.addEvent(
                     this.gameStarter.scenePlayer.bindRoutine("OakRequests"),
                     14);
-            }
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -122,7 +122,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Oak: Oh right! I have a request of you two."
+                "Oak: Oh right! I have a request of you two.",
             ],
             (): void => {
                 this.gameStarter.timeHandler.addEvent(
@@ -142,7 +142,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
             [
                 "On the desk there is my invention, %%%%%%%POKEDEX%%%%%%%!",
                 "It automatically records data on %%%%%%%POKEMON%%%%%%% you've seen or caught!",
-                "It's a hi-tech encyclopedia!"
+                "It's a hi-tech encyclopedia!",
             ],
             (): void => {
                 this.gameStarter.timeHandler.addEvent(
@@ -164,7 +164,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
             "GeneralText",
             [
                 "OAK: %%%%%%%PLAYER%%%%%%% and %%%%%%%RIVAL%%%%%%%! Take these with you!",
-                "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!"
+                "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!",
             ],
             (): void => {
                 this.gameStarter.timeHandler.addEvent(
@@ -178,7 +178,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 this.gameStarter.stateHolder.addChange(bookRight.id, "alive", false);
 
                 this.gameStarter.itemsHolder.setItem("hasPokedex", true);
-            }
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -196,13 +196,13 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "But, I'm too old! I can't do it!",
                 "So, I want you two to fulfill my dream for me!",
                 "Get moving, you two!",
-                "This is a great undertaking in %%%%%%%POKEMON%%%%%%% history!"
+                "This is a great undertaking in %%%%%%%POKEMON%%%%%%% history!",
             ],
             (): void => {
                 this.gameStarter.timeHandler.addEvent(
                     this.gameStarter.scenePlayer.bindRoutine("RivalAccepts"),
                     14);
-            }
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -222,7 +222,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "%%%%%%%RIVAL%%%%%%%: Alright Gramps! Leave it all to me!",
                 "%%%%%%%PLAYER%%%%%%%, I hate to say it, but I don't need you!",
                 "I know! I'll borrow a TOWN MAP from my sis!",
-                "I'll tell her not to lend you one, %%%%%%%PLAYER%%%%%%%! Hahaha!"
+                "I'll tell her not to lend you one, %%%%%%%PLAYER%%%%%%%! Hahaha!",
             ],
             (): void => {
                 this.gameStarter.scenePlayer.stopCutscene();
@@ -236,26 +236,26 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                     [
                         {
                             blocks: 8,
-                            direction: Direction.Bottom
+                            direction: Direction.Bottom,
                         },
                         (): void => {
                             this.gameStarter.physics.killNormal(settings.rival);
                             this.gameStarter.mapScreener.blockInputs = false;
-                        }
+                        },
                     ]);
 
                 delete settings.oak.cutscene;
                 settings.oak.dialog = [
-                    "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!"
+                    "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!",
                 ];
 
                 this.gameStarter.stateHolder.addChange(
-                    settings.oak.id, "dialog", settings.oak.dialog
+                    settings.oak.id, "dialog", settings.oak.dialog,
                 );
                 this.gameStarter.stateHolder.addChange(
-                    settings.oak.id, "cutscene", undefined
+                    settings.oak.id, "cutscene", undefined,
                 );
-            }
+            },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }

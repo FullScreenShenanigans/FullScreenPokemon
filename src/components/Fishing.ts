@@ -28,12 +28,12 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
             ignoreA: true,
-            ignoreB: true
+            ignoreB: true,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!"
+                "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!",
             ]);
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
@@ -50,7 +50,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
                 this.gameStarter.actions.animateExclamation(player);
                 this.gameStarter.fishing.playerLandedFish(player, rod);
             },
-            180
+            180,
         );
     }
 
@@ -70,12 +70,12 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 this.gameStarter.menuGrapher.createMenu("GeneralText", {
-                    deleteOnFinish: true
+                    deleteOnFinish: true,
                 });
                 this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
-                        "Oh! \n It's a bite!"
+                        "Oh! \n It's a bite!",
                     ],
                     (): void => {
                         console.log("Should start battle with", chosenPokemon);
@@ -94,7 +94,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
                 this.gameStarter.graphics.removeClass(player, "fishing");
                 this.gameStarter.physics.setWidth(player, 8, true);
             },
-            140
+            140,
         );
     }
 

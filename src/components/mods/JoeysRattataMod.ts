@@ -1,6 +1,6 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { IMod } from "modattachr";
 
-import { ICharacter, IEnemy, } from "../../components/Things";
+import { ICharacter, IEnemy } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ModComponent } from "./ModComponent";
 
@@ -16,7 +16,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends ModC
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
             (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
@@ -48,7 +48,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends ModC
             // }
         },
         [this.eventNames.onSetLocation]: (): void => {
-            this.events.onModEnable!();
-        }
+            this.events.onModEnable();
+        },
     };
 }

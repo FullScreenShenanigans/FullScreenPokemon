@@ -1,18 +1,9 @@
-import { IEventsModuleSettings } from "gamestartr";
-
-import { FullScreenPokemon } from "../FullScreenPokemon";
+import { ITimeHandlrSettings } from "timehandlr";
 
 /**
- * @param fsp   A generating FullScreenPokemon instance.
  * @returns Event settings for the FullScreenPokemon instance.
  */
-export function GenerateEventsSettings(_fsp: FullScreenPokemon): IEventsModuleSettings {
-    "use strict";
-
-    return {
-        keyOnClassCycleStart: "onThingAdd",
-        keyDoClassCycleStart: "placed",
-        keyCycleCheckValidity: "alive",
-        timingDefault: 9
-    };
-}
+export const GenerateEventsSettings = (): Partial<ITimeHandlrSettings> => ({
+    keyCycleCheckValidity: "alive",
+    timingDefault: 9,
+});

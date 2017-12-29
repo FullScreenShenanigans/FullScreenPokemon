@@ -1,4 +1,4 @@
-import { IModsModuleSettings } from "gamestartr";
+import { IModAttachrSettings } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -6,10 +6,6 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
  * @param fsp   A generating FullScreenPokemon instance.
  * @returns Mod settings for the FullScreenPokemon instance.
  */
-export function GenerateModsSettings(fsp: FullScreenPokemon): IModsModuleSettings {
-    "use strict";
-
-    return {
-        mods: fsp.mods.mods
-    };
-}
+export const GenerateModsSettings = (fsp: FullScreenPokemon): Partial<IModAttachrSettings> => ({
+    mods: fsp.mods.mods,
+});

@@ -1,8 +1,8 @@
 import { Component } from "eightbittr";
-import { IPipe } from "inputwritr/lib/IInputWritr";
-import { IMod } from "modattachr/lib/IModAttachr";
+import { IPipe } from "inputwritr";
+import { IMod } from "modattachr";
 import {
-    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrapprSettings, OptionType
+    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrapprSettings, OptionType,
 } from "userwrappr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -29,16 +29,16 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
     public readonly sizes: IGameSizes = {
         GameBoy: {
             width: 320,
-            height: 288
+            height: 288,
         },
         NES: {
             width: 512,
-            height: 464
+            height: 464,
         },
         [this.defaultSize]: {
             width: "100%",
-            height: "100%"
-        }
+            height: "100%",
+        },
     };
 
     /**
@@ -47,18 +47,18 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
     public readonly keys: string[] = [
         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
         "up", "right", "down", "left",
-        "backspace", "ctrl", "enter", "escape", "shift", "space"
+        "backspace", "ctrl", "enter", "escape", "shift", "space",
     ];
 
     /**
      * Whether InputWritr pipes have been initialized.
      */
-    private initializedPipes: boolean = false;
+    private initializedPipes = false;
 
     /**
      * Whether the page is known to be hidden.
      */
-    private isPageHidden: boolean = false;
+    private isPageHidden = false;
 
     /**
      * Creates settings for the game's IUserWrappr.
@@ -89,7 +89,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 this.gameStarter.audioPlayer.setVolume(value / 100);
                             },
                             title: "Volume",
-                            type: OptionType.Number
+                            type: OptionType.Number,
                         },
                         {
                             getInitialValue: (): boolean => this.gameStarter.audioPlayer.getMuted(),
@@ -97,7 +97,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 this.gameStarter.audioPlayer.setMuted(value);
                             },
                             title: "Mute",
-                            type: OptionType.Boolean
+                            type: OptionType.Boolean,
                         },
                         {
                             getInitialValue: (): string => "1x",
@@ -106,7 +106,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 this.gameStarter.gamesRunner.setSpeed(parseFloat(value.replace("x", "")));
                             },
                             title: "Speed",
-                            type: OptionType.Select
+                            type: OptionType.Select,
                         },
                         {
                             getInitialValue: () => this.defaultSize,
@@ -115,7 +115,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 await this.gameStarter.userWrapper.resetSize(this.sizes[value]);
                             },
                             title: "View Mode",
-                            type: OptionType.Select
+                            type: OptionType.Select,
                         },
                         {
                             getInitialValue: () => (1 / this.gameStarter.pixelDrawer.getFramerateSkip() * 60) + "fps",
@@ -125,7 +125,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 this.gameStarter.pixelDrawer.setFramerateSkip(1 / numeric * 60);
                             },
                             title: "Framerate",
-                            type: OptionType.Select
+                            type: OptionType.Select,
                         },
                         ((): IBooleanSchema => {
                             let deviceMotionPipe: IPipe | undefined;
@@ -150,10 +150,10 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 this.gameStarter.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
                             },
                             title: "Screenshot",
-                            type: OptionType.Action
-                        }
+                            type: OptionType.Action,
+                        },
                     ],
-                    title: "Options"
+                    title: "Options",
                 },
                 {
                     options: ((controls: string[]): IMultiSelectSchema[] =>
@@ -168,10 +168,10 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                             },
                             selections: 2,
                             title: control,
-                            type: OptionType.MultiSelect
+                            type: OptionType.MultiSelect,
                         }))
                     )(["a", "b", "left", "right", "up", "down", "pause"]),
-                    title: "Controls"
+                    title: "Controls",
                 },
                 {
                     options: ((mods: IMod[]) =>
@@ -183,43 +183,43 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                     : this.gameStarter.modAttacher.disableMod(mod.name);
                             },
                             title: mod.name,
-                            type: OptionType.Boolean
+                            type: OptionType.Boolean,
                         }))
                     )(this.gameStarter.mods.mods),
-                    title: "Mods!"
-                }
+                    title: "Mods!",
+                },
             ],
             styles: {
                 input: {
                     fontFamily: "Press Start",
                     minWidth: "117px",
-                    padding: "3px"
+                    padding: "3px",
                 },
                 inputButton: {
                     background: "#ffcc33",
                     cursor: "pointer",
                     fontFamily: "Press Start",
-                    padding: "7px 3px"
+                    padding: "7px 3px",
                 },
                 inputButtonAction: {
                     padding: "11px 3px",
-                    width: "100%"
+                    width: "100%",
                 },
                 inputButtonBoolean: {
-                    padding: "7px 21px"
+                    padding: "7px 21px",
                 },
                 inputButtonOff: {
-                    background: "#ccaa33"
+                    background: "#ccaa33",
                 },
                 inputSelect: {
                     minWidth: "35px",
-                    padding: "3px 0"
+                    padding: "3px 0",
                 },
                 option: {
                     alignItems: "center",
                     margin: "auto",
                     padding: "7px 0",
-                    maxWidth: "calc(100% - 14px)"
+                    maxWidth: "calc(100% - 14px)",
                 },
                 options: {
                     left: "4px",
@@ -231,26 +231,26 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                         "0 0 0 4px #99ccff",
                         "0 0 14px black",
                     ].join(", "),
-                    background: "#005599"
+                    background: "#005599",
                 },
                 optionsList: {
-                    marginBottom: "7px"
+                    marginBottom: "7px",
                 },
                 menu: {
                     maxWidth: "385px",
                     minWidth: "280px",
-                    padding: "7px"
+                    padding: "7px",
                 },
                 menusInnerArea: {
                     background: "black",
                     color: "white",
                     fontFamily: "Press Start",
-                    transition: "700ms color"
+                    transition: "700ms color",
                 },
                 menusInnerAreaFake: {
-                    color: "grey"
+                    color: "grey",
                 },
-            }
+            },
         };
     }
 

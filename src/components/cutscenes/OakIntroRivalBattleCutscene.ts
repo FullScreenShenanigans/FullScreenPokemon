@@ -1,4 +1,4 @@
-import { BattleOutcome } from "battlemovr/lib/Animations";
+import { BattleOutcome } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -31,7 +31,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
-                "Come on, I'll take you on!"
+                "Come on, I'll take you on!",
             ],
             this.gameStarter.scenePlayer.bindRoutine("Challenge", { further }));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -60,10 +60,10 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     actors: [
                         this.gameStarter.equations.newPokemon({
                             level: 5,
-                            title: starterRival
-                        })
-                    ]
-                }
+                            title: starterRival,
+                        }),
+                    ],
+                },
             },
             texts: {
                 start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
@@ -72,12 +72,12 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     [BattleOutcome.playerVictory]: (): string => [
                         "%%%%%%%RIVAL%%%%%%%: WHAT?",
                         "Unbelievable!",
-                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!"
+                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!",
                     ].join(" "),
-                }
+                },
             },
             // noBlackout: true,
-            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"])
+            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
         };
         let blocks: number;
 
@@ -103,16 +103,16 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
             settings.rival,
             [
                 {
-                    blocks: blocks,
-                    direction: Direction.Left
+                    blocks,
+                    direction: Direction.Left,
                 },
                 {
                     blocks: 1,
-                    direction: Direction.Bottom
+                    direction: Direction.Bottom,
                 },
                 (): void => {
                     this.gameStarter.battles.startBattle(battleInfo);
-                }
+                },
             ]);
     }
 }

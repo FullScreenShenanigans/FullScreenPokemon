@@ -77,7 +77,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.bubbleLarge, x, y);
         const bubblesSmall: IThing[] = [];
 
-        for (let j: number = 0; j < 4; j += 1) {
+        for (let j = 0; j < 4; j += 1) {
             bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         }
 
@@ -89,7 +89,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 this.gameStarter.physics.killNormal(bubbleLarge);
-                for (let j: number = 0; j < 4; j += 1) {
+                for (let j = 0; j < 4; j += 1) {
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }
             },
@@ -106,7 +106,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesLarge: IThing[] = [];
         const bubblesSmall: IThing[] = [];
 
-        for (let j: number = 0; j < 3; j += 1) {
+        for (let j = 0; j < 3; j += 1) {
             bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleLarge);
             bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         }
@@ -120,7 +120,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
-                for (let j: number = 0; j < 4; j += 1) {
+                for (let j = 0; j < 4; j += 1) {
                     this.gameStarter.physics.killNormal(bubblesLarge[j]);
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }
@@ -138,7 +138,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesLarge: IThing[] = [];
         const bubblesSmall: IThing[] = [];
 
-        for (let j: number = 0; j < 4; j += 1) {
+        for (let j = 0; j < 4; j += 1) {
             bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleLarge);
             bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         }
@@ -151,7 +151,7 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         this.gameStarter.things.add(bubblesSmall[2], x, y + 12);
         this.gameStarter.timeHandler.addEvent(
             (): void => {
-                for (let j: number = 0; j < 4; j += 1) {
+                for (let j = 0; j < 4; j += 1) {
                     this.gameStarter.physics.killNormal(bubblesLarge[j]);
                     this.gameStarter.physics.killNormal(bubblesSmall[j]);
                 }

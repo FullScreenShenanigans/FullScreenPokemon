@@ -1,4 +1,4 @@
-import { BattleOutcome } from "battlemovr/lib/Animations";
+import { BattleOutcome } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";

@@ -1,4 +1,4 @@
-import { Team } from "battlemovr/lib/Teams";
+import { Team } from "battlemovr";
 
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Move } from "../Move";
@@ -13,7 +13,7 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        const dt: number = 7;
+        const dt = 7;
         let xvel: number = this.direction * 7;
 
         this.gameStarter.timeHandler.addEventInterval(
@@ -39,7 +39,7 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
                     this.gameStarter.battles.animations.things.shake({
                         callback: (): void => {
                             this.flickerDefender(callback);
-                        }
+                        },
                     });
                 },
                 dt * 2);
@@ -56,7 +56,7 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
             callback,
             clearTime: 14,
             interval: 5,
-            thing: this.defenderThing
+            thing: this.defenderThing,
         });
     }
 }

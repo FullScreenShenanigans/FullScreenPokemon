@@ -1,4 +1,4 @@
-import { IMove, IStatistic } from "battlemovr/lib/Actors";
+import { IMove, IStatistic } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -33,7 +33,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns The average level of the Pokemon.
      */
     public averageLevel(pokemon: IPokemon[]): number {
-        let average: number = 0;
+        let average = 0;
 
         for (const actor of pokemon) {
             average += actor.level;
@@ -47,7 +47,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      * @returns The average level from among the schemas.
      */
     public averageLevelWildPokemon(options: IWildPokemonSchema[]): number {
-        let average: number = 0;
+        let average = 0;
 
         for (const wildPokemon of options) {
             if (wildPokemon.level) {
@@ -59,7 +59,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
                 throw new Error("Wild Pokemon must have wither .level of .levels defined.");
             }
 
-            let levelAverage: number = 0;
+            let levelAverage = 0;
 
             for (const level of wildPokemon.levels) {
                 levelAverage += level * (1 / wildPokemon.levels.length);
@@ -79,7 +79,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
      */
     public chooseRandomWildPokemon(options: IWildPokemonSchema[]): IWildPokemonSchema {
         const choice: number = this.gameStarter.numberMaker.random();
-        let sum: number = 0;
+        let sum = 0;
 
         for (const option of options) {
             sum += option.rate!;
@@ -120,7 +120,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
             nickname: chosenInfo.title,
             statistics: this.newPokemonStatistics(chosenInfo.title, chosenInfo.level || 1, ev, iv),
             title: chosenInfo.title,
-            types: this.gameStarter.constants.pokemon.byName[chosenInfo.title.join("")].types
+            types: this.gameStarter.constants.pokemon.byName[chosenInfo.title.join("")].types,
         };
     }
 
@@ -172,7 +172,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
             newMove = {
                 title: move.move,
                 remaining: this.gameStarter.constants.moves.byName[move.move].PP,
-                uses: this.gameStarter.constants.moves.byName[move.move].PP
+                uses: this.gameStarter.constants.moves.byName[move.move].PP,
             };
 
             output.push(newMove);
@@ -194,7 +194,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
             defense: this.gameStarter.numberMaker.randomIntWithin(0, 15),
             health: 0,
             speed: this.gameStarter.numberMaker.randomIntWithin(0, 15),
-            special: this.gameStarter.numberMaker.randomIntWithin(0, 15)
+            special: this.gameStarter.numberMaker.randomIntWithin(0, 15),
         };
     }
 
@@ -209,7 +209,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
             defense: 0,
             health: 0,
             speed: 0,
-            special: 0
+            special: 0,
         };
     }
 
@@ -230,7 +230,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
 
         return {
             current: normal,
-            normal
+            normal,
         };
     }
 
@@ -430,14 +430,14 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         const a: number = opponent.category === "Trainer" ? 1.5 : 1;
 
         // b is the base experience yield of the fainted Pokemon's species
-        const b: number = 64; // (Bulbasaur) Todo: add this in
+        const b = 64; // (Bulbasaur) Todo: add this in
 
         // lf is the level of the fainted Pokemon
         const lf: number = opponent.selectedActor.level;
 
         // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
         // Todo: Account for modifies like Exp. All
-        const s: number = 1;
+        const s = 1;
 
         // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
         const t: number = player.selectedActor.traded ? 1.5 : 1;

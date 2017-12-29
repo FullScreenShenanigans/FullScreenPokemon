@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { INewPokemon } from "../constants/Pokemon";
@@ -30,128 +30,128 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
      *          number is higher than what the probabilities add up to.
      */
      private static typeItems: { [i: string]: IItemProbabilities[] } = {
-        "Normal": [
+        Normal: [
             {
-                "name": "Potion",
-                "probability": .025
+                name: "Potion",
+                probability: 0.025,
             },
             {
-                "name": "Moon Stone",
-                "probability": .005
-            }
+                name: "Moon Stone",
+                probability: 0.005,
+            },
         ],
-        "Fire": [
+        Fire: [
             {
-                "name": "Burn Heal",
-                "probability": .025
+                name: "Burn Heal",
+                probability: 0.025,
             },
             {
-                "name": "Fire Stone",
-                "probability": .005
-            }
+                name: "Fire Stone",
+                probability: 0.005,
+            },
         ],
-        "Fighting": [
+        Fighting: [
             {
-                "name": "Dire Hit",
-                "probability": .025
+                name: "Dire Hit",
+                probability: 0.025,
             },
             {
-                "name": "TM01",
-                "probability": .005
-            }
+                name: "TM01",
+                probability: 0.005,
+            },
         ],
-        "Water": [
+        Water: [
             {
-                "name": "Fresh Water",
-                "probability": .05
+                name: "Fresh Water",
+                probability: 0.05,
             },
             {
-                "name": "Water Stone",
-                "probability": .005
-            }
+                name: "Water Stone",
+                probability: 0.005,
+            },
         ],
-        "Flying": [
+        Flying: [
             {
-                "name": "TM43",
-                "probability": .005
-            }
+                name: "TM43",
+                probability: 0.005,
+            },
         ],
-        "Grass": [
+        Grass: [
             {
-                "name": "Leaf Stone",
-                "probability": .005
-            }
+                name: "Leaf Stone",
+                probability: 0.005,
+            },
         ],
-        "Poison": [
+        Poison: [
             {
-                "name": "Antidote",
-                "probability": .05
+                name: "Antidote",
+                probability: 0.05,
             },
             {
-                "name": "TM06",
-                "probability": .005
-            }
+                name: "TM06",
+                probability: 0.005,
+            },
         ],
-        "Electric": [
+        Electric: [
             {
-                "name": "Thundertone",
-                "probability": .005
-            }
+                name: "Thundertone",
+                probability: 0.005,
+            },
         ],
-        "Ground": [
+        Ground: [
             {
-                "name": "Guard Spec",
-                "probability": .005
-            }
+                name: "Guard Spec",
+                probability: 0.005,
+            },
         ],
-        "Psychic": [
+        Psychic: [
             {
-                "name": "Ultra Ball",
-                "probability": .005
-            }
+                name: "Ultra Ball",
+                probability: 0.005,
+            },
         ],
-        "Rock": [
+        Rock: [
             {
-                "name": "Escape Rope",
-                "probability": .05
+                name: "Escape Rope",
+                probability: 0.05,
             },
             {
-                "name": "Iron",
-                "probability": .005
-            }
+                name: "Iron",
+                probability: 0.005,
+            },
         ],
-        "Ice": [
+        Ice: [
             {
-                "name": "Ice Heal",
-                "probability": .025
+                name: "Ice Heal",
+                probability: 0.025,
             },
             {
-                "name": "TM13",
-                "probability": .005
-            }
+                name: "TM13",
+                probability: 0.005,
+            },
         ],
-        "Bug": [
+        Bug: [
             {
-                "name": "Repel",
-                "probability": .025
+                name: "Repel",
+                probability: 0.025,
             },
             {
-                "name": "Max Repel",
-                "probability": .005
-            }
+                name: "Max Repel",
+                probability: 0.005,
+            },
         ],
-        "Dragon": [
+        Dragon: [
             {
-                "name": "Rare Candy",
-                "probability": .0025
-            }
+                name: "Rare Candy",
+                probability: 0.0025,
+            },
         ],
-        "Ghost": [
+        Ghost: [
             {
-                "name": "Full Restore",
-                "probability": .0025
-            }
-        ]
+                name: "Full Restore",
+                probability: 0.0025,
+            },
+        ],
      };
 
      /**
@@ -171,7 +171,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
              if (chosenItem !== undefined) {
                  chosenInfo.item = chosenItem;
              }
-         }
+         },
      };
 
      /**
@@ -182,7 +182,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
       */
      private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
-            let counter: number = 0;
+            let counter = 0;
 
             for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
                 counter += chosenObject.probability;
