@@ -40,7 +40,7 @@ export const GenerateMapsSettings = (fsp: FullScreenPokemon): IMapsModuleSetting
     screenAttributes: [
         "allowCycling",
     ],
-    variableFunctions: {
+    screenVariables: {
         boundaries: fsp.scrolling.getAreaBoundariesReal.bind(fsp.scrolling),
         scrollability: fsp.scrolling.getScreenScrollability.bind(fsp.scrolling),
     },

@@ -15,6 +15,7 @@
         "no-unbound-method": false,
         "no-unnecessary-type-assertion": false,
         "no-unsafe-any": false,
+        "no-unused-variable": false,
         "no-void-expression": false,
         "prefer-function-over-method": false,
         "prefer-switch": false,
@@ -22,6 +23,7 @@
         "restrict-plus-operands": false,
         "strict-boolean-expressions": false,
         "strict-type-predicates": false,
+        "switch-final-break": false,
         "variable-name": false
     }
 }

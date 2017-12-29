@@ -157,6 +157,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
                     break;
 
                 default:
+                    break;
             }
         }
     }

@@ -1,6 +1,6 @@
 import { IBattleMovrSettings } from "battlemovr";
 import { IFlagSwapprSettings } from "flagswappr";
-import * as igamestartr from "gamestartr";
+import { IModuleSettings as IGameStartrModuleSettings } from "gamestartr";
 import { IMenuGraphrSettings } from "menugraphr";
 import { IStateHoldrSettings } from "stateholdr";
 
@@ -27,7 +27,7 @@ import { GenerateStateSettings } from "./State";
 /**
  * Stored settings to generate modules.
  */
-export interface IModuleSettings extends igamestartr.IModuleSettings {
+export interface IModuleSettings extends IGameStartrModuleSettings {
     /**
      * Settings regarding in-game battles, particularly for an IBattleMovr.
      */

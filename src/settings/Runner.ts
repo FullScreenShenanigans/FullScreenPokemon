@@ -7,7 +7,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
  * @param fsp   A generating FullScreenPokemon instance.
  * @returns Runner settings for the FullScreenPokemon instance.
  */
-export const GenerateRunnerSettings = (fsp: FullScreenPokemon): Partial<IGamesRunnrSettings> => ({
+export const GenerateRunnerSettings = (fsp: FullScreenPokemon): IGamesRunnrSettings => ({
     interval: 1000 / 60,
     games: [
         (): void => {

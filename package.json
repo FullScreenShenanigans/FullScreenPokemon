@@ -3,6 +3,7 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./src/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
     },
@@ -54,13 +55,14 @@
         "node-sass": "^4.7.2",
         "requirejs": "^2.3.5",
         "run-for-every-file": "^1.1.0",
-        "shenanigans-manager": "^0.2.0",
+        "shenanigans-manager": "^0.2.5",
         "sinon": "^4.1.2",
         "sinon-chai": "^2.14.0",
         "stylelint": "^8.4.0",
         "stylelint-config-recommended-scss": "^3.0.0",
         "stylelint-scss": "^2.2.0",
         "tslint": "5.8.0",
+        "tsutils": "^2.14.0",
         "typedoc": "^0.9.0",
         "typescript": "^2.6.2",
         "webpack": "^3.10.0"
@@ -73,21 +75,22 @@
     },
     "scripts": {
         "dist": "npm run dist:webpack",
-        "dist:webpack": "webpack --config webpack.config.js",
+        "dist:webpack": "webpack",
         "docs": "npm run docs:typedoc",
-        "docs:typedoc": "typedoc src/ --out docs/generated",
+        "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
         "gulp": "gulp",
         "init": "npm install && npm run setup && npm run verify",
-        "setup": "npm run setup:copy && npm run setup:package",
+        "setup": "npm run setup:copy && npm run setup:package && npm run setup:readme",
         "setup:copy": "npm run setup:copy:default && npm run setup:copy:web",
         "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
         "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\"",
         "setup:package": "shenanigans-manager hydrate-package-json",
+        "setup:readme": "shenanigans-manager hydrate-readme",
         "src": "npm run src:tsc && npm run src:tslint && npm run src:scss && npm run src:stylelint",
         "src:scss": "node-sass --recursive src --output src",
         "src:stylelint": "stylelint src/**/*.scss",
         "src:tsc": "tsc -p .",
-        "src:tslint": "tslint -c tslint.json --exclude ./node_modules/**/*.ts* -p tsconfig.json -t stylish",
+        "src:tslint": "tslint -c tslint.json -e ./node_modules/**/*.ts* -p tsconfig.json -t stylish",
         "test": "npm run test:setup && npm run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
@@ -96,7 +99,7 @@
         "test:setup:html": "shenanigans-manager generate-test-html",
         "test:setup:tsc": "tsc -p test",
         "verify": "npm run src && npm run test && npm run dist && npm run docs",
-        "watch": "run-p \"tsc -p . -w\" \"echo sup\""
+        "watch": "tsc -p . -w"
     },
     "shenanigans": {
         "name": "FullScreenPokemon",
@@ -117,5 +120,5 @@
         }
     },
     "types": "./src/index.d.ts",
-    "version": "0.6.0"
+    "version": "0.7.0"
 }

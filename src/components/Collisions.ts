@@ -142,6 +142,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends Component
                     break;
 
                 default:
+                    break;
             }
 
             // Todo: investigate why this never returns true?
