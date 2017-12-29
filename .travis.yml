@@ -2,7 +2,7 @@ language: node_js
 
 node_js:
   - "node"
-  - "5"
+  - "7"
 
 script:
   npm run verify

@@ -1,5 +1,6 @@
 <!-- {{Top}} -->
 # FullScreenPokemon
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/FullScreenPokemon.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FullScreenPokemon)
 [![NPM version](https://badge.fury.io/js/fullscreenpokemon.svg)](http://badge.fury.io/js/fullscreenpokemon)
 
