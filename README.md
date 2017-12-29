@@ -32,7 +32,6 @@ fsp.reset(fsp.interface.sizes.GameBody);
 document.body.appendChild(fsp.canvas);
 ```
 
-
 <!-- {{Development}} -->
 ## Development
 
