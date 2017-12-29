@@ -56,7 +56,7 @@
         "node-sass": "^4.7.2",
         "requirejs": "^2.3.5",
         "run-for-every-file": "^1.1.0",
-        "shenanigans-manager": "^0.2.7",
+        "shenanigans-manager": "^0.2.9",
         "sinon": "^4.1.2",
         "sinon-chai": "^2.14.0",
         "stylelint": "^8.4.0",
@@ -84,7 +84,7 @@
         "setup": "npm run setup:copy && npm run setup:package && npm run setup:readme",
         "setup:copy": "npm run setup:copy:default && npm run setup:copy:web",
         "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
-        "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\"",
+        "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"shenanigans-manager mustache --input {{src-file}} --output {{file}}\" --dest \".\" --only-files",
         "setup:package": "shenanigans-manager hydrate-package-json",
         "setup:readme": "shenanigans-manager hydrate-readme",
         "src": "npm run src:tsc && npm run src:tslint && npm run src:scss && npm run src:stylelint",
@@ -104,6 +104,42 @@
         "watch": "tsc -p . -w"
     },
     "shenanigans": {
+        "externals": [
+            {
+                "js": {
+                    "dev": "../node_modules/mobx/lib/mobx.umd",
+                    "prod": "../node_modules/mobx/lib/mobx.umd.min"
+                },
+                "name": "mobx"
+            },
+            {
+                "js": {
+                    "dev": "../node_modules/mobx-react/index",
+                    "prod": "../node_modules/mobx-react/index.min"
+                },
+                "name": "mobx-react"
+            },
+            {
+                "js": {
+                    "dev": "../node_modules/react/umd/react.development",
+                    "prod": "../node_modules/react/lib/react.production"
+                },
+                "name": "react"
+            },
+            {
+                "js": {
+                    "dev": "../node_modules/react-dom/umd/react-dom.development",
+                    "prod": "../node_modules/react-dom/lib/react-dom.production"
+                },
+                "name": "react-dom"
+            },
+            {
+                "js": {
+                    "dev": "../node_modules/userwrappr/dist/UserWrappr-Delayed"
+                },
+                "name": "UserWrappr-Delayed"
+            }
+        ],
         "name": "FullScreenPokemon",
         "web": {
             "drivingObject": "FSP",
