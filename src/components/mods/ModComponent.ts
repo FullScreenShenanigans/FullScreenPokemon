@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { EventNames } from "./EventNames";

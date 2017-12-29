@@ -32,7 +32,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
             onComplete: (): void => {
                 this.setupThings(battleInfo);
                 this.runTeamEntrances(battleInfo, onComplete);
-            }
+            },
         });
     }
 
@@ -58,7 +58,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
      */
     private runTeamEntrances(battleInfo: IBattleInfo, onComplete: () => void): void {
         const { menu, opponent, player }: IBattleThings = battleInfo.things;
-        const timeout: number = 70;
+        const timeout = 70;
 
         let playerX: number;
         let opponentX: number;
@@ -129,7 +129,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
      */
     private runOpeningText(battleInfo: IBattleInfo, onComplete: () => void): void {
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
-            finishAutomatically: battleInfo.automaticMenus
+            finishAutomatically: battleInfo.automaticMenus,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",

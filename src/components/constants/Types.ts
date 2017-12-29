@@ -9,7 +9,7 @@ export class Types {
      */
     public readonly names: string[] = [
         "Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug",
-        "Ghost", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon"
+        "Ghost", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon",
     ];
 
     /**
@@ -30,7 +30,7 @@ export class Types {
         Electric: 11,
         Psychic: 12,
         Ice: 13,
-        Dragon: 14
+        Dragon: 14,
     };
 
     /**
@@ -38,6 +38,7 @@ export class Types {
      * effectiveness multiplier.
      */
     public readonly effectivenessTable: number[][] = [
+        // tslint:disable number-literal-format
         [1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
         [2.0, 1.0, 0.5, 0.5, 1.0, 2.0, 0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0],
         [1.0, 2.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0],
@@ -52,6 +53,7 @@ export class Types {
         [1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 0.5],
         [1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0],
         [1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 0.5, 2.0],
-        [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+        [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0],
+        // tslint:enable number-literal-format
     ];
 }

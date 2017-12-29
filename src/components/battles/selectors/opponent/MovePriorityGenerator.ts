@@ -1,4 +1,4 @@
-import { IMove } from "battlemovr/lib/Actors";
+import { IMove } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
@@ -37,7 +37,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
         const possibilities: IMovePossibility[] = moves.map(
             (move: IMove): IMovePossibility => ({
                 move: move.title,
-                priority: 10
+                priority: 10,
             }));
 
         // Modification 1: Do not use a move that only statuses if the defending Pokemon already has a status.

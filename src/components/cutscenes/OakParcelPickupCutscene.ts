@@ -20,7 +20,7 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Hey! You came from PALLET TOWN?"
+                "Hey! You came from PALLET TOWN?",
             ],
             this.gameStarter.scenePlayer.bindRoutine("WalkToCounter"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -37,13 +37,13 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
             [
                 {
                     blocks: 2,
-                    direction: Direction.Top
+                    direction: Direction.Top,
                 },
                 {
                     blocks: 1,
-                    direction: Direction.Left
+                    direction: Direction.Left,
                 },
-                this.gameStarter.scenePlayer.bindRoutine("CounterDialog")
+                this.gameStarter.scenePlayer.bindRoutine("CounterDialog"),
             ]);
     }
 
@@ -57,7 +57,7 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
             [
                 "You know PROF. Oak, right?",
                 "His order came in. Will you take it to him?",
-                "%%%%%%%PLAYER%%%%%%% got OAK's PARCEL!"
+                "%%%%%%%PLAYER%%%%%%% got OAK's PARCEL!",
             ],
             (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("GeneralText");

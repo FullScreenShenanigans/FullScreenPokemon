@@ -1,5 +1,4 @@
-import { IMoveAction } from "battlemovr/lib/Actions";
-import { ITeamAndAction, Team } from "battlemovr/lib/Teams";
+import { IMoveAction, ITeamAndAction, Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";

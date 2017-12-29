@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
+import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
@@ -144,7 +144,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         "Pallet Town": [18, 48],
         "Pewter City": [18, 16],
         "Serebii Islands": [18, 64],
-        "Viridian City": [18, 36]
+        "Viridian City": [18, 36],
     };
 
     /**
@@ -155,47 +155,47 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             {
                 text: "%%%%%%%POKEMON%%%%%%%",
                 callback: (): void => this.pokemon.openPartyMenu({
-                    onSwitch: (): void => console.log("Should switch...")
-                })
+                    onSwitch: (): void => console.log("Should switch..."),
+                }),
             },
             {
                 text: "ITEM",
-                callback: (): void => this.items.openItemsMenu()
+                callback: (): void => this.items.openItemsMenu(),
             },
             {
                 text: "%%%%%%%PLAYER%%%%%%%",
-                callback: (): void => this.openPlayerMenu()
+                callback: (): void => this.openPlayerMenu(),
             },
             {
                 text: "SAVE",
-                callback: (): void => this.openSaveMenu()
+                callback: (): void => this.openSaveMenu(),
             },
             {
-                text: "OPTION"
+                text: "OPTION",
             },
             {
                 text: "Exit",
-                callback: (): void => this.closePauseMenu()
-            }
+                callback: (): void => this.closePauseMenu(),
+            },
         ];
 
         if (this.gameStarter.itemsHolder.getItem("hasPokedex") === true) {
             options.unshift({
                 text: "%%%%%%%POKEDEX%%%%%%%",
-                callback: (): void => this.openPokedexMenu()
+                callback: (): void => this.openPokedexMenu(),
             });
 
             this.gameStarter.menuGrapher.createMenu("Pause", {
                 size: {
-                    height: 256
-                }
+                    height: 256,
+                },
             });
         } else {
             this.gameStarter.menuGrapher.createMenu("Pause");
         }
 
         this.gameStarter.menuGrapher.addMenuList("Pause", {
-            options: options
+            options,
         });
         this.gameStarter.menuGrapher.setActiveMenu("Pause");
     }
@@ -243,12 +243,12 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     callback: (): void => {
                         currentListing = listing;
                         this.gameStarter.menuGrapher.setActiveMenu("PokedexOptions");
-                    }
+                    },
                 };
 
                 characters.push({
                     command: true,
-                    y: 4
+                    y: 4,
                 });
 
                 if (listing) {
@@ -256,12 +256,12 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                         characters.push({
                             command: true,
                             x: -4,
-                            y: 1
+                            y: 1,
                         });
                         characters.push("Ball");
                         characters.push({
                             command: true,
-                            y: -1
+                            y: -1,
                         });
                     }
 
@@ -272,11 +272,11 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
                 characters.push({
                     command: true,
-                    y: -4
+                    y: -4,
                 });
 
                 return output;
-            })
+            }),
         });
         this.gameStarter.menuGrapher.setActiveMenu("Pokedex");
 
@@ -289,25 +289,25 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
                         this.openPokedexListing(
                             currentListing.title,
                             (): void => this.gameStarter.menuGrapher.setActiveMenu("PokedexOptions"));
-                    }
+                    },
                 },
                 {
-                    text: "CRY"
+                    text: "CRY",
                 },
                 {
                     text: "AREA",
                     callback: (): void => {
                         this.openTownMapMenu({
-                            backMenu: "PokedexOptions"
+                            backMenu: "PokedexOptions",
                         });
                         this.showTownMapPokemonLocations(currentListing.title);
-                    }
+                    },
                 },
                 {
                     text: "QUIT",
-                    callback: this.gameStarter.menuGrapher.registerB
-                }
-            ]
+                    callback: this.gameStarter.menuGrapher.registerB,
+                },
+            ],
         });
     }
 
@@ -334,8 +334,8 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             thing: title.join("") + "Front",
             type: "thing",
             args: {
-                flipHoriz: true
-            }
+                flipHoriz: true,
+            },
         });
         this.gameStarter.menuGrapher.addMenuDialog("PokedexListingName", [[title]]);
         this.gameStarter.menuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
@@ -368,7 +368,7 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public openPlayerMenu(): void {
         this.gameStarter.menuGrapher.createMenu("Player", {
-            callback: (): void => this.gameStarter.menuGrapher.registerB()
+            callback: (): void => this.gameStarter.menuGrapher.registerB(),
         });
         this.gameStarter.menuGrapher.setActiveMenu("Player");
     }
@@ -383,18 +383,18 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
         this.gameStarter.menuGrapher.createMenu("Yes/No", {
-            onBPress: (): void => this.gameStarter.menuGrapher.deleteAllMenus()
+            onBPress: (): void => this.gameStarter.menuGrapher.deleteAllMenus(),
         });
         this.gameStarter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.gameStarter.saves.downloadSaveGame()
+                    callback: (): void => this.gameStarter.saves.downloadSaveGame(),
                 },
                 {
                     text: "NO",
-                    callback: (): void => this.gameStarter.menuGrapher.deleteAllMenus()
-                }]
+                    callback: (): void => this.gameStarter.menuGrapher.deleteAllMenus(),
+                }],
         });
         this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
 
@@ -415,14 +415,14 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
             type: "thing",
             thing: "Player",
             args: {
-                nocollide: true
+                nocollide: true,
             },
             position: {
                 offset: {
                     left: playerPosition[0] - (playerSize.width / 2),
-                    top: playerPosition[1] - (playerSize.height / 2)
-                }
-            }
+                    top: playerPosition[1] - (playerSize.height / 2),
+                },
+            },
         });
         this.gameStarter.menuGrapher.setActiveMenu("Town Map");
     }
@@ -467,13 +467,13 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGam
         }
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
-            deleteOnFinish: true
+            deleteOnFinish: true,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                message
-            ]
+                message,
+            ],
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }

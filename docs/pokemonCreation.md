@@ -57,7 +57,7 @@ const options: IWildPokemonSchema[] = [
             remaining: FSP.constants.moves.Ember.pp,
             uses: FSP.constants.moves.Ember.pp
         }],
-        rate: .25
+        rate: 0.25
     },
     {
         title: "Squirtle".split(""),

@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ModComponent } from "./ModComponent";
@@ -10,7 +10,7 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
     /**
      * Class name for the player's prototype.
      */
-    private static playerClassName: string = "Player";
+    private static playerClassName = "Player";
 
     /**
      * Name of the mod.
@@ -29,6 +29,6 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
             const stats: any = this.gameStarter.objectMaker.getClass(SpeedRunningMod.playerClassName).prototype;
             const oldSpeed: number = this.gameStarter.moduleSettings.objects!.properties![SpeedRunningMod.playerClassName].speed;
             this.gameStarter.players[0].speed = stats.speed = oldSpeed;
-        }
+        },
     };
 }

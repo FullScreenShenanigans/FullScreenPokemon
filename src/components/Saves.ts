@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import { IItems } from "itemsholdr/lib/IItemsHoldr";
+import { IItems } from "itemsholdr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { PokedexListingStatus } from "./Constants";
@@ -151,7 +151,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
     public loadData(dataRaw: string): void {
         this.clearSavedData();
         const data: ISaveFile = JSON.parse(dataRaw);
-        const keyStart: string = "StateHolder::";
+        const keyStart = "StateHolder::";
 
         for (const key in data) {
             if (!data.hasOwnProperty(key)) {
@@ -278,9 +278,9 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
             information.seen = information.seen || (status >= PokedexListingStatus.Seen);
         } else {
             pokedex[title] = information = {
-                caught: caught,
-                seen: seen,
-                title: titleRaw
+                caught,
+                seen,
+                title: titleRaw,
             };
         }
 

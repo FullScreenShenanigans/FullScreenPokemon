@@ -1,7 +1,6 @@
-import { IActor, IStatistic, IStatistics } from "battlemovr/lib/Actors";
-import { IOnBattleComplete } from "battlemovr/lib/Animations";
-import { IBattleInfo as IBattleInfoBase } from "battlemovr/lib/Battles";
-import { ITeamBase, ITeamDescriptor, IUnderEachTeam, Team } from "battlemovr/lib/Teams";
+import {
+    IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
+} from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -371,36 +370,36 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
             {},
             {
                 ...this.gameStarter.constants.battles.texts.defaultBattleTexts,
-                ...partialBattleOptions.texts
+                ...partialBattleOptions.texts,
             });
 
         const teams: IUnderEachTeam<ITeamDescriptor> = {
             opponent: {
                 actors: [],
-                selector: "opponent"
+                selector: "opponent",
             },
             player: {
                 actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
                 leader: {
                     nickname: this.gameStarter.itemsHolder.getItem("name"),
-                    title: "PlayerBack".split("")
+                    title: "PlayerBack".split(""),
                 },
-                selector: "player"
-            }
+                selector: "player",
+            },
         };
 
         if (partialBattleOptions.teams) {
             if (partialBattleOptions.teams.opponent) {
                 teams.opponent = {
                     ...teams.opponent,
-                    ...partialBattleOptions.teams.opponent
+                    ...partialBattleOptions.teams.opponent,
                 } as ITeamDescriptor;
             }
 
             if (partialBattleOptions.teams.player) {
                 teams.player = {
                     ...teams.player,
-                    ...partialBattleOptions.teams.player
+                    ...partialBattleOptions.teams.player,
                 };
             }
         }
@@ -410,7 +409,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TG
             fleeAttempts: 0,
             teams,
             texts,
-            theme: "Battle Trainer"
+            theme: "Battle Trainer",
         } as IBattleOptions;
     }
 }

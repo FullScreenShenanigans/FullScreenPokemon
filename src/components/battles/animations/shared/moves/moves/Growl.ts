@@ -1,4 +1,4 @@
-import { Team } from "battlemovr/lib/Teams";
+import { Team } from "battlemovr";
 
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IThing } from "../../../../../Things";
@@ -44,7 +44,7 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
     public runAnimation(onComplete: () => void): void {
         const notes: [IThing, IThing] = [
             this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note)
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note),
         ];
 
         this.animateNote(notes[0], 10);
@@ -55,7 +55,7 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                 this.gameStarter.battles.animations.things.shake({
                     callback: onComplete,
                     dx: 3,
-                    clearTime: 6
+                    clearTime: 6,
                 });
             },
             50);
@@ -70,7 +70,7 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
     private animateNote(note: IThing, dt: number): void {
         let flip: -1 | 1 = 1;
 
-        for (let i: number = 1; i <= 4; i += 1) {
+        for (let i = 1; i <= 4; i += 1) {
             this.gameStarter.timeHandler.addEvent(
                 (): void => {
                     this.shiftNote(note, flip);

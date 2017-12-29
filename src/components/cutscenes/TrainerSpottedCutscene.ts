@@ -41,7 +41,7 @@ export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> exten
                 triggerer,
                 [
                     { blocks, direction },
-                    this.gameStarter.scenePlayer.bindRoutine("Dialog")
+                    this.gameStarter.scenePlayer.bindRoutine("Dialog"),
                 ]);
         } else {
             this.gameStarter.scenePlayer.playRoutine("Dialog");

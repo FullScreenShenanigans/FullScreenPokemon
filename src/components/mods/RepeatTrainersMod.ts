@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { IEnemy } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -21,6 +21,6 @@ export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends Mo
             if (other.trainer) {
                 other.alreadyBattled = false;
             }
-        }
+        },
     };
 }

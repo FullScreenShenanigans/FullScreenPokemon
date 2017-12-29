@@ -16,7 +16,7 @@ export interface ITransitionSettings {
     /**
      * Callback for when the transition is done.
      */
-    onComplete: () => void;
+    onComplete(): void;
 }
 
 /**
@@ -34,7 +34,7 @@ export class Transitions<TGameStartr extends FullScreenPokemon> extends Componen
      * Transitions, keyed by name.
      */
     private readonly transitions: ITransitions = {
-        flash: FlashTransition
+        flash: FlashTransition,
     };
 
     /**

@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
+import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IListMenu, IMenu, IMenuSchema } from "../Menus";
@@ -32,7 +32,7 @@ export interface IKeyboardMenuSettings {
     /**
      * A callback to replace key presses.
      */
-    callback?: (...args: any[]) => void;
+    callback?(...args: any[]): void;
 
     /**
      * Whether the menu should start in lowercase (by default, false).
@@ -74,7 +74,7 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<
 
         const completeValue: string[] = settings.value ? settings.value.slice() : [];
         const displayedValue: string[] = completeValue.slice();
-        for (let i: number = 0; i < 7; i += 1) {
+        for (let i = 0; i < 7; i += 1) {
             displayedValue.push("_");
         }
 
@@ -85,21 +85,20 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<
         const letters: string[] = lowercase
             ? this.gameStarter.constants.keysLowercase
             : this.gameStarter.constants.keysUppercase;
-        const options: any[] = letters.map((letter: string): any => {
-            return {
+        const options: any[] = letters.map((letter: string): any =>
+            ({
                 text: [letter],
                 value: letter,
                 callback: letter !== "ED"
                     ? onKeyPress
-                    : onComplete
-            };
-        });
+                    : onComplete,
+            }));
 
         this.gameStarter.menuGrapher.createMenu("Keyboard", {
-            settings: settings,
-            onKeyPress: onKeyPress,
-            onComplete: onComplete,
-            ignoreB: false
+            settings,
+            onKeyPress,
+            onComplete,
+            ignoreB: false,
         } as IMenuSchema);
 
         this.gameStarter.menuGrapher.addMenuDialog("KeyboardTitle", [[
@@ -107,16 +106,16 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<
         ]]);
 
         this.gameStarter.menuGrapher.addMenuList("KeyboardKeys", {
-            options: options,
+            options,
             selectedIndex: settings.selectedIndex,
             bottom: {
                 text: lowercase ? "UPPER CASE" : "lower case",
                 callback: (): void => this.switchKeyboardCase(),
                 position: {
                     top: 160,
-                    left: 0
-                }
-            }
+                    left: 0,
+                },
+            },
         });
         this.gameStarter.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
         this.gameStarter.menuGrapher.setActiveMenu("KeyboardKeys");
@@ -177,7 +176,7 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<
             value: menuResults.displayedValue,
             displayedValue: menuResults.displayedValue,
             completeValue: menuResults.completeValue,
-            selectedIndex: menuKeys.selectedIndex
+            selectedIndex: menuKeys.selectedIndex,
         });
     }
 

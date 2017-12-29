@@ -26,7 +26,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
             yPosition = this.menu.top + this.attackerThing.height;
         }
 
-        for (let i: number = 0; i < 3; i += 1) {
+        for (let i = 0; i < 3; i += 1) {
             this.gameStarter.timeHandler.addEvent(
                 (): void => {
                     this.animateEmbers(xPositions[i], yPosition);
@@ -39,7 +39,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                 this.gameStarter.battles.animations.things.shake({
                     callback,
                     clearTime: 4,
-                    dx: 3
+                    dx: 3,
                 });
             },
             84);
@@ -72,7 +72,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
         this.gameStarter.things.add(ember, x + 4, y + 12);
         this.gameStarter.battles.animations.things.flicker({
             callback: (): void => this.gameStarter.physics.killNormal(ember),
-            thing: ember
+            thing: ember,
         });
     }
 }

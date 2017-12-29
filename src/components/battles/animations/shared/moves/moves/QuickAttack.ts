@@ -38,7 +38,7 @@ export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGa
                     callback,
                     clearTime: 12,
                     interval: 6,
-                    thing: this.defenderThing
+                    thing: this.defenderThing,
                 });
             },
             40);
@@ -55,7 +55,7 @@ export class QuickAttack<TGameStartr extends FullScreenPokemon> extends Move<TGa
         const explosions: IThing[] = [
             this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge),
             this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge)
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionLarge),
         ];
 
         const startX: number[] = [];

@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { /* IBattleInfo, */ IPokemon } from "../../components/Battles";
 // import { IItemSchema } from "../../components/constants/Items";
@@ -63,6 +63,6 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
             actors.splice(actors.indexOf(thing), 1);
             partyPokemon.splice(partyPokemon.indexOf(thing), 1);
             pcPokemon.push(thing);
-        }
+        },
     };
 }

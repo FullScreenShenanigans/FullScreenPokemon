@@ -15,7 +15,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      */
     public FadeIn(settings: any): void {
         const oak: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.oakPortrait, {
-            opacity: 0
+            opacity: 0,
         });
 
         settings.oak = oak;
@@ -36,7 +36,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 this.gameStarter.actions.animateFadeAttribute(
                     oak,
                     "opacity",
-                    .15,
+                    0.15,
                     1,
                     14,
                     this.gameStarter.scenePlayer.bindRoutine("FirstDialog"));
@@ -53,9 +53,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             "GeneralText",
             [
                 "Hello there! \n Welcome to the world of %%%%%%%POKEMON%%%%%%%!",
-                "My name is OAK! People call me the %%%%%%%POKEMON%%%%%%% PROF!"
+                "My name is OAK! People call me the %%%%%%%POKEMON%%%%%%% PROF!",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("FirstDialogFade")
+            this.gameStarter.scenePlayer.bindRoutine("FirstDialogFade"),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -67,7 +67,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
-            opacity: 0
+            opacity: 0,
         });
 
         this.gameStarter.things.add(blank, 0, 0);
@@ -77,7 +77,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 this.gameStarter.actions.animateFadeAttribute(
                 blank,
                 "opacity",
-                .15,
+                0.15,
                 1,
                 7,
                 this.gameStarter.scenePlayer.bindRoutine("PokemonExpo"));
@@ -91,7 +91,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
     public PokemonExpo(): void {
         const pokemon: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.nIDORINOFront, {
             flipHoriz: true,
-            opacity: .01
+            opacity: 0.01,
         });
 
         this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
@@ -102,7 +102,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             0);
 
         this.gameStarter.physics.setMidY(pokemon, this.gameStarter.mapScreener.middleY);
-        this.gameStarter.actions.animateFadeAttribute(pokemon, "opacity", .15, 1, 3);
+        this.gameStarter.actions.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
 
         this.gameStarter.actions.sliding.slideHorizontally(
             pokemon,
@@ -123,9 +123,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 "This world is inhabited by creatures called %%%%%%%POKEMON%%%%%%%!",
                 "For some people, %%%%%%%POKEMON%%%%%%% are pets. Others use them for fights.",
                 "Myself...",
-                "I study %%%%%%%POKEMON%%%%%%% as a profession."
+                "I study %%%%%%%POKEMON%%%%%%% as a profession.",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("PlayerAppear")
+            this.gameStarter.scenePlayer.bindRoutine("PlayerAppear"),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -139,7 +139,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         const middleX: number = this.gameStarter.mapScreener.middleX | 0;
         const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.playerPortrait, {
             flipHoriz: true,
-            opacity: .01
+            opacity: 0.01,
         });
 
         settings.player = player;
@@ -148,7 +148,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 96, 0);
         this.gameStarter.physics.setMidY(player, this.gameStarter.mapScreener.middleY);
-        this.gameStarter.actions.animateFadeAttribute(player, "opacity", .15, 1, 3);
+        this.gameStarter.actions.animateFadeAttribute(player, "opacity", 0.15, 1, 3);
 
         this.gameStarter.actions.sliding.slideHorizontally(
             player,
@@ -166,7 +166,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "First, what is your name?"
+                "First, what is your name?",
             ],
             this.gameStarter.scenePlayer.bindRoutine("PlayerSlide"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -200,21 +200,21 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                     text: "NEW NAME".split(""),
                     callback: () => this.gameStarter.menus.keyboards.openKeyboardMenu({
                         title: "YOUR NAME?",
-                        callback: fromKeyboard
-                    })
+                        callback: fromKeyboard,
+                    }),
                 },
                 {
                     text: "BLUE".split(""),
-                    callback: fromMenu
+                    callback: fromMenu,
                 },
                 {
                     text: "GARY".split(""),
-                    callback: fromMenu
+                    callback: fromMenu,
                 },
                 {
                     text: "JOHN".split(""),
-                    callback: fromMenu
-                }]
+                    callback: fromMenu,
+                }],
         });
         this.gameStarter.menuGrapher.setActiveMenu("NameOptions");
     }
@@ -265,7 +265,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.itemsHolder.setItem("name", settings.name);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
-            finishAutomatically: true
+            finishAutomatically: true,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -273,8 +273,8 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 [
                     "Right! So your name is ".split(""),
                     settings.name,
-                    "!".split("")
-                ]
+                    "!".split(""),
+                ],
             ],
             this.gameStarter.scenePlayer.bindRoutine("PlayerNameComplete"));
     }
@@ -286,7 +286,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
-            opacity: 0
+            opacity: 0,
         });
 
         this.gameStarter.things.add(blank, 0, 0);
@@ -296,7 +296,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 this.gameStarter.actions.animateFadeAttribute(
                     blank,
                     "opacity",
-                    .2,
+                    0.2,
                     1,
                     7,
                     this.gameStarter.scenePlayer.bindRoutine("RivalAppear"));
@@ -311,7 +311,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      */
     public RivalAppear(settings: any): void {
         const rival: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.rivalPortrait, {
-            opacity: 0
+            opacity: 0,
         });
 
         settings.rival = rival;
@@ -324,7 +324,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.actions.animateFadeAttribute(
             rival,
             "opacity",
-            .1,
+            0.1,
             1,
             1,
             this.gameStarter.scenePlayer.bindRoutine("RivalName"));
@@ -339,9 +339,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             "GeneralText",
             [
                 "This is my grand-son. He's been your rival since you were a baby.",
-                "...Erm, what is his name again?"
+                "...Erm, what is his name again?",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("RivalSlide")
+            this.gameStarter.scenePlayer.bindRoutine("RivalSlide"),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -374,21 +374,21 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                     text: "NEW NAME",
                     callback: (): void => this.gameStarter.menus.keyboards.openKeyboardMenu({
                         title: "RIVAL's NAME?",
-                        callback: fromKeyboard
-                    })
+                        callback: fromKeyboard,
+                    }),
                 },
                 {
                     text: "RED".split(""),
-                    callback: fromMenu
+                    callback: fromMenu,
                 },
                 {
                     text: "ASH".split(""),
-                    callback: fromMenu
+                    callback: fromMenu,
                 },
                 {
                     text: "JACK".split(""),
-                    callback: fromMenu
-                }]
+                    callback: fromMenu,
+                }],
         });
         this.gameStarter.menuGrapher.setActiveMenu("NameOptions");
     }
@@ -443,8 +443,8 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             "GeneralText",
             [
                 [
-                    "That's right! I remember now! His name is ", settings.name, "!"
-                ]
+                    "That's right! I remember now! His name is ", settings.name, "!",
+                ],
             ],
             this.gameStarter.scenePlayer.bindRoutine("RivalNameComplete"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -457,7 +457,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
-            opacity: 0
+            opacity: 0,
         });
 
         this.gameStarter.things.add(blank, 0, 0);
@@ -467,7 +467,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 this.gameStarter.actions.animateFadeAttribute(
                     blank,
                     "opacity",
-                    .2,
+                    0.2,
                     1,
                     7,
                     this.gameStarter.scenePlayer.bindRoutine("LastDialogAppear"));
@@ -483,7 +483,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
     public LastDialogAppear(settings: any): void {
         const portrait: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.playerPortrait, {
             flipHoriz: true,
-            opacity: 0
+            opacity: 0,
         });
 
         settings.portrait = portrait;
@@ -497,7 +497,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.actions.animateFadeAttribute(
             portrait,
             "opacity",
-            .1,
+            0.1,
             1,
             1,
             this.gameStarter.scenePlayer.bindRoutine("LastDialog"));
@@ -513,7 +513,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             [
                 "%%%%%%%PLAYER%%%%%%%!",
                 "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
-                "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!"
+                "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!",
             ],
             this.gameStarter.scenePlayer.bindRoutine("ShrinkPlayer"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
@@ -528,7 +528,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         const silhouetteLarge: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.playerSilhouetteLarge);
         const silhouetteSmall: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.playerSilhouetteSmall);
         const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.player);
-        const timeDelay: number = 49;
+        const timeDelay = 49;
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
@@ -566,7 +566,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         const blank: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.whiteSquare, {
             width: this.gameStarter.mapScreener.width,
             height: this.gameStarter.mapScreener.height,
-            opacity: 0
+            opacity: 0,
         });
 
         this.gameStarter.things.add(blank, 0, 0);
@@ -576,7 +576,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
                 this.gameStarter.actions.animateFadeAttribute(
                     blank,
                     "opacity",
-                    .2,
+                    0.2,
                     1,
                     7,
                     this.gameStarter.scenePlayer.bindRoutine("Finish"));

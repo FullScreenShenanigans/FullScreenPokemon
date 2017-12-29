@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ModComponent } from "./ModComponent";
@@ -21,6 +21,6 @@ export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Mod
         },
         [this.eventNames.onModDisable]: (): void => {
             this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = false;
-        }
+        },
     };
 }

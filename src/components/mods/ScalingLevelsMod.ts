@@ -1,4 +1,4 @@
-import { ICallbackRegister, IMod } from "modattachr/lib/IModAttachr";
+import { ICallbackRegister, IMod } from "modattachr";
 
 // import { IPokemon } from "../../components/Battles";
 // import { IPokemonListing } from "../../components/constants/Pokemon";
@@ -55,6 +55,6 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Mod
             //             actor.iv[statistic]);
             //     }
             // }
-        }
+        },
     };
 }

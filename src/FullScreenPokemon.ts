@@ -1,16 +1,10 @@
-import { BattleMovr } from "battlemovr/lib/BattleMovr";
-import { IBattleMovr } from "battlemovr/lib/IBattleMovr";
-import { FlagSwappr } from "flagswappr/lib/FlagSwappr";
-import { IFlagSwappr } from "flagswappr/lib/IFlagSwappr";
+import { BattleMovr, IBattleMovr } from "battlemovr";
+import { FlagSwappr, IFlagSwappr } from "flagswappr";
 import { GameStartr, IGameStartrSettings } from "gamestartr";
-import { IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
-import { MenuGraphr } from "menugraphr/lib/MenuGraphr";
-import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
-import { ScenePlayr } from "sceneplayr/lib/ScenePlayr";
-import { IStateHoldr } from "stateholdr/lib/IStateHoldr";
-import { StateHoldr } from "stateholdr/lib/StateHoldr";
-import { IUserWrappr } from "userwrappr/lib/IUserWrappr";
-import { UserWrappr } from "userwrappr/lib/UserWrappr";
+import { IMenuGraphr, MenuGraphr } from "menugraphr";
+import { IScenePlayr, ScenePlayr } from "sceneplayr";
+import { IStateHoldr, StateHoldr } from "stateholdr";
+import { IUserWrappr, UserWrappr } from "userwrappr";
 
 import { Actions } from "./components/Actions";
 import { Battles } from "./components/Battles";
@@ -281,7 +275,7 @@ export class FullScreenPokemon extends GameStartr {
             this.groupHolder.getGroup("Solid") as IThing[],
             this.groupHolder.getGroup("Scenery") as IThing[],
             this.groupHolder.getGroup("Character") as IThing[],
-            this.groupHolder.getGroup("Text") as IThing[]
+            this.groupHolder.getGroup("Text") as IThing[],
         ]);
 
         this.gameplay.gameStart();
@@ -296,7 +290,7 @@ export class FullScreenPokemon extends GameStartr {
     protected createModuleSettings(settings: IFullScreenPokemonSettings): IModuleSettings {
         return {
             ...new ModuleSettingsGenerator().generate(this),
-            ...settings.moduleSettings
+            ...settings.moduleSettings,
         } as IModuleSettings;
     }
 
@@ -326,7 +320,7 @@ export class FullScreenPokemon extends GameStartr {
     protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IMenuGraphr {
         return new MenuGraphr({
             gameStarter: this,
-            ...moduleSettings.menus
+            ...moduleSettings.menus,
         });
     }
 
@@ -338,7 +332,7 @@ export class FullScreenPokemon extends GameStartr {
     protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IScenePlayr {
         return new ScenePlayr({
             scope: this.cutscenes,
-            ...moduleSettings.scenes
+            ...moduleSettings.scenes,
         });
     }
 
@@ -350,7 +344,7 @@ export class FullScreenPokemon extends GameStartr {
     protected createStateHolder(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IStateHoldr {
         return new StateHoldr({
             itemsHolder: this.itemsHolder,
-            ...moduleSettings.state
+            ...moduleSettings.state,
         });
     }
 }

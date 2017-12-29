@@ -1,75 +1,126 @@
 {
-  "name": "fullscreenpokemon",
-  "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
-  "version": "0.6.0",
-  "author": {
-    "name": "Josh Goldberg",
-    "email": "joshuakgoldberg@outlook.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
-  },
-  "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "areaspawnr": "0.6.X",
-    "audioplayr": "0.6.X",
-    "battlemovr": "0.6.X",
-    "changelinr": "0.6.X",
-    "devicelayr": "0.6.X",
-    "eightbittr": "0.6.9",
-    "flagswappr": "0.6.X",
-    "fpsanalyzr": "0.6.X",
-    "gamesrunnr": "0.6.X",
-    "gamestartr": "0.6.9",
-    "groupholdr": "0.6.X",
-    "inputwritr": "0.6.X",
-    "itemsholdr": "0.6.X",
-    "mapscreatr": "0.6.X",
-    "mapscreenr": "0.6.X",
-    "menugraphr": "0.6.X",
-    "modattachr": "0.6.X",
-    "numbermakr": "0.6.X",
-    "objectmakr": "0.6.X",
-    "pixeldrawr": "0.6.X",
-    "pixelrendr": "0.6.X",
-    "quadskeepr": "0.6.X",
-    "sceneplayr": "0.6.X",
-    "stateholdr": "0.6.X",
-    "stringfilr": "0.6.X",
-    "thinghittr": "0.6.X",
-    "timehandlr": "0.6.X",
-    "touchpassr": "0.6.X",
-    "userwrappr": "^0.6.5",
-    "worldseedr": "0.6.X"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.21"
-  },
-  "scripts": {
-    "gulp": "gulp",
-    "test": "gulp test"
-  },
-  "shenanigans": {
-    "name": "FullScreenPokemon",
-    "web": {
-      "drivingObject": "FSP",
-      "sections": {
-        "credits": [
-          "Full Screen Pokemon was made possible first and foremost by Nintendo, who originally created Pokemon and has since maintained the series.",
-          "It would also not have been possible without the dedicated efforts of the Pokemon fan community over the past two decades, in particular <a href=\"http://bulbapedia.bulbagarden.net/\">Bulbapedia</a>."
-        ],
-        "explanation": [
-          "Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.",
-          "It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods."
-        ],
-        "legal": "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
-      },
-      "url": "fullscreenpokemon.com"
-    }
-  }
+    "author": {
+        "email": "joshuakgoldberg@outlook.com",
+        "name": "Josh Goldberg"
+    },
+    "browser": "./src/index.js",
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
+    },
+    "dependencies": {
+        "areaspawnr": "^0.7.0",
+        "audioplayr": "^0.7.0",
+        "battlemovr": "^0.7.1",
+        "changelinr": "^0.7.0",
+        "devicelayr": "^0.7.0",
+        "eightbittr": "^0.7.0",
+        "flagswappr": "^0.7.1",
+        "fpsanalyzr": "^0.7.0",
+        "gamesrunnr": "^0.7.0",
+        "gamestartr": "^0.7.0",
+        "groupholdr": "^0.7.0",
+        "inputwritr": "^0.7.0",
+        "itemsholdr": "^0.7.0",
+        "mapscreatr": "^0.7.0",
+        "mapscreenr": "^0.7.0",
+        "menugraphr": "^0.7.0",
+        "modattachr": "^0.7.1",
+        "numbermakr": "^0.7.0",
+        "objectmakr": "^0.7.0",
+        "pixeldrawr": "^0.7.0",
+        "pixelrendr": "^0.7.0",
+        "quadskeepr": "^0.7.0",
+        "sceneplayr": "^0.7.0",
+        "stateholdr": "^0.7.0",
+        "stringfilr": "^0.7.0",
+        "thinghittr": "^0.7.0",
+        "timehandlr": "^0.7.0",
+        "touchpassr": "^0.7.0",
+        "userwrappr": "^0.7.0"
+    },
+    "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
+    "devDependencies": {
+        "@types/chai": "^4.0.4",
+        "@types/lolex": "^1.5.32",
+        "@types/mocha": "^2.2.44",
+        "@types/react": "^16.0.31",
+        "@types/react-dom": "^16.0.3",
+        "@types/sinon": "^4.0.0",
+        "@types/sinon-chai": "^2.7.29",
+        "chai": "^4.1.2",
+        "glob": "^7.1.2",
+        "lolex": "^2.3.0",
+        "mkdirp": "^0.5.1",
+        "mocha": "^4.0.1",
+        "mocha-headless-chrome": "^1.7.1",
+        "node-sass": "^4.7.2",
+        "requirejs": "^2.3.5",
+        "run-for-every-file": "^1.1.0",
+        "shenanigans-manager": "^0.2.7",
+        "sinon": "^4.1.2",
+        "sinon-chai": "^2.14.0",
+        "stylelint": "^8.4.0",
+        "stylelint-config-recommended-scss": "^3.0.0",
+        "stylelint-scss": "^2.2.0",
+        "tslint": "5.8.0",
+        "tsutils": "^2.14.0",
+        "typedoc": "^0.9.0",
+        "typescript": "^2.6.2",
+        "webpack": "^3.10.0"
+    },
+    "license": "MIT",
+    "name": "fullscreenpokemon",
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
+    },
+    "scripts": {
+        "dist": "npm run dist:webpack",
+        "dist:webpack": "webpack",
+        "docs": "npm run docs:typedoc",
+        "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
+        "gulp": "gulp",
+        "init": "npm install && npm run setup && npm run verify",
+        "setup": "npm run setup:copy && npm run setup:package && npm run setup:readme",
+        "setup:copy": "npm run setup:copy:default && npm run setup:copy:web",
+        "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
+        "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\"",
+        "setup:package": "shenanigans-manager hydrate-package-json",
+        "setup:readme": "shenanigans-manager hydrate-readme",
+        "src": "npm run src:tsc && npm run src:tslint && npm run src:scss && npm run src:stylelint",
+        "src:scss": "node-sass --recursive src --output src",
+        "src:stylelint": "stylelint src/**/*.scss",
+        "src:tsc": "tsc -p .",
+        "src:tslint": "tslint -c tslint.json -e ./node_modules/**/*.ts* -p tsconfig.json -t stylish",
+        "test": "npm run test:setup && npm run test:run",
+        "test:run": "mocha-headless-chrome --file test/index.html",
+        "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
+        "test:setup:copy": "npm run test:setup:copy:default",
+        "test:setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/test/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./test/{{file}}\" --dest \".\" --only-files",
+        "test:setup:dir": "mkdirp test",
+        "test:setup:html": "shenanigans-manager generate-test-html",
+        "test:setup:tsc": "tsc -p test",
+        "verify": "npm run src && npm run test && npm run dist && npm run docs",
+        "watch": "tsc -p . -w"
+    },
+    "shenanigans": {
+        "name": "FullScreenPokemon",
+        "web": {
+            "drivingObject": "FSP",
+            "sections": {
+                "credits": [
+                    "Full Screen Pokemon was made possible first and foremost by Nintendo, who originally created Pokemon and has since maintained the series.",
+                    "It would also not have been possible without the dedicated efforts of the Pokemon fan community over the past two decades, in particular <a href=\"http://bulbapedia.bulbagarden.net/\">Bulbapedia</a>."
+                ],
+                "explanation": [
+                    "Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.",
+                    "It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods."
+                ],
+                "legal": "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
+            },
+            "url": "fullscreenpokemon.com"
+        }
+    },
+    "types": "./src/index.d.ts",
+    "version": "0.7.1"
 }

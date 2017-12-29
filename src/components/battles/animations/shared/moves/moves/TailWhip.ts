@@ -11,8 +11,8 @@ export class TailWhip<TGameStartr extends FullScreenPokemon> extends Move<TGameS
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        const dt: number = 11;
-        const dx: number = 16;
+        const dt = 11;
+        const dx = 16;
 
         this.gameStarter.physics.shiftHoriz(this.attackerThing, dx * this.direction);
 

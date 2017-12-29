@@ -1,7 +1,15 @@
 import { Maps as GameStartrMaps } from "gamestartr";
-import * as imapscreatr from "mapscreatr/lib/IMapsCreatr";
-import { IPreThing as IMapsCreatrPreThing } from "mapscreatr/lib/IPreThing";
-import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
+import {
+    IArea as IMapsCreatrIArea,
+    IAreaRaw as IMapsCreatrAreaRaw,
+    ILocation as IMapsCreatrLocation,
+    ILocationRaw as IMapsCreatrLocationRaw,
+    IMap as IMapsCreatrIMap,
+    IMapRaw as IMapsCreatrIMapRaw,
+    IPreThing as IMapsCreatrPreThing,
+    IPreThingsContainers,
+} from "mapscreatr";
+import { IMapScreenr } from "mapscreenr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
@@ -51,7 +59,7 @@ export interface IMapScreenr extends IMapScreenr {
 /**
  * A raw JSON-friendly description of a map.
  */
-export interface IMapRaw extends imapscreatr.IMapRaw {
+export interface IMapRaw extends IMapsCreatrIMapRaw {
     /**
      * A listing of areas in the Map, keyed by name.
      */
@@ -87,7 +95,7 @@ export interface IMapRaw extends imapscreatr.IMapRaw {
 /**
  * A Map parsed from its raw JSON-friendly description.
  */
-export interface IMap extends IStateSaveable, imapscreatr.IMap {
+export interface IMap extends IStateSaveable, IMapsCreatrIMap {
     /**
      * A listing of areas in the Map, keyed by name.
      */
@@ -120,7 +128,7 @@ export interface IMap extends IStateSaveable, imapscreatr.IMap {
 /**
  * A raw JSON-friendly description of a map area.
  */
-export interface IAreaRaw extends imapscreatr.IAreaRaw {
+export interface IAreaRaw extends IMapsCreatrAreaRaw {
     /**
      * Whether the Area allows bicycling.
      */
@@ -169,7 +177,7 @@ export interface IAreaRaw extends imapscreatr.IAreaRaw {
 /**
  * An Area parsed from a raw JSON-friendly Area description.
  */
-export interface IArea extends IAreaRaw, IStateSaveable, imapscreatr.IArea {
+export interface IArea extends IAreaRaw, IStateSaveable, IMapsCreatrIArea {
     /**
      * Whether the Area allows bicycling.
      */
@@ -309,7 +317,7 @@ export interface IWildPokemonSchema {
 /**
  * A raw JSON-friendly description of a location.
  */
-export interface ILocationRaw extends imapscreatr.ILocationRaw {
+export interface ILocationRaw extends IMapsCreatrLocationRaw {
     /**
      * A cutscene to immediately start upon entering.
      */
@@ -349,7 +357,7 @@ export interface ILocationRaw extends imapscreatr.ILocationRaw {
 /**
  * A Location parsed from a raw JSON-friendly Map description.
  */
-export interface ILocation extends IStateSaveable, imapscreatr.ILocation {
+export interface ILocation extends IStateSaveable, IMapsCreatrLocation {
     /**
      * The Area this Location is a part of.
      */
@@ -563,7 +571,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         return this.gameStarter.maps.setLocation(
             location
             || map.locationDefault
-            || this.gameStarter.moduleSettings.maps.locationDefault!,
+            || this.gameStarter.moduleSettings.maps.locationDefault,
             noEntrance);
     }
 
@@ -590,8 +598,8 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         const location: ILocation = this.gameStarter.areaSpawner.getLocation(name) as ILocation;
         location.area.spawnedBy = {
-            name: name,
-            timestamp: new Date().getTime()
+            name,
+            timestamp: new Date().getTime(),
         };
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onPreSetLocation, location);
@@ -623,7 +631,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         this.gameStarter.gamesRunner.play();
 
         this.gameStarter.actions.animateFadeFromColor({
-            color: "Black"
+            color: "Black",
         });
 
         if (location.push) {
@@ -632,9 +640,9 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 [
                     {
                         blocks: 1,
-                        direction: this.gameStarter.players[0].direction
+                        direction: this.gameStarter.players[0].direction,
                     },
-                    (): void => this.gameStarter.saves.autoSave()
+                    (): void => this.gameStarter.saves.autoSave(),
                 ]);
         }
 
@@ -714,7 +722,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
 
         if (location.cutscene) {
             this.gameStarter.scenePlayer.startCutscene(location.cutscene, {
-                player: this.gameStarter.players[0]
+                player: this.gameStarter.players[0],
             });
         }
 
@@ -745,7 +753,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         const direction: Direction = thing.direction;
         const areaCurrent: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
         const mapCurrent: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
-        const prethingsCurrent: imapscreatr.IPreThingsContainers = this.gameStarter.areaSpawner.getPreThings();
+        const prethingsCurrent: IPreThingsContainers = this.gameStarter.areaSpawner.getPreThings();
         let left: number = thing.left + this.gameStarter.mapScreener.left;
         let top: number = thing.top + this.gameStarter.mapScreener.top;
 
@@ -781,7 +789,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                 {
                     noBoundaryStretch: true,
                     areaName: area.name,
-                    mapName: area.map.name
+                    mapName: area.map.name,
                 },
                 creation);
 
@@ -825,7 +833,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             direction: thing.direction,
             height: 8,
             map: thing.map,
-            width: 8
+            width: 8,
         };
         let left: number = thing.left;
         let top: number = thing.top;

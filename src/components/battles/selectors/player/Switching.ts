@@ -1,6 +1,4 @@
-import { ISwitchAction } from "battlemovr/lib/Actions";
-import { IOnChoice } from "battlemovr/lib/Selectors";
-import { Team } from "battlemovr/lib/Teams";
+import { IOnChoice, ISwitchAction, Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
@@ -34,7 +32,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
-            finishAutomatically: true
+            finishAutomatically: true,
         });
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -45,15 +43,15 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
                     options: [
                         {
                             text: "YES",
-                            callback: openPokemonMenu
+                            callback: openPokemonMenu,
                         },
                         {
                             text: "NO",
                             callback: (): void => {
                                 new FleeAttempt(this.gameStarter).succeed();
-                            }
-                        }
-                    ]
+                            },
+                        },
+                    ],
                 });
                 this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
             });
@@ -83,10 +81,10 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
                     (): void => {
                         onChoice({
                             newActor: pokemon,
-                            type: "switch"
+                            type: "switch",
                         });
                     });
-            }
+            },
         });
     }
 
@@ -117,8 +115,8 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
             [
                 [
                     pokemon.title,
-                    " is already out!"
-                ]
+                    " is already out!",
+                ],
             ],
             (): void => {
                 this.gameStarter.menuGrapher.deleteMenu("GeneralText");

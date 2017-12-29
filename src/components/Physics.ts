@@ -133,7 +133,7 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
      * @param thing   A Thing to snap the position of.
      */
     public snapToGrid(thing: IThing): void {
-        const grid: number = 32;
+        const grid = 32;
         const x: number = (this.gameStarter.mapScreener.left + thing.left) / grid;
         const y: number = (this.gameStarter.mapScreener.top + thing.top) / grid;
 

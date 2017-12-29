@@ -1,19 +1,12 @@
-import { IQuadrantsModuleSettings } from "gamestartr";
+import { IQuadsKeeprSettings } from "quadskeepr";
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IThing } from "../components/Things";
 
 /**
- * @param _fsp   A generating FullScreenPokemon instance.
- * @returns Quadrant settings for the FullScreenPokemon instance.
+ * @returns Quadrant settings for a FullScreenPokemon instance.
  */
-export function GenerateQuadrantsSettings(_fsp: FullScreenPokemon): IQuadrantsModuleSettings {
-    "use strict";
-
-    return {
-        numRows: 5,
-        numCols: 6,
-        tolerance: 2,
-        groupNames: ["Solid", "Character", "Scenery", "Terrain", "Text"],
-        keyGroupName: "groupType"
-    };
-}
+export const GenerateQuadrantsSettings = (): Partial<IQuadsKeeprSettings<IThing>> => ({
+    numRows: 5,
+    numCols: 6,
+    groupNames: ["Solid", "Character", "Scenery", "Terrain", "Text"],
+});

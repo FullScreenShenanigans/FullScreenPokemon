@@ -1,6 +1,4 @@
-import { BattleOutcome } from "battlemovr/lib/Animations";
-import { IOnChoice, ISelector } from "battlemovr/lib/Selectors";
-import { Team } from "battlemovr/lib/Teams";
+import { BattleOutcome, IOnChoice, ISelector, Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -25,9 +23,8 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
      */
     public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
         const newPokemon: IPokemon | undefined = battleInfo.teams[Team[team]].actors
-            .filter((actor: IPokemon): boolean => {
-                return actor.statistics.health.current !== 0;
-            })
+            .filter((actor: IPokemon): boolean =>
+                actor.statistics.health.current !== 0)
             [0] as IPokemon | undefined;
 
         if (newPokemon) {
@@ -60,7 +57,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
         if (!attackingTeam.leader) {
             onChoice({
                 move: this.gameStarter.numberMaker.randomArrayMember(attackingActor.moves).title,
-                type: "move"
+                type: "move",
             });
 
             return;
@@ -78,14 +75,13 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
                 }
             }
 
-            possibilities = possibilities.filter((possibility: IMovePossibility): boolean => {
-                return possibility.priority === lowest;
-            });
+            possibilities = possibilities.filter((possibility: IMovePossibility): boolean =>
+                possibility.priority === lowest);
         }
 
         onChoice({
             move: this.gameStarter.numberMaker.randomArrayMember(possibilities).move,
-            type: "move"
+            type: "move",
         });
     }
 }

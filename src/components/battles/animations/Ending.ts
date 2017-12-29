@@ -1,5 +1,4 @@
-import { BattleOutcome } from "battlemovr/lib/Animations";
-import { Queue } from "battlemovr/lib/animators/Queue";
+import { BattleOutcome, Queue } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -42,17 +41,18 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
         queue.add((onComplete: () => void): void => {
             this.gameStarter.actions.animateFadeToColor({
                 callback: onComplete,
-                color: "Black"
+                color: "Black",
             });
             this.gameStarter.mapScreener.blockInputs = false;
         });
 
-        if (battleInfo.texts.afterBattle) {
+        const afterBattle = battleInfo.texts.afterBattle;
+        if (afterBattle !== undefined) {
             queue.add((onComplete: () => void): void => {
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
                 this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText",
-                    battleInfo.texts.afterBattle!(),
+                    afterBattle(),
                     onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });

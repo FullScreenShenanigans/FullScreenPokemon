@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import { IMod } from "modattachr/lib/IModAttachr";
+import { IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { BlindTrainersMod } from "./mods/BlindTrainersMod";
@@ -40,6 +40,6 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGame
         new RunningIndoorsMod(this.gameStarter, this.eventNames),
         new ScalingLevelsMod(this.gameStarter, this.eventNames),
         new SpeedRunningMod(this.gameStarter, this.eventNames),
-        new WalkThroughWallsMod(this.gameStarter, this.eventNames)
+        new WalkThroughWallsMod(this.gameStarter, this.eventNames),
     ];
 }

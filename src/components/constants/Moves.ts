@@ -1,4 +1,4 @@
-import { EffectTarget, IMoveEffect } from "battlemovr/lib/Effects";
+import { EffectTarget, IMoveEffect } from "battlemovr";
 
 import { Actions } from "../../components/Actions";
 import { IPokemon } from "../../components/Battles";
@@ -46,7 +46,7 @@ export interface IHMMoveSchema extends IMoveSchema {
     /**
      * Activates a Function to perform an HM move outside of battle.
      */
-    partyActivate?: (player: IPlayer, pokemon: IPokemon) => void;
+    partyActivate?(player: IPlayer, pokemon: IPokemon): void;
 
     /**
      * The HMCharacter that the move affects.
@@ -71,7 +71,7 @@ export class Moves {
             accuracy: 100,
             effects: [],
             PP: 20,
-            type: "Grass"
+            type: "Grass",
         },
         "Acid": {
             type: "Poison",
@@ -216,9 +216,9 @@ export class Moves {
             effects: [],
             accuracy: 95,
             PP: 30,
-            "partyActivate": Actions.prototype.partyActivateCut,
-            "characterName": "CuttableTree",
-            "requiredBadge": "Cascade"
+            partyActivate: Actions.prototype.partyActivateCut,
+            characterName: "CuttableTree",
+            requiredBadge: "Cascade",
         } as IHMMoveSchema,
         "Defense Curl": {
             type: "Normal",
@@ -290,8 +290,8 @@ export class Moves {
                 {
                     damage: 100,
                     target: EffectTarget.defender,
-                    type: "damage"
-                }
+                    type: "damage",
+                },
             ],
             accuracy: 100,
             PP: 10,
@@ -349,14 +349,14 @@ export class Moves {
             effects: [],
             accuracy: 70,
             PP: 20,
-            "requiredBadge": "Boulder"
+            requiredBadge: "Boulder",
         } as IHMMoveSchema,
         "Fly": {
             type: "Flying",
             effects: [],
             accuracy: 95,
             PP: 15,
-            "requiredBadge": "Thunder"
+            requiredBadge: "Thunder",
         } as IHMMoveSchema,
         "Focus Energy": {
             type: "Normal",
@@ -387,7 +387,7 @@ export class Moves {
                 change: -1,
                 statistic: "attack",
                 target: EffectTarget.defender,
-                type: "statistic"
+                type: "statistic",
             }],
             accuracy: 100,
             PP: 40,
@@ -663,7 +663,7 @@ export class Moves {
             effects: [],
             accuracy: 100,
             PP: 30,
-            "priority": 1
+            priority: 1,
         },
         "Rage": {
             type: "Normal",
@@ -734,8 +734,8 @@ export class Moves {
                 {
                     damage: 40,
                     target: EffectTarget.defender,
-                    type: "damage"
-                }
+                    type: "damage",
+                },
             ],
             accuracy: 100,
             PP: 35,
@@ -862,9 +862,9 @@ export class Moves {
             effects: [],
             accuracy: 100,
             PP: 15,
-            "partyActivate": Actions.prototype.partyActivateStrength,
-            "characterName": "StrengthBoulder",
-            "requiredBadge": "Rainbow"
+            partyActivate: Actions.prototype.partyActivateStrength,
+            characterName: "StrengthBoulder",
+            requiredBadge: "Rainbow",
         } as IHMMoveSchema,
         "String Shot": {
             type: "Bug",
@@ -911,9 +911,9 @@ export class Moves {
             effects: [],
             accuracy: 100,
             PP: 15,
-            "partyActivate": Actions.prototype.partyActivateSurf,
-            "characterName": "WaterEdge",
-            "requiredBadge": "Soul"
+            partyActivate: Actions.prototype.partyActivateSurf,
+            characterName: "WaterEdge",
+            requiredBadge: "Soul",
         } as IHMMoveSchema,
         "Swift": {
             type: "Normal",
@@ -931,8 +931,8 @@ export class Moves {
                 {
                     damage: 40,
                     target: EffectTarget.defender,
-                    type: "damage"
-                }
+                    type: "damage",
+                },
             ],
             accuracy: 95,
             PP: 35,
@@ -1059,6 +1059,6 @@ export class Moves {
             effects: [],
             accuracy: 85,
             PP: 20,
-        }
+        },
     };
 }

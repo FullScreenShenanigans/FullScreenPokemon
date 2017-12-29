@@ -57,7 +57,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @returns The next direction it should roam, if any.
      */
     protected getNextRoamingDirection(thing: ICharacter): Direction | undefined {
-        let totalAllowed: number = 0;
+        let totalAllowed = 0;
         let direction: Direction;
 
         for (const border of thing.bordering) {
@@ -72,7 +72,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         direction = this.gameStarter.numberMaker.randomInt(totalAllowed);
 
-        for (let i: number = 0; i <= direction; i += 1) {
+        for (let i = 0; i <= direction; i += 1) {
             if (thing.bordering[i]) {
                 direction += 1;
             }

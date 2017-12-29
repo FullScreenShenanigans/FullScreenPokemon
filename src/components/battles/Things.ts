@@ -1,4 +1,4 @@
-import { Team } from "battlemovr/lib/Teams";
+import { Team } from "battlemovr";
 import { Component } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";

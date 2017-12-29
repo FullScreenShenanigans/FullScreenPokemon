@@ -1,6 +1,6 @@
 import { IThing as IGameStartrThing, Things as GameStartrThings } from "gamestartr";
-import * as imenugraphr from "menugraphr/lib/IMenuGraphr";
-import * as itimehandlr from "timehandlr/lib/ITimeHandlr";
+import * as imenugraphr from "menugraphr";
+import * as itimehandlr from "timehandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IWalkingInstructions } from "./actions/Walking";
@@ -28,7 +28,7 @@ export interface IThing extends IGameStartrThing, IStateSaveable {
      * @param activator   The Character activating this.
      * @param activated   The Thing being activated.
      */
-    activate?: (activator: ICharacter, activated?: IThing) => void;
+    activate?(activator: ICharacter, activated?: IThing): void;
 
     /**
      * The area this was spawned by.
@@ -52,7 +52,7 @@ export interface IThing extends IGameStartrThing, IStateSaveable {
      * @param thing   The Character colliding with this Thing.
      * @param other   This thing being collided by the Character.
      */
-    collide: (thing: ICharacter, other: IThing) => boolean;
+    collide(thing: ICharacter, other: IThing): boolean;
 
     /**
      * Animation cycles set by the ITimeHandlr.
@@ -414,7 +414,7 @@ export interface IPlayer extends ICharacter {
     /**
      * @returns A new descriptor container for key statuses.
      */
-    getKeys: () => IPlayerKeys;
+    getKeys(): IPlayerKeys;
 
     /**
      * A descriptor for a user's keys' statuses.
@@ -483,7 +483,7 @@ export interface IDetector extends IThing {
      * @param thing   The Player activating other, or other if a self-activation.
      * @param other   The Detector being activated by thing.
      */
-    activate?: (thing: IPlayer | IDetector, other?: IDetector) => void;
+    activate?(thing: IPlayer | IDetector, other?: IDetector): void;
 
     /**
      * A cutscene to start when this is activated.
@@ -534,7 +534,7 @@ export interface IHMCharacter extends ICharacter {
     /**
      * The partyActivate Function used to interact with this HMCharacter.
      */
-    moveCallback: (player: IPlayer, pokemon: IPokemon) => void;
+    moveCallback(player: IPlayer, pokemon: IPokemon): void;
 
     /**
      * The badge needed to activate this HMCharacter.
@@ -730,7 +730,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
                 this.gameStarter.areaSpawner.getMapName(),
                 this.gameStarter.areaSpawner.getAreaName(),
                 thing.title,
-                (thing.name || "Anonymous")
+                (thing.name || "Anonymous"),
             ].join("::");
         }
     }
@@ -749,8 +749,10 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      * @param useSavedInfo   Whether an Area's saved info in StateHolder should be
      *                       applied to the Thing's position (by default, false).
      */
-    public add(thingRaw: string | IThing | [string, any], left: number = 0, top: number = 0, useSavedInfo?: boolean): IThing {
-        const thing: IThing = super.add(thingRaw, left, top) as IThing;
+    public add<TThing extends IThing = IThing>(
+        thingRaw: string | IThing | [string, any], left: number = 0, top: number = 0, useSavedInfo?: boolean,
+    ): TThing {
+        const thing: TThing = super.add(thingRaw, left, top) as TThing;
 
         if (useSavedInfo) {
             this.applySavedPosition(thing);
