@@ -2,6 +2,7 @@ import { Component } from "eightbittr";
 import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { IModComponentClass } from "../Mods";
 import { EventNames } from "./EventNames";
 
 /**
@@ -11,7 +12,9 @@ export abstract class ModComponent<TGameStartr extends FullScreenPokemon> extend
     /**
      * Name of the mod.
      */
-    public abstract readonly name: string;
+    public get name(): string {
+        return (this.constructor as IModComponentClass).modName;
+    }
 
     /**
      * Mod events, keyed by name.

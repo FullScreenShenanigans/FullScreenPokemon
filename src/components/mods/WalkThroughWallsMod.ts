@@ -10,7 +10,7 @@ export class WalkThroughWallsMod<TGameStartr extends FullScreenPokemon> extends 
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Walk Through Walls";
+    public static readonly modName: string = "Walk Through Walls";
 
     /**
      * Mod events, keyed by name.

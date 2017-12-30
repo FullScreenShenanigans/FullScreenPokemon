@@ -11,7 +11,7 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Mo
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Running Indoors";
+    public static readonly modName: string = "Running Indoors";
 
     /**
      * Mod events, keyed by name.

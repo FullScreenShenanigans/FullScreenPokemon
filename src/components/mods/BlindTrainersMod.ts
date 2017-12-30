@@ -10,7 +10,7 @@ export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Mod
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Blind Trainers";
+    public static readonly modName: string = "Blind Trainers";
 
     /**
      * Mod events, keyed by name.

@@ -2,10 +2,11 @@ import { Component } from "eightbittr";
 import { IPipe } from "inputwritr";
 import { IMod } from "modattachr";
 import {
-    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrapprSettings, OptionType,
+    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrappr, IUserWrapprSettings, OptionType,
 } from "userwrappr";
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
+import { IModComponentClass, Mods } from "./components/Mods";
+import { FullScreenPokemon } from "./FullScreenPokemon";
 
 /**
  * Sizes the game is allowed to be, keyed by friendly name.
@@ -15,9 +16,9 @@ export interface IGameSizes {
 }
 
 /**
- * Sets up the UserWrappr UI around an FullScreenPokemon instance.
+ * Generates settings for an IUserWrappr that will create and wrap a FullScreenPokemon instance.
  */
-export class Interface<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class InterfaceFactory {
     /**
      * Friendly name of the default game size.
      */
@@ -51,6 +52,16 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
     ];
 
     /**
+     * Game instance, once an IUserWrappr has created it.
+     */
+    private game: FullScreenPokemon;
+
+    /**
+     * IUserWrappr instance this is creating interfaces for.
+     */
+    private userWrapper: IUserWrappr;
+
+    /**
      * Whether InputWritr pipes have been initialized.
      */
     private initializedPipes = false;
@@ -61,40 +72,41 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
     private isPageHidden = false;
 
     /**
-     * Creates settings for the game's IUserWrappr.
+     * Creates settings for a game's IUserWrappr.
      *
-     * @returns Settings for the game's IUserWrappr.
+     * @returns Settings for a game's IUserWrappr.
      */
     public generateUserWrapprSettings(): IUserWrapprSettings {
         return {
             defaultSize: this.sizes[this.defaultSize],
-            createContents: (size: IAbsoluteSizeSchema) => {
-                this.gameStarter.reset(size);
+            createContents: (size: IAbsoluteSizeSchema, userWrapper: IUserWrappr) => {
+                (window as any).FSP = this.game = new FullScreenPokemon(size);
+                this.userWrapper = userWrapper;
 
                 if (!this.initializedPipes) {
                     this.initializePipes();
                     this.initializedPipes = true;
                 }
 
-                return this.gameStarter.container;
+                return this.game.container;
             },
             menus: [
                 {
                     options: [
                         {
-                            getInitialValue: (): number => Math.round(this.gameStarter.audioPlayer.getVolume() * 100),
+                            getInitialValue: (): number => Math.round(this.game.audioPlayer.getVolume() * 100),
                             maximum: 100,
                             minimum: 0,
                             saveValue: (value: number): void => {
-                                this.gameStarter.audioPlayer.setVolume(value / 100);
+                                this.game.audioPlayer.setVolume(value / 100);
                             },
                             title: "Volume",
                             type: OptionType.Number,
                         },
                         {
-                            getInitialValue: (): boolean => this.gameStarter.audioPlayer.getMuted(),
+                            getInitialValue: (): boolean => this.game.audioPlayer.getMuted(),
                             saveValue: (value: boolean): void => {
-                                this.gameStarter.audioPlayer.setMuted(value);
+                                this.game.audioPlayer.setMuted(value);
                             },
                             title: "Mute",
                             type: OptionType.Boolean,
@@ -103,7 +115,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                             getInitialValue: (): string => "1x",
                             options: [".25x", ".5x", "1x", "2x", "5x", "10x"],
                             saveValue: (value: string): void => {
-                                this.gameStarter.gamesRunner.setSpeed(parseFloat(value.replace("x", "")));
+                                this.game.gamesRunner.setSpeed(parseFloat(value.replace("x", "")));
                             },
                             title: "Speed",
                             type: OptionType.Select,
@@ -112,17 +124,17 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                             getInitialValue: () => this.defaultSize,
                             options: Object.keys(this.sizes),
                             saveValue: async (value: string): Promise<void> => {
-                                await this.gameStarter.userWrapper.resetSize(this.sizes[value]);
+                                await this.userWrapper.resetSize(this.sizes[value]);
                             },
                             title: "View Mode",
                             type: OptionType.Select,
                         },
                         {
-                            getInitialValue: () => (1 / this.gameStarter.pixelDrawer.getFramerateSkip() * 60) + "fps",
+                            getInitialValue: () => (1 / this.game.pixelDrawer.getFramerateSkip() * 60) + "fps",
                             options: ["60fps", "30fps"],
                             saveValue: (value: string): void => {
                                 const numeric: number = parseInt(value.replace("fps", ""), 10);
-                                this.gameStarter.pixelDrawer.setFramerateSkip(1 / numeric * 60);
+                                this.game.pixelDrawer.setFramerateSkip(1 / numeric * 60);
                             },
                             title: "Framerate",
                             type: OptionType.Select,
@@ -134,7 +146,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                                 getInitialValue: () => false,
                                 saveValue: (value: boolean): void => {
                                     if (value) {
-                                        deviceMotionPipe = this.gameStarter.inputWriter.makePipe("ondevicemotion", "type");
+                                        deviceMotionPipe = this.game.inputWriter.makePipe("ondevicemotion", "type");
                                         window.addEventListener("devicemotion", deviceMotionPipe);
                                     } else if (deviceMotionPipe !== undefined) {
                                         window.removeEventListener("devicemotion", deviceMotionPipe);
@@ -147,7 +159,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                         })(),
                         {
                             action: (): void => {
-                                this.gameStarter.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
+                                this.game.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
                             },
                             title: "Screenshot",
                             type: OptionType.Action,
@@ -159,12 +171,12 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                     options: ((controls: string[]): IMultiSelectSchema[] =>
                         controls.map((control: string): IMultiSelectSchema => ({
                             getInitialValue: (): string[] =>
-                                this.gameStarter.inputWriter.aliasConverter
+                                this.game.inputWriter.aliasConverter
                                     .getAliasAsKeyStrings(control)
                                     .map((text: string): string => text.toLowerCase()),
                             options: this.keys,
                             saveValue: (newValue: string[], oldValue: string[]): void => {
-                                this.gameStarter.inputWriter.switchAliasValues(control, oldValue, newValue);
+                                this.game.inputWriter.switchAliasValues(control, oldValue, newValue);
                             },
                             selections: 2,
                             title: control,
@@ -174,18 +186,18 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
                     title: "Controls",
                 },
                 {
-                    options: ((mods: IMod[]) =>
-                        mods.map((mod: IMod): IBooleanSchema => ({
-                            getInitialValue: (): boolean => !!mod.enabled,
+                    options: ((modClasses: IModComponentClass[]) =>
+                        modClasses.map((modClass: IModComponentClass): IBooleanSchema => ({
+                            getInitialValue: (): boolean => !!this.game.mods.modsByName[modClass.modName].enabled,
                             saveValue: (value: boolean): void => {
                                 value
-                                    ? this.gameStarter.modAttacher.enableMod(mod.name)
-                                    : this.gameStarter.modAttacher.disableMod(mod.name);
+                                    ? this.game.modAttacher.enableMod(modClass.modName)
+                                    : this.game.modAttacher.disableMod(modClass.modName);
                             },
-                            title: mod.name,
+                            title: modClass.modName,
                             type: OptionType.Boolean,
                         }))
-                    )(this.gameStarter.mods.mods),
+                    )(Mods.modClasses),
                     title: "Mods!",
                 },
             ],
@@ -258,9 +270,9 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
      * Reacts to the page becoming hidden by pausing the GameStartr.
      */
     private onPageHidden(): void {
-        if (!this.gameStarter.gamesRunner.getPaused()) {
+        if (!this.game.gamesRunner.getPaused()) {
             this.isPageHidden = true;
-            this.gameStarter.gamesRunner.pause();
+            this.game.gamesRunner.pause();
         }
     }
 
@@ -270,7 +282,7 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
     private onPageVisible(): void {
         if (this.isPageHidden) {
             this.isPageHidden = false;
-            this.gameStarter.gamesRunner.play();
+            this.game.gamesRunner.play();
         }
     }
 
@@ -280,19 +292,19 @@ export class Interface<TGameStartr extends FullScreenPokemon> extends Component<
     private initializePipes(): void {
         window.addEventListener(
             "keydown",
-            this.gameStarter.inputWriter.makePipe("onkeydown", "keyCode"));
+            this.game.inputWriter.makePipe("onkeydown", "keyCode"));
 
         window.addEventListener(
             "keyup",
-            this.gameStarter.inputWriter.makePipe("onkeyup", "keyCode"));
+            this.game.inputWriter.makePipe("onkeyup", "keyCode"));
 
         window.addEventListener(
             "mousedown",
-            this.gameStarter.inputWriter.makePipe("onmousedown", "which"));
+            this.game.inputWriter.makePipe("onmousedown", "which"));
 
         window.addEventListener(
             "contextmenu",
-            this.gameStarter.inputWriter.makePipe("oncontextmenu", "", true));
+            this.game.inputWriter.makePipe("oncontextmenu", "", true));
 
         document.addEventListener(
             "visibilitychange",

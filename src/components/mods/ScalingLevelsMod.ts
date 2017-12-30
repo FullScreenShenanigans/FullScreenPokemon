@@ -13,7 +13,7 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Mod
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Scaling Levels";
+    public static readonly modName: string = "Scaling Levels";
 
     /**
      * Mod events, keyed by name.

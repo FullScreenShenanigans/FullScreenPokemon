@@ -14,7 +14,7 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Nuzlocke Challenge";
+    public static readonly modName: string = "Nuzlocke Challenge";
 
     /**
      * Mod events, keyed by name.

@@ -1,9 +1,12 @@
-import { FullScreenPokemon } from "./FullScreenPokemon";
+import { UserWrappr } from "userwrappr";
+
+import { InterfaceFactory } from "./InterfaceFactory";
 
 const container = document.getElementById("game")!;
-const FSP: FullScreenPokemon = new FullScreenPokemon();
+const interfaceFactory = new InterfaceFactory();
+const userWrapper = new UserWrappr(interfaceFactory.generateUserWrapprSettings());
 
-FSP.userWrapper.createDisplay(container)
+userWrapper.createDisplay(container)
     .then((): void => {
         container.className += " loaded";
     })
@@ -11,5 +14,3 @@ FSP.userWrapper.createDisplay(container)
         console.error("An error happened while trying to instantiate FullScreenPokemon!");
         console.error(error);
     });
-
-(window as any).FSP = FSP;

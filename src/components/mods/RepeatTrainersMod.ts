@@ -11,7 +11,7 @@ export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends Mo
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Repeat Trainers";
+    public static readonly modName: string = "Repeat Trainers";
 
     /**
      * Mod events, keyed by name.

@@ -10,7 +10,7 @@ export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends Mod
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Infinite Repel";
+    public static readonly modName: string = "Infinite Repel";
 
     /**
      * Mod events, keyed by name.
