@@ -9,28 +9,23 @@ A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 
 ## Usage
 
-FSP uses the [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) module to fill the available window size with a game screen, option menus, and piped input events.
-
 ```typescript
 import { FullScreenPokemon } from "fullscreenpokemon";
 
-const container = document.querySelector("#game");
-const fsp = new FullScreenPokemon();
+// Creates a new game with a 320x480 screen size.
+const fsp = new FullScreenPokemon({
+    height: 320,
+    width: 480,
+});
 
-fsp.userWrapper.createDisplay(container);
-```
-
-You can make just the game canvas without any wrapping input pipes or menus by directly calling `FSP.reset(size)`.
-The game will have a `.canvas` member displaying the game screen.
-You'll need to set up your own event registrations manually.
-
-```typescript
-const fsp = new FullScreenPokemon();
-
-fsp.reset(fsp.interface.sizes.GameBody);
-
+// Games contain a .canvas member for the screen.
 document.body.appendChild(fsp.canvas);
 ```
+
+By default, the game doesn't set up input events.
+You'll need to set up your own event registrations manually.
+
+The built `src/index.html` uses [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) to fill the available window size with a game screen, option menus, and piped input events.
 
 <!-- {{Development}} -->
 ## Development

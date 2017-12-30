@@ -11,7 +11,7 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends ModC
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Joey's Rattata";
+    public static readonly modName: string = "Joey's Rattata";
 
     /**
      * Mod events, keyed by name.

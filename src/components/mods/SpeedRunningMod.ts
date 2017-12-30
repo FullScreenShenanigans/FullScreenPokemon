@@ -10,12 +10,12 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
     /**
      * Class name for the player's prototype.
      */
-    private static playerClassName = "Player";
+    private static readonly playerClassName = "Player";
 
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Speed Running";
+    public static readonly modName: string = "Speed Running";
 
     /**
      * Mod events, keyed by name.

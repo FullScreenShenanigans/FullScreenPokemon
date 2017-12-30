@@ -11,7 +11,7 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Randomize Wild Pokemon";
+    public static readonly modName: string = "Randomize Wild Pokemon";
 
     /**
      * Mod events, keyed by name.

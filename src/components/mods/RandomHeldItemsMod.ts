@@ -23,13 +23,18 @@ export interface IItemProbabilities {
   * Mod that randomizes items found on wild Pokemon.
   */
 export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+     /**
+      * Name of the mod.
+      */
+    public static readonly modName: string = "Random Held Items";
+
     /**
      * What items can be found on wild Pokemon by their primary type.
      *
      * @remarks No need to make probabilites add to 1 as the mod will just pick no item if generated
      *          number is higher than what the probabilities add up to.
      */
-     private static typeItems: { [i: string]: IItemProbabilities[] } = {
+    private static typeItems: { [i: string]: IItemProbabilities[] } = {
         Normal: [
             {
                 name: "Potion",
@@ -155,14 +160,9 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
      };
 
      /**
-      * Name of the mod.
-      */
-     public readonly name: string = "Random Held Items";
-
-     /**
       * Mod events, keyed by name.
       */
-     public readonly events: ICallbackRegister = {
+    public readonly events: ICallbackRegister = {
          [this.eventNames.onNewPokemonCreation]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
              const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
@@ -180,7 +180,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
       * @param pokemonType   Type of the wild encountered Pokemon.
       * @returns The name of an item or undefined if no item generated.
       */
-     private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
+    private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
             const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
             let counter = 0;
 

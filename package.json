@@ -13,11 +13,11 @@
         "battlemovr": "^0.7.1",
         "changelinr": "^0.7.0",
         "devicelayr": "^0.7.0",
-        "eightbittr": "^0.7.0",
+        "eightbittr": "^0.7.3",
         "flagswappr": "^0.7.1",
         "fpsanalyzr": "^0.7.0",
         "gamesrunnr": "^0.7.0",
-        "gamestartr": "^0.7.0",
+        "gamestartr": "^0.7.3",
         "groupholdr": "^0.7.0",
         "inputwritr": "^0.7.0",
         "itemsholdr": "^0.7.0",
@@ -36,7 +36,7 @@
         "thinghittr": "^0.7.0",
         "timehandlr": "^0.7.0",
         "touchpassr": "^0.7.0",
-        "userwrappr": "^0.7.0"
+        "userwrappr": "^0.7.2"
     },
     "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
     "devDependencies": {

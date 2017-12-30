@@ -14,16 +14,15 @@ export const stubFullScreenPokemon = (settings?: IFullScreenPokemonSettings): Fu
         height: 256,
     };
 
-    const fsp = new FullScreenPokemon()
-        .reset({
-            height: settings.height || 256,
-            moduleSettings: {
-                audio: {
-                    fileTypes: [],
-                },
+    const fsp = new FullScreenPokemon({
+        height: settings.height || 256,
+        moduleSettings: {
+            audio: {
+                fileTypes: [],
             },
-            width: settings.width || 256,
-        });
+        },
+        width: settings.width || 256,
+    });
 
     stub(fsp.audioPlayer, "play");
     stub(fsp.audioPlayer, "playLocal");

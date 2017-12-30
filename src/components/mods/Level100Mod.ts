@@ -11,7 +11,7 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends ModCompo
     /**
      * Name of the mod.
      */
-    public readonly name: string = "Level 100";
+    public static readonly modName: string = "Level 100";
 
     /**
      * Mod events, keyed by name.

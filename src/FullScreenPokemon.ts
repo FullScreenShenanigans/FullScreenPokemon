@@ -4,7 +4,6 @@ import { GameStartr, IGameStartrSettings } from "gamestartr";
 import { IMenuGraphr, MenuGraphr } from "menugraphr";
 import { IScenePlayr, ScenePlayr } from "sceneplayr";
 import { IStateHoldr, StateHoldr } from "stateholdr";
-import { IUserWrappr, UserWrappr } from "userwrappr";
 
 import { Actions } from "./components/Actions";
 import { Battles } from "./components/Battles";
@@ -19,7 +18,6 @@ import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
 import { Inputs } from "./components/Inputs";
-import { Interface } from "./components/Interface";
 import { Macros } from "./components/Macros";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
@@ -82,11 +80,6 @@ export class FullScreenPokemon extends GameStartr {
      * General localStorage saving for collections of state.
      */
     public stateHolder: IStateHoldr;
-
-    /**
-     * General localStorage saving for collections of state.
-     */
-    public userWrapper: IUserWrappr;
 
     /**
      * Action functions used by this instance.
@@ -154,11 +147,6 @@ export class FullScreenPokemon extends GameStartr {
     public inputs: Inputs<FullScreenPokemon>;
 
     /**
-     * Interface functions used by this instance.
-     */
-    public interface: Interface<FullScreenPokemon>;
-
-    /**
      * Macro functions used by this instance.
      */
     public macros: Macros<FullScreenPokemon>;
@@ -219,17 +207,6 @@ export class FullScreenPokemon extends GameStartr {
     public ticksElapsed: number;
 
     /**
-     * Initializes a new instance of the FullScreenPokemon class.
-     */
-    public constructor() {
-        super();
-
-        this.mods = new Mods(this);
-        this.interface = new Interface(this);
-        this.userWrapper = new UserWrappr(this.interface.generateUserWrapprSettings());
-    }
-
-    /**
      * Resets the system components.
      */
     protected resetComponents(): void {
@@ -244,6 +221,7 @@ export class FullScreenPokemon extends GameStartr {
         this.maintenance = new Maintenance(this);
         this.maps = new Maps(this);
         this.menus = new Menus(this);
+        this.mods = new Mods(this);
         this.physics = new Physics(this);
         this.things = new Things(this);
         this.scrolling = new Scrolling(this);
