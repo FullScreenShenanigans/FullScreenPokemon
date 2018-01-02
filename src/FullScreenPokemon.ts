@@ -6,6 +6,7 @@ import { IScenePlayr, ScenePlayr } from "sceneplayr";
 import { IStateHoldr, StateHoldr } from "stateholdr";
 
 import { Actions } from "./components/Actions";
+import { Audio } from "./components/Audio";
 import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
 import { Constants } from "./components/Constants";
@@ -85,6 +86,11 @@ export class FullScreenPokemon extends GameStartr {
      * Action functions used by this instance.
      */
     public actions: Actions<FullScreenPokemon>;
+
+    /**
+     * Friendly sound aliases and names for audio.
+     */
+    public audio: Audio<FullScreenPokemon>;
 
     /**
      * Battle functions used by this instance.
@@ -211,6 +217,7 @@ export class FullScreenPokemon extends GameStartr {
      */
     protected resetComponents(): void {
         this.actions = new Actions(this);
+        this.audio = new Audio(this);
         this.collisions = new Collisions(this);
         this.constants = new Constants(this);
         this.equations = new Equations(this);

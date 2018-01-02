@@ -1,4 +1,5 @@
-import { stub } from "sinon";
+import { AudioElementSound } from "audioplayr";
+import * as sinon from "sinon";
 
 import { FullScreenPokemon, IFullScreenPokemonSettings } from "./FullScreenPokemon";
 
@@ -18,16 +19,11 @@ export const stubFullScreenPokemon = (settings?: IFullScreenPokemonSettings): Fu
         height: settings.height || 256,
         moduleSettings: {
             audio: {
-                fileTypes: [],
+                createSound: () => sinon.createStubInstance(AudioElementSound),
             },
         },
         width: settings.width || 256,
     });
-
-    stub(fsp.audioPlayer, "play");
-    stub(fsp.audioPlayer, "playLocal");
-    stub(fsp.audioPlayer, "playTheme");
-    stub(fsp.audioPlayer, "playThemePrefixed");
 
     return fsp;
 };

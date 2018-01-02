@@ -587,7 +587,6 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      *       pass them as an onPreSetLocation/onSetLocation here to reduce dependencies.
      */
     public setLocation(name: string, noEntrance?: boolean): ILocation {
-        this.gameStarter.audioPlayer.clearAll();
         this.gameStarter.groupHolder.clearArrays();
         this.gameStarter.mapScreener.clearScreen();
         this.gameStarter.menuGrapher.deleteAllMenus();
@@ -618,8 +617,11 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         const theme: string = location.theme || location.area.theme || location.area.map.theme;
 
         this.gameStarter.mapScreener.theme = theme;
-        if (theme && this.gameStarter.audioPlayer.getThemeName() !== theme) {
-            this.gameStarter.audioPlayer.playTheme(theme);
+        if (theme && !this.gameStarter.audioPlayer.hasSound(this.gameStarter.audio.aliases.theme, theme)) {
+            this.gameStarter.audioPlayer.play(theme, {
+                alias: this.gameStarter.audio.aliases.theme,
+                loop: true,
+            });
         }
 
         if (!noEntrance && location.entry) {

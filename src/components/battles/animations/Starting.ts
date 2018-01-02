@@ -22,18 +22,22 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
     public run(onComplete: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
 
-        this.gameStarter.audioPlayer.playTheme(battleInfo.theme);
-
         if (battleInfo.keptThings) {
             this.gameStarter.graphics.moveThingsToText(battleInfo.keptThings);
         }
 
-        this.transitions.play({
-            onComplete: (): void => {
-                this.setupThings(battleInfo);
-                this.runTeamEntrances(battleInfo, onComplete);
-            },
+        this.gameStarter.audioPlayer.play(battleInfo.theme, {
+            alias: this.gameStarter.audio.aliases.theme,
+            loop: true,
+        }).then(() => {
+            this.transitions.play({
+                onComplete: (): void => {
+                    this.setupThings(battleInfo);
+                    this.runTeamEntrances(battleInfo, onComplete);
+                },
+            });
         });
+
     }
 
     /**

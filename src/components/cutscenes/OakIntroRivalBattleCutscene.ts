@@ -15,12 +15,17 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
      *
      * @param settings   Settings used for the cutscene.
      */
-    public Approach(settings: any): void {
+    public async Approach(settings: any): Promise<void> {
         const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 
-        this.gameStarter.audioPlayer.playTheme("Rival Appears");
+        await this.gameStarter.audioPlayer.play(
+            this.gameStarter.audio.names.rivalAppears,
+            {
+                alias: this.gameStarter.audio.aliases.theme,
+                loop: true,
+            });
 
         settings.rival = rival;
         this.gameStarter.actions.animateCharacterSetDirection(rival, Direction.Bottom);
