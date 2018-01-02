@@ -13,7 +13,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      *
      * @param settings   Settings used for the cutscene.
      */
-    public FadeIn(settings: any): void {
+    public async FadeIn(settings: any): Promise<void> {
         const oak: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.oakPortrait, {
             opacity: 0,
         });
@@ -21,7 +21,10 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         settings.oak = oak;
 
         console.warn("Cannot find Introduction audio theme!");
-        // this.gameStarter.audioPlayer.playTheme("Introduction");
+        // await this.gameStarter.audioPlayer.play(this.gameStarter.audio.names.introduction, {
+        //     alias: this.gameStarter.audio.aliases.theme,
+        //    loop: true,
+        // });
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onIntroFadeIn, oak);
 
         this.gameStarter.maps.setMap("Blank", "White");
@@ -89,7 +92,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * Cutscene for transitioning Nidorino onto the screen.
      */
     public PokemonExpo(): void {
-        const pokemon: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.nIDORINOFront, {
+        const pokemon: IThing = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.nidorinoFront, {
             flipHoriz: true,
             opacity: 0.01,
         });

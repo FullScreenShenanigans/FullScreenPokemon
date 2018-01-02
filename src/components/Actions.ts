@@ -739,12 +739,15 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   A Player triggering other.
      * @param other   A Detector triggered by thing.
      */
-    public activateThemePlayer(thing: IPlayer, other: IThemeDetector): void {
-        if (!thing.player || this.gameStarter.audioPlayer.getThemeName() === other.theme) {
+    public async activateThemePlayer(thing: IPlayer, other: IThemeDetector): Promise<void> {
+        if (!thing.player || this.gameStarter.audioPlayer.hasSound(this.gameStarter.audio.aliases.theme, other.theme)) {
             return;
         }
 
-        this.gameStarter.audioPlayer.playTheme(other.theme);
+        await this.gameStarter.audioPlayer.play(other.theme, {
+            alias: this.gameStarter.audio.aliases.theme,
+            loop: true,
+        });
     }
 
     /**

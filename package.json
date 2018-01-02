@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "areaspawnr": "^0.7.0",
-        "audioplayr": "^0.7.0",
+        "audioplayr": "^0.7.2",
         "battlemovr": "^0.7.1",
         "changelinr": "^0.7.0",
         "devicelayr": "^0.7.0",
@@ -17,7 +17,7 @@
         "flagswappr": "^0.7.1",
         "fpsanalyzr": "^0.7.0",
         "gamesrunnr": "^0.7.0",
-        "gamestartr": "^0.7.3",
+        "gamestartr": "^0.7.4",
         "groupholdr": "^0.7.0",
         "inputwritr": "^0.7.0",
         "itemsholdr": "^0.7.0",

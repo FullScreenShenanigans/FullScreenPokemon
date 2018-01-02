@@ -31,7 +31,9 @@ export const GenerateInputSettings = (fsp: FullScreenPokemon): Partial<IInputWri
             a: (event: Event): void => fsp.inputs.keyDownA(fsp.players[0], event),
             b: (event: Event): void => fsp.inputs.keyDownB(fsp.players[0], event),
             pause: (event: Event): void => fsp.inputs.keyDownPause(fsp.players[0], event),
-            mute: (event: Event): void => fsp.inputs.keyDownMute(fsp.players[0], event),
+            mute: (event: Event): void => {
+                fsp.inputs.keyDownMute(fsp.players[0], event);
+            },
             select: (event: Event): void => fsp.inputs.keyDownSelect(fsp.players[0], event),
         },
         onkeyup: {

@@ -252,8 +252,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownMute(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.audioPlayer.toggleMuted();
+    public async keyDownMute(_thing: ICharacter, event?: Event): Promise<void> {
+        await this.gameStarter.audioPlayer.setMuted(this.gameStarter.audioPlayer.getMuted());
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownMute);
 
         if (event && event.preventDefault) {

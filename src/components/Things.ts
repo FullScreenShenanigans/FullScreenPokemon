@@ -9,7 +9,7 @@ import { Direction } from "./Constants";
 import { IWildPokemonSchema } from "./Maps";
 import { IDialog, IMenuSchema } from "./Menus";
 import { IStateSaveable } from "./Saves";
-import { Names } from "./things/names";
+import { ThingNames } from "./things/ThingNames";
 
 /**
  * Things keyed by their ids.
@@ -713,7 +713,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
     /**
      * Stores known names of Things.
      */
-    public readonly names = new Names();
+    public readonly names = new ThingNames();
 
     public process(thing: IThing, title: string, settings: any, defaults: any): void {
         super.process(thing, title, settings, defaults);

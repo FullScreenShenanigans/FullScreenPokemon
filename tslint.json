@@ -14,6 +14,7 @@
         "no-any": false,
         "no-bitwise": false,
         "no-console": false,
+        "no-floating-promises": false,
         "no-magic-numbers": false,
         "no-non-null-assertion": false,
         "no-object-literal-type-assertion": false,

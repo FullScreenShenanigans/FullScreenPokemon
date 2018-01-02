@@ -14,7 +14,7 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
      *
      * @param settings   Settings used for the cutscene.
      */
-    public FirstDialog(settings: any): void {
+    public async FirstDialog(settings: any): Promise<void> {
         let triggered = false;
 
         settings.triggerer.alive = false;
@@ -28,7 +28,12 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
         this.gameStarter.actions.animatePlayerDialogFreeze(settings.player);
         this.gameStarter.actions.animateCharacterSetDirection(settings.player, Direction.Bottom);
 
-        this.gameStarter.audioPlayer.playTheme("Professor Oak");
+        await this.gameStarter.audioPlayer.play(
+            this.gameStarter.audio.names.professorOak,
+            {
+                alias: this.gameStarter.audio.aliases.theme,
+                loop: true,
+            });
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
