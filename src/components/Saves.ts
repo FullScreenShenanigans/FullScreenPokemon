@@ -89,7 +89,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param showText   Whether to display a status menu (by default, false).
      */
     public saveGame(showText: boolean = true): void {
-        const ticksRecorded: number = this.gameStarter.gamesRunner.fpsAnalyzer.getNumRecorded();
+        const ticksRecorded: number = this.gameStarter.fpsAnalyzer.getNumRecorded();
 
         this.gameStarter.itemsHolder.increase("time", ticksRecorded - this.gameStarter.ticksElapsed);
         this.gameStarter.ticksElapsed = ticksRecorded;

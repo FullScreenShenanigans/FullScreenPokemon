@@ -115,7 +115,8 @@ export class InterfaceFactory {
                             getInitialValue: (): string => "1x",
                             options: [".25x", ".5x", "1x", "2x", "5x", "10x"],
                             saveValue: (value: string): void => {
-                                this.game.gamesRunner.setSpeed(parseFloat(value.replace("x", "")));
+                                const multiplier = parseFloat(value.replace("x", ""));
+                                this.game.gamesRunner.setInterval(multiplier * (1000 / 60));
                             },
                             title: "Speed",
                             type: OptionType.Select,
@@ -127,16 +128,6 @@ export class InterfaceFactory {
                                 await this.userWrapper.resetSize(this.sizes[value]);
                             },
                             title: "View Mode",
-                            type: OptionType.Select,
-                        },
-                        {
-                            getInitialValue: () => (1 / this.game.pixelDrawer.getFramerateSkip() * 60) + "fps",
-                            options: ["60fps", "30fps"],
-                            saveValue: (value: string): void => {
-                                const numeric: number = parseInt(value.replace("fps", ""), 10);
-                                this.game.pixelDrawer.setFramerateSkip(1 / numeric * 60);
-                            },
-                            title: "Framerate",
                             type: OptionType.Select,
                         },
                         ((): IBooleanSchema => {

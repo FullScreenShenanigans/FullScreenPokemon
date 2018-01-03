@@ -7,9 +7,12 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
  * @param fsp   A generating FullScreenPokemon instance.
  * @returns Runner settings for the FullScreenPokemon instance.
  */
-export const GenerateRunnerSettings = (fsp: FullScreenPokemon): IGamesRunnrSettings => ({
+export const GenerateRunnerSettings = (fsp: FullScreenPokemon): Partial<IGamesRunnrSettings> => ({
     interval: 1000 / 60,
     games: [
+        (): void => {
+            fsp.fpsAnalyzer.tick();
+        },
         (): void => {
             fsp.pixelDrawer.refillGlobalCanvas();
         },
