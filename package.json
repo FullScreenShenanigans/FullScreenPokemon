@@ -8,8 +8,11 @@
         "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
     },
     "dependencies": {
+        "battlemovr": "^0.7.3",
+        "flagswappr": "^0.7.2",
         "gamestartr": "^0.7.5",
         "menugraphr": "^0.7.0",
+        "stateholdr": "^0.7.1",
         "userwrappr": "^0.7.2"
     },
     "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
