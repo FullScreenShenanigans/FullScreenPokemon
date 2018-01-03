@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
     },
     "dependencies": {
-        "gamestartr": "^0.7.5",
+        "gamestartr": "^0.7.4",
         "menugraphr": "^0.7.0",
         "userwrappr": "^0.7.2"
     },
