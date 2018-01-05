@@ -4,7 +4,7 @@ import { MapScreenr } from "mapscreenr";
 import { ModAttachr } from "modattachr";
 import { TimeHandlr } from "timehandlr";
 
-import { IGroups } from "../creators/Groups";
+import { IGroups } from "../creators/createGroupHolder";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
 import { IMapScreenr } from "./Maps";

@@ -8,9 +8,11 @@ node_modules/
 !./*.js
 !*.json
 *.html
-Maps.test.ts
 npm-debug.log
 debug.log
+
+# Added by shenanigans-manager for maps testing
+Maps.test.ts
 
 # Local development typically uses npm install --link
 # Package lock files aren't updated by linked installs

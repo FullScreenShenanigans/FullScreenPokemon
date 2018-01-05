@@ -1,4 +1,5 @@
 import { AreaSpawnr } from "areaspawnr";
+import { AudioPlayr } from "audioplayr";
 import { component, container } from "babyioc";
 import { BattleMovr } from "battlemovr";
 import { FlagSwappr } from "flagswappr";
@@ -6,14 +7,19 @@ import { GamesRunnr } from "gamesrunnr";
 import { GameStartr, IGameStartrConstructorSettings } from "gamestartr";
 import { GroupHoldr } from "groupholdr";
 import { InputWritr } from "inputwritr";
+import { ItemsHoldr } from "itemsholdr";
 import { MapsCreatr } from "mapscreatr";
 import { MapScreenr } from "mapscreenr";
 import { MenuGraphr } from "menugraphr";
 import { ModAttachr } from "modattachr";
 import { ObjectMakr } from "objectmakr";
+import { PixelDrawr } from "pixeldrawr";
+import { PixelRendr } from "pixelrendr";
+import { QuadsKeepr } from "quadskeepr";
 import { ScenePlayr } from "sceneplayr";
 import { StateHoldr } from "stateholdr";
 import { ThingHittr } from "thinghittr";
+import { TimeHandlr } from "timehandlr";
 
 import { Actions } from "./components/Actions";
 import { Audio } from "./components/Audio";
@@ -38,26 +44,26 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { audioSettings } from "./creators/Audio";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
+import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
 import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
 import { createGamesRunner } from "./creators/createGamesRunner";
+import { createGroupHolder, IGroups } from "./creators/createGroupHolder";
+import { createInputWriter } from "./creators/createInputWriter";
+import { createItemsHolder } from "./creators/createItemsHolder";
 import { createMapsCreator } from "./creators/createMapsCreator";
 import { createMapScreener } from "./creators/createMapScreener";
 import { createMenuGrapher } from "./creators/createMenuGrapher";
+import { createModAttacher } from "./creators/createModAttacher";
 import { createObjectMaker } from "./creators/createObjectMaker";
+import { createPixelDrawer } from "./creators/createPixelDrawer";
+import { createPixelRender } from "./creators/createPixelRender";
+import { createQuadsKeeper } from "./creators/createQuadsKeeper";
 import { createScenePlayer } from "./creators/createScenePlayer";
 import { createStateHolder } from "./creators/createStateHolder";
 import { createThingHitter } from "./creators/createThingHitter";
-import { eventSettings } from "./creators/Events";
-import { groupsSettings, IGroups } from "./creators/Groups";
-import { createInputWriter } from "./creators/Input";
-import { itemsSettings } from "./creators/Items";
-import { quadrantsSettings } from "./creators/Quadrants";
-import { drawingSettings } from "./creators/Renderer";
-import { spritesSettings } from "./creators/Sprites";
-import { createModAttacher } from "./creators/Mods";
+import { createTimeHandler } from "./creators/createTimeHandler";
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
@@ -209,6 +215,12 @@ export class FullScreenPokemon extends GameStartr {
     public readonly areaSpawner: AreaSpawnr;
 
     /**
+     * Playback for persistent and on-demand sounds and themes.
+     */
+    @component(createAudioPlayer, AudioPlayr)
+    public readonly audioPlayer: AudioPlayr;
+
+    /**
      * An in-game battle management system for RPG-like battles between actors.
      */
     @component(createBattleMover, BattleMovr)
@@ -229,6 +241,7 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * Storage for separate group arrays of members with unique IDs.
      */
+    @component(createGroupHolder, GroupHoldr)
     public readonly groupHolder: GroupHoldr<IGroups>;
 
     /**
@@ -236,6 +249,12 @@ export class FullScreenPokemon extends GameStartr {
      */
     @component(createInputWriter, InputWritr)
     public readonly inputWriter: InputWritr;
+
+    /**
+     * Cache-based wrapper around localStorage.
+     */
+    @component(createItemsHolder, ItemsHoldr)
+    public readonly itemsHolder: ItemsHoldr;
 
     /**
      * Storage container and lazy loader for GameStartr maps.
@@ -268,6 +287,24 @@ export class FullScreenPokemon extends GameStartr {
     public readonly objectMaker: ObjectMakr;
 
     /**
+     * A real-time scene drawer for large amounts of PixelRendr sprites.
+     */
+    @component(createPixelDrawer, PixelDrawr)
+    public readonly pixelDrawer: PixelDrawr;
+
+    /**
+     * Compresses images into text blobs in real time with fast cached lookups.
+     */
+    @component(createPixelRender, PixelRendr)
+    public readonly pixelRender: PixelRendr;
+
+    /**
+     * Adjustable quadrant-based collision detection.
+     */
+    @component(createQuadsKeeper, QuadsKeepr)
+    public readonly quadsKeeper: QuadsKeepr<IThing>;
+
+    /**
      * A stateful cutscene runner for jumping between scenes and their routines.
      */
     @component(createScenePlayer, ScenePlayr)
@@ -278,6 +315,12 @@ export class FullScreenPokemon extends GameStartr {
      */
     @component(createStateHolder, StateHoldr)
     public readonly stateHolder: StateHoldr;
+
+    /**
+     * A flexible, pausable alternative to setTimeout.
+     */
+    @component(createTimeHandler, TimeHandlr)
+    public readonly timeHandler: TimeHandlr;
 
     /**
      * Automation for physics collisions and reactions.
@@ -297,35 +340,4 @@ export class FullScreenPokemon extends GameStartr {
      * Total FpsAnalyzr ticks that have elapsed since the constructor or saving.
      */
     public ticksElapsed: number;
-
-    /**
-     * Initializes a new instance of the FullScreenPokemon class.
-     *
-     * @param settings   Settings to be used for initialization.
-     */
-    public constructor(settings: IGameStartrConstructorSettings) {
-        super({
-            ...settings,
-            components: {
-                audio: audioSettings,
-                drawing: drawingSettings,
-                events: eventSettings,
-                groups: groupsSettings,
-                items: itemsSettings,
-                quadrants: quadrantsSettings,
-                sprites: spritesSettings,
-                ...(settings.components || {}),
-            },
-        });
-
-        this.pixelDrawer.setThingArrays([
-            this.groupHolder.getGroup("Terrain"),
-            this.groupHolder.getGroup("Solid"),
-            this.groupHolder.getGroup("Scenery"),
-            this.groupHolder.getGroup("Character"),
-            this.groupHolder.getGroup("Text"),
-        ]);
-
-        this.gameplay.gameStart();
-    }
 }

@@ -12,14 +12,17 @@ A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 ```typescript
 import { FullScreenPokemon } from "fullscreenpokemon";
 
-// Creates a new game with a 320x480 screen size.
+// Creates a new game with a 320x480 screen size
 const fsp = new FullScreenPokemon({
     height: 320,
     width: 480,
 });
 
-// Games contain a .canvas member for the screen.
+// Games contain a .canvas member for the screen
 document.body.appendChild(fsp.canvas);
+
+// Creates the initial menu with game start and load options
+fsp.gameplay.gameStart();
 ```
 
 By default, the game doesn't set up input events.

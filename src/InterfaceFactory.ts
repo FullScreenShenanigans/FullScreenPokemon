@@ -88,6 +88,8 @@ export class InterfaceFactory {
                     this.initializedPipes = true;
                 }
 
+                this.game.gameplay.gameStart();
+
                 return this.game.container;
             },
             menus: [

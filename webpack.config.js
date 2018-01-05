@@ -7,7 +7,7 @@ const getEntriesAndSources = () => {
     return package.shenanigans.entries === undefined
         ? [
             {
-                entry: `./src/${package.shenanigans.name}.js`,
+                entry: `./src/index.js`,
                 name: package.shenanigans.name,
                 sources: [
                     "./**/*.js",
