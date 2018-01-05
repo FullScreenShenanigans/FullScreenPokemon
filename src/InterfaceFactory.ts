@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import { IPipe } from "inputwritr";
 import { IMod } from "modattachr";
 import {

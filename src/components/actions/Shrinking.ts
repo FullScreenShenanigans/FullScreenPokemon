@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
@@ -6,7 +6,7 @@ import { IThing } from "../Things";
 /**
  * Shrinking functions used by FullScreenPokemon instances.
  */
-export class Shrinking<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Shrinking<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Shrinks a Thing down to nothing.
      *

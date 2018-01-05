@@ -1,18 +1,18 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
+import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * Macro functions used by FullScreenPokemon instances.
  */
-export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Macros<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *
      * @param reference   Settings for a Checkered macro.
      * @returns A checkered pattern of Things.
      */
-    public macroCheckered(reference: any): any[] {
+    public macroCheckered = (reference: any): any[] => {
         const xStart: number = reference.x || 0;
         const yStart: number = reference.y || 0;
         const xnum: number = reference.xnum || 1;
@@ -51,7 +51,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a Water macro.
      * @returns A body of water.
      */
-    public macroWater(reference: any): any[] {
+    public macroWater = (reference: any): any[] => {
         const x: number = reference.x || 0;
         const y: number = reference.y || 0;
         const width: number = reference.width || 32;
@@ -110,7 +110,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a House macro.
      * @returns A House.
      */
-    public macroHouse(reference: any): any[] {
+    public macroHouse = (reference: any): any[] => {
         const width: number = reference.width || 128;
         const stories: number = reference.stories || 1;
         const output: any[] = [];
@@ -209,7 +209,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a Large House macro.
      * @returns A Large House.
      */
-    public macroHouseLarge(reference: any): any[] {
+    public macroHouseLarge = (reference: any): any[] => {
         const x: number = reference.x || 0;
         let y: number = reference.y || 0;
         const width: number = reference.width || 192;
@@ -331,7 +331,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a Gym macro.
      * @returns A Gym.
      */
-    public macroGym(reference: any): any[] {
+    public macroGym = (reference: any): any[] => {
         const x: number = reference.x || 0;
         const y: number = reference.y || 0;
         const width: number = reference.width || 192;
@@ -367,7 +367,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a Building macro.
      * @returns A Building.
      */
-    public macroBuilding(reference: any): any[] {
+    public macroBuilding = (reference: any): any[] => {
         const x: number = reference.x || 0;
         let y: number = reference.y || 0;
         const width: number = reference.width || 128;
@@ -509,7 +509,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a Mountain macro.
      * @returns A Mountain.
      */
-    public macroMountain(reference: any): any[] {
+    public macroMountain = (reference: any): any[] => {
         const openingOffset: number = reference.openingOffset || 32;
         const output: any[] = [];
         let x: number = reference.x || 0;
@@ -729,7 +729,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a Pokemon Center macro.
      * @returns A Pokemon Center.
      */
-    public macroPokeCenter(reference: any): any[] {
+    public macroPokeCenter = (reference: any): any[] => {
         const x: number = reference.x || 0;
         const y: number = reference.y || 0;
         const output: any = [
@@ -939,7 +939,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param reference   Settings for a PokeMart macro.
      * @returns A PokeMart.
      */
-    public macroPokeMart(reference: any): any[] {
+    public macroPokeMart = (reference: any): any[] => {
         const x: number = reference.x || 0;
         const y: number = reference.y || 0;
         const output: any[] = [

@@ -1,5 +1,5 @@
 import { ITeamAnimations, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
@@ -11,7 +11,7 @@ import { Switching } from "./shared/Switching";
 /**
  * Player animations used by FullScreenPokemon instances.
  */
-export class Player<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ITeamAnimations {
+export class Player<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ITeamAnimations {
     /**
      * Player action animations used by the FullScreenPokemon instance.
      */

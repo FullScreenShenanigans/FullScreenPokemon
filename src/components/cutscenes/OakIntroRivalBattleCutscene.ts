@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPartialBattleOptions } from "../Battles";
@@ -9,14 +9,14 @@ import { ICharacter } from "../Things";
 /**
  * OakIntroRivalBattle cutscene functions used by FullScreenPokemon instances.
  */
-export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for the rival challenging the player to a Pokemon battle.
      *
      * @param settings   Settings used for the cutscene.
      */
     public async Approach(settings: any): Promise<void> {
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 

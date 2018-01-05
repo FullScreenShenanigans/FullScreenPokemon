@@ -21,7 +21,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
         for (const thingRaw of thingsRaw) {
             const thing: IThing = thingRaw.constructor === String
-                ? this.gameStarter.utilities.getThingById(thingRaw as string)
+                ? this.gameStarter.utilities.getExistingThingById(thingRaw as string)
                 : thingRaw as IThing;
 
             if (!used[thing.title]) {
@@ -40,7 +40,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public moveThingsToText(things: IThing[]): void {
         for (const thing of things) {
-            this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, "Text");
+            this.gameStarter.groupHolder.switchGroup(thing, thing.groupType, "Text");
         }
     }
 
@@ -66,7 +66,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public moveThingsFromText(things: IThing[]): void {
         for (const keptThing of things) {
-            this.gameStarter.groupHolder.switchMemberGroup(keptThing, "Text", keptThing.groupType);
+            this.gameStarter.groupHolder.switchGroup(keptThing, "Text", keptThing.groupType);
         }
     }
 }

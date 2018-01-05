@@ -1,5 +1,5 @@
 import { BattleOutcome, IMove, IOnChoice, ISelector, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
@@ -9,7 +9,7 @@ import { Switching } from "./player/Switching";
 /**
  * Selector for a player's actions used by FullScreenPokemon instances.
  */
-export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISelector {
+export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
     /**
      * Switching logic used by this instance.
      */

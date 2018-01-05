@@ -1,5 +1,5 @@
 import { IDamageEffect, IMoveAction, ITeamAndAction } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IPokemon } from "../../../../../Battles";
@@ -8,7 +8,7 @@ import { IMoveSchema } from "../../../../../constants/Moves";
 /**
  * Calculates damage dealt from battle moves.
  */
-export class Calculator<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Calculator<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Calculates how much damage a move should do to a Pokemon.
      *

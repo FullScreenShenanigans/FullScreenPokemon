@@ -27,7 +27,7 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
         },
         [this.eventNames.onModDisable]: (): void => {
             const stats: any = this.gameStarter.objectMaker.getClass(SpeedRunningMod.playerClassName).prototype;
-            const oldSpeed: number = this.gameStarter.moduleSettings.objects!.properties![SpeedRunningMod.playerClassName].speed;
+            const oldSpeed: number = this.gameStarter.settings.components.objects!.properties![SpeedRunningMod.playerClassName].speed;
             this.gameStarter.players[0].speed = stats.speed = oldSpeed;
         },
     };

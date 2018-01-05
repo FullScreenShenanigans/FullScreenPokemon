@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -8,7 +8,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * OakIntro cutscene functions used by FullScreenPokemon instances.
  */
-export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for walking into the grass before receiving a Pokemon.
      *
@@ -76,7 +76,7 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
      * @param settings   Settings used for the cutscene.
      */
     public Catchup(settings: any): void {
-        const door: IThing = this.gameStarter.utilities.getThingById("Oak's Lab Door");
+        const door: IThing = this.gameStarter.utilities.getExistingThingById("Oak's Lab Door");
         const oak: ICharacter = this.gameStarter.objectMaker.make<ICharacter>(this.gameStarter.things.names.oak, {
             outerOk: true,
             nocollide: true,
@@ -231,8 +231,8 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
      * @param settings   Settings used for the cutscene.
      */
     public WalkToTable(settings: any): void {
-        const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.gameStarter.utilities.getExistingThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
         const appearanceDelay: number = this.gameStarter.equations.walkingTicksPerBlock(oak) * 6;
 
         settings.oak = oak;
@@ -359,7 +359,7 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Com
      * @param settings   Settings used for the cutscene.
      */
     public OakRespondsToProtest(settings: any): void {
-        const blocker: IThing = this.gameStarter.utilities.getThingById("OakBlocker");
+        const blocker: IThing = this.gameStarter.utilities.getExistingThingById("OakBlocker");
         const timeout = 21;
 
         settings.player.nocollide = false;

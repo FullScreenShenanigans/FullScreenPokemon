@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -10,7 +10,7 @@ import { ICharacter, IPlayer } from "../Things";
 /**
  * RivalRoute22 cutscene functions used by FullScreenPokemon instances.
  */
-export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for encountering the rival on Route 22.
      *

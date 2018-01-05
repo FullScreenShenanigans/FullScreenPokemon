@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { FlashTransition } from "./transitions/FlashTransition";
@@ -29,7 +29,7 @@ interface ITransitions {
 /**
  * Battle transition animations used by FullScreenPokemon instances.
  */
-export class Transitions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Transitions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Transitions, keyed by name.
      */

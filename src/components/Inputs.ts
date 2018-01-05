@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
@@ -8,7 +8,7 @@ import { ICharacter, IPlayer } from "./Things";
 /**
  * Input functions used by FullScreenPokemon instances.
  */
-export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Quickly tapping direction keys means to look in a direction, not walk.
      */

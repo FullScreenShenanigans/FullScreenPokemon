@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
@@ -6,7 +6,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * Ledge functions used by FullScreenPokemon instances.
  */
-export class Ledges<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Starts a Character hopping over a ledge.
      *

@@ -1,43 +1,12 @@
 import { Utilities as GameStartrUtilities } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IPokemon } from "./Battles";
-import { INewPokemon } from "./constants/Pokemon";
-import { IWildPokemonSchema } from "./Maps";
 import { IThing } from "./Things";
 
 /**
  * Miscellaneous utility functions used by FullScreenPokemon instances.
  */
 export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartrUtilities<TGameStartr> {
-
-    /**
-     * Retrieves the Thing in MapScreener.thingById of the given id.
-     *
-     * @param id   An id of a Thing to retrieve.
-     * @returns The Thing under the given id, if it exists.
-     */
-    public getThingById(id: string): IThing {
-        return (this.gameStarter.groupHolder.getGroup("Thing") as any)[id];
-    }
-
-    /**
-     * Creates a new Pokemon from a schema, using the newPokemon equation.
-     *
-     * @param schema   A description of the Pokemon.
-     * @returns A newly created Pokemon.
-     */
-    public createPokemon(schema: IWildPokemonSchema): IPokemon {
-        const level: number = schema.levels
-            ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
-            : schema.level!;
-        const chosenInfo: INewPokemon = {
-            level,
-            title: schema.title,
-        };
-        return this.gameStarter.equations.newPokemon(chosenInfo);
-    }
-
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
@@ -56,32 +25,14 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
      * @param number   The original Number being padded.
      * @param size   How many digits the output must contain.
      * @param [prefix]   A prefix to repeat for padding (by default, "0").
-     * @example
-     * makeDigit(7, 3); // '007'
-     * makeDigit(7, 3, 1); // '117'
+     * @example makeDigit(7, 3); // '007'
+     * @example makeDigit(7, 3, 1); // '117'
      */
     public makeDigit(num: number | string, size: number, prefix?: any): string {
         return this.stringOf(
             prefix ? prefix.toString() : "0",
             Math.max(0, size - String(num).length),
         ) + num;
-    }
-
-    /**
-     * Checks all members of an Array to see if a specified key exists within one of them.
-     *
-     * @param array   The Array being checked.
-     * @param key   The key being searched for.
-     * @returns Whether the key exists within the Array members.
-     */
-    public checkArrayMembersIndex(array: any[], key: string): boolean {
-        for (const member of array) {
-            if (member[key]) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -109,5 +60,15 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
         });
 
         return true;
+    }
+
+    /**
+     * Gets a Thing known to exist by its ID.
+     *
+     * @param id   ID of a Thing.
+     * @returns Thing under the ID.
+     */
+    public getExistingThingById(id: string): IThing {
+        return this.gameStarter.groupHolder.getThing(id) as IThing;
     }
 }

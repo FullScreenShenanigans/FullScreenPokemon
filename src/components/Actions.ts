@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import { IMenuDialogRaw } from "menugraphr";
 import { ITimeEvent } from "timehandlr";
 
@@ -49,41 +49,41 @@ export interface IColorFadeSettings {
 /**
  * Action functions used by FullScreenPokemon instances.
  */
-export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Following functions used by the FullScreenPokemon instance.
      */
-    public readonly following: Following<TGameStartr> = new Following(this.gameStarter);
+    public readonly following = new Following(this);
 
     /**
      * Grass functions used by the FullScreenPokemon instance.
      */
-    public readonly grass: Grass<TGameStartr> = new Grass(this.gameStarter);
+    public readonly grass = new Grass(this);
 
     /**
      * Ledge functions used by the FullScreenPokemon instance.
      */
-    public readonly ledges: Ledges<TGameStartr> = new Ledges(this.gameStarter);
+    public readonly ledges = new Ledges(this);
 
     /**
      * Roaming functions used by the FullScreenPokemon instance.
      */
-    public readonly roaming: Roaming<TGameStartr> = new Roaming(this.gameStarter);
+    public readonly roaming = new Roaming(this);
 
     /**
      * Shrinking functions used by the FullScreenPokemon instance.
      */
-    public readonly shrinking: Shrinking<TGameStartr> = new Shrinking(this.gameStarter);
+    public readonly shrinking = new Shrinking(this);
 
     /**
      * Sliding functions used by the FullScreenPokemon instance.
      */
-    public readonly sliding: Sliding<TGameStartr> = new Sliding(this.gameStarter);
+    public readonly sliding = new Sliding(this);
 
     /**
      * Walking functions used by the FullScreenPokemon instance.
      */
-    public readonly walking: Walking<TGameStartr> = new Walking(this.gameStarter);
+    public readonly walking = new Walking(this);
 
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
@@ -213,7 +213,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
         //             reward: other.reward,
         //             actors: other.actors.map(
         //                 (schema: IWildPokemonSchema): IPokemon => {
-        //                     return this.gameStarter.utilities.createPokemon(schema);
+        //                     return this.gameStarter.equations.createPokemon(schema);
         //                 })
         //         }
         //     },
@@ -251,7 +251,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
 
         if (groupType) {
             for (const thing of things) {
-                this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, groupType);
+                this.gameStarter.groupHolder.switchGroup(thing, thing.groupType, groupType);
             }
         }
 

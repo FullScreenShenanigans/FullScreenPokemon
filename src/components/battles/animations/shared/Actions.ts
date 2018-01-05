@@ -1,5 +1,5 @@
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeamAndAction } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { FleeAttempt } from "./actions/FleeAttempt";
@@ -10,7 +10,7 @@ import { DefaultMovesBag } from "./moves/MovesBag";
 /**
  * Player action animations used by FullScreenPokemon instances.
  */
-export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IOnActions {
+export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IOnActions {
     /**
      * Action effect animations.
      */

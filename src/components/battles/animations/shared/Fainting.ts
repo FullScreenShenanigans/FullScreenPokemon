@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../Battles";
@@ -8,7 +8,7 @@ import { IThing } from "../../../Things";
 /**
  * Animations for a Pokemon fainting.
  */
-export class Fainting<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Runs a fainting animation.
      *

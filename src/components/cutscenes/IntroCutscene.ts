@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IKeyboardResultsMenu } from "../menus/Keyboards";
@@ -7,7 +7,7 @@ import { IPlayer, IThing } from "../Things";
 /**
  * Intro cutscene functions used by FullScreenPokemon instances.
  */
-export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for the beginning of the game introduction.
      *
@@ -97,7 +97,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             opacity: 0.01,
         });
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(
             pokemon,
@@ -147,7 +149,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         settings.player = player;
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 96, 0);
         this.gameStarter.physics.setMidY(player, this.gameStarter.mapScreener.middleY);
@@ -319,7 +323,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         settings.rival = rival;
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(rival, 0, 0);
         this.gameStarter.physics.setMidX(rival, this.gameStarter.mapScreener.middleX | 0);
@@ -491,7 +497,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         settings.portrait = portrait;
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(portrait, 0, 0);
         this.gameStarter.physics.setMidX(portrait, this.gameStarter.mapScreener.middleX | 0);

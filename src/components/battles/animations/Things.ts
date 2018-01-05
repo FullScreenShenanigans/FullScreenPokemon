@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IThing } from "../../Things";
@@ -62,7 +62,7 @@ export interface IShakeSettings {
 /**
  * Thing animations for battles.
  */
-export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Things<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
      * flag for a little while.
@@ -106,8 +106,9 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {
-                this.gameStarter.groupHolder.callOnAll(this.gameStarter.physics, this.gameStarter.physics.shiftHoriz, dx);
-                this.gameStarter.groupHolder.callOnAll(this.gameStarter.physics, this.gameStarter.physics.shiftVert, dy);
+                this.gameStarter.groupHolder.callOnAll((thing: IThing) => {
+                    this.gameStarter.physics.shiftBoth(thing, dx, dy);
+                });
             },
             1,
             clearTime * interval);

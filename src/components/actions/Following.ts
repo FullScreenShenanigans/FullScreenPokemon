@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,7 +7,7 @@ import { ICharacter } from "../Things";
 /**
  * Following functions used by FullScreenPokemon instances.
  */
-export class Following<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Following<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Starts a Character following another Character.
      *

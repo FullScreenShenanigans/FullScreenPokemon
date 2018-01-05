@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -121,7 +121,7 @@ export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
 /**
  * Menu functions used by FullScreenPokemon instances.
  */
-export class Menus<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Menus<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Item menu functions used by this instance.
      */

@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMoveSchema } from "../constants/Moves";
@@ -6,7 +6,7 @@ import { IMoveSchema } from "../constants/Moves";
 /**
  * Move equations used by FullScreenPokemon instances.
  */
-export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Checks whether a move only has a status effect (does no damage, or nothing).
      *

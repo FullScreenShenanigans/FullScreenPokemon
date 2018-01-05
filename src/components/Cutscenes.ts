@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { DaisyTownMapCutscene } from "./cutscenes/DaisyTownMapCutscene";
@@ -19,7 +19,7 @@ import { TrainerSpottedCutscene } from "./cutscenes/TrainerSpottedCutscene";
 /**
  * Cutscene functions used by FullScreenPokemon instances.
  */
-export class Cutscenes<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Cutscenes<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * DaisyTownMap cutscene functions used by this FullScreenPokemon instance.
      */

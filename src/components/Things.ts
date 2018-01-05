@@ -760,7 +760,6 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
 
         if (thing.id) {
             this.gameStarter.stateHolder.applyChanges(thing.id, thing);
-            (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
         if (typeof thing.direction !== "undefined") {

@@ -1,5 +1,5 @@
 import { BattleOutcome, Queue } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
@@ -9,7 +9,7 @@ import { Transitions } from "./Transitions";
 /**
  * Battle end animations used by FullScreenPokemon instances.
  */
-export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Transition animations used by the FullScreenPokemon instance.
      */

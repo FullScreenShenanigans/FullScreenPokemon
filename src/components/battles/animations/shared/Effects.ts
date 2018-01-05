@@ -1,5 +1,5 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction, Queue, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
@@ -13,7 +13,7 @@ import { Fainting } from "./Fainting";
 /**
  * Action effect animations used by FullScreenPokemon instances.
  */
-export class Effects<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Runs animations for fainting.
      */

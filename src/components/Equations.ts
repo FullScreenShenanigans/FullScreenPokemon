@@ -1,5 +1,5 @@
 import { IMove, IStatistic } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
@@ -12,7 +12,7 @@ import { ICharacter, IGrass } from "./Things";
 /**
  * Common equations used by FullScreenPokemon instances.
  */
-export class Equations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Move equations used by this FullScreenPokemon instance.
      */
@@ -89,6 +89,23 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends Component<
         }
 
         throw new Error("Failed to pick random wild Pokemon from options.");
+    }
+
+    /**
+     * Creates a new Pokemon from a schema, using the newPokemon equation.
+     *
+     * @param schema   A description of the Pokemon.
+     * @returns A newly created Pokemon.
+     */
+    public createPokemon(schema: IWildPokemonSchema): IPokemon {
+        const level: number = schema.levels
+            ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
+            : schema.level!;
+        const chosenInfo: INewPokemon = {
+            level,
+            title: schema.title,
+        };
+        return this.gameStarter.equations.newPokemon(chosenInfo);
     }
 
     /**

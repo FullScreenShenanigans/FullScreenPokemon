@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -8,15 +8,15 @@ import { IThing } from "../Things";
 /**
  * PokeCenter cutscene functions used by FullScreenPokemon instances.
  */
-export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for a nurse's welcome at the Pokemon Center.
      *
      * @param settings   Settings used for the cutscene.
      */
     public Welcome(settings: any): void {
-        settings.nurse = this.gameStarter.utilities.getThingById(settings.nurseId || "Nurse");
-        settings.machine = this.gameStarter.utilities.getThingById(settings.machineId || "HealingMachine");
+        settings.nurse = this.gameStarter.utilities.getExistingThingById(settings.nurseId || "Nurse");
+        settings.machine = this.gameStarter.utilities.getExistingThingById(settings.machineId || "HealingMachine");
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(

@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -8,7 +8,7 @@ import { ICharacter } from "../Things";
 /**
  * RivalRoute22Leaves cutscene functions used by FullScreenPokemon instances.
  */
-export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for setting up rival walking away cutscene.
      */
@@ -23,7 +23,7 @@ export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> e
      * Cutscene for the rival leaving after being defeated.
      */
     public Walking(): void {
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
         const walkingInstructions: IWalkingInstructions = [
             {
                 blocks: 1,

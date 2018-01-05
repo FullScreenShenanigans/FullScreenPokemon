@@ -1,5 +1,5 @@
 import { BattleOutcome, IOnChoice, ISelector, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleTeam, IPokemon } from "../../Battles";
@@ -8,7 +8,7 @@ import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriority
 /**
  * Selector for an opponent's actions.
  */
-export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISelector {
+export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
     /**
      * Determines priorities of battle move possibilities.
      */

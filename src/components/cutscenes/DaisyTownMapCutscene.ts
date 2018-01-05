@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
@@ -6,7 +6,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * DaisyTownMap cutscene functions used by FullScreenPokemon instances.
  */
-export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for Daisy giving the player a Town Map.
      */
@@ -27,7 +27,7 @@ export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends
      * @param settings   Settings used for the cutscene.
      */
     public ReceiveMap(settings: any): void {
-        const book: IThing = this.gameStarter.utilities.getThingById("Book");
+        const book: IThing = this.gameStarter.utilities.getExistingThingById("Book");
         const daisy: ICharacter = settings.triggerer;
 
         this.gameStarter.physics.killNormal(book);

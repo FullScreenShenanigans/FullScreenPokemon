@@ -61,10 +61,10 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public startPlay(): void {
         this.gameStarter.maps.setMap(
-            this.gameStarter.itemsHolder.getItem("map") || this.gameStarter.moduleSettings.maps.mapDefault,
+            this.gameStarter.itemsHolder.getItem("map") || "Blank",
             this.gameStarter.itemsHolder.getItem("location"),
             true);
-        this.gameStarter.maps.entranceResume();
+        this.gameStarter.maps.entrances.resume();
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartPlay);
     }

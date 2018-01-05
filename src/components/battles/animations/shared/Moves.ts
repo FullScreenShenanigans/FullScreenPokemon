@@ -1,5 +1,5 @@
 import { IMoveAction, ITeamAndAction, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
@@ -9,7 +9,7 @@ import { IMovesBag } from "./moves/MovesBag";
 /**
  * Battle move animations used by FullScreenPokemon instances.
  */
-export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Battle move runners, keyed by move name.
      */

@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPlayer } from "./Things";
@@ -6,7 +6,7 @@ import { IPlayer } from "./Things";
 /**
  * Cycling functions used by FullScreenPokemon instances.
  */
-export class Cycling<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Starts the Player cycling if the current Area allows it.
      *

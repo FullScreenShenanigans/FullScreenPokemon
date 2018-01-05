@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,14 +7,14 @@ import { ICharacter, IThing } from "../Things";
 /**
  * OakParcelDelivery cutscene functions used by FullScreenPokemon instances.
  */
-export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for when the player delivers the parcel to Oak.
      *
      * @param settings   Settings used for the cutscene.
      */
     public Greeting(settings: any): void {
-        settings.rival = this.gameStarter.utilities.getThingById("Rival");
+        settings.rival = this.gameStarter.utilities.getExistingThingById("Rival");
         settings.oak = settings.triggerer;
         delete settings.oak.cutscene;
         delete settings.oak.dialog;
@@ -76,7 +76,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksUp(settings: any): void {
-        const doormat: IThing = this.gameStarter.utilities.getThingById("DoormatLeft");
+        const doormat: IThing = this.gameStarter.utilities.getExistingThingById("DoormatLeft");
         const rival: ICharacter = this.gameStarter.things.add(this.gameStarter.things.names.rival, doormat.left, doormat.top) as ICharacter;
 
         rival.alive = true;
@@ -156,8 +156,8 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      * Cutscene for Oak giving the player and rival Pokedexes.
      */
     public OakGivesPokedex(): void {
-        const bookLeft: IThing = this.gameStarter.utilities.getThingById("BookLeft");
-        const bookRight: IThing = this.gameStarter.utilities.getThingById("BookRight");
+        const bookLeft: IThing = this.gameStarter.utilities.getExistingThingById("BookLeft");
+        const bookRight: IThing = this.gameStarter.utilities.getExistingThingById("BookRight");
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(

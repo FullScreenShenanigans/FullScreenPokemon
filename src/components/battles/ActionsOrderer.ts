@@ -1,5 +1,5 @@
 import { IAction, ITeamAndAction, IUnderEachTeam, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../Battles";
@@ -22,7 +22,7 @@ type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 /**
  * Battle functions used by FullScreenPokemon instances.
  */
-export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Orders teams' chosen actions.
      *

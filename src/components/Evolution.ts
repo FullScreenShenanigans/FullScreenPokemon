@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -75,7 +75,7 @@ export type IRequirementHandler = (args: IRequirementHandlerArgs<IEvolutionModif
 /**
  * Handles logic related to Pokemon evolution.
  */
-export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Evolution<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */

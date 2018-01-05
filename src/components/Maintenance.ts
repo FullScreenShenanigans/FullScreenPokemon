@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Scrollability } from "./Scrolling";
@@ -7,7 +7,7 @@ import { ICharacter, IPlayer, IThing } from "./Things";
 /**
  * Maintenance functions used by FullScreenPokemon instances.
  */
-export class Maintenance<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Maintenance<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Generic maintenance Function for a group of Things. For each Thing, if
      * it isn't alive, it's removed from the group.

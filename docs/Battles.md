@@ -9,18 +9,18 @@ Battles are generally started with `FSP.battles.startBattle`.
 Its settings object requires a `teams` member that contains a descriptor for the `player` and `opponent`.
 
 Each team descriptor requires an `actors` array of created Pokemon.
-Those are most easily made with `FSP.utilities.createPokemon`.
+Those are most easily made with `FSP.equations.createPokemon`.
 
 Team descriptors can optionally also take a `leader` object that indicate the team is a trainer rather than a wild Pokemon.
 
 
 ```javascript
-// Starts a battle with a wild level 50 Mew using the player's party
+// Starts a battle with a wild level 50 Mew in the player's party
 FSP.battles.startBattle({
     teams: {
         opponent: {
             actors: [
-                FSP.utilities.createPokemon({
+                FSP.equations.createPokemon({
                     level: 50,
                     title: "MEW".split("")
                 })
@@ -43,11 +43,11 @@ FSP.battles.startBattle({
     teams: {
         opponent: {
             actors: [
-                FSP.utilities.createPokemon({
+                FSP.equations.createPokemon({
                     level: 7,
                     title: "METAPOD".split("")
                 }),
-                FSP.utilities.createPokemon({
+                FSP.equations.createPokemon({
                     level: 7,
                     title: "METAPOD".split("")
                 })
@@ -59,7 +59,7 @@ FSP.battles.startBattle({
         },
         player: {
             actors: [
-                FSP.utilities.createPokemon({
+                FSP.equations.createPokemon({
                     level: 50,
                     title: "CHARIZARD".split("")
                 })

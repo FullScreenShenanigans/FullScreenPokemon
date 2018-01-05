@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -9,7 +9,7 @@ import { ICharacter, IPokeball, IThing } from "../Things";
 /**
  * OakIntroPokemonChoice cutscene functions used by FullScreenPokemon instances.
  */
-export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for the player checking a Pokeball.
      *
@@ -17,7 +17,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      */
     public PlayerChecksPokeball(settings: any): void {
         // If Oak is hidden, this cutscene shouldn't be starting (too early)
-        if (this.gameStarter.utilities.getThingById("Oak").hidden) {
+        if (this.gameStarter.utilities.getExistingThingById("Oak").hidden) {
             this.gameStarter.scenePlayer.stopCutscene();
 
             this.gameStarter.menuGrapher.createMenu("GeneralText");
@@ -92,8 +92,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public PlayerTakesPokemon(settings: any): void {
-        const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.gameStarter.utilities.getExistingThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
         const dialogOak = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
@@ -183,7 +183,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksToPokemon(settings: any): void {
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
         let starterRival: string[];
         let steps: number;
 
@@ -214,7 +214,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         this.gameStarter.itemsHolder.setItem("starterRival", starterRival);
         this.gameStarter.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        const pokeball: IPokeball = this.gameStarter.utilities.getThingById("Pokeball" + starterRival.join("")) as IPokeball;
+        const pokeball: IPokeball = this.gameStarter.utilities.getExistingThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
         this.gameStarter.actions.walking.startWalkingOnPath(
@@ -242,8 +242,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public RivalTakesPokemon(settings: any): void {
-        const oakblocker: IThing = this.gameStarter.utilities.getThingById("OakBlocker");
-        const rivalblocker: IThing = this.gameStarter.utilities.getThingById("RivalBlocker");
+        const oakblocker: IThing = this.gameStarter.utilities.getExistingThingById("OakBlocker");
+        const rivalblocker: IThing = this.gameStarter.utilities.getExistingThingById("RivalBlocker");
 
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
 

@@ -1,5 +1,5 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../../Battles";
@@ -9,7 +9,7 @@ import { IThing } from "../../../../Things";
 /**
  * Runs a battle move.
  */
-export class Move<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Move<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Team and move being performed.
      */

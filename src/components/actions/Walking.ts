@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -34,7 +34,7 @@ export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGen
 /**
  * Walking functions used by FullScreenPokemon instances.
  */
-export class Walking<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Starts a Character walking on a predetermined path.
      *

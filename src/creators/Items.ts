@@ -1,10 +1,6 @@
 import { IItemsHoldrSettings } from "itemsholdr";
 
-/**
- * @param _fsp   A generating FullScreenPokemon instance.
- * @returns Item settings for the FullScreenPokemon instance.
- */
-export const GenerateItemsSettings = (): Partial<IItemsHoldrSettings> => ({
+export const itemsSettings: Partial<IItemsHoldrSettings> = {
     autoSave: false,
     defaults: {
         storeLocally: {
@@ -70,4 +66,4 @@ export const GenerateItemsSettings = (): Partial<IItemsHoldrSettings> => ({
             valueDefault: 0,
         },
     },
-});
+};

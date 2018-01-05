@@ -1,5 +1,5 @@
 import { IStatistic, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
@@ -8,7 +8,7 @@ import { IThing } from "../../Things";
 /**
  * Decorations for health displays.
  */
-export class Health<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Health<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
 
     /**
      * Adds a Pokemon's health display to its appropriate menu.
@@ -68,7 +68,7 @@ export class Health<TGameStartr extends FullScreenPokemon> extends Component<TGa
      */
     private setPokemonHealthBar(team: Team, health: IStatistic): void {
         const nameUpper: string = team === Team.player ? "Player" : "Opponent";
-        const bar: IThing = this.gameStarter.utilities.getThingById("HPBarFill" + nameUpper);
+        const bar: IThing = this.gameStarter.utilities.getExistingThingById("HPBarFill" + nameUpper);
         const barWidth: number = this.gameStarter.equations.widthHealthBar(100, health);
         const healthDialog: string = this.gameStarter.utilities.makeDigit(health.current, 3, "\t")
             + "/"

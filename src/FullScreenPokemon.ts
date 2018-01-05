@@ -1,9 +1,19 @@
-import { BattleMovr, IBattleMovr } from "battlemovr";
-import { FlagSwappr, IFlagSwappr } from "flagswappr";
-import { GameStartr, IGameStartrSettings } from "gamestartr";
-import { IMenuGraphr, MenuGraphr } from "menugraphr";
-import { IScenePlayr, ScenePlayr } from "sceneplayr";
-import { IStateHoldr, StateHoldr } from "stateholdr";
+import { AreaSpawnr } from "areaspawnr";
+import { component, container } from "babyioc";
+import { BattleMovr } from "battlemovr";
+import { FlagSwappr } from "flagswappr";
+import { GamesRunnr } from "gamesrunnr";
+import { GameStartr, IGameStartrConstructorSettings } from "gamestartr";
+import { GroupHoldr } from "groupholdr";
+import { InputWritr } from "inputwritr";
+import { MapsCreatr } from "mapscreatr";
+import { MapScreenr } from "mapscreenr";
+import { MenuGraphr } from "menugraphr";
+import { ModAttachr } from "modattachr";
+import { ObjectMakr } from "objectmakr";
+import { ScenePlayr } from "sceneplayr";
+import { StateHoldr } from "stateholdr";
+import { ThingHittr } from "thinghittr";
 
 import { Actions } from "./components/Actions";
 import { Audio } from "./components/Audio";
@@ -19,7 +29,6 @@ import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
 import { Inputs } from "./components/Inputs";
-import { Macros } from "./components/Macros";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
@@ -29,309 +38,294 @@ import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
-import { IFlags } from "./settings/Flags";
-import { IModuleSettings, ModuleSettingsGenerator } from "./settings/ModuleSettings";
-
-/**
- * Reset settings for a FullScreenPokemon instance.
- */
-export interface IFullScreenPokemonSettings extends IGameStartrSettings {
-    /**
-     * Module settings overrides.
-     */
-    moduleSettings?: Partial<IModuleSettings>;
-}
+import { audioSettings } from "./creators/Audio";
+import { createAreaSpawner } from "./creators/createAreaSpawner";
+import { createBattleMover } from "./creators/createBattleMover";
+import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
+import { createGamesRunner } from "./creators/createGamesRunner";
+import { createMapsCreator } from "./creators/createMapsCreator";
+import { createMapScreener } from "./creators/createMapScreener";
+import { createMenuGrapher } from "./creators/createMenuGrapher";
+import { createObjectMaker } from "./creators/createObjectMaker";
+import { createScenePlayer } from "./creators/createScenePlayer";
+import { createStateHolder } from "./creators/createStateHolder";
+import { createThingHitter } from "./creators/createThingHitter";
+import { eventSettings } from "./creators/Events";
+import { groupsSettings, IGroups } from "./creators/Groups";
+import { createInputWriter } from "./creators/Input";
+import { itemsSettings } from "./creators/Items";
+import { quadrantsSettings } from "./creators/Quadrants";
+import { drawingSettings } from "./creators/Renderer";
+import { spritesSettings } from "./creators/Sprites";
+import { createModAttacher } from "./creators/Mods";
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
+@container
 export class FullScreenPokemon extends GameStartr {
-    /**
-     * Module settings passed to individual create* members.
-     */
-    public moduleSettings: IModuleSettings;
-
-    /**
-     * How much to scale each pixel from PixelDrawr to the real canvas.
-     */
-    public scale: number;
-
-    /**
-     * An in-game battle management system for RPG-like battles between actors.
-     */
-    public battleMover: IBattleMovr;
-
-    /**
-     * Gates flags behind generational gaps.
-     */
-    public flagSwapper: IFlagSwappr<IFlags>;
-
-    /**
-     * A simple container for Map attributes given by switching to an Area within
-     * that map.
-     */
-    public mapScreener: IMapScreenr;
-
-    /**
-     * In-game menu and dialog management system for GameStartr.
-     */
-    public menuGrapher: IMenuGraphr;
-
-    /**
-     * General localStorage saving for collections of state.
-     */
-    public stateHolder: IStateHoldr;
-
     /**
      * Action functions used by this instance.
      */
-    public actions: Actions<FullScreenPokemon>;
+    @component(Actions)
+    public readonly actions: Actions<this>;
 
     /**
      * Friendly sound aliases and names for audio.
      */
-    public audio: Audio<FullScreenPokemon>;
+    @component(Audio)
+    public readonly audio: Audio<this>;
 
     /**
      * Battle functions used by this instance.
      */
-    public battles: Battles<FullScreenPokemon>;
+    @component(Battles)
+    public readonly battles: Battles<this>;
 
     /**
      * Collision functions used by this instance.
      */
-    public collisions: Collisions<FullScreenPokemon>;
+    @component(Collisions)
+    public readonly collisions: Collisions<this>;
 
     /**
      * Constants used by this instance.
      */
-    public constants: Constants<FullScreenPokemon>;
+    @component(Constants)
+    public readonly constants: Constants<this>;
 
     /**
      * Cutscene functions used by this instance.
      */
-    public cutscenes: Cutscenes<FullScreenPokemon>;
+    @component(Cutscenes)
+    public readonly cutscenes: Cutscenes<this>;
 
     /**
      * Cycling functions used by this instance.
      */
-    public cycling: Cycling<FullScreenPokemon>;
+    @component(Cycling)
+    public readonly cycling: Cycling<this>;
 
     /**
      * Equations used by this instance.
      */
-    public equations: Equations<FullScreenPokemon>;
+    @component(Equations)
+    public readonly equations: Equations<this>;
 
     /**
      * Evolution functions used by this instance.
      */
-    public evolution: Evolution<FullScreenPokemon>;
+    @component(Evolution)
+    public readonly evolution: Evolution<this>;
 
     /**
      * Experience functions used by this instance.
      */
-    public experience: Experience<FullScreenPokemon>;
+    @component(Experience)
+    public readonly experience: Experience<this>;
 
     /**
      * Fishing functions used by this instance.
      */
-    public fishing: Fishing<FullScreenPokemon>;
+    @component(Fishing)
+    public readonly fishing: Fishing<this>;
 
     /**
      * Gameplay functions used by this instance.
      */
-    public gameplay: Gameplay<FullScreenPokemon>;
+    @component(Gameplay)
+    public readonly gameplay: Gameplay<this>;
 
     /**
      * Graphics functions used by this instance.
      */
-    public graphics: Graphics<FullScreenPokemon>;
+    @component(Graphics)
+    public readonly graphics: Graphics<this>;
 
     /**
      * Input functions used by this instance.
      */
-    public inputs: Inputs<FullScreenPokemon>;
-
-    /**
-     * Macro functions used by this instance.
-     */
-    public macros: Macros<FullScreenPokemon>;
+    @component(Inputs)
+    public readonly inputs: Inputs<this>;
 
     /**
      * Maintenance functions used by this instance.
      */
-    public maintenance: Maintenance<FullScreenPokemon>;
+    @component(Maintenance)
+    public readonly maintenance: Maintenance<this>;
 
     /**
      * Maps functions used by this instance.
      */
-    public maps: Maps<FullScreenPokemon>;
+    @component(Maps)
+    public readonly maps: Maps<this>;
 
     /**
      * Menu functions used by this instance.
      */
-    public menus: Menus<FullScreenPokemon>;
+    @component(Menus)
+    public readonly menus: Menus<this>;
 
     /**
      * Mods used by this instance.
      */
-    public mods: Mods<FullScreenPokemon>;
+    @component(Mods)
+    public readonly mods: Mods<this>;
 
     /**
      * Physics functions used by this instance.
      */
-    public physics: Physics<FullScreenPokemon>;
+    @component(Physics)
+    public readonly physics: Physics<this>;
 
     /**
      * Thing manipulation functions used by this instance.
      */
-    public things: Things<FullScreenPokemon>;
+    @component(Things)
+    public readonly things: Things<this>;
 
     /**
      * Scrolling functions used by this instance.
      */
-    public scrolling: Scrolling<FullScreenPokemon>;
+    @component(Scrolling)
+    public readonly scrolling: Scrolling<this>;
 
     /**
      * Storage functions used by this instance.
      */
-    public saves: Saves<FullScreenPokemon>;
+    @component(Saves)
+    public readonly saves: Saves<this>;
 
     /**
      * Utility functions used by this instance.
      */
-    public utilities: Utilities<FullScreenPokemon>;
+    @component(Utilities)
+    public readonly utilities: Utilities<this>;
+
+    /**
+     * Loads GameStartr maps to spawn and unspawn areas on demand.
+     */
+    @component(createAreaSpawner, AreaSpawnr)
+    public readonly areaSpawner: AreaSpawnr;
+
+    /**
+     * An in-game battle management system for RPG-like battles between actors.
+     */
+    @component(createBattleMover, BattleMovr)
+    public readonly battleMover: BattleMovr;
+
+    /**
+     * Gates flags behind generational gaps.
+     */
+    @component(createFlagSwapper, FlagSwappr)
+    public readonly flagSwapper: FlagSwappr<IFlags>;
+
+    /**
+     * Runs a series of callbacks on a timed interval.
+     */
+    @component(createGamesRunner, GamesRunnr)
+    public readonly gamesRunner: GamesRunnr;
+
+    /**
+     * Storage for separate group arrays of members with unique IDs.
+     */
+    public readonly groupHolder: GroupHoldr<IGroups>;
+
+    /**
+     * Bridges input events to known actions.
+     */
+    @component(createInputWriter, InputWritr)
+    public readonly inputWriter: InputWritr;
+
+    /**
+     * Storage container and lazy loader for GameStartr maps.
+     */
+    @component(createMapsCreator, MapsCreatr)
+    public readonly mapsCreator: MapsCreatr;
+
+    /**
+     * A simple container for Map attributes given by switching to an Area within that map.
+     */
+    @component(createMapScreener, MapScreenr)
+    public readonly mapScreener: IMapScreenr;
+
+    /**
+     * In-game menu and dialog management system for GameStartr.
+     */
+    @component(createMenuGrapher, MenuGraphr)
+    public readonly menuGrapher: MenuGraphr;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    @component(createModAttacher, ModAttachr)
+    public readonly modAttacher: ModAttachr;
+
+    /**
+     * An abstract factory for dynamic attribute-based classes.
+     */
+    @component(createObjectMaker, ObjectMakr)
+    public readonly objectMaker: ObjectMakr;
+
+    /**
+     * A stateful cutscene runner for jumping between scenes and their routines.
+     */
+    @component(createScenePlayer, ScenePlayr)
+    public readonly scenePlayer: ScenePlayr;
+
+    /**
+     * General localStorage saving for collections of state.
+     */
+    @component(createStateHolder, StateHoldr)
+    public readonly stateHolder: StateHoldr;
+
+    /**
+     * Automation for physics collisions and reactions.
+     */
+    @component(createThingHitter, ThingHittr)
+    public readonly thingHitter: ThingHittr;
 
     /**
      * The game's single player.
+     *
+     * @remarks We assume nobody will try to access this before a map entrance.
+     * @remarks There's probably a better way.
      */
-    public players: [IPlayer];
+    public readonly players: [IPlayer] = [] as any;
 
     /**
-     * The total FPSAnalyzr ticks that have elapsed since the constructor or saving.
+     * Total FpsAnalyzr ticks that have elapsed since the constructor or saving.
      */
     public ticksElapsed: number;
 
     /**
-     * Resets the system components.
-     */
-    protected resetComponents(): void {
-        this.actions = new Actions(this);
-        this.audio = new Audio(this);
-        this.collisions = new Collisions(this);
-        this.constants = new Constants(this);
-        this.equations = new Equations(this);
-        this.gameplay = new Gameplay(this);
-        this.graphics = new Graphics(this);
-        this.inputs = new Inputs(this);
-        this.macros = new Macros(this);
-        this.maintenance = new Maintenance(this);
-        this.maps = new Maps(this);
-        this.menus = new Menus(this);
-        this.mods = new Mods(this);
-        this.physics = new Physics(this);
-        this.things = new Things(this);
-        this.scrolling = new Scrolling(this);
-        this.saves = new Saves(this);
-        this.utilities = new Utilities(this);
-
-        this.registerLazy("battles", (): Battles<this> => new Battles(this));
-        this.registerLazy("cutscenes", (): Cutscenes<this> => new Cutscenes(this));
-        this.registerLazy("cycling", (): Cycling<this> => new Cycling(this));
-        this.registerLazy("fishing", (): Fishing<this> => new Fishing(this));
-        this.registerLazy("evolution", (): Evolution<this> => new Evolution(this));
-        this.registerLazy("experience", (): Experience<this> => new Experience(this));
-    }
-
-    /**
-     * Resets the system modules.
+     * Initializes a new instance of the FullScreenPokemon class.
      *
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
+     * @param settings   Settings to be used for initialization.
      */
-    protected resetModules(settings: IFullScreenPokemonSettings): void {
-        super.resetModules(settings);
-
-        this.stateHolder = this.createStateHolder(this.moduleSettings, settings);
-        this.menuGrapher = this.createMenuGrapher(this.moduleSettings, settings);
-        this.battleMover = this.createBattleMover(this.moduleSettings, settings);
+    public constructor(settings: IGameStartrConstructorSettings) {
+        super({
+            ...settings,
+            components: {
+                audio: audioSettings,
+                drawing: drawingSettings,
+                events: eventSettings,
+                groups: groupsSettings,
+                items: itemsSettings,
+                quadrants: quadrantsSettings,
+                sprites: spritesSettings,
+                ...(settings.components || {}),
+            },
+        });
 
         this.pixelDrawer.setThingArrays([
-            this.groupHolder.getGroup("Terrain") as IThing[],
-            this.groupHolder.getGroup("Solid") as IThing[],
-            this.groupHolder.getGroup("Scenery") as IThing[],
-            this.groupHolder.getGroup("Character") as IThing[],
-            this.groupHolder.getGroup("Text") as IThing[],
+            this.groupHolder.getGroup("Terrain"),
+            this.groupHolder.getGroup("Solid"),
+            this.groupHolder.getGroup("Scenery"),
+            this.groupHolder.getGroup("Character"),
+            this.groupHolder.getGroup("Text"),
         ]);
 
         this.gameplay.gameStart();
     }
-
-    /**
-     * Creates the settings for individual modules.
-     *
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns Settings for individual modules.
-     */
-    protected createModuleSettings(settings: IFullScreenPokemonSettings): IModuleSettings {
-        return {
-            ...new ModuleSettingsGenerator().generate(this),
-            ...settings.moduleSettings,
-        } as IModuleSettings;
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns A new internal BattleMovr.
-     */
-    protected createBattleMover(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IBattleMovr {
-        return new BattleMovr(moduleSettings.battles);
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns A new internal FlagSwappr.
-     */
-    protected createFlagSwapper(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IFlagSwappr<IFlags> {
-        return new FlagSwappr<IFlags>(moduleSettings.flags);
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns A new internal MenuGraphr.
-     */
-    protected createMenuGrapher(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IMenuGraphr {
-        return new MenuGraphr({
-            gameStarter: this,
-            ...moduleSettings.menus,
-        });
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns A new internal ScenePlayer.
-     */
-    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IScenePlayr {
-        return new ScenePlayr({
-            scope: this.cutscenes,
-            ...moduleSettings.scenes,
-        });
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param settings   Settings to reset an instance of the FullScreenPokemon class.
-     * @returns A new internal StateHoldr.
-     */
-    protected createStateHolder(moduleSettings: IModuleSettings, _settings: IFullScreenPokemonSettings): IStateHoldr {
-        return new StateHoldr({
-            itemsHolder: this.itemsHolder,
-            ...moduleSettings.state,
-        });
-    }
 }
-
-FullScreenPokemon.prototype.scale = Constants.scale;

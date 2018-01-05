@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -6,7 +6,7 @@ import { IPokemon } from "./Battles";
 /**
  * Handles logic related to Pokemon level ups.
  */
-export class Experience<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Levels up a specified pokemon.
      *

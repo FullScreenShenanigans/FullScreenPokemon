@@ -1,7 +1,7 @@
 import {
     IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
 } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ActionsOrderer } from "./battles/ActionsOrderer";
@@ -270,7 +270,7 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
 /**
  * Battle functions used by FullScreenPokemon instances.
  */
-export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Actions orderer used by this FullScreenPokemon instance.
      */

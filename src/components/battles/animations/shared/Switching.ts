@@ -1,5 +1,5 @@
 import { ISwitchAction, ISwitchingAnimations, ITeamAndAction, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
@@ -18,7 +18,7 @@ export interface ISwitchingSettings {
 /**
  * Player switching animations used by FullScreenPokemon instances.
  */
-export class Switching<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISwitchingAnimations {
+export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISwitchingAnimations {
     /**
      * Switching settings for animation positions and sprites.
      */
