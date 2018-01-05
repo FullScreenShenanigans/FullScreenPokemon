@@ -62,6 +62,5 @@ export const createMapsCreator = (fsp: FullScreenPokemon): MapsCreatr =>
             "Viridian Forest": ViridianForest,
         },
         objectMaker: fsp.objectMaker,
-        requireEntrance: true,
         ...fsp.settings.components.maps,
     });
