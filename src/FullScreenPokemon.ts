@@ -65,6 +65,8 @@ import { createStateHolder } from "./creators/createStateHolder";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 
+export type IFullScreenPokemonSettings = IGameStartrConstructorSettings;
+
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
