@@ -5,8 +5,38 @@ import {
     IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrappr, IUserWrapprSettings, OptionType,
 } from "userwrappr";
 
-import { IModComponentClass, Mods } from "./components/Mods";
-import { FullScreenPokemon } from "./FullScreenPokemon";
+import { IModComponentClass, Mods } from "../components/Mods";
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
+/**
+ * Global scope around a game, such as a DOM window.
+ */
+export interface IGameWindow {
+    /**
+     * Adds an event listener to the window.
+     */
+    addEventListener: typeof window.addEventListener;
+
+    /**
+     * Reference to the window document.
+     */
+    document: {
+        /**
+         * Adds an event listener to the document.
+         */
+        addEventListener: typeof document.addEventListener;
+    };
+
+    /**
+     * Game instance, once this has created it.
+     */
+    FSP?: FullScreenPokemon;
+
+    /**
+     * Removes an event listener from the window.
+     */
+    removeEventListener: typeof window.removeEventListener;
+}
 
 /**
  * Sizes the game is allowed to be, keyed by friendly name.
@@ -16,9 +46,9 @@ export interface IGameSizes {
 }
 
 /**
- * Generates settings for an IUserWrappr that will create and wrap a FullScreenPokemon instance.
+ * Creates settings for an IUserWrappr that will create and wrap a FullScreenPokemon instance.
  */
-export class InterfaceFactory {
+export class InterfaceSettingsFactory {
     /**
      * Friendly name of the default game size.
      */
@@ -52,7 +82,12 @@ export class InterfaceFactory {
     ];
 
     /**
-     * Game instance, once an IUserWrappr has created it.
+     * Global scope around the game.
+     */
+    private readonly gameWindow: IGameWindow;
+
+    /**
+     * Game instance, once this has created it.
      */
     private game: FullScreenPokemon;
 
@@ -72,15 +107,24 @@ export class InterfaceFactory {
     private isPageHidden = false;
 
     /**
+     * Initializes a new instance of the InterfaceSettings class.
+     *
+     * @param gameWindow   Global scope around the game interface, if not the global window.
+     */
+    public constructor(gameWindow: IGameWindow = window) {
+        this.gameWindow = this.gameWindow;
+    }
+
+    /**
      * Creates settings for a game's IUserWrappr.
      *
      * @returns Settings for a game's IUserWrappr.
      */
-    public generateUserWrapprSettings(): IUserWrapprSettings {
+    public createUserWrapprSettings(): IUserWrapprSettings {
         return {
             defaultSize: this.sizes[this.defaultSize],
             createContents: (size: IAbsoluteSizeSchema, userWrapper: IUserWrappr) => {
-                (window as any).FSP = this.game = new FullScreenPokemon(size);
+                this.gameWindow.FSP = this.game = new FullScreenPokemon(size);
                 this.userWrapper = userWrapper;
 
                 if (!this.initializedPipes) {
@@ -140,9 +184,9 @@ export class InterfaceFactory {
                                 saveValue: (value: boolean): void => {
                                     if (value) {
                                         deviceMotionPipe = this.game.inputWriter.makePipe("ondevicemotion", "type");
-                                        window.addEventListener("devicemotion", deviceMotionPipe);
+                                        this.gameWindow.addEventListener("devicemotion", deviceMotionPipe);
                                     } else if (deviceMotionPipe !== undefined) {
-                                        window.removeEventListener("devicemotion", deviceMotionPipe);
+                                        this.gameWindow.removeEventListener("devicemotion", deviceMotionPipe);
                                         deviceMotionPipe = undefined;
                                     }
                                 },
@@ -179,18 +223,16 @@ export class InterfaceFactory {
                     title: "Controls",
                 },
                 {
-                    options: ((modClasses: IModComponentClass[]) =>
-                        modClasses.map((modClass: IModComponentClass): IBooleanSchema => ({
-                            getInitialValue: (): boolean => !!this.game.mods.modsByName[modClass.modName].enabled,
-                            saveValue: (value: boolean): void => {
-                                value
-                                    ? this.game.modAttacher.enableMod(modClass.modName)
-                                    : this.game.modAttacher.disableMod(modClass.modName);
-                            },
-                            title: modClass.modName,
-                            type: OptionType.Boolean,
-                        }))
-                    )(Mods.modClasses),
+                    options: Mods.modClasses.map((modClass: IModComponentClass): IBooleanSchema => ({
+                        getInitialValue: (): boolean => !!this.game.mods.modsByName[modClass.modName].enabled,
+                        saveValue: (value: boolean): void => {
+                            value
+                                ? this.game.modAttacher.enableMod(modClass.modName)
+                                : this.game.modAttacher.disableMod(modClass.modName);
+                        },
+                        title: modClass.modName,
+                        type: OptionType.Boolean,
+                    })),
                     title: "Mods!",
                 },
             ],
@@ -283,23 +325,23 @@ export class InterfaceFactory {
      * Adds InputWritr pipes as global event listeners.
      */
     private initializePipes(): void {
-        window.addEventListener(
+        this.gameWindow.addEventListener(
             "keydown",
             this.game.inputWriter.makePipe("onkeydown", "keyCode"));
 
-        window.addEventListener(
+        this.gameWindow.addEventListener(
             "keyup",
             this.game.inputWriter.makePipe("onkeyup", "keyCode"));
 
-        window.addEventListener(
+        this.gameWindow.addEventListener(
             "mousedown",
             this.game.inputWriter.makePipe("onmousedown", "which"));
 
-        window.addEventListener(
+        this.gameWindow.addEventListener(
             "contextmenu",
             this.game.inputWriter.makePipe("oncontextmenu", "", true));
 
-        document.addEventListener(
+        this.gameWindow.document.addEventListener(
             "visibilitychange",
             (): void => this.handleVisibilityChange());
     }

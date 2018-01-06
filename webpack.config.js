@@ -41,9 +41,8 @@ for (const pair of entriesAndSources) {
     entry[pair.name] = pair.entry;
 }
 
-// multiple entries?
 module.exports = {
-    entry, // IDictionary<string>
+    entry,
     externals,
     output: {
         filename: "[name].js",
