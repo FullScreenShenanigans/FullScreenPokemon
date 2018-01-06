@@ -37,7 +37,7 @@ export class EventNames extends ModAttachrEventNames {
     /**
      * Key for the event when the game starts.
      */
-    public readonly onGameStart = "onGameStart";
+    public readonly onGameStartOptions = "onGameStartOptions";
 
     /**
      * Key for the event when gameplay starts.

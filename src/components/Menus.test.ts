@@ -6,7 +6,7 @@ describe("Menus", () => {
     describe("pause", () => {
         it("opens when pause is pressed", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
 
             // Act
             fsp.inputs.keyDownPause(fsp.players[0]);
@@ -18,7 +18,7 @@ describe("Menus", () => {
 
         it("closes after B is pressed", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             fsp.inputs.keyDownPause(fsp.players[0]);
             fsp.inputs.keyUpPause(fsp.players[0]);
 

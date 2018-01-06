@@ -9,7 +9,7 @@ describe("Inputs", () => {
     describe("keyDownA", () => {
         it("activates an activatable solid when it's bordering the player", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const player = fsp.things.add<IPlayer>("Player");
             const solid = fsp.things.add("FenceWide");
             const activate = solid.activate = sinon.spy();
@@ -28,7 +28,7 @@ describe("Inputs", () => {
 
         it("does not activate an activatable solid when it's not bordering the player", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const player = fsp.things.add<IPlayer>("Player");
             const solid = fsp.things.add("FenceWide");
             const activate = solid.activate = sinon.spy();

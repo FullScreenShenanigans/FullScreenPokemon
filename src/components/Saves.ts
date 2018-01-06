@@ -148,9 +148,17 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      *
      * @param dataRaw   Raw data to be parsed as JSON.
      */
-    public loadData(dataRaw: string): void {
+    public loadRawData(dataRaw: string): void {
+        this.loadSaveFile(JSON.parse(dataRaw));
+    }
+
+    /**
+     * Loads JSON game data and sets it as the game state then starts gameplay.
+     *
+     * @param dataRaw   Raw data to be parsed as JSON.
+     */
+    public loadSaveFile(data: ISaveFile): void {
         this.clearSavedData();
-        const data: ISaveFile = JSON.parse(dataRaw);
         const keyStart = "StateHolder::";
 
         for (const key in data) {

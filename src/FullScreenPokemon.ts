@@ -1,6 +1,6 @@
 import { AreaSpawnr } from "areaspawnr";
 import { AudioPlayr } from "audioplayr";
-import { component, container } from "babyioc";
+import { component } from "babyioc";
 import { BattleMovr } from "battlemovr";
 import { FlagSwappr } from "flagswappr";
 import { GamesRunnr } from "gamesrunnr";
@@ -68,7 +68,6 @@ import { createTimeHandler } from "./creators/createTimeHandler";
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
-@container
 export class FullScreenPokemon extends GameStartr {
     /**
      * Action functions used by this instance.
@@ -211,121 +210,121 @@ export class FullScreenPokemon extends GameStartr {
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
-    @component(createAreaSpawner, AreaSpawnr)
+    @component(createAreaSpawner)
     public readonly areaSpawner: AreaSpawnr;
 
     /**
      * Playback for persistent and on-demand sounds and themes.
      */
-    @component(createAudioPlayer, AudioPlayr)
+    @component(createAudioPlayer)
     public readonly audioPlayer: AudioPlayr;
 
     /**
      * An in-game battle management system for RPG-like battles between actors.
      */
-    @component(createBattleMover, BattleMovr)
+    @component(createBattleMover)
     public readonly battleMover: BattleMovr;
 
     /**
      * Gates flags behind generational gaps.
      */
-    @component(createFlagSwapper, FlagSwappr)
+    @component(createFlagSwapper)
     public readonly flagSwapper: FlagSwappr<IFlags>;
 
     /**
      * Runs a series of callbacks on a timed interval.
      */
-    @component(createGamesRunner, GamesRunnr)
+    @component(createGamesRunner)
     public readonly gamesRunner: GamesRunnr;
 
     /**
      * Storage for separate group arrays of members with unique IDs.
      */
-    @component(createGroupHolder, GroupHoldr)
+    @component(createGroupHolder)
     public readonly groupHolder: GroupHoldr<IGroups>;
 
     /**
      * Bridges input events to known actions.
      */
-    @component(createInputWriter, InputWritr)
+    @component(createInputWriter)
     public readonly inputWriter: InputWritr;
 
     /**
      * Cache-based wrapper around localStorage.
      */
-    @component(createItemsHolder, ItemsHoldr)
+    @component(createItemsHolder)
     public readonly itemsHolder: ItemsHoldr;
 
     /**
      * Storage container and lazy loader for GameStartr maps.
      */
-    @component(createMapsCreator, MapsCreatr)
+    @component(createMapsCreator)
     public readonly mapsCreator: MapsCreatr;
 
     /**
      * A simple container for Map attributes given by switching to an Area within that map.
      */
-    @component(createMapScreener, MapScreenr)
+    @component(createMapScreener)
     public readonly mapScreener: IMapScreenr;
 
     /**
      * In-game menu and dialog management system for GameStartr.
      */
-    @component(createMenuGrapher, MenuGraphr)
+    @component(createMenuGrapher)
     public readonly menuGrapher: MenuGraphr;
 
     /**
      * Hookups for extensible triggered mod events.
      */
-    @component(createModAttacher, ModAttachr)
+    @component(createModAttacher)
     public readonly modAttacher: ModAttachr;
 
     /**
      * An abstract factory for dynamic attribute-based classes.
      */
-    @component(createObjectMaker, ObjectMakr)
+    @component(createObjectMaker)
     public readonly objectMaker: ObjectMakr;
 
     /**
      * A real-time scene drawer for large amounts of PixelRendr sprites.
      */
-    @component(createPixelDrawer, PixelDrawr)
+    @component(createPixelDrawer)
     public readonly pixelDrawer: PixelDrawr;
 
     /**
      * Compresses images into text blobs in real time with fast cached lookups.
      */
-    @component(createPixelRender, PixelRendr)
+    @component(createPixelRender)
     public readonly pixelRender: PixelRendr;
 
     /**
      * Adjustable quadrant-based collision detection.
      */
-    @component(createQuadsKeeper, QuadsKeepr)
+    @component(createQuadsKeeper)
     public readonly quadsKeeper: QuadsKeepr<IThing>;
 
     /**
      * A stateful cutscene runner for jumping between scenes and their routines.
      */
-    @component(createScenePlayer, ScenePlayr)
+    @component(createScenePlayer)
     public readonly scenePlayer: ScenePlayr;
 
     /**
      * General localStorage saving for collections of state.
      */
-    @component(createStateHolder, StateHoldr)
+    @component(createStateHolder)
     public readonly stateHolder: StateHoldr;
 
     /**
      * A flexible, pausable alternative to setTimeout.
      */
-    @component(createTimeHandler, TimeHandlr)
+    @component(createTimeHandler)
     public readonly timeHandler: TimeHandlr;
 
     /**
      * Automation for physics collisions and reactions.
      */
-    @component(createThingHitter, ThingHittr)
+    @component(createThingHitter)
     public readonly thingHitter: ThingHittr;
 
     /**

@@ -88,7 +88,7 @@ export class InterfaceFactory {
                     this.initializedPipes = true;
                 }
 
-                this.game.gameplay.gameStart();
+                this.game.gameplay.startOptions();
 
                 return this.game.container;
             },
