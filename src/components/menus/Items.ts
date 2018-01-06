@@ -98,8 +98,6 @@ export class Items<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         this.gameStarter.menuGrapher.createMenu("Items", settings);
         this.gameStarter.menuGrapher.addMenuList("Items", { options });
         this.gameStarter.menuGrapher.setActiveMenu("Items");
-
-        console.warn("Once item info is better implemented, react to non-stackable items...");
     }
 
     /**
