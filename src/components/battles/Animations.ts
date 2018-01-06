@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { BattleOutcome, IAnimations, Team } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -15,17 +16,20 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralCo
     /**
      * Opponent animations used by the FullScreenPokemon instance.
      */
-    public readonly opponent: Opponent<TGameStartr> = new Opponent(this.gameStarter);
+    @component(Opponent)
+    public readonly opponent: Opponent<TGameStartr>;
 
     /**
      * Player animations used by the FullScreenPokemon instance.
      */
-    public readonly player: Player<TGameStartr> = new Player(this.gameStarter);
+    @component(Player)
+    public readonly player: Player<TGameStartr>;
 
     /**
      * Thing animations for battles.
      */
-    public readonly things: Things<TGameStartr> = new Things(this.gameStarter);
+    @component(Things)
+    public readonly things: Things<TGameStartr>;
 
     /**
      * Animation for a battle starting.

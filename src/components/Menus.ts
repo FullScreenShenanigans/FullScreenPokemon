@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 import * as imenugraphr from "menugraphr";
 
@@ -125,17 +126,20 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     /**
      * Item menu functions used by this instance.
      */
-    public readonly items: Items<TGameStartr> = new Items(this.gameStarter);
+    @component(Items)
+    public readonly items: Items<TGameStartr>;
 
     /**
      * Keyboard menu functions used by this instance.
      */
-    public readonly keyboards: Keyboards<TGameStartr> = new Keyboards(this.gameStarter);
+    @component(Keyboards)
+    public readonly keyboards: Keyboards<TGameStartr>;
 
     /**
      * Keyboard menu functions used by this instance.
      */
-    public readonly pokemon: Pokemon<TGameStartr> = new Pokemon(this.gameStarter);
+    @component(Pokemon)
+    public readonly pokemon: Pokemon<TGameStartr>;
 
     /**
      * Locations of known cities on town maps.

@@ -9,7 +9,6 @@ import { IThing } from "../../Things";
  * Decorations for health displays.
  */
 export class Health<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
-
     /**
      * Adds a Pokemon's health display to its appropriate menu.
      *

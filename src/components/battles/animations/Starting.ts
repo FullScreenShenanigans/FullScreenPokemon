@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
@@ -12,7 +13,8 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
     /**
      * Transition animations used by the FullScreenPokemon instance.
      */
-    public readonly transitions: Transitions<TGameStartr> = new Transitions(this.gameStarter);
+    @component(Transitions)
+    public readonly transitions: Transitions<TGameStartr>;
 
     /**
      * Runs starting battle animations.

@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 import { IMenuDialogRaw } from "menugraphr";
 import { ITimeEvent } from "timehandlr";
@@ -53,37 +54,44 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     /**
      * Following functions used by the FullScreenPokemon instance.
      */
-    public readonly following = new Following(this);
+    @component(Following)
+    public readonly following: Following<TGameStartr>;
 
     /**
      * Grass functions used by the FullScreenPokemon instance.
      */
-    public readonly grass = new Grass(this);
+    @component(Grass)
+    public readonly grass: Grass<TGameStartr>;
 
     /**
      * Ledge functions used by the FullScreenPokemon instance.
      */
-    public readonly ledges = new Ledges(this);
+    @component(Ledges)
+    public readonly ledges: Ledges<TGameStartr>;
 
     /**
      * Roaming functions used by the FullScreenPokemon instance.
      */
-    public readonly roaming = new Roaming(this);
+    @component(Roaming)
+    public readonly roaming: Roaming<TGameStartr>;
 
     /**
      * Shrinking functions used by the FullScreenPokemon instance.
      */
-    public readonly shrinking = new Shrinking(this);
+    @component(Shrinking)
+    public readonly shrinking: Shrinking<TGameStartr>;
 
     /**
      * Sliding functions used by the FullScreenPokemon instance.
      */
-    public readonly sliding = new Sliding(this);
+    @component(Sliding)
+    public readonly sliding: Sliding<TGameStartr>;
 
     /**
      * Walking functions used by the FullScreenPokemon instance.
      */
-    public readonly walking = new Walking(this);
+    @component(Walking)
+    public readonly walking: Walking<TGameStartr>;
 
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.

@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IMove, IStatistic } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -16,7 +17,8 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Move equations used by this FullScreenPokemon instance.
      */
-    public readonly moves: Moves<TGameStartr> = new Moves(this.gameStarter);
+    @component(Moves)
+    public readonly moves: Moves<TGameStartr>;
 
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.

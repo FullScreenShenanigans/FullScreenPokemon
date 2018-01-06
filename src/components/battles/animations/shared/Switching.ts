@@ -30,7 +30,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param gameStarter   FullScreenPokemon instance this is used for.
      * @param settings   Switching settings for animation positions and sprites.
      */
-    public constructor(gameStarter: TGameStartr, settings: ISwitchingSettings) {
+    public constructor(gameStarter: TGameStartr | GeneralComponent<TGameStartr>, settings: ISwitchingSettings) {
         super(gameStarter);
 
         this.settings = settings;

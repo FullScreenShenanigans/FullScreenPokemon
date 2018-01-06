@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -23,70 +24,84 @@ export class Cutscenes<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * DaisyTownMap cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly daisyTownMap: DaisyTownMapCutscene<TGameStartr> = new DaisyTownMapCutscene(this.gameStarter);
+    @component(DaisyTownMapCutscene)
+    public readonly daisyTownMap: DaisyTownMapCutscene<TGameStartr>;
 
     /**
      * ElderTraining cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly elderTraining: ElderTrainingCutscene<TGameStartr> = new ElderTrainingCutscene(this.gameStarter);
+    @component(ElderTrainingCutscene)
+    public readonly elderTraining: ElderTrainingCutscene<TGameStartr>;
 
     /**
      * Intro cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly intro: IntroCutscene<TGameStartr> = new IntroCutscene(this.gameStarter);
+    @component(IntroCutscene)
+    public readonly intro: IntroCutscene<TGameStartr>;
 
     /**
      * OakIntro cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly oakIntro: OakIntroCutscene<TGameStartr> = new OakIntroCutscene(this.gameStarter);
+    @component(OakIntroCutscene)
+    public readonly oakIntro: OakIntroCutscene<TGameStartr>;
 
     /**
      * OakIntroPokemonChoice cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly oakIntroPokemonChoice: OakIntroPokemonChoiceCutscene<TGameStartr> = new OakIntroPokemonChoiceCutscene(this.gameStarter);
+    @component(OakIntroPokemonChoiceCutscene)
+    public readonly oakIntroPokemonChoice: OakIntroPokemonChoiceCutscene<TGameStartr>;
 
     /**
      * OakIntroRivalBattle cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly oakIntroRivalBattle: OakIntroRivalBattleCutscene<TGameStartr> = new OakIntroRivalBattleCutscene(this.gameStarter);
+    @component(OakIntroRivalBattleCutscene)
+    public readonly oakIntroRivalBattle: OakIntroRivalBattleCutscene<TGameStartr>;
 
     /**
      * OakIntroRivalLeaves cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly oakIntroRivalLeaves: OakIntroRivalLeavesCutscene<TGameStartr> = new OakIntroRivalLeavesCutscene(this.gameStarter);
+    @component(OakIntroRivalLeavesCutscene)
+    public readonly oakIntroRivalLeaves: OakIntroRivalLeavesCutscene<TGameStartr>;
 
     /**
      * OakParcelDelivery cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly oakParcelDelivery: OakParcelDeliveryCutscene<TGameStartr> = new OakParcelDeliveryCutscene(this.gameStarter);
+    @component(OakParcelDeliveryCutscene)
+    public readonly oakParcelDelivery: OakParcelDeliveryCutscene<TGameStartr>;
 
     /**
      * OakParcelPickup cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly oakParcelPickup: OakParcelPickupCutscene<TGameStartr> = new OakParcelPickupCutscene(this.gameStarter);
+    @component(OakParcelPickupCutscene)
+    public readonly oakParcelPickup: OakParcelPickupCutscene<TGameStartr>;
 
     /**
      * PokeCenter cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly pokeCenter: PokeCenterCutscene<TGameStartr> = new PokeCenterCutscene(this.gameStarter);
+    @component(PokeCenterCutscene)
+    public readonly pokeCenter: PokeCenterCutscene<TGameStartr>;
 
     /**
      * PokeMart cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly pokeMart: PokeMartCutscene<TGameStartr> = new PokeMartCutscene(this.gameStarter);
+    @component(PokeMartCutscene)
+    public readonly pokeMart: PokeMartCutscene<TGameStartr>;
 
     /**
      * RivalRoute22 cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly rivalRoute22: RivalRoute22Cutscene<TGameStartr> = new RivalRoute22Cutscene(this.gameStarter);
+    @component(RivalRoute22Cutscene)
+    public readonly rivalRoute22: RivalRoute22Cutscene<TGameStartr>;
 
     /**
      * RivalRoute22Leaves cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly rivalRoute22Leaves: RivalRoute22LeavesCutscene<TGameStartr> = new RivalRoute22LeavesCutscene(this.gameStarter);
+    @component(RivalRoute22LeavesCutscene)
+    public readonly rivalRoute22Leaves: RivalRoute22LeavesCutscene<TGameStartr>;
 
     /**
      * TrainerSpotted cutscene functions used by this FullScreenPokemon instance.
      */
-    public readonly trainerSpotted: TrainerSpottedCutscene<TGameStartr> = new TrainerSpottedCutscene(this.gameStarter);
+    @component(TrainerSpottedCutscene)
+    public readonly trainerSpotted: TrainerSpottedCutscene<TGameStartr>;
 }

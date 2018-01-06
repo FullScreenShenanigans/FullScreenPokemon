@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IMoveAction, IMoveEffect, ITeamAndAction, Queue, Team } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -17,32 +18,38 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     /**
      * Runs animations for fainting.
      */
-    public readonly fainting: Fainting<TGameStartr> = new Fainting(this.gameStarter);
+    @component(Fainting)
+    public readonly fainting: Fainting<TGameStartr>;
 
     /**
      * Runs animations for effect damages.
      */
-    private readonly damage: Damage<TGameStartr> = new Damage(this.gameStarter);
+    @component(Damage)
+    private readonly damage: Damage<TGameStartr>;
 
     /**
      * Runs animations for missed effects.
      */
-    private readonly missed: Missed<TGameStartr> = new Missed(this.gameStarter);
+    @component(Missed)
+    private readonly missed: Missed<TGameStartr>;
 
     /**
      * Runs animations for statistic effects.
      */
-    private readonly statistics: Statistics<TGameStartr> = new Statistics(this.gameStarter);
+    @component(Statistics)
+    private readonly statistics: Statistics<TGameStartr>;
 
     /**
      * Runs animations for status effects.
      */
-    private readonly statuses: Statuses<TGameStartr> = new Statuses(this.gameStarter);
+    @component(Statuses)
+    private readonly statuses: Statuses<TGameStartr>;
 
     /**
      * Runs animations for switching effects.
      */
-    private readonly switching: Switching<TGameStartr> = new Switching(this.gameStarter);
+    @component(Switching)
+    private readonly switching: Switching<TGameStartr>;
 
     /**
      * Runs a move action's effects consecutively.

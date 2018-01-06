@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IBattleTeam } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -19,7 +20,8 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
     /**
      * Decorations for health displays.
      */
-    public readonly health: Health<TGameStartr> = new Health(this.gameStarter);
+    @component(Health)
+    public readonly health: Health<TGameStartr>;
 
     /**
      * Creates the initial Things displayed in a battle.

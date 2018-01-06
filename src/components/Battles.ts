@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import {
     IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
 } from "battlemovr";
@@ -274,27 +275,32 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     /**
      * Actions orderer used by this FullScreenPokemon instance.
      */
-    public readonly actionsOrderer: ActionsOrderer<TGameStartr> = new ActionsOrderer(this.gameStarter);
+    @component(ActionsOrderer)
+    public readonly actionsOrderer: ActionsOrderer<TGameStartr>;
 
     /**
      * Battle animations used by this FullScreenPokemon instance.
      */
-    public readonly animations: Animations<TGameStartr> = new Animations(this.gameStarter);
+    @component(Animations)
+    public readonly animations: Animations<TGameStartr>;
 
     /**
      * Decoration handlers used by this FullScreenPokemon instance.
      */
-    public readonly decorations: Decorations<TGameStartr> = new Decorations(this.gameStarter);
+    @component(Decorations)
+    public readonly decorations: Decorations<TGameStartr>;
 
     /**
      * Battle action selectors used by this FullScreenPokemon instance.
      */
-    public readonly selectors: Selectors<TGameStartr> = new Selectors(this.gameStarter);
+    @component(Selectors)
+    public readonly selectors: Selectors<TGameStartr>;
 
     /**
      * Thing visual handlers used by this FullScreenPokemon instance.
      */
-    public readonly things: Things<TGameStartr> = new Things(this.gameStarter);
+    @component(Things)
+    public readonly things: Things<TGameStartr>;
 
     /**
      * Starts a new battle.

@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IDamageEffect, IMoveAction, IStatistic, ITeamAndAction } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -12,7 +13,8 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends GeneralCompon
     /**
      * Calculates damage dealt from battle moves.
      */
-    private readonly calculator: Calculator<TGameStartr> = new Calculator(this.gameStarter);
+    @component(Calculator)
+    private readonly calculator: Calculator<TGameStartr>;
 
     /**
      * Runs the damage animation for a battle move effect.

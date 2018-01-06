@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -15,27 +16,31 @@ export class Opponent<TGameStartr extends FullScreenPokemon> extends GeneralComp
     /**
      * Opponent action animations used by the FullScreenPokemon instance.
      */
-    public readonly actions: Actions<TGameStartr> = new Actions<TGameStartr>(this.gameStarter);
+    @component(Actions)
+    public readonly actions: Actions<TGameStartr>;
 
     /**
      * Opponent switching animations used by the FullScreenPokemon instance.
      */
-    public readonly switching: Switching<TGameStartr> = new Switching<TGameStartr>(this.gameStarter, {
-        enter: {
-            team: Team.opponent,
-            getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
-                const opponent: IThing = battleInfo.things.opponent;
-                const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
-                return menu.right + opponent.width / 2;
+    @component((container: Opponent<TGameStartr>) =>
+        new Switching(container, {
+            enter: {
+                team: Team.opponent,
+                getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
+                    const opponent: IThing = battleInfo.things.opponent;
+                    const menu: IMenu = container.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
+
+                    return menu.right + opponent.width / 2;
+                },
+                getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
+                    battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
+                getSmokeLeft: (battleInfo: IBattleInfo): number =>
+                    battleInfo.things.menu.right - 32,
+                getSmokeTop: (battleInfo: IBattleInfo): number =>
+                    battleInfo.things.menu.top + 32,
             },
-            getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
-                battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
-            getSmokeLeft: (battleInfo: IBattleInfo): number =>
-                battleInfo.things.menu.right - 32,
-            getSmokeTop: (battleInfo: IBattleInfo): number =>
-                battleInfo.things.menu.top + 32,
-        },
-    });
+        }))
+    public readonly switching: Switching<TGameStartr>;
 
     /**
      * Animation for when the opponent's actor's health changes.

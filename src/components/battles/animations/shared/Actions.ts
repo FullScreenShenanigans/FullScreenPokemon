@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeamAndAction } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -14,7 +15,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     /**
      * Action effect animations.
      */
-    public readonly effects: Effects<TGameStartr> = new Effects(this.gameStarter);
+    @component(Effects)
+    public readonly effects: Effects<TGameStartr>;
 
     /**
      * Callback for when a team attempts to leave the battle.

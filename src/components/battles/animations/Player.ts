@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -15,17 +16,19 @@ export class Player<TGameStartr extends FullScreenPokemon> extends GeneralCompon
     /**
      * Player action animations used by the FullScreenPokemon instance.
      */
-    public readonly actions: Actions<TGameStartr> = new Actions<TGameStartr>(this.gameStarter);
+    @component(Actions)
+    public readonly actions: Actions<TGameStartr>;
 
     /**
      * Player switching animations used by the FullScreenPokemon instance.
      */
-    public readonly switching: Switching<TGameStartr> = new Switching<TGameStartr>(this.gameStarter, {
+    @component((container: Player<TGameStartr>) => new Switching<TGameStartr>(container.gameStarter, {
         enter: {
             team: Team.player,
             getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
                 const player: IThing = battleInfo.things.player;
-                const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
+                const menu: IMenu = container.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
+
                 return menu.left - player.width / 2;
             },
             getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
@@ -35,7 +38,8 @@ export class Player<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             getSmokeTop: (battleInfo: IBattleInfo): number =>
                 battleInfo.things.menu.bottom - 32,
         },
-    });
+    }))
+    public readonly switching: Switching<TGameStartr>;
 
     /**
      * Animation for when the player's actor's health changes.

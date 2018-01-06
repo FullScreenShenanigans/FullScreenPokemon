@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -65,32 +66,39 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Battle constants used by this FullScreenPokemon instance.
      */
-    public readonly battles: Battles = new Battles();
+    @component(Battles)
+    public readonly battles: Battles;
 
     /**
      * All known items, keyed by English name.
      */
-    public readonly items: Items = new Items();
+    @component(Items)
+    public readonly items: Items;
 
     /**
      * All known Pokemon moves, keyed by concatenated name.
      */
-    public readonly moves: Moves = new Moves();
+    @component(Moves)
+    public readonly moves: Moves;
 
     /**
      * All known Pokemon, keyed by concatenated name.
      */
-    public readonly pokemon: Pokemon = new Pokemon();
+    @component(Pokemon)
+    public readonly pokemon: Pokemon;
 
     /**
      * Information on Pokemon status effects.
      */
-    public readonly statuses: Statuses = new Statuses();
+    @component(Statuses)
+    public readonly statuses: Statuses;
 
     /**
      * Information on move types.
      */
-    public readonly types: Types = new Types();
+    @component(Types)
+    public readonly types: Types;
+
     /**
      * The allowed uppercase keys to be shown in a keyboard.
      */

@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { Maps as GameStartrMaps } from "gamestartr";
 import {
     IArea as IMapsCreatrIArea,
@@ -463,12 +464,14 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
     /**
      * Map entrance animations.
      */
-    public readonly entrances = new Entrances(this);
+    @component(Entrances)
+    public readonly entrances: Entrances<TGameStartr>;
 
     /**
      * Map creation macros.
      */
-    public readonly macros = new Macros(this);
+    @component(Macros)
+    public readonly macros: Macros<TGameStartr>;
 
     /**
      * Processes additional Thing attributes. For each attribute the Area's

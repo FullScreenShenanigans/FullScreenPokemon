@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IThing as IGameStartrThing, Things as GameStartrThings } from "gamestartr";
 import * as imenugraphr from "menugraphr";
 import * as itimehandlr from "timehandlr";
@@ -699,6 +700,12 @@ export interface IPokeball extends IDetector {
  */
 export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThings<TGameStartr> {
     /**
+     * Stores known names of Things.
+     */
+    @component(ThingNames)
+    public readonly names: ThingNames;
+
+    /**
      * Slight addition to the parent thingProcess Function. The Thing's hit
      * check type is cached immediately, and a default id is assigned if an id
      * isn't already present.
@@ -709,18 +716,11 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      * @param defaults   The default settings for the Thing's class.
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
-
-    /**
-     * Stores known names of Things.
-     */
-    public readonly names = new ThingNames();
-
     public process(thing: IThing, title: string, settings: any, defaults: any): void {
         super.process(thing, title, settings, defaults);
 
-        // ThingHittr becomes very non-performant if functions aren't generated
-        // for each Thing constructor (optimization does not respect prototypal
-        // inheritance, sadly).
+        // ThingHittr becomes very non-performant if functions aren't generated for
+        // each Thing constructor (optimization does not respect prototypal inheritance, sadly).
         this.gameStarter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];

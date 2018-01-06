@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { BattleOutcome, IMove, IOnChoice, ISelector, Team } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
@@ -13,7 +14,8 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
     /**
      * Switching logic used by this instance.
      */
-    private readonly switching: Switching<TGameStartr> = new Switching(this.gameStarter);
+    @component(Switching)
+    private readonly switching: Switching<TGameStartr>;
 
     /**
      * Reacts to an actor getting knocked out.

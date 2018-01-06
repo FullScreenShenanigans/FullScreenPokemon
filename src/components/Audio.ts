@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -11,10 +12,12 @@ export class Audio<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     /**
      * Aliases for playable sounds.
      */
-    public readonly aliases = new SoundAliases();
+    @component(SoundAliases)
+    public readonly aliases: SoundAliases;
 
     /**
      * Names for playable sounds.
      */
-    public readonly names = new SoundNames();
+    @component(SoundNames)
+    public readonly names: SoundNames;
 }
