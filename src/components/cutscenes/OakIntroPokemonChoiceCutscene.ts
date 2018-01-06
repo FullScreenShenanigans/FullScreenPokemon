@@ -39,7 +39,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         const pokeball: IPokeball = settings.triggerer;
         settings.chosen = pokeball.pokemon;
 
-        this.gameStarter.menus.openPokedexListing(
+        this.gameStarter.menus.pokedex.openPokedexListing(
             pokeball.pokemon!,
             this.gameStarter.scenePlayer.bindRoutine("PlayerDecidesPokemon"),
             {

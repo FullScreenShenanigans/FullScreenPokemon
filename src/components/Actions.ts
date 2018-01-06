@@ -613,7 +613,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (!other.dialogOptions) {
-            this.gameStarter.saves.autoSave();
+            this.gameStarter.saves.autoSaveIfEnabled();
         }
     }
 
@@ -1092,7 +1092,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public partyActivateCut = (player: IPlayer): void => {
         this.gameStarter.menuGrapher.deleteAllMenus();
-        this.gameStarter.menus.closePauseMenu();
+        this.gameStarter.menus.pause.close();
         this.gameStarter.physics.killNormal(player.bordering[player.direction]!);
     }
 
@@ -1106,7 +1106,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         const boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
 
         this.gameStarter.menuGrapher.deleteAllMenus();
-        this.gameStarter.menus.closePauseMenu();
+        this.gameStarter.menus.pause.close();
 
         if (!this.gameStarter.thingHitter.checkHitForThings(player as any, boulder as any)
             || boulder.bordering[player.direction] !== undefined) {
@@ -1155,7 +1155,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public partyActivateSurf = (player: IPlayer): void => {
         this.gameStarter.menuGrapher.deleteAllMenus();
-        this.gameStarter.menus.closePauseMenu();
+        this.gameStarter.menus.pause.close();
 
         if (player.cycling) {
             return;

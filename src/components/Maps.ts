@@ -297,11 +297,6 @@ export interface IWildPokemonSchemaBase {
     title: string[];
 
     /**
-     * What levels the Pokemon may be, if multiple.
-     */
-    levels?: number[];
-
-    /**
      * Concatenated names of moves the Pokemon should have.
      */
     moves?: string[];
@@ -679,7 +674,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                         blocks: 1,
                         direction: this.gameStarter.players[0].direction,
                     },
-                    (): void => this.gameStarter.saves.autoSave(),
+                    (): void => this.gameStarter.saves.autoSaveIfEnabled(),
                 ]);
         }
 

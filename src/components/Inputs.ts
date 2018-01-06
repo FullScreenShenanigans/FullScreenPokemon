@@ -237,7 +237,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownPause(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.menus.togglePauseMenu();
+        this.gameStarter.menus.pause.toggle();
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownPause);
 
         if (event && event.preventDefault) {
@@ -452,7 +452,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public mouseDownRight(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.menus.togglePauseMenu();
+        this.gameStarter.menus.pause.toggle();
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onMouseDownRight);
 
         if (event && event.preventDefault) {

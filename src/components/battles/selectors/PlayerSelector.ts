@@ -123,7 +123,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
      * @param onChoice   Callback for when an action is chosen.
      */
     private openBattleItemsMenu(onChoice: IOnChoice): void {
-        this.gameStarter.menus.items.openItemsMenu({
+        this.gameStarter.menus.items.open({
             backMenu: "BattleOptions",
             container: "Battle",
             disableTossing: true,

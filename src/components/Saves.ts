@@ -111,9 +111,9 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     }
 
     /**
-     * Automatically saves the game.
+     * Automatically saves the game if auto-save is enabled.
      */
-    public autoSave(): void {
+    public autoSaveIfEnabled(): void {
         if (this.gameStarter.itemsHolder.getAutoSave()
             && !this.gameStarter.scenePlayer.getCutscene()
             && this.gameStarter.areaSpawner.getMapName() !== "Blank") {

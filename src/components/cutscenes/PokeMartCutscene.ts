@@ -299,7 +299,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
 
         this.gameStarter.menuGrapher.setActiveMenu("Buy/Sell");
 
-        this.gameStarter.saves.autoSave();
+        this.gameStarter.saves.autoSaveIfEnabled();
     }
 
     /**

@@ -36,8 +36,9 @@ describe("Gameplay", () => {
 
             // Assert
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
-            const optionNames = options.map((option) => option.text);
-            expect(optionNames).to.be.deep.equal([
+            const optionTexts = options.map((option) => option.text);
+
+            expect(optionTexts).to.be.deep.equal([
                 "NEW GAME",
                 "LOAD FILE",
             ]);
@@ -54,8 +55,8 @@ describe("Gameplay", () => {
 
             // Assert
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
-            const optionNames = options.map((option) => option.text);
-            expect(optionNames).to.be.deep.equal([
+            const optionTexts = options.map((option) => option.text);
+            expect(optionTexts).to.be.deep.equal([
                 "CONTINUE",
                 "NEW GAME",
                 "LOAD FILE",

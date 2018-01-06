@@ -151,9 +151,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         left: 240,
                     },
                 },
-                onMenuDelete: (): void => {
-                    fsp.menus.closePauseMenu();
-                },
+                onMenuDelete: fsp.menus.pause.close,
                 saveIndex: true,
                 textXOffset: 32,
                 textYOffset: 32,

@@ -138,7 +138,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * Closes the game.
      */
     public onGameClose(): void {
-        this.gameStarter.saves.autoSave();
+        this.gameStarter.saves.autoSaveIfEnabled();
         console.log("Closed.");
     }
 }

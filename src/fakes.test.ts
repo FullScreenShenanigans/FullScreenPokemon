@@ -1,5 +1,6 @@
 import { AudioElementSound } from "audioplayr";
 import { IGameStartrConstructorSettings } from "gamestartr";
+import * as lolex from "lolex";
 import * as sinon from "sinon";
 
 import { IPlayer } from "./components/Things";
@@ -17,6 +18,7 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
         height: 256,
     };
 
+    const clock = lolex.createClock();
     const prefix = `${new Date().getTime()}`;
     const fsp = new FullScreenPokemon({
         height: settings.height || 256,
@@ -25,11 +27,15 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
                 createSound: () => sinon.createStubInstance(AudioElementSound),
             },
             items: { prefix },
+            runner: {
+                tickCanceller: clock.clearTimeout,
+                tickScheduler: clock.setTimeout,
+            },
         },
         width: settings.width || 256,
     });
 
-    return { fsp, prefix };
+    return { clock, fsp, prefix };
 };
 
 /**

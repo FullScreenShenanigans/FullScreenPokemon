@@ -311,7 +311,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     throw new Error("Pokeball must have a Pokemon for the cutscene action.");
                 }
 
-                this.gameStarter.menus.openPokedexListing(other.pokemon);
+                this.gameStarter.menus.pokedex.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
