@@ -112,7 +112,7 @@ export class InterfaceSettingsFactory {
      * @param gameWindow   Global scope around the game interface, if not the global window.
      */
     public constructor(gameWindow: IGameWindow = window) {
-        this.gameWindow = this.gameWindow;
+        this.gameWindow = gameWindow;
     }
 
     /**
