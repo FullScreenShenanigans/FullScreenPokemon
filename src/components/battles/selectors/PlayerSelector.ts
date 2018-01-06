@@ -8,11 +8,11 @@ import { IInventoryListing } from "../../menus/Items";
 import { Switching } from "./player/Switching";
 
 /**
- * Selector for a player's actions used by FullScreenPokemon instances.
+ * Selector for a player's battle actions.
  */
 export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
     /**
-     * Switching logic used by this instance.
+     * Menu interface for the player choosing whether to switch Pokemon.
      */
     @component(Switching)
     private readonly switching: Switching<TGameStartr>;

@@ -27,7 +27,7 @@ interface ITransitions {
 }
 
 /**
- * Battle transition animations used by FullScreenPokemon instances.
+ * Flashy animation transitions to start battles.
  */
 export class Transitions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

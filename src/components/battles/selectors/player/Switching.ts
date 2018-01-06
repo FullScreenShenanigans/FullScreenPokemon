@@ -6,7 +6,7 @@ import { IBattleInfo, IPokemon } from "../../../Battles";
 import { FleeAttempt } from "../../animations/shared/actions/FleeAttempt";
 
 /**
- * Player switching logic used by FullScreenPokemon instances.
+ * Menu interface for the player choosing whether to switch Pokemon.
  */
 export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

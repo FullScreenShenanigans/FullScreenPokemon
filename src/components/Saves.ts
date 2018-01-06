@@ -31,7 +31,7 @@ export interface ISaveFile {
 }
 
 /**
- * Storage functions used by FullScreenPokemon instances.
+ * Saves and load game data.
  */
 export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

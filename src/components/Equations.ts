@@ -7,15 +7,24 @@ import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
 import { IBattleBall } from "./constants/Items";
 import { INewPokemon, IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
 import { Moves } from "./equations/Moves";
-import { IWildPokemonSchema } from "./Maps";
+import { IWildPokemonSchema, IWildPokemonSchemaWithLevel } from "./Maps";
 import { ICharacter, IGrass } from "./Things";
 
 /**
- * Common equations used by FullScreenPokemon instances.
+ * Gets whether a wild Pokemon schema has only one possible level.
+ *
+ * @param schema   Wild Pokemon schema.
+ * @returns Whether the schema has only one possible level.
+ */
+const isWildPokemonSchemaForLevel = (schema: IWildPokemonSchema): schema is IWildPokemonSchemaWithLevel =>
+    "level" in schema;
+
+/**
+ * Common equations.
  */
 export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Move equations used by this FullScreenPokemon instance.
+     * Equations for battle moves.
      */
     @component(Moves)
     public readonly moves: Moves<TGameStartr>;
@@ -31,6 +40,8 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
     }
 
     /**
+     * Gets the average level of a group of Pokemon.
+     *
      * @param pokemon   A group of Pokemon.
      * @returns The average level of the Pokemon.
      */
@@ -45,29 +56,27 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
     }
 
     /**
+     * Gets the average level of a set of wild Pokemon schemas.
+     *
      * @param options   Wild pokemon schemas.
      * @returns The average level from among the schemas.
      */
     public averageLevelWildPokemon(options: IWildPokemonSchema[]): number {
         let average = 0;
 
-        for (const wildPokemon of options) {
-            if (wildPokemon.level) {
-                average += wildPokemon.level * wildPokemon.rate!;
+        for (const wildPokemonSchema of options) {
+            if (isWildPokemonSchemaForLevel(wildPokemonSchema)) {
+                average += wildPokemonSchema.level * wildPokemonSchema.rate!;
                 continue;
-            }
-
-            if (!wildPokemon.levels) {
-                throw new Error("Wild Pokemon must have wither .level of .levels defined.");
             }
 
             let levelAverage = 0;
 
-            for (const level of wildPokemon.levels) {
-                levelAverage += level * (1 / wildPokemon.levels.length);
+            for (const level of wildPokemonSchema.levels) {
+                levelAverage += level * (1 / wildPokemonSchema.levels.length);
             }
 
-            average += levelAverage * wildPokemon.rate!;
+            average += levelAverage * wildPokemonSchema.rate!;
         }
 
         return Math.round(average);
@@ -100,14 +109,14 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @returns A newly created Pokemon.
      */
     public createPokemon(schema: IWildPokemonSchema): IPokemon {
-        const level: number = schema.levels
-            ? this.gameStarter.numberMaker.randomArrayMember(schema.levels)
-            : schema.level!;
-        const chosenInfo: INewPokemon = {
+        const level: number = isWildPokemonSchemaForLevel(schema)
+            ? schema.level
+            : this.gameStarter.numberMaker.randomArrayMember(schema.levels);
+
+        return this.gameStarter.equations.newPokemon({
             level,
             title: schema.title,
-        };
-        return this.gameStarter.equations.newPokemon(chosenInfo);
+        });
     }
 
     /**

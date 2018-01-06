@@ -5,7 +5,7 @@ import { Direction } from "../Constants";
 import { ICharacter, IThing } from "../Things";
 
 /**
- * OakParcelDelivery cutscene functions used by FullScreenPokemon instances.
+ * OakParcelDelivery cutscene routines.
  */
 export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

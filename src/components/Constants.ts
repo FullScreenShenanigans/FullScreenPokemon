@@ -50,7 +50,7 @@ export enum PokedexListingStatus {
 }
 
 /**
- * Constants used by FullScreenPokemon instances.
+ * Universal game constants.
  */
 export class Constants<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
@@ -64,7 +64,7 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends GeneralCom
     public readonly blockSize: number = 32;
 
     /**
-     * Battle constants used by this FullScreenPokemon instance.
+     * Universl battle constants.
      */
     @component(Battles)
     public readonly battles: Battles;

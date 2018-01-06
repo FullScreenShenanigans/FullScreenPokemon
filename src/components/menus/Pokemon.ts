@@ -66,7 +66,7 @@ export interface ILevelUpStatsMenuSettings {
 }
 
 /**
- * Pokemon menu functions used by FullScreenPokemon instances.
+ * Manipulates Pokemon party and detail menus.
  */
 export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

@@ -6,7 +6,7 @@ import { IMap } from "../Maps";
 import { IThing } from "../Things";
 
 /**
- * PokeCenter cutscene functions used by FullScreenPokemon instances.
+ * PokeCenter cutscene routines.
  */
 export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

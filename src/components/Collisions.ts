@@ -7,7 +7,7 @@ import { Physics } from "./Physics";
 import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge } from "./Things";
 
 /**
- * Collision functions used by FullScreenPokemon instances.
+ * ThingHittr collision function generators.
  */
 export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPlayer } from "./Things";
 
 /**
- * Cycling functions used by FullScreenPokemon instances.
+ * Starts and stop characters cycling.
  */
 export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

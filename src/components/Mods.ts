@@ -30,7 +30,7 @@ export interface IModComponentClass {
 }
 
 /**
- * Mods used by FullScreenPokemon instances.
+ * Creates ModAttachr from mod classes.
  */
 export class Mods<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

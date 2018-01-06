@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
 
 /**
- * Shrinking functions used by FullScreenPokemon instances.
+ * Shrinks (and expands) Things.
  */
 export class Shrinking<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

@@ -10,21 +10,22 @@ export interface IBattleModification {
     /**
      * Preferred move effects.
      */
-    preferences: IModificationPreference[]; // ([string, string, number] | [string, string])[];
+    preferences: IModificationPreference[];
 }
 
 /**
  * Move effects that are preferred.
  */
 export type IModificationPreference = (
-    ["Effect", string]
+    | ["Effect", string]
     | ["Move", string]
     | ["Statistic", string, number]
     | ["Super", string, string]
-    | ["Weak", string, string]);
+    | ["Weak", string, string])
+;
 
 /**
- * Battle modification constants used by FullScreenPokemon instances.
+ * Modification settings for the battle AI.
  */
 export class Modifications {
     /**

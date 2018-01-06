@@ -269,35 +269,35 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
 };
 
 /**
- * Battle functions used by FullScreenPokemon instances.
+ * BattleMovr hooks to run trainer battles.
  */
 export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Actions orderer used by this FullScreenPokemon instance.
+     * Orders chosen actions by priority and/or speed.
      */
     @component(ActionsOrderer)
     public readonly actionsOrderer: ActionsOrderer<TGameStartr>;
 
     /**
-     * Battle animations used by this FullScreenPokemon instance.
+     * Animations for battle events.
      */
     @component(Animations)
     public readonly animations: Animations<TGameStartr>;
 
     /**
-     * Decoration handlers used by this FullScreenPokemon instance.
+     * Places decorative in-battle Things.
      */
     @component(Decorations)
     public readonly decorations: Decorations<TGameStartr>;
 
     /**
-     * Battle action selectors used by this FullScreenPokemon instance.
+     * Selects actions for each team.
      */
     @component(Selectors)
     public readonly selectors: Selectors<TGameStartr>;
 
     /**
-     * Thing visual handlers used by this FullScreenPokemon instance.
+     * Sets Things visually representing each team.
      */
     @component(Things)
     public readonly things: Things<TGameStartr>;

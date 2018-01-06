@@ -9,11 +9,11 @@ import { Moves } from "./Moves";
 import { DefaultMovesBag } from "./moves/MovesBag";
 
 /**
- * Player action animations used by FullScreenPokemon instances.
+ * Shared animations for team actions.
  */
 export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IOnActions {
     /**
-     * Action effect animations.
+     * Battle animations for move effects.
      */
     @component(Effects)
     public readonly effects: Effects<TGameStartr>;
@@ -35,7 +35,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   Callback for when the action is done.
      */
     public item(action: ITeamAndAction<IItemAction>, onComplete: () => void): void {
-        console.log("Player item action:", action);
+        console.log("Team item action:", action);
         onComplete();
     }
 
@@ -58,7 +58,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   Callback for when the action is done.
      */
     public switch(action: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
-        console.log("Player switch action:", action);
+        console.log("Team switch action:", action);
         onComplete();
     }
 }

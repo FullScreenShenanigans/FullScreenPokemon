@@ -3,7 +3,7 @@ import { GeneralComponent } from "gamestartr";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
- * Macro functions used by FullScreenPokemon instances.
+ * Map creation macros.
  */
 export class Macros<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

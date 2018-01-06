@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
 
 /**
- * Ledge functions used by FullScreenPokemon instances.
+ * Hops characters down ledges.
  */
 export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

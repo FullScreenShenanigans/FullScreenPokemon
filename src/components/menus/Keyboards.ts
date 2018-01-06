@@ -61,7 +61,7 @@ export interface IKeyboardMenuSettings {
 }
 
 /**
- * Keyboard functions used by FullScreenPokemon instances.
+ * Manipulates the on-screen keyboard menus.
  */
 export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

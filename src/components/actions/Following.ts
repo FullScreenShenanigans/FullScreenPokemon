@@ -5,7 +5,7 @@ import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
 /**
- * Following functions used by FullScreenPokemon instances.
+ * Sets characters following each other.
  */
 export class Following<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

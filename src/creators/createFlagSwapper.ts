@@ -1,5 +1,7 @@
 import { FlagSwappr } from "flagswappr";
 
+import { FullScreenPokemon } from "../FullScreenPokemon";
+
 /**
  * Generation-specific flags.
  */
@@ -15,7 +17,7 @@ export interface IFlags {
     readonly heldItems: boolean;
 }
 
-export const createFlagSwapper = (): FlagSwappr<IFlags> =>
+export const createFlagSwapper = (fsp: FullScreenPokemon): FlagSwappr<IFlags> =>
     new FlagSwappr({
         generation: "I",
         generations: {
@@ -28,4 +30,5 @@ export const createFlagSwapper = (): FlagSwappr<IFlags> =>
                 heldItems: true,
             },
         },
+        ...fsp.settings.components.flags,
     });

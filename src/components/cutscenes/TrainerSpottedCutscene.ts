@@ -5,7 +5,7 @@ import { Direction } from "../Constants";
 import { ICharacter, IPlayer } from "../Things";
 
 /**
- * TrainerSpotted cutscene functions used by FullScreenPokemon instances.
+ * TrainerSpotted cutscene routines.
  */
 export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

@@ -7,7 +7,7 @@ import { IKeyboardResultsMenu } from "../menus/Keyboards";
 import { ICharacter, IPokeball, IThing } from "../Things";
 
 /**
- * OakIntroPokemonChoice cutscene functions used by FullScreenPokemon instances.
+ * OakIntroPokemonChoice cutscene routines.
  */
 export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

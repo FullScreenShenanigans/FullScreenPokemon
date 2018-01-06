@@ -60,7 +60,7 @@ export interface IItemsMenuSettings extends IItemMenuSettings {
 }
 
 /**
- * Items menu functions used by FullScreenPokemon instances.
+ * Manipulates item menus.
  */
 export class Items<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

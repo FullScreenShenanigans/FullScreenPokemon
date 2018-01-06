@@ -20,7 +20,7 @@ export type IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>) => b
 type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 
 /**
- * Battle functions used by FullScreenPokemon instances.
+ * Orders chosen actions by priority and/or speed.
  */
 export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

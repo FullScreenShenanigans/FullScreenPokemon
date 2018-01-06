@@ -6,7 +6,7 @@ import { OpponentSelector } from "./selectors/OpponentSelector";
 import { PlayerSelector } from "./selectors/PlayerSelector";
 
 /**
- * Battle action selectors used by FullScreenPokemon instances.
+ * Selects actions for each team.
  */
 export class Selectors<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

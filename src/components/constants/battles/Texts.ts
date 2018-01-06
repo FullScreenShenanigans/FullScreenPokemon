@@ -158,7 +158,7 @@ export interface IBattleTextGenerators extends IPartialTextGenerators {
 }
 
 /**
- * Battle text constants used by FullScreenPokemon instances.
+ * Battle text generators.
  */
 export class Texts {
     /**

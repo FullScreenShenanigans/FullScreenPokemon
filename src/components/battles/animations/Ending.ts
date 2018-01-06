@@ -5,18 +5,11 @@ import { GeneralComponent } from "gamestartr";
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
 import { IBattleOutcomeTextGenerator } from "../../constants/battles/Texts";
-import { Transitions } from "./Transitions";
 
 /**
- * Battle end animations used by FullScreenPokemon instances.
+ * Animations for the ends of battles.
  */
 export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
-    /**
-     * Transition animations used by the FullScreenPokemon instance.
-     */
-    @component(Transitions)
-    public readonly transitions: Transitions<TGameStartr>;
-
     /**
      * Runs ending battle animations.
      *

@@ -696,7 +696,7 @@ export interface IPokeball extends IDetector {
 }
 
 /**
- * Thing manipulation functions used by FullScreenPokemon instances.
+ * Adds and processes new Things into the game.
  */
 export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThings<TGameStartr> {
     /**
@@ -737,8 +737,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
 
     /**
      * Overriden Function to adds a new Thing to the game at a given position,
-     * relative to the top left corner of the screen. The Thing is also
-     * added to the Thing groupHolder.group container.
+     * relative to the top left corner of the screen.
      *
      * @param thingRaw   What type of Thing to add. This may be a String of
      *                   the class title, an Array containing the String

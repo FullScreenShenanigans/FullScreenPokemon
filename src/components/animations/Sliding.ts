@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
 
 /**
- * Sliding functions used by FullScreenPokemon instances.
+ * Slides Things across the screen.
  */
 export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
@@ -25,6 +25,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 if (onComplete) {
                     onComplete();
                 }
+
                 return;
             }
         } else {
@@ -33,6 +34,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 if (onComplete) {
                     onComplete();
                 }
+
                 return;
             }
         }
@@ -75,6 +77,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 if (onComplete) {
                     onComplete();
                 }
+
                 return;
             }
         }

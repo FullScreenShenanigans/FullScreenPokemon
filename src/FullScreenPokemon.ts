@@ -2,9 +2,9 @@ import { AreaSpawnr } from "areaspawnr";
 import { AudioPlayr } from "audioplayr";
 import { component } from "babyioc";
 import { BattleMovr } from "battlemovr";
-import { FlagSwappr } from "flagswappr";
+import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GamesRunnr } from "gamesrunnr";
-import { GameStartr, IGameStartrConstructorSettings } from "gamestartr";
+import { GameStartr, IComponentSettings, IGameStartrConstructorSettings, IGameStartrSettings } from "gamestartr";
 import { GroupHoldr } from "groupholdr";
 import { InputWritr } from "inputwritr";
 import { ItemsHoldr } from "itemsholdr";
@@ -22,6 +22,7 @@ import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
 
 import { Actions } from "./components/Actions";
+import { Animations } from "./components/Animations";
 import { Audio } from "./components/Audio";
 import { Battles } from "./components/Battles";
 import { Collisions } from "./components/Collisions";
@@ -65,149 +66,44 @@ import { createStateHolder } from "./creators/createStateHolder";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 
-export type IFullScreenPokemonSettings = IGameStartrConstructorSettings;
+/**
+ * Settings to initialize a new FullScreenPokemon.
+ */
+export interface IFullScreenPokemonComponentSettings extends IComponentSettings {
+    /**
+     * Settings for feature flags, particularly for a FlagSwappr.
+     */
+    flags?: Partial<IFlagSwapprSettings<IFlags>>;
+}
+
+/**
+ * Filled-out settings to initialize a new FullScreenPokemon.
+ */
+export interface IFullScreenPokemonConstructorSettings extends IGameStartrConstructorSettings {
+    /**
+     * Component settings overrides.
+     */
+    components?: Partial<IFullScreenPokemonComponentSettings>;
+}
+
+/**
+ * Settings to initialize a new FullScreenPokemon.
+ */
+export interface IFullScreenPokemonSettings extends IGameStartrSettings {
+    /**
+     * Component settings overrides.
+     */
+    components: Partial<IFullScreenPokemonComponentSettings>;
+}
 
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
 export class FullScreenPokemon extends GameStartr {
     /**
-     * Action functions used by this instance.
+     * Screen and component reset settings.
      */
-    @component(Actions)
-    public readonly actions: Actions<this>;
-
-    /**
-     * Friendly sound aliases and names for audio.
-     */
-    @component(Audio)
-    public readonly audio: Audio<this>;
-
-    /**
-     * Battle functions used by this instance.
-     */
-    @component(Battles)
-    public readonly battles: Battles<this>;
-
-    /**
-     * Collision functions used by this instance.
-     */
-    @component(Collisions)
-    public readonly collisions: Collisions<this>;
-
-    /**
-     * Constants used by this instance.
-     */
-    @component(Constants)
-    public readonly constants: Constants<this>;
-
-    /**
-     * Cutscene functions used by this instance.
-     */
-    @component(Cutscenes)
-    public readonly cutscenes: Cutscenes<this>;
-
-    /**
-     * Cycling functions used by this instance.
-     */
-    @component(Cycling)
-    public readonly cycling: Cycling<this>;
-
-    /**
-     * Equations used by this instance.
-     */
-    @component(Equations)
-    public readonly equations: Equations<this>;
-
-    /**
-     * Evolution functions used by this instance.
-     */
-    @component(Evolution)
-    public readonly evolution: Evolution<this>;
-
-    /**
-     * Experience functions used by this instance.
-     */
-    @component(Experience)
-    public readonly experience: Experience<this>;
-
-    /**
-     * Fishing functions used by this instance.
-     */
-    @component(Fishing)
-    public readonly fishing: Fishing<this>;
-
-    /**
-     * Gameplay functions used by this instance.
-     */
-    @component(Gameplay)
-    public readonly gameplay: Gameplay<this>;
-
-    /**
-     * Graphics functions used by this instance.
-     */
-    @component(Graphics)
-    public readonly graphics: Graphics<this>;
-
-    /**
-     * Input functions used by this instance.
-     */
-    @component(Inputs)
-    public readonly inputs: Inputs<this>;
-
-    /**
-     * Maintenance functions used by this instance.
-     */
-    @component(Maintenance)
-    public readonly maintenance: Maintenance<this>;
-
-    /**
-     * Maps functions used by this instance.
-     */
-    @component(Maps)
-    public readonly maps: Maps<this>;
-
-    /**
-     * Menu functions used by this instance.
-     */
-    @component(Menus)
-    public readonly menus: Menus<this>;
-
-    /**
-     * Mods used by this instance.
-     */
-    @component(Mods)
-    public readonly mods: Mods<this>;
-
-    /**
-     * Physics functions used by this instance.
-     */
-    @component(Physics)
-    public readonly physics: Physics<this>;
-
-    /**
-     * Thing manipulation functions used by this instance.
-     */
-    @component(Things)
-    public readonly things: Things<this>;
-
-    /**
-     * Scrolling functions used by this instance.
-     */
-    @component(Scrolling)
-    public readonly scrolling: Scrolling<this>;
-
-    /**
-     * Storage functions used by this instance.
-     */
-    @component(Saves)
-    public readonly saves: Saves<this>;
-
-    /**
-     * Utility functions used by this instance.
-     */
-    @component(Utilities)
-    public readonly utilities: Utilities<this>;
+    public readonly settings: IFullScreenPokemonSettings;
 
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
@@ -330,15 +226,167 @@ export class FullScreenPokemon extends GameStartr {
     public readonly thingHitter: ThingHittr;
 
     /**
+     * Actions characters may perform walking around.
+     */
+    @component(Actions)
+    public readonly actions: Actions<this>;
+
+    /**
+     * Generic animations for Things.
+     */
+    @component(Animations)
+    public readonly animations: Animations<this>;
+
+    /**
+     * Friendly sound aliases and names for audio.
+     */
+    @component(Audio)
+    public readonly audio: Audio<this>;
+
+    /**
+     * BattleMovr hooks to run trainer battles.
+     */
+    @component(Battles)
+    public readonly battles: Battles<this>;
+
+    /**
+     * ThingHittr collision function generators.
+     */
+    @component(Collisions)
+    public readonly collisions: Collisions<this>;
+
+    /**
+     * Universal game constants.
+     */
+    @component(Constants)
+    public readonly constants: Constants<this>;
+
+    /**
+     * ScenePlayr cutscenes, keyed by name.
+     */
+    @component(Cutscenes)
+    public readonly cutscenes: Cutscenes<this>;
+
+    /**
+     * Starts and stop characters cycling.
+     */
+    @component(Cycling)
+    public readonly cycling: Cycling<this>;
+
+    /**
+     * Common equations.
+     */
+    @component(Equations)
+    public readonly equations: Equations<this>;
+
+    /**
+     * Logic for what Pokemon are able to evolve into.
+     */
+    @component(Evolution)
+    public readonly evolution: Evolution<this>;
+
+    /**
+     * Calculates experience gains and level ups for Pokemon.
+     */
+    @component(Experience)
+    public readonly experience: Experience<this>;
+
+    /**
+     * Runs the player trying to fish for Pokemon.
+     */
+    @component(Fishing)
+    public readonly fishing: Fishing<this>;
+
+    /**
+     * Event hooks for major gameplay state changes.
+     */
+    @component(Gameplay)
+    public readonly gameplay: Gameplay<this>;
+
+    /**
+     * Changes the visual appearance of Things.
+     */
+    @component(Graphics)
+    public readonly graphics: Graphics<this>;
+
+    /**
+     * Routes user input.
+     */
+    @component(Inputs)
+    public readonly inputs: Inputs<this>;
+
+    /**
+     * Maintains Things during GamesRunnr ticks.
+     */
+    @component(Maintenance)
+    public readonly maintenance: Maintenance<this>;
+
+    /**
+     * Enters and spawns map areas.
+     */
+    @component(Maps)
+    public readonly maps: Maps<this>;
+
+    /**
+     * Manipulates MenuGraphr menus.
+     */
+    @component(Menus)
+    public readonly menus: Menus<this>;
+
+    /**
+     * Creates ModAttachr from mod classes.
+     */
+    @component(Mods)
+    public readonly mods: Mods<this>;
+
+    /**
+     * Physics functions to move Things around.
+     */
+    @component(Physics)
+    public readonly physics: Physics<this>;
+
+    /**
+     * Adds and processes new Things into the game.
+     */
+    @component(Things)
+    public readonly things: Things<this>;
+
+    /**
+     * Moves the screen and Things in it.
+     */
+    @component(Scrolling)
+    public readonly scrolling: Scrolling<this>;
+
+    /**
+     * Saves and load game data.
+     */
+    @component(Saves)
+    public readonly saves: Saves<this>;
+
+    /**
+     * Miscellaneous utility functions.
+     */
+    @component(Utilities)
+    public readonly utilities: Utilities<this>;
+
+    /**
      * The game's single player.
      *
      * @remarks We assume nobody will try to access this before a map entrance.
-     * @remarks There's probably a better way.
      */
-    public readonly players: [IPlayer] = [] as any;
+    public readonly players: [IPlayer] = [undefined as any];
 
     /**
      * Total FpsAnalyzr ticks that have elapsed since the constructor or saving.
      */
     public ticksElapsed: number;
+
+    /**
+     * Initializes a new instance of the FullScreenPokemon class.
+     *
+     * @param settings   Settings to be used for initialization.
+     */
+    public constructor(settings: IFullScreenPokemonConstructorSettings) {
+        super(settings);
+    }
 }

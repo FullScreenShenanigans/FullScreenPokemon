@@ -6,7 +6,7 @@ import { IArea, IMap, IWildPokemonSchema } from "../Maps";
 import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
 
 /**
- * Grass functions used by FullScreenPokemon instances.
+ * Visual and battle updates for walking in tall grass.
  */
 export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

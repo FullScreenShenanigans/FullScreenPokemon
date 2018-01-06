@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
 
 /**
- * DaisyTownMap cutscene functions used by FullScreenPokemon instances.
+ * DaisyTownMap cutscene routines.
  */
 export class DaisyTownMapCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

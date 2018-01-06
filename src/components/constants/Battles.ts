@@ -4,7 +4,7 @@ import { Modifications } from "./battles/Modifications";
 import { Texts } from "./battles/Texts";
 
 /**
- * Battle constants used by FullScreenPokemon instances.
+ * Universl battle constants.
  */
 export class Battles {
     /**
@@ -14,7 +14,7 @@ export class Battles {
     public readonly modifications: Modifications;
 
     /**
-     * Default texts during battles.
+     * Battle text generators.
      */
     @component(Texts)
     public readonly texts: Texts;

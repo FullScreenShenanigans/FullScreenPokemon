@@ -10,17 +10,17 @@ import { Starting } from "./animations/Starting";
 import { Things } from "./animations/Things";
 
 /**
- * Battle animations used by FullScreenPokemon instances.
+ * Animations for battle events.
  */
 export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IAnimations {
     /**
-     * Opponent animations used by the FullScreenPokemon instance.
+     * Animations for opponent battle events.
      */
     @component(Opponent)
     public readonly opponent: Opponent<TGameStartr>;
 
     /**
-     * Player animations used by the FullScreenPokemon instance.
+     * Animations for player battle events.
      */
     @component(Player)
     public readonly player: Player<TGameStartr>;

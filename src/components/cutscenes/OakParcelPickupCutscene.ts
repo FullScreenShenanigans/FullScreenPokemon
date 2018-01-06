@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
 
 /**
- * OakParcelPickup cutscene functions used by FullScreenPokemon instances.
+ * OakParcelPickup cutscene routines.
  */
 export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

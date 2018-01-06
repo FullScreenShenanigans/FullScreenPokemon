@@ -7,7 +7,7 @@ import { IArea, IMap, IWildPokemonSchema } from "./Maps";
 import { IPlayer } from "./Things";
 
 /**
- * Fishing functions used by FullScreenPokemon instances.
+ * Runs the player trying to fish for Pokemon.
  */
 export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
@@ -60,7 +60,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param player   A Player who landed the fish.
      * @param rod   The rod that will be used to fish.
      */
-    public playerLandedFish(player: IPlayer, rod: IRod): void {
+    private playerLandedFish(player: IPlayer, rod: IRod): void {
         const currentMap: IMap = this.gameStarter.areaSpawner.getMap(player.mapName) as IMap;
         const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName];
         const options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type];

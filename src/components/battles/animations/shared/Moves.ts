@@ -7,7 +7,7 @@ import { Move } from "./moves/Move";
 import { IMovesBag } from "./moves/MovesBag";
 
 /**
- * Battle move animations used by FullScreenPokemon instances.
+ * Announces and launches battle move animations.
  */
 export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

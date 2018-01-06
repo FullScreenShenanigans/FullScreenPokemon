@@ -120,23 +120,23 @@ export interface IMenu extends IMenuBase, IThing {
 export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
 
 /**
- * Menu functions used by FullScreenPokemon instances.
+ * Manipulates MenuGraphr menus.
  */
 export class Menus<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Item menu functions used by this instance.
+     * Manipulates item menus.
      */
     @component(Items)
     public readonly items: Items<TGameStartr>;
 
     /**
-     * Keyboard menu functions used by this instance.
+     * Manipulates the on-screen keyboard menus.
      */
     @component(Keyboards)
     public readonly keyboards: Keyboards<TGameStartr>;
 
     /**
-     * Keyboard menu functions used by this instance.
+     * Manipulates Pokemon party and detail menus.
      */
     @component(Pokemon)
     public readonly pokemon: Pokemon<TGameStartr>;

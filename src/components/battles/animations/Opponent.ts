@@ -10,17 +10,17 @@ import { Actions } from "./shared/Actions";
 import { Switching } from "./shared/Switching";
 
 /**
- * Opponent animations used by FullScreenPokemon instances.
+ * Animations for opponent battle events.
  */
 export class Opponent<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ITeamAnimations {
     /**
-     * Opponent action animations used by the FullScreenPokemon instance.
+     * Shared animations for team actions.
      */
     @component(Actions)
     public readonly actions: Actions<TGameStartr>;
 
     /**
-     * Opponent switching animations used by the FullScreenPokemon instance.
+     * Shared animations for teams switching Pokemon.
      */
     @component((container: Opponent<TGameStartr>) =>
         new Switching(container, {

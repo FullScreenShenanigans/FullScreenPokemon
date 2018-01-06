@@ -8,7 +8,7 @@ import { Direction } from "../Constants";
 import { ICharacter, IPlayer } from "../Things";
 
 /**
- * RivalRoute22 cutscene functions used by FullScreenPokemon instances.
+ * RivalRoute22 cutscene routines.
  */
 export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

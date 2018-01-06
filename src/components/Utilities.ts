@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IThing } from "./Things";
 
 /**
- * Miscellaneous utility functions used by FullScreenPokemon instances.
+ * Miscellaneous utility functions.
  */
 export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartrUtilities<TGameStartr> {
     /**

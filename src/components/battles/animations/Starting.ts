@@ -7,11 +7,11 @@ import { PokedexListingStatus } from "../../Constants";
 import { Transitions } from "./Transitions";
 
 /**
- * Battle start animations used by FullScreenPokemon instances.
+ * Animations for the starts of battles.
  */
 export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Transition animations used by the FullScreenPokemon instance.
+     * Flashy animation transitions to start battles.
      */
     @component(Transitions)
     public readonly transitions: Transitions<TGameStartr>;
@@ -80,13 +80,13 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
         playerGoal = menu.left + player.width / 2;
         opponentGoal = menu.right - opponent.width / 2;
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
             1);
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,

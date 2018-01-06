@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IThing } from "./Things";
 
 /**
- * Graphics functions used by FullScreenPokemon instances.
+ * Changes the visual appearance of Things.
  */
 export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrGraphics<TGameStartr> {
     /**

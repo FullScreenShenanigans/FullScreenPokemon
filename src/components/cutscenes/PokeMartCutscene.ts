@@ -4,7 +4,7 @@ import { IMenuWordSchema } from "menugraphr";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
- * PokeMart cutscene functions used by FullScreenPokemon instances.
+ * PokeMart cutscene routines.
  */
 export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

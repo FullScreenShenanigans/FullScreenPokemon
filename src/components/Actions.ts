@@ -8,8 +8,6 @@ import { Following } from "./actions/Following";
 import { Grass } from "./actions/Grass";
 import { Ledges } from "./actions/Ledges";
 import { Roaming } from "./actions/Roaming";
-import { Shrinking } from "./actions/Shrinking";
-import { Sliding } from "./actions/Sliding";
 import { Walking } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";
@@ -48,47 +46,35 @@ export interface IColorFadeSettings {
 }
 
 /**
- * Action functions used by FullScreenPokemon instances.
+ * Actions characters may perform walking around.
  */
 export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Following functions used by the FullScreenPokemon instance.
+     * Sets characters following each other.
      */
     @component(Following)
     public readonly following: Following<TGameStartr>;
 
     /**
-     * Grass functions used by the FullScreenPokemon instance.
+     * Visual and battle updates for walking in tall grass.
      */
     @component(Grass)
     public readonly grass: Grass<TGameStartr>;
 
     /**
-     * Ledge functions used by the FullScreenPokemon instance.
+     * Hops characters down ledges.
      */
     @component(Ledges)
     public readonly ledges: Ledges<TGameStartr>;
 
     /**
-     * Roaming functions used by the FullScreenPokemon instance.
+     * Idle characters turning and walking in random directions.
      */
     @component(Roaming)
     public readonly roaming: Roaming<TGameStartr>;
 
     /**
-     * Shrinking functions used by the FullScreenPokemon instance.
-     */
-    @component(Shrinking)
-    public readonly shrinking: Shrinking<TGameStartr>;
-
-    /**
-     * Sliding functions used by the FullScreenPokemon instance.
-     */
-    @component(Sliding)
-    public readonly sliding: Sliding<TGameStartr>;
-
-    /**
-     * Walking functions used by the FullScreenPokemon instance.
+     * Starts, continues, and stops characters walking.
      */
     @component(Walking)
     public readonly walking: Walking<TGameStartr>;

@@ -6,7 +6,7 @@ import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
 /**
- * OakIntroRivalLeaves cutscene functions used by FullScreenPokemon instances.
+ * OakIntroRivalLeaves cutscene routines.
  */
 export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

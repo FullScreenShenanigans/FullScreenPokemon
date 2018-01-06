@@ -20,7 +20,7 @@ export interface IMovesBag {
 }
 
 /**
- * Built-in battle move runners used by FullScreenPokemon instances.
+ * Built-in battle move runners, keyed by move name.
  */
 export const DefaultMovesBag: IMovesBag = {
     "BUBBLE": Bubble,

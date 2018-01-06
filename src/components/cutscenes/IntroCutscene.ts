@@ -5,7 +5,7 @@ import { IKeyboardResultsMenu } from "../menus/Keyboards";
 import { IPlayer, IThing } from "../Things";
 
 /**
- * Intro cutscene functions used by FullScreenPokemon instances.
+ * Intro cutscene routines.
  */
 export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
@@ -109,7 +109,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
         this.gameStarter.physics.setMidY(pokemon, this.gameStarter.mapScreener.middleY);
         this.gameStarter.actions.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             pokemon,
             -8,
             this.gameStarter.mapScreener.middleX | 0,
@@ -157,7 +157,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
         this.gameStarter.physics.setMidY(player, this.gameStarter.mapScreener.middleY);
         this.gameStarter.actions.animateFadeAttribute(player, "opacity", 0.15, 1, 3);
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             player,
             -8,
             middleX - player.width / 2,
@@ -185,7 +185,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
      * @param settings   Settings used for the cutscene.
      */
     public PlayerSlide(settings: any): void {
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.player,
             4,
             (this.gameStarter.mapScreener.middleX + 56) | 0,
@@ -236,7 +236,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
 
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.player,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -255,7 +255,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
         this.gameStarter.menuGrapher.deleteMenu("Keyboard");
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.player,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -361,7 +361,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
      * @param settings   Settings used for the cutscene.
      */
     public RivalSlide(settings: any): void {
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.rival,
             4,
             (this.gameStarter.mapScreener.middleX + 56) | 0,
@@ -412,7 +412,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
 
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.rival,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -431,7 +431,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
         this.gameStarter.menuGrapher.deleteMenu("Keyboard");
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.rival,
             -4,
             this.gameStarter.mapScreener.middleX | 0,

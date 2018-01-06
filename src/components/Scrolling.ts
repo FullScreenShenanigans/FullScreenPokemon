@@ -29,7 +29,7 @@ export enum Scrollability {
 }
 
 /**
- * Scrolling functions used by FullScreenPokemon instances.
+ * Moves the screen and Things in it.
  */
 export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartrScrolling<TGameStartr> {
     /**

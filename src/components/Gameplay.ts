@@ -15,7 +15,7 @@ interface IDataEventTarget extends EventTarget {
 }
 
 /**
- * Gameplay functions used by FullScreenPokemon instances.
+ * Event hooks for major gameplay state changes.
  */
 export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrGameplay<TGameStartr> {
     /**

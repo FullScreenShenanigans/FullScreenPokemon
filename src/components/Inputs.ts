@@ -6,7 +6,7 @@ import { IItemSchema } from "./constants/Items";
 import { ICharacter, IPlayer } from "./Things";
 
 /**
- * Input functions used by FullScreenPokemon instances.
+ * Routes user input.
  */
 export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

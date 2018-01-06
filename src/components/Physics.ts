@@ -12,7 +12,7 @@ import { Mods } from "./Mods";
 import { ICharacter, IGrass, IThing } from "./Things";
 
 /**
- * Physics functions used by FullScreenPokemon instances.
+ * Physics functions to move Things around.
  */
 export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPhysics<TGameStartr> {
     /**
@@ -166,9 +166,6 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
         this.gameStarter.timeHandler.cancelAllCycles(thing);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKillNormal, thing);
-
-        if (thing.id) {
-            this.gameStarter.groupHolder.removeFromGroup(thing, thing.groupType);
-        }
+        this.gameStarter.groupHolder.removeFromGroup(thing, thing.groupType);
     }
 }

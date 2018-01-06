@@ -18,89 +18,89 @@ import { RivalRoute22LeavesCutscene } from "./cutscenes/RivalRoute22LeavesCutsce
 import { TrainerSpottedCutscene } from "./cutscenes/TrainerSpottedCutscene";
 
 /**
- * Cutscene functions used by FullScreenPokemon instances.
+ * ScenePlayr cutscenes, keyed by name.
  */
 export class Cutscenes<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * DaisyTownMap cutscene functions used by this FullScreenPokemon instance.
+     * DaisyTownMap cutscene routines.
      */
     @component(DaisyTownMapCutscene)
     public readonly daisyTownMap: DaisyTownMapCutscene<TGameStartr>;
 
     /**
-     * ElderTraining cutscene functions used by this FullScreenPokemon instance.
+     * ElderTraining cutscene routines.
      */
     @component(ElderTrainingCutscene)
     public readonly elderTraining: ElderTrainingCutscene<TGameStartr>;
 
     /**
-     * Intro cutscene functions used by this FullScreenPokemon instance.
+     * Intro cutscene routines.
      */
     @component(IntroCutscene)
     public readonly intro: IntroCutscene<TGameStartr>;
 
     /**
-     * OakIntro cutscene functions used by this FullScreenPokemon instance.
+     * OakIntro cutscene routines.
      */
     @component(OakIntroCutscene)
     public readonly oakIntro: OakIntroCutscene<TGameStartr>;
 
     /**
-     * OakIntroPokemonChoice cutscene functions used by this FullScreenPokemon instance.
+     * OakIntroPokemonChoice cutscene routines.
      */
     @component(OakIntroPokemonChoiceCutscene)
     public readonly oakIntroPokemonChoice: OakIntroPokemonChoiceCutscene<TGameStartr>;
 
     /**
-     * OakIntroRivalBattle cutscene functions used by this FullScreenPokemon instance.
+     * OakIntroRivalBattle cutscene routines.
      */
     @component(OakIntroRivalBattleCutscene)
     public readonly oakIntroRivalBattle: OakIntroRivalBattleCutscene<TGameStartr>;
 
     /**
-     * OakIntroRivalLeaves cutscene functions used by this FullScreenPokemon instance.
+     * OakIntroRivalLeaves cutscene routines.
      */
     @component(OakIntroRivalLeavesCutscene)
     public readonly oakIntroRivalLeaves: OakIntroRivalLeavesCutscene<TGameStartr>;
 
     /**
-     * OakParcelDelivery cutscene functions used by this FullScreenPokemon instance.
+     * OakParcelDelivery cutscene routines.
      */
     @component(OakParcelDeliveryCutscene)
     public readonly oakParcelDelivery: OakParcelDeliveryCutscene<TGameStartr>;
 
     /**
-     * OakParcelPickup cutscene functions used by this FullScreenPokemon instance.
+     * OakParcelPickup cutscene routines.
      */
     @component(OakParcelPickupCutscene)
     public readonly oakParcelPickup: OakParcelPickupCutscene<TGameStartr>;
 
     /**
-     * PokeCenter cutscene functions used by this FullScreenPokemon instance.
+     * PokeCenter cutscene routines.
      */
     @component(PokeCenterCutscene)
     public readonly pokeCenter: PokeCenterCutscene<TGameStartr>;
 
     /**
-     * PokeMart cutscene functions used by this FullScreenPokemon instance.
+     * PokeMart cutscene routines.
      */
     @component(PokeMartCutscene)
     public readonly pokeMart: PokeMartCutscene<TGameStartr>;
 
     /**
-     * RivalRoute22 cutscene functions used by this FullScreenPokemon instance.
+     * RivalRoute22 cutscene routines.
      */
     @component(RivalRoute22Cutscene)
     public readonly rivalRoute22: RivalRoute22Cutscene<TGameStartr>;
 
     /**
-     * RivalRoute22Leaves cutscene functions used by this FullScreenPokemon instance.
+     * RivalRoute22Leaves cutscene routines.
      */
     @component(RivalRoute22LeavesCutscene)
     public readonly rivalRoute22Leaves: RivalRoute22LeavesCutscene<TGameStartr>;
 
     /**
-     * TrainerSpotted cutscene functions used by this FullScreenPokemon instance.
+     * TrainerSpotted cutscene routines.
      */
     @component(TrainerSpottedCutscene)
     public readonly trainerSpotted: TrainerSpottedCutscene<TGameStartr>;

@@ -290,16 +290,11 @@ export interface IAreaWildPokemonOptionGroups {
 /**
  * A description of a type of Pokemon that may appear in an Area.
  */
-export interface IWildPokemonSchema {
+export interface IWildPokemonSchemaBase {
     /**
      * The type of Pokemon.
      */
     title: string[];
-
-    /**
-     * What level the Pokemon may be, if only one.
-     */
-    level?: number;
 
     /**
      * What levels the Pokemon may be, if multiple.
@@ -316,6 +311,31 @@ export interface IWildPokemonSchema {
      */
     rate?: number;
 }
+
+/**
+ * A wild Pokemon description with only one possible level.
+ */
+export interface IWildPokemonSchemaWithLevel extends IWildPokemonSchemaBase {
+    /**
+     * What level the Pokemon may be.
+     */
+    level: number;
+}
+
+/**
+ * A wild Pokemon description with multiple possible levels.
+ */
+export interface IWildPokemonSchemaWithLevels extends IWildPokemonSchemaBase {
+    /**
+     * What levels the Pokemon may be.
+     */
+    levels: number[];
+}
+
+export type IWildPokemonSchema = (
+    | IWildPokemonSchemaWithLevel
+    | IWildPokemonSchemaWithLevels
+);
 
 /**
  * A raw JSON-friendly description of a location.
@@ -458,7 +478,7 @@ export interface IPreThing extends IMapsCreatrPreThing {
 }
 
 /**
- * Map functions used by FullScreenPokemon instances.
+ * Enters and spawns map areas.
  */
 export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<TGameStartr> {
     /**

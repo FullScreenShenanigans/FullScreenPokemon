@@ -12,7 +12,7 @@ import { Switching } from "./effects/Switching";
 import { Fainting } from "./Fainting";
 
 /**
- * Action effect animations used by FullScreenPokemon instances.
+ * Battle animations for move effects.
  */
 export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

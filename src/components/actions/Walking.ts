@@ -32,7 +32,7 @@ export type IWalkingInstructionGenerator = (thing: ICharacter) => IWalkingInstru
 export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGenerator)[];
 
 /**
- * Walking functions used by FullScreenPokemon instances.
+ * Starts, continues, and stops characters walking.
  */
 export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**

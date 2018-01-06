@@ -6,7 +6,7 @@ import { IBattleInfo } from "../Battles";
 import { IThing } from "../Things";
 
 /**
- * Thing visual handlers used by FullScreenPokemon instances.
+ * Sets Things visually representing each team.
  */
 export class Things<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
