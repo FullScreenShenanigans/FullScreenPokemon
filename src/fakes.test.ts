@@ -2,6 +2,7 @@ import { AudioElementSound } from "audioplayr";
 import { IGameStartrConstructorSettings } from "gamestartr";
 import * as sinon from "sinon";
 
+import { IPlayer } from "./components/Things";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
 /**
@@ -45,5 +46,9 @@ export const stubBlankGame = (settings?: IGameStartrConstructorSettings) => {
     fsp.maps.setMap("Blank");
     fsp.maps.addPlayer(0, 0);
 
-    return { fsp, ...options };
+    const player: IPlayer = fsp.players[0];
+
+    return { fsp, player, ...options };
 };
+
+export const stubGameForMapsTest = () => stubFullScreenPokemon().fsp;
