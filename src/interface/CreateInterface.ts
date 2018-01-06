@@ -8,6 +8,6 @@ import { InterfaceSettingsFactory } from "./InterfaceSettings";
  * @param container   HTML element to create within.
  * @returns A Promise for creating the game interface.
  */
-export const createFspInterface = (container: HTMLElement): Promise<void> =>
+export const createFspInterface = async (container: HTMLElement): Promise<void> =>
     new UserWrappr(new InterfaceSettingsFactory().createUserWrapprSettings())
         .createDisplay(container);
