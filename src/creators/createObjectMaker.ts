@@ -739,10 +739,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             },
             Area: {
                 background: "black",
-                // "stretches": [
-                //     { "thing": "BackgroundFaker", "noBoundaryStretch": true } // This needs implementation.
-                // ],
-                onMake: fsp.maps.areaProcess.bind(fsp.maps),
+                onMake: fsp.maps.areaProcess,
                 attributes: {
                     invisibleWallBorders: {
                         afters: [
@@ -790,8 +787,8 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
                 direction: 2,
                 offsetY: -8,
                 roamingDirections: [0, 1, 2, 3],
-                onThingAdd: fsp.actions.spawnCharacter.bind(fsp.actions),
-                activate: fsp.collisions.collideCharacterDialog.bind(fsp.collisions),
+                onThingAdd: fsp.actions.spawnCharacter,
+                activate: fsp.collisions.collideCharacterDialog,
             },
             Buzzer: {
                 width: 14,
@@ -813,19 +810,18 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
                 player: true,
                 canKeyWalking: true,
                 direction: 2,
-                getKeys: () =>
-                    ({
-                        0: false,
-                        1: false,
-                        2: false,
-                        3: false,
-                        a: false,
-                        b: false,
-                    }),
+                getKeys: () => ({
+                    0: false,
+                    1: false,
+                    2: false,
+                    3: false,
+                    a: false,
+                    b: false,
+                }),
             },
             Pokeball: {
                 action: "item",
-                activate: fsp.collisions.collidePokeball.bind(fsp.collisions),
+                activate: fsp.collisions.collidePokeball,
                 borderPrimary: true,
             },
             Rival: {
@@ -834,7 +830,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             Solid: {
                 repeat: true,
                 groupType: "Solid",
-                activate: fsp.collisions.collideCharacterDialog.bind(fsp.collisions),
+                activate: fsp.collisions.collideCharacterDialog,
             },
             BedSingle: [32, 64],
             Bookshelf: {
@@ -857,34 +853,34 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             },
             Cabinet: [32, 64],
             CollisionDetector: {
-                collide: fsp.collisions.collideCollisionDetector.bind(fsp.collisions),
+                collide: fsp.collisions.collideCollisionDetector,
                 active: false,
                 hidden: true,
             },
             AreaGate: {
-                activate: fsp.actions.activateAreaGate.bind(fsp.actions),
+                activate: fsp.actions.activateAreaGate,
                 active: true,
                 requireOverlap: true,
             },
             CutsceneTriggerer: {
-                activate: fsp.actions.activateCutsceneTriggerer.bind(fsp.actions),
+                activate: fsp.actions.activateCutsceneTriggerer,
                 requireOverlap: true,
             },
             MenuTriggerer: {
-                activate: fsp.actions.activateMenuTriggerer.bind(fsp.actions),
+                activate: fsp.actions.activateMenuTriggerer,
             },
             SightDetector: {
-                activate: fsp.actions.activateSightDetector.bind(fsp.actions),
+                activate: fsp.actions.activateSightDetector,
                 requireOverlap: true,
                 hidden: true,
             },
             ThemePlayer: {
-                activate: fsp.actions.activateThemePlayer.bind(fsp.actions),
+                activate: fsp.actions.activateThemePlayer,
                 requireOverlap: true,
                 hidden: true,
             },
             Transporter: {
-                activate: fsp.actions.activateTransporter.bind(fsp.actions),
+                activate: fsp.actions.activateTransporter,
                 requireOverlap: true,
                 hidden: false,
             },
@@ -903,7 +899,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
                 hidden: true,
             },
             CutsceneResponder: {
-                activate: fsp.actions.activateCutsceneResponder.bind(fsp.actions),
+                activate: fsp.actions.activateCutsceneResponder,
             },
             FenceVertical: [16, 32],
             FloorDiamondsDark: {
@@ -915,25 +911,25 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             },
             Grass: {
                 rarity: 40,
-                collide: fsp.collisions.collideCharacterGrass.bind(fsp.collisions),
+                collide: fsp.collisions.collideCharacterGrass,
             },
             GymStatue: {
                 height: 64,
-                activate: fsp.actions.activateGymStatue.bind(fsp.actions),
+                activate: fsp.actions.activateGymStatue,
             },
             HealingMachine: [64, 64],
             HealingMachineBall: [12, 12],
             HMCharacter: {
-                activate: fsp.actions.activateHMCharacter.bind(fsp.actions),
+                activate: fsp.actions.activateHMCharacter,
             },
             CuttableTree: {
                 moveName: "Cut",
-                moveCallback: fsp.actions.partyActivateCut.bind(fsp.actions),
+                moveCallback: fsp.actions.partyActivateCut,
                 requiredBadge: "Cascade",
             },
             StrengthBoulder: {
                 moveName: "Strength",
-                moveCallback: fsp.actions.partyActivateStrength.bind(fsp.actions),
+                moveCallback: fsp.actions.partyActivateStrength,
                 speed: 4,
                 requiredBadge: "Rainbow",
             },
@@ -995,7 +991,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
                 height: 16,
                 spritewidth: 16,
                 direction: 2,
-                collide: fsp.collisions.collideLedge.bind(fsp.collisions),
+                collide: fsp.collisions.collideLedge,
                 attributes: {
                     jagged: {
                         spritewidth: 64,
@@ -1032,10 +1028,10 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             SofaLeft: [32, 64],
             Spawner: {
                 hidden: true,
-                onThingAdd: fsp.actions.activateSpawner.bind(fsp.actions),
+                onThingAdd: fsp.actions.activateSpawner,
             },
             AreaSpawner: {
-                activate: fsp.actions.spawnAreaSpawner.bind(fsp.actions),
+                activate: fsp.actions.spawnAreaSpawner,
             },
             SquareWallTop: {
                 spriteheight: 2,
@@ -1065,10 +1061,10 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             WaterEdge: {
                 height: 16,
                 width: 16,
-                collide: fsp.collisions.collideWaterEdge.bind(fsp.collisions),
-                activate: fsp.actions.activateHMCharacter.bind(fsp.actions),
+                collide: fsp.collisions.collideWaterEdge,
+                activate: fsp.actions.activateHMCharacter,
                 moveName: "Surf",
-                moveCallback: fsp.actions.partyActivateSurf.bind(fsp.actions),
+                moveCallback: fsp.actions.partyActivateSurf,
                 requiredBadge: "Soul",
             },
             WaterEdgeTop: {
@@ -1085,7 +1081,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             },
             WindowDetector: {
                 hidden: true,
-                onThingAdd: fsp.actions.spawnWindowDetector.bind(fsp.actions),
+                onThingAdd: fsp.actions.spawnWindowDetector,
             },
             FloorLinedHorizontal: {
                 spritewidth: 2,

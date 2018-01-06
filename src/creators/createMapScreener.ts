@@ -6,8 +6,8 @@ export const createMapScreener = (fsp: FullScreenPokemon): MapScreenr =>
     new MapScreenr({
         height: fsp.settings.height,
         variableFunctions: {
-            boundaries: fsp.scrolling.getAreaBoundariesReal.bind(fsp.scrolling),
-            scrollability: fsp.scrolling.getScreenScrollability.bind(fsp.scrolling),
+            boundaries: fsp.scrolling.getAreaBoundariesReal,
+            scrollability: fsp.scrolling.getScreenScrollability,
         },
         width: fsp.settings.width,
     });

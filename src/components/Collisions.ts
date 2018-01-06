@@ -170,7 +170,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param other   A Detector triggered by thing.
      * @returns Whether to override normal positioning logic in hitCharacterThing.
      */
-    public collideCollisionDetector(thing: IPlayer, other: IDetector): boolean {
+    public collideCollisionDetector = (thing: IPlayer, other: IDetector): boolean => {
         if (!thing.player) {
             return false;
         }
@@ -216,7 +216,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param thing   A Player triggering other.
      * @param other   A Character with dialog triggered by thing.
      */
-    public collideCharacterDialog(thing: IPlayer, other: ICharacter): void {
+    public collideCharacterDialog = (thing: IPlayer, other: ICharacter): void => {
         let dialog: IMenuDialogRaw | IMenuDialogRaw[] | undefined = other.dialog;
         let direction: Direction | undefined;
 
@@ -266,7 +266,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param thing   A Player interacting with other.
      * @param other   A Pokeball being interacted with by thing.
      */
-    public collidePokeball(thing: IPlayer, other: IPokeball): void {
+    public collidePokeball = (thing: IPlayer, other: IPokeball): void => {
         switch (other.action) {
             case "item":
                 if (!other.item) {
@@ -354,7 +354,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param other   The specific Grass that thing is within.
      * @returns true, to allow for passing through.
      */
-    public collideCharacterGrass(thing: ICharacter, other: IGrass): true {
+    public collideCharacterGrass = (thing: ICharacter, other: IGrass): true => {
         if (thing.grass || !this.gameStarter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
@@ -371,7 +371,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param thing   A Character walking to other.
      * @param other   A Ledge walked to by thing.
      */
-    public collideLedge(thing: ICharacter, other: IThing): boolean {
+    public collideLedge = (thing: ICharacter, other: IThing): boolean => {
         if (thing.ledge || !thing.walking) {
             return true;
         }
@@ -403,7 +403,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param other   A Ledge walked to by thing.
      * @returns Whether the Character was able animate onto land.
      */
-    public collideWaterEdge(thing: ICharacter, other: IThing): boolean {
+    public collideWaterEdge = (thing: ICharacter, other: IThing): boolean => {
         const edge: IWaterEdge = other as IWaterEdge;
 
         if (!thing.surfing || edge.exitDirection !== thing.direction) {

@@ -16,8 +16,8 @@ export const createThingHitter = (fsp: FullScreenPokemon): ThingHittr =>
         },
         hitCallbackGenerators: {
             Character: {
-                Solid: fsp.collisions.generateHitCharacterThing.bind(fsp.collisions),
-                Character: fsp.collisions.generateHitCharacterThing.bind(fsp.collisions),
+                Solid: fsp.collisions.generateHitCharacterThing,
+                Character: fsp.collisions.generateHitCharacterThing,
             },
         },
     });

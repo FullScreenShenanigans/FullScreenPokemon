@@ -64,7 +64,7 @@ export class Constants<TGameStartr extends FullScreenPokemon> extends GeneralCom
     public readonly blockSize: number = 32;
 
     /**
-     * Universl battle constants.
+     * Universal battle constants.
      */
     @component(Battles)
     public readonly battles: Battles;

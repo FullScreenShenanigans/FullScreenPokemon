@@ -4,7 +4,7 @@ import { Modifications } from "./battles/Modifications";
 import { Texts } from "./battles/Texts";
 
 /**
- * Universl battle constants.
+ * Universal battle constants.
  */
 export class Battles {
     /**

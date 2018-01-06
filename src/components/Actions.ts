@@ -84,7 +84,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   A newly placed Character.
      */
-    public spawnCharacter(thing: ICharacter): void {
+    public spawnCharacter = (thing: ICharacter): void => {
         if (thing.sight) {
             thing.sightDetector = this.gameStarter.things.add(
                 [
@@ -111,7 +111,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   A newly placed WindowDetector.
      */
-    public spawnWindowDetector(thing: IDetector): void {
+    public spawnWindowDetector = (thing: IDetector): void => {
         if (!this.checkWindowDetector(thing)) {
             this.gameStarter.timeHandler.addEventInterval(
                 (): boolean => this.checkWindowDetector(thing),
@@ -696,7 +696,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Player triggering other.
      * @param other   A Detector triggered by thing.
      */
-    public activateCutsceneTriggerer(thing: IPlayer, other: IDetector): void {
+    public activateCutsceneTriggerer = (thing: IPlayer, other: IDetector): void => {
         if (!other.alive || thing.collidedTrigger === other) {
             return;
         }
@@ -733,7 +733,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Player triggering other.
      * @param other   A Detector triggered by thing.
      */
-    public async activateThemePlayer(thing: IPlayer, other: IThemeDetector): Promise<void> {
+    public activateThemePlayer = async (thing: IPlayer, other: IThemeDetector): Promise<void> => {
         if (!thing.player || this.gameStarter.audioPlayer.hasSound(this.gameStarter.audio.aliases.theme, other.theme)) {
             return;
         }
@@ -772,7 +772,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Character triggering other.
      * @param other   A Detector triggered by thing.
      */
-    public activateMenuTriggerer(thing: ICharacter, other: IMenuTriggerer): void {
+    public activateMenuTriggerer = (thing: ICharacter, other: IMenuTriggerer): void => {
         if (!other.alive || thing.collidedTrigger === other) {
             return;
         }
@@ -830,7 +830,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Character triggering other.
      * @param other   A sight detector being triggered by thing.
      */
-    public activateSightDetector(thing: ICharacter, other: ISightDetector): void {
+    public activateSightDetector = (thing: ICharacter, other: ISightDetector): void => {
         if (other.viewer.talking) {
             return;
         }
@@ -855,7 +855,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Character attempting to enter other.
      * @param other   A transporter being entered by thing.
      */
-    public activateTransporter(thing: ICharacter, other: ITransporter): void {
+    public activateTransporter = (thing: ICharacter, other: ITransporter): void => {
         if (!thing.player || !other.active) {
             return;
         }
@@ -898,7 +898,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Player activating other.
      * @param other   A gym statue being activated by thing.
      */
-    public activateGymStatue(thing: ICharacter, other: IGymDetector): void {
+    public activateGymStatue = (thing: ICharacter, other: IGymDetector): void => {
         if (thing.direction !== 0) {
             return;
         }
@@ -925,7 +925,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param player   The Player.
      * @param thing   The Solid to be affected.
      */
-    public activateHMCharacter(player: IPlayer, thing: IHMCharacter): void {
+    public activateHMCharacter = (player: IPlayer, thing: IHMCharacter): void => {
         if (thing.requiredBadge && !this.gameStarter.itemsHolder.getItem("badges")[thing.requiredBadge]) {
             return;
         }
@@ -945,7 +945,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   A newly placed Spawner.
      */
-    public activateSpawner(thing: IDetector): void {
+    public activateSpawner = (thing: IDetector): void => {
         if (!thing.activate) {
             throw new Error("Spawner should have .activate.");
         }
@@ -980,9 +980,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * Activates an IAreaSpawner. If it's for a different Area than the current,
      * that area is spawned in the appropriate direction.
      *
-     * @param thing   An areaSpawner to activate.
+     * @param thing   An IAreaSpawner to activate.
      */
-    public spawnAreaSpawner(thing: IAreaSpawner): void {
+    public spawnAreaSpawner = (thing: IAreaSpawner): void => {
         const map: IMap = this.gameStarter.areaSpawner.getMap(thing.map) as IMap;
         const area: IArea = map.areas[thing.area];
 
@@ -1011,7 +1011,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A Character walking to other.
      * @param other   An AreaGate potentially being triggered.
      */
-    public activateAreaGate(thing: ICharacter, other: IAreaGate): void {
+    public activateAreaGate = (thing: ICharacter, other: IAreaGate): void => {
         if (!thing.player || !thing.walking || thing.direction !== other.direction) {
             return;
         }
@@ -1090,7 +1090,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param player   The Player.
      * @todo Add an animation for what happens when the CuttableTree is cut.
      */
-    public partyActivateCut(player: IPlayer): void {
+    public partyActivateCut = (player: IPlayer): void => {
         this.gameStarter.menuGrapher.deleteAllMenus();
         this.gameStarter.menus.closePauseMenu();
         this.gameStarter.physics.killNormal(player.bordering[player.direction]!);
@@ -1102,7 +1102,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param player   The Player.
      * @todo Verify the exact speed, sound, and distance.
      */
-    public partyActivateStrength(player: IPlayer): void {
+    public partyActivateStrength = (player: IPlayer): void => {
         const boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
 
         this.gameStarter.menuGrapher.deleteAllMenus();
@@ -1153,7 +1153,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param player   The Player.
      * @todo Add the dialogue for when the Player starts surfing.
      */
-    public partyActivateSurf(player: IPlayer): void {
+    public partyActivateSurf = (player: IPlayer): void => {
         this.gameStarter.menuGrapher.deleteAllMenus();
         this.gameStarter.menus.closePauseMenu();
 

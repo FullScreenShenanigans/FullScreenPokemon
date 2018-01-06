@@ -500,7 +500,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      *
      * @param area The Area being processed.
      */
-    public areaProcess(area: IArea): void {
+    public areaProcess = (area: IArea): void => {
         const attributes: { [i: string]: any } | undefined = area.attributes;
         if (!attributes) {
             return;
