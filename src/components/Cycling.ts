@@ -12,7 +12,7 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   A Player to start cycling.
      * @param area   The current Area.
-     * @returns Whether the properties were changed.
+     * @returns Whether the player started cycling.
      */
     public startCycling(thing: IPlayer): boolean {
         if (thing.surfing) {
@@ -28,8 +28,8 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         thing.speed = thing.speed * 2;
 
         this.gameStarter.graphics.addClass(thing, "cycling");
-
         this.gameStarter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+
         return true;
     }
 
@@ -40,9 +40,9 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
-        this.gameStarter.saves.popStateHistory(thing, "speed");
 
         this.gameStarter.graphics.removeClass(thing, "cycling");
+        this.gameStarter.saves.popStateHistory(thing, "speed");
         this.gameStarter.timeHandler.cancelClassCycle(thing, "cycling");
 
         this.gameStarter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got off the bicycle.");
@@ -52,14 +52,12 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * Toggles the Player's cycling status.
      *
      * @param thing   A Player to start or stop cycling.
-     * @returns Whether the Player started cycling.
      */
-    public toggleCycling(thing: IPlayer): boolean {
+    public toggleCycling(thing: IPlayer): void {
         if (thing.cycling) {
             this.stopCycling(thing);
-            return true;
+        } else {
+            this.startCycling(thing);
         }
-
-        return this.startCycling(thing);
     }
 }
