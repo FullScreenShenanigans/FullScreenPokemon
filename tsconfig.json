@@ -2,6 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
         "jsx": "react",
         "lib": ["dom", "es2015.collection", "es2015.promise", "es5"],
         "module": "amd",
