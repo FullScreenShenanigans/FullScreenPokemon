@@ -1,4 +1,5 @@
-import { Component } from "eightbittr";
+import { component } from "babyioc";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings } from "../../Battles";
@@ -6,13 +7,14 @@ import { PokedexListingStatus } from "../../Constants";
 import { Transitions } from "./Transitions";
 
 /**
- * Battle start animations used by FullScreenPokemon instances.
+ * Animations for the starts of battles.
  */
-export class Starting<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Transition animations used by the FullScreenPokemon instance.
+     * Flashy animation transitions to start battles.
      */
-    public readonly transitions: Transitions<TGameStartr> = new Transitions(this.gameStarter);
+    @component(Transitions)
+    public readonly transitions: Transitions<TGameStartr>;
 
     /**
      * Runs starting battle animations.
@@ -78,13 +80,13 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends Component<T
         playerGoal = menu.left + player.width / 2;
         opponentGoal = menu.right - opponent.width / 2;
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
             1);
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,

@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { Maps as GameStartrMaps } from "gamestartr";
 import {
     IArea as IMapsCreatrIArea,
@@ -13,6 +14,8 @@ import { IMapScreenr } from "mapscreenr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
+import { Entrances } from "./maps/Entrances";
+import { Macros } from "./maps/Macros";
 import { IStateSaveable } from "./Saves";
 import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
 
@@ -287,21 +290,11 @@ export interface IAreaWildPokemonOptionGroups {
 /**
  * A description of a type of Pokemon that may appear in an Area.
  */
-export interface IWildPokemonSchema {
+export interface IWildPokemonSchemaBase {
     /**
      * The type of Pokemon.
      */
     title: string[];
-
-    /**
-     * What level the Pokemon may be, if only one.
-     */
-    level?: number;
-
-    /**
-     * What levels the Pokemon may be, if multiple.
-     */
-    levels?: number[];
 
     /**
      * Concatenated names of moves the Pokemon should have.
@@ -313,6 +306,31 @@ export interface IWildPokemonSchema {
      */
     rate?: number;
 }
+
+/**
+ * A wild Pokemon description with only one possible level.
+ */
+export interface IWildPokemonSchemaWithLevel extends IWildPokemonSchemaBase {
+    /**
+     * What level the Pokemon may be.
+     */
+    level: number;
+}
+
+/**
+ * A wild Pokemon description with multiple possible levels.
+ */
+export interface IWildPokemonSchemaWithLevels extends IWildPokemonSchemaBase {
+    /**
+     * What levels the Pokemon may be.
+     */
+    levels: number[];
+}
+
+export type IWildPokemonSchema = (
+    | IWildPokemonSchemaWithLevel
+    | IWildPokemonSchemaWithLevels
+);
 
 /**
  * A raw JSON-friendly description of a location.
@@ -455,9 +473,21 @@ export interface IPreThing extends IMapsCreatrPreThing {
 }
 
 /**
- * Map functions used by FullScreenPokemon instances.
+ * Enters and spawns map areas.
  */
 export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<TGameStartr> {
+    /**
+     * Map entrance animations.
+     */
+    @component(Entrances)
+    public readonly entrances: Entrances<TGameStartr>;
+
+    /**
+     * Map creation macros.
+     */
+    @component(Macros)
+    public readonly macros: Macros<TGameStartr>;
+
     /**
      * Processes additional Thing attributes. For each attribute the Area's
      * class says it may have, if it has it, the attribute value proliferated
@@ -465,7 +495,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      *
      * @param area The Area being processed.
      */
-    public areaProcess(area: IArea): void {
+    public areaProcess = (area: IArea): void => {
         const attributes: { [i: string]: any } | undefined = area.attributes;
         if (!attributes) {
             return;
@@ -484,7 +514,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      *
      * @param prething   A PreThing whose Thing is to be added to the game.
      */
-    public addPreThing(prething: IPreThing): void {
+    public addPreThing = (prething: IPreThing): void => {
         const thing: IThing = prething.thing;
         const position: string = prething.position || thing.position;
 
@@ -539,7 +569,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         const player: IPlayer = this.gameStarter.objectMaker.make<IPlayer>(this.gameStarter.things.names.player);
         player.keys = player.getKeys();
 
-        this.gameStarter.players = [player];
+        this.gameStarter.players[0] = player;
         this.gameStarter.things.add(player, left || 0, top || 0, useSavedInfo);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onAddPlayer, player);
 
@@ -571,7 +601,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         return this.gameStarter.maps.setLocation(
             location
             || map.locationDefault
-            || this.gameStarter.moduleSettings.maps.locationDefault,
+            || "Blank",
             noEntrance);
     }
 
@@ -587,7 +617,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      *       pass them as an onPreSetLocation/onSetLocation here to reduce dependencies.
      */
     public setLocation(name: string, noEntrance?: boolean): ILocation {
-        this.gameStarter.groupHolder.clearArrays();
+        this.gameStarter.groupHolder.clear();
         this.gameStarter.mapScreener.clearScreen();
         this.gameStarter.menuGrapher.deleteAllMenus();
         this.gameStarter.timeHandler.cancelAllEvents();
@@ -644,7 +674,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
                         blocks: 1,
                         direction: this.gameStarter.players[0].direction,
                     },
-                    (): void => this.gameStarter.saves.autoSave(),
+                    (): void => this.gameStarter.saves.autoSaveIfEnabled(),
                 ]);
         }
 
@@ -660,7 +690,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
      * @param direction   The cardinal direction the Character is facing.
      * @remarks Direction is taken in by the .forEach call as the index.
      */
-    public addAfter(prething: IPreThing, direction: Direction): void {
+    public addAfter = (prething: IPreThing, direction: Direction): void => {
         const prethings: any = this.gameStarter.areaSpawner.getPreThings();
         const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
         const map: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
@@ -697,52 +727,6 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         }
 
         this.gameStarter.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
-    }
-
-    /**
-     * A blank Map entrance Function where no Character is placed.
-     */
-    public entranceBlank(): void {
-        this.addPlayer(0, 0);
-
-        this.gameStarter.players[0].hidden = true;
-    }
-
-    /**
-     * Standard Map entrance Function. Character is placed based on specified Location.
-     *
-     * @param location   The name of the Location within the Map.
-     */
-    public entranceNormal(location: ILocation): void {
-        this.addPlayer(location.xloc || 0, location.yloc || 0);
-
-        this.gameStarter.actions.animateCharacterSetDirection(
-            this.gameStarter.players[0],
-            location.direction || Direction.Top);
-
-        this.gameStarter.scrolling.centerMapScreen();
-
-        if (location.cutscene) {
-            this.gameStarter.scenePlayer.startCutscene(location.cutscene, {
-                player: this.gameStarter.players[0],
-            });
-        }
-
-        if (location.routine && this.gameStarter.scenePlayer.getCutsceneName()) {
-            this.gameStarter.scenePlayer.playRoutine(location.routine);
-        }
-    }
-
-    /**
-     * Map entrace Function used when player is added to the Map at the beginning
-     * of play. Retrieves Character position from the previous save state.
-     */
-    public entranceResume(): void {
-        const savedInfo: any = this.gameStarter.stateHolder.getChanges("player") || {};
-
-        this.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
-        this.gameStarter.actions.animateCharacterSetDirection(this.gameStarter.players[0], savedInfo.direction || Direction.Top);
-        this.gameStarter.scrolling.centerMapScreen();
     }
 
     /**

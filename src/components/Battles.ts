@@ -1,7 +1,8 @@
+import { component } from "babyioc";
 import {
     IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
 } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ActionsOrderer } from "./battles/ActionsOrderer";
@@ -268,33 +269,38 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
 };
 
 /**
- * Battle functions used by FullScreenPokemon instances.
+ * BattleMovr hooks to run trainer battles.
  */
-export class Battles<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
-     * Actions orderer used by this FullScreenPokemon instance.
+     * Orders chosen actions by priority and/or speed.
      */
-    public readonly actionsOrderer: ActionsOrderer<TGameStartr> = new ActionsOrderer(this.gameStarter);
+    @component(ActionsOrderer)
+    public readonly actionsOrderer: ActionsOrderer<TGameStartr>;
 
     /**
-     * Battle animations used by this FullScreenPokemon instance.
+     * Animations for battle events.
      */
-    public readonly animations: Animations<TGameStartr> = new Animations(this.gameStarter);
+    @component(Animations)
+    public readonly animations: Animations<TGameStartr>;
 
     /**
-     * Decoration handlers used by this FullScreenPokemon instance.
+     * Places decorative in-battle Things.
      */
-    public readonly decorations: Decorations<TGameStartr> = new Decorations(this.gameStarter);
+    @component(Decorations)
+    public readonly decorations: Decorations<TGameStartr>;
 
     /**
-     * Battle action selectors used by this FullScreenPokemon instance.
+     * Selects actions for each team.
      */
-    public readonly selectors: Selectors<TGameStartr> = new Selectors(this.gameStarter);
+    @component(Selectors)
+    public readonly selectors: Selectors<TGameStartr>;
 
     /**
-     * Thing visual handlers used by this FullScreenPokemon instance.
+     * Sets Things visually representing each team.
      */
-    public readonly things: Things<TGameStartr> = new Things(this.gameStarter);
+    @component(Things)
+    public readonly things: Things<TGameStartr>;
 
     /**
      * Starts a new battle.

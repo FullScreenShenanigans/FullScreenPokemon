@@ -7,7 +7,7 @@ const getEntriesAndSources = () => {
     return package.shenanigans.entries === undefined
         ? [
             {
-                entry: `./src/${package.shenanigans.name}.js`,
+                entry: `./src/index.js`,
                 name: package.shenanigans.name,
                 sources: [
                     "./**/*.js",
@@ -41,9 +41,8 @@ for (const pair of entriesAndSources) {
     entry[pair.name] = pair.entry;
 }
 
-// multiple entries?
 module.exports = {
-    entry, // IDictionary<string>
+    entry,
     externals,
     output: {
         filename: "[name].js",

@@ -8,7 +8,7 @@ describe("Equations", () => {
     describe("levelup", () => {
         it("evolves a Pokemon at exactly its level requirement", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const pokemonTitle: string[] = "CHARMANDER".split("");
             const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
             const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 1;
@@ -26,7 +26,7 @@ describe("Equations", () => {
 
         it("evolves a Pokemon that exceeds its level requirement", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const pokemonTitle: string[] = "CHARMANDER".split("");
             const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
             const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level + 1;
@@ -44,7 +44,7 @@ describe("Equations", () => {
 
         it("does not evolve a Pokemon that has not yet reached its level requirement", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const pokemonTitle: string[] = "CHARMANDER".split("");
             const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
             const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 2;
@@ -66,7 +66,7 @@ describe("Equations", () => {
 
         it("gives a new Pokemon a provided item", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const chosenItem = "Potion".split("");
 
             // Act

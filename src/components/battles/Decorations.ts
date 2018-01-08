@@ -1,5 +1,6 @@
+import { component } from "babyioc";
 import { IBattleTeam } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings } from "../Battles";
@@ -10,7 +11,7 @@ import { Health } from "./decorations/Health";
 /**
  * Decoration handlers used by FullScreenPokemon instances.
  */
-export class Decorations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Id for the background Thing.
      */
@@ -19,7 +20,8 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
     /**
      * Decorations for health displays.
      */
-    public readonly health: Health<TGameStartr> = new Health(this.gameStarter);
+    @component(Health)
+    public readonly health: Health<TGameStartr>;
 
     /**
      * Creates the initial Things displayed in a battle.
@@ -93,7 +95,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
     public addThingAsText(title: string, attributes: any): IThing {
         const thing: IThing = this.gameStarter.things.add([title, attributes]);
 
-        this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, "Text");
+        this.gameStarter.groupHolder.switchGroup(thing, thing.groupType, "Text");
 
         return thing;
     }
@@ -105,7 +107,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends Componen
      */
     public moveToBeforeBackground(thing: IThing): void {
         const texts: IThing[] = this.gameStarter.groupHolder.getGroup("Text") as IThing[];
-        const background: IThing = this.gameStarter.utilities.getThingById(Decorations.backgroundId);
+        const background: IThing = this.gameStarter.utilities.getExistingThingById(Decorations.backgroundId);
         const backgroundIndex: number = texts.indexOf(background);
 
         this.gameStarter.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);

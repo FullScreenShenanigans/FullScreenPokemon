@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
@@ -6,9 +6,9 @@ import { IItemSchema } from "./constants/Items";
 import { ICharacter, IPlayer } from "./Things";
 
 /**
- * Input functions used by FullScreenPokemon instances.
+ * Routes user input.
  */
-export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Quickly tapping direction keys means to look in a direction, not walk.
      */
@@ -237,7 +237,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param event   The original user-caused Event.
      */
     public keyDownPause(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.menus.togglePauseMenu();
+        this.gameStarter.menus.pause.toggle();
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownPause);
 
         if (event && event.preventDefault) {
@@ -452,7 +452,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends Component<TGa
      * @param event   The original user-caused Event.
      */
     public mouseDownRight(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.menus.togglePauseMenu();
+        this.gameStarter.menus.pause.toggle();
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onMouseDownRight);
 
         if (event && event.preventDefault) {

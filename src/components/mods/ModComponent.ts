@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -8,7 +8,7 @@ import { EventNames } from "./EventNames";
 /**
  * GameStartr component for a mod.
  */
-export abstract class ModComponent<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IMod {
+export abstract class ModComponent<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -31,7 +31,7 @@ export abstract class ModComponent<TGameStartr extends FullScreenPokemon> extend
      *
      * @param source   GameStartr instance to wrap around, or one of its components.
      */
-    public constructor(source: TGameStartr | Component<TGameStartr>, eventNames: EventNames) {
+    public constructor(source: TGameStartr | GeneralComponent<TGameStartr>, eventNames: EventNames) {
         super(source);
 
         this.eventNames = eventNames;

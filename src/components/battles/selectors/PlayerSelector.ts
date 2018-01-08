@@ -1,5 +1,6 @@
+import { component } from "babyioc";
 import { BattleOutcome, IMove, IOnChoice, ISelector, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
@@ -7,13 +8,14 @@ import { IInventoryListing } from "../../menus/Items";
 import { Switching } from "./player/Switching";
 
 /**
- * Selector for a player's actions used by FullScreenPokemon instances.
+ * Selector for a player's battle actions.
  */
-export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISelector {
+export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
     /**
-     * Switching logic used by this instance.
+     * Menu interface for the player choosing whether to switch Pokemon.
      */
-    private readonly switching: Switching<TGameStartr> = new Switching(this.gameStarter);
+    @component(Switching)
+    private readonly switching: Switching<TGameStartr>;
 
     /**
      * Reacts to an actor getting knocked out.
@@ -121,7 +123,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Compo
      * @param onChoice   Callback for when an action is chosen.
      */
     private openBattleItemsMenu(onChoice: IOnChoice): void {
-        this.gameStarter.menus.items.openItemsMenu({
+        this.gameStarter.menus.items.open({
             backMenu: "BattleOptions",
             container: "Battle",
             disableTossing: true,

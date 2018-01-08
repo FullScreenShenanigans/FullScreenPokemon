@@ -1,13 +1,13 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
 /**
- * Roaming functions used by FullScreenPokemon instances.
+ * Idle characters turning and walking in random directions.
  */
-export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Starts a Character roaming in random directions.
      *
@@ -39,7 +39,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
         }
 
         const direction: Direction | undefined = this.getNextRoamingDirection(thing);
-        if (!direction) {
+        if (direction === undefined) {
             return;
         }
 
@@ -56,7 +56,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param thing   A roaming Character.
      * @returns The next direction it should roam, if any.
      */
-    protected getNextRoamingDirection(thing: ICharacter): Direction | undefined {
+    private getNextRoamingDirection(thing: ICharacter): Direction | undefined {
         let totalAllowed = 0;
         let direction: Direction;
 

@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -6,9 +6,9 @@ import { Direction } from "../Constants";
 import { ICharacter } from "../Things";
 
 /**
- * OakIntroRivalLeaves cutscene functions used by FullScreenPokemon instances.
+ * OakIntroRivalLeaves cutscene routines.
  */
-export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for showing the lab after the battle ends.
      */
@@ -58,8 +58,8 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
      * Cutscene for the rival leaving the lab and Oak giving the player advice.
      */
     public Walking(): void {
-        const oak: ICharacter = this.gameStarter.utilities.getThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.gameStarter.utilities.getThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.gameStarter.utilities.getExistingThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
         const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
         const walkingInstructions: IWalkingInstructions = [
             {

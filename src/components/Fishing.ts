@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -7,9 +7,9 @@ import { IArea, IMap, IWildPokemonSchema } from "./Maps";
 import { IPlayer } from "./Things";
 
 /**
- * Fishing functions used by FullScreenPokemon instances.
+ * Runs the player trying to fish for Pokemon.
  */
-export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Starts the Player fishing.
      *
@@ -60,12 +60,12 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param player   A Player who landed the fish.
      * @param rod   The rod that will be used to fish.
      */
-    public playerLandedFish(player: IPlayer, rod: IRod): void {
+    private playerLandedFish(player: IPlayer, rod: IRod): void {
         const currentMap: IMap = this.gameStarter.areaSpawner.getMap(player.mapName) as IMap;
         const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName];
         const options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type];
         const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
-        const chosenPokemon: IPokemon = this.gameStarter.utilities.createPokemon(chosen);
+        const chosenPokemon: IPokemon = this.gameStarter.equations.createPokemon(chosen);
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {

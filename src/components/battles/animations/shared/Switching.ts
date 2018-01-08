@@ -1,7 +1,9 @@
+import { component } from "babyioc";
 import { ISwitchAction, ISwitchingAnimations, ITeamAndAction, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+import { Shrinking } from "../../../animations/Shrinking";
 import { IBattleInfo } from "../../../Battles";
 import { Enter, IEnterSettings } from "./switching/Enter";
 
@@ -16,9 +18,15 @@ export interface ISwitchingSettings {
 }
 
 /**
- * Player switching animations used by FullScreenPokemon instances.
+ * Shared animations for teams switching Pokemon.
  */
-export class Switching<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISwitchingAnimations {
+export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISwitchingAnimations {
+    /**
+     * Shrinks (and expands) Things.
+     */
+    @component(Shrinking)
+    public readonly shrinking: Shrinking<TGameStartr>;
+
     /**
      * Switching settings for animation positions and sprites.
      */
@@ -30,14 +38,14 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
      * @param gameStarter   FullScreenPokemon instance this is used for.
      * @param settings   Switching settings for animation positions and sprites.
      */
-    public constructor(gameStarter: TGameStartr, settings: ISwitchingSettings) {
+    public constructor(gameStarter: TGameStartr | GeneralComponent<TGameStartr>, settings: ISwitchingSettings) {
         super(gameStarter);
 
         this.settings = settings;
     }
 
     /**
-     * Animation for when the player's actor enters battle.
+     * Animation for when a team's actor enters battle.
      *
      * @param onComplete   Callback for when this is done.
      */
@@ -46,7 +54,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Animation for when the player's actor exits battle.
+     * Animation for when a team's actor exits battle.
      *
      * @param onComplete   Callback for when this is done.
      */
@@ -55,7 +63,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Animation for when the player's actor gets knocked out.
+     * Animation for when a team's actor gets knocked out.
      *
      * @param onComplete   Callback for when this is done.
      */
@@ -64,7 +72,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
     }
 
     /**
-     * Animation for the player switching Pokemon.
+     * Animation for a team switching Pokemon.
      *
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when this is done.
@@ -92,7 +100,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends Component<
                 battleInfo.teams.player,
                 battleInfo.teams.player.selectedActor.title.join("")),
             (): void => {
-                this.gameStarter.actions.shrinking.contractDown(
+                this.shrinking.contractDown(
                     battleInfo.things.player,
                     onComplete);
             });

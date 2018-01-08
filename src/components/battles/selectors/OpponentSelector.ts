@@ -1,5 +1,6 @@
+import { component } from "babyioc";
 import { BattleOutcome, IOnChoice, ISelector, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleTeam, IPokemon } from "../../Battles";
@@ -8,11 +9,12 @@ import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriority
 /**
  * Selector for an opponent's actions.
  */
-export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ISelector {
+export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
     /**
      * Determines priorities of battle move possibilities.
      */
-    private readonly movePriorityGenerator: MovePriorityGenerator<TGameStartr> = new MovePriorityGenerator(this.gameStarter);
+    @component(MovePriorityGenerator)
+    private readonly movePriorityGenerator: MovePriorityGenerator<TGameStartr>;
 
     /**
      * Reacts to an actor getting knocked out.
@@ -27,7 +29,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Com
                 actor.statistics.health.current !== 0)
             [0] as IPokemon | undefined;
 
-        if (newPokemon) {
+        if (newPokemon !== undefined) {
             this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
             this.gameStarter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
         } else {

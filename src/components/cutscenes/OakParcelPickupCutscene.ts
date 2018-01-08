@@ -1,12 +1,12 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
 
 /**
- * OakParcelPickup cutscene functions used by FullScreenPokemon instances.
+ * OakParcelPickup cutscene routines.
  */
-export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for the PokeMart clerk calling the player to pick up Oak's parcel.
      *

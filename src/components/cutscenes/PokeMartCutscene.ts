@@ -1,12 +1,12 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import { IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
- * PokeMart cutscene functions used by FullScreenPokemon instances.
+ * PokeMart cutscene routines.
  */
-export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for speaking to a PokeMart cashier.
      */
@@ -299,7 +299,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Com
 
         this.gameStarter.menuGrapher.setActiveMenu("Buy/Sell");
 
-        this.gameStarter.saves.autoSave();
+        this.gameStarter.saves.autoSaveIfEnabled();
     }
 
     /**

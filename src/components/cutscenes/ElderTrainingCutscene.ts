@@ -1,11 +1,11 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
- * ElderTraining cutscene functions used by FullScreenPokemon instances.
+ * ElderTraining cutscene routines.
  */
-export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for the old man battling a Weedle.
      *

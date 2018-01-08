@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -73,9 +73,9 @@ export interface IRequirementHandlers {
 export type IRequirementHandler = (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>) => boolean;
 
 /**
- * Handles logic related to Pokemon evolution.
+ * Logic for what Pokemon are able to evolve into.
  */
-export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Evolution<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
@@ -157,7 +157,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends Component<
     private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution, modifier?: IEvolutionModifier): boolean {
         for (const requirement of evolution.requirements) {
             if (!this.requirementHandlers[requirement.method]) {
-                throw new Error("Evolution requirement does not have a correct method property");
+                throw new Error("Evolution requirement does not have a correct method property.");
             }
 
             if (!this.requirementHandlers[requirement.method]({ modifier, pokemon, requirement })) {

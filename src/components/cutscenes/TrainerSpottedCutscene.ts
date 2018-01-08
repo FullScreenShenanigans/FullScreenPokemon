@@ -1,13 +1,13 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
 import { ICharacter, IPlayer } from "../Things";
 
 /**
- * TrainerSpotted cutscene functions used by FullScreenPokemon instances.
+ * TrainerSpotted cutscene routines.
  */
-export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for when a trainer is encountered for battle.
      *

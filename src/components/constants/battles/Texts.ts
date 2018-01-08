@@ -1,4 +1,4 @@
-import { IUnderEachTeam } from "battlemovr";
+import { BattleOutcome, IUnderEachTeam } from "battlemovr";
 import { IMenuDialogRaw } from "menugraphr";
 
 import { IBattleTeam } from "../../Battles";
@@ -29,19 +29,54 @@ export interface IFleeTextGenerators {
 export type IMoveTextGenerator = (team: IBattleTeam, pokemon: string, move: string) => IMenuDialogRaw;
 
 /**
+ * Generates text for a Pokemon being retracted.
  *
+ * @param team   Team controlling the Pokemon.
+ * @param pokemon   Name of the Pokemon being retracted.
+ * @returns Text for the Pokemon being retracted.
  */
 export type IRetractTextGenerator = (team: IBattleTeam, pokemon: string) => IMenuDialogRaw;
 
 /**
+ * Generates text for a Pokemon being sent out.
  *
+ * @param team   Team controlling the Pokemon.
+ * @param pokemon   Name of the Pokemon being sent out.
+ * @returns Text for the Pokemon being sent out.
  */
 export type ISendOutTextGenerator = (team: IBattleTeam, pokemon: string) => IMenuDialogRaw;
 
 /**
+ * Generates text for a team winning a battle.
  *
+ * @param victor   Winning team.
+ * @param loser   Losing team.
+ * @returns Text for the victor winning a battle.
  */
 export type IVictoryTextGenerator = (victor: IBattleTeam, loser: IBattleTeam) => IMenuDialogRaw;
+
+/**
+ * Generates text for a battle starting.
+ *
+ * @param team   Team starting a battle.
+ * @returns Text for the team starting a battle.
+ */
+export type ITextStartGenerator = (team: IBattleTeam) => IMenuDialogRaw;
+
+/**
+ * Generates text for a battle concluding.
+ *
+ * @param outcome   Why the battle finished.
+ * @returns Text for the battle concluding.
+ */
+export type IBattleOutcomeTextGenerator = (outcome: BattleOutcome) => IMenuDialogRaw;
+
+/**
+ * Generators for a battle concluding, keyed by outcome descriptor.
+ */
+export interface IBattleOutcomeTextGenerators {
+    [i: number /* BattleOutcome */]: IBattleOutcomeTextGenerator;
+}
 
 /**
  * Texts a team uses in battle.
@@ -62,24 +97,6 @@ export interface ITeamsTexts {
      */
     sendOut: ISendOutTextGenerator;
 }
-
-/**
- *
- */
-export type ITextStartGenerator = (team: IBattleTeam) => IMenuDialogRaw;
-
-/**
- *
- */
-export type IBattleOutcomeTextGenerator = () => IMenuDialogRaw;
-
-/**
- *
- */
-export interface IBattleOutcomeTextGenerators {
-    [i: number /* BattleOutcome */]: IBattleOutcomeTextGenerator;
-}
-
 /**
  * Optional texts to display in battle menus.
  */
@@ -141,7 +158,7 @@ export interface IBattleTextGenerators extends IPartialTextGenerators {
 }
 
 /**
- * Battle text constants used by FullScreenPokemon instances.
+ * Battle text generators.
  */
 export class Texts {
     /**

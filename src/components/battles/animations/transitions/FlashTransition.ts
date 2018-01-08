@@ -3,7 +3,7 @@ import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { Transition } from "./Transition";
 
 /**
- * Flash battle transition animation used by FullScreenPokemon instances.
+ * Flashing battle transition animation.
  */
 export class FlashTransition<TGameStartr extends FullScreenPokemon> extends Transition<TGameStartr> {
     /**

@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -56,34 +56,34 @@ export interface IItemsMenuSettings extends IItemMenuSettings {
     /**
      * Items to display, if not the player's inventory.
      */
-    items?: IItemSchema[];
+    items?: IInventoryListing[];
 }
 
 /**
- * Items menu functions used by FullScreenPokemon instances.
+ * Manipulates item menus.
  */
-export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Items<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Opens the Items menu for the items in the player's inventory.
      *
      * @param settings   Custom attributes to apply to the menu.
      */
-    public openItemsMenu(settings: IItemsMenuSettings = {}): void {
+    public open(settings: IItemsMenuSettings): void {
         const listings: IInventoryListing[] = settings.items || this.gameStarter.itemsHolder.getItem("items").slice();
         const options: any[] = listings.map((listing: IInventoryListing): any =>
             ({
                 text: listing.item,
-                callback: (): void => this.openItemMenu(listing, settings),
+                callback: (): void => this.openItem(listing, settings),
                 textsFloating: [
                     {
                         text: [["Times"]],
-                        x: 32,
-                        y: 4.5,
+                        x: 128,
+                        y: 18,
                     },
                     {
                         text: this.gameStarter.utilities.makeDigit(listing.amount, 2, " "),
-                        x: 36.5,
-                        y: 4,
+                        x: 146,
+                        y: 16,
                     },
                 ],
             }));
@@ -98,17 +98,15 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
         this.gameStarter.menuGrapher.createMenu("Items", settings);
         this.gameStarter.menuGrapher.addMenuList("Items", { options });
         this.gameStarter.menuGrapher.setActiveMenu("Items");
-
-        console.warn("Once item info is better implemented, react to non-stackable items...");
     }
 
     /**
-     * Opens the Item menu for the item the player selected from the inventory.
+     * Opens the Item menu for an item the player selected from the inventory.
      *
      * @param listing   Item listing being displayed.
      * @param settings   Custom attributes to apply to the menu.
      */
-    public openItemMenu(listing: IInventoryListing, settings: IItemMenuSettings): void {
+    public openItem(listing: IInventoryListing, settings: IItemMenuSettings): void {
         const options = [
             {
                 callback: (): void => {
@@ -139,6 +137,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends Component<TGam
                     const chosenPokemon = partyPokemon[0];
                     chosenPokemon.item = listing.item.split("");
                     listing.amount = listing.amount - 1;
+                    console.log("Something visual should happen when an item is given...");
                 },
                 text: "GIVE",
             });

@@ -8,7 +8,7 @@ describe("RandomHeldItemsMod", () => {
     const pokemonTitle: string[] = "CHARMANDER".split("");
 
     const setUpFSPandGeneratedNumber = (generatedNumber: number): FullScreenPokemon => {
-        const fsp = stubBlankGame();
+        const { fsp } = stubBlankGame();
         fsp.modAttacher.enableMod("Random Held Items");
         fsp.numberMaker.randomReal1 = (): number => generatedNumber;
         return fsp;

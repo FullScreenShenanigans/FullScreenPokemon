@@ -1,12 +1,18 @@
-
 import { Physics as GameStartrPhysics } from "gamestartr";
+import { GroupHoldr } from "groupholdr";
+import { MapScreenr } from "mapscreenr";
+import { ModAttachr } from "modattachr";
+import { TimeHandlr } from "timehandlr";
 
+import { IGroups } from "../creators/createGroupHolder";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
+import { IMapScreenr } from "./Maps";
+import { Mods } from "./Mods";
 import { ICharacter, IGrass, IThing } from "./Things";
 
 /**
- * Physics functions used by FullScreenPokemon instances.
+ * Physics functions to move Things around.
  */
 export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPhysics<TGameStartr> {
     /**
@@ -137,8 +143,8 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
         const x: number = (this.gameStarter.mapScreener.left + thing.left) / grid;
         const y: number = (this.gameStarter.mapScreener.top + thing.top) / grid;
 
-        this.gameStarter.physics.setLeft(thing, Math.round(x) * grid - this.gameStarter.mapScreener.left);
-        this.gameStarter.physics.setTop(thing, Math.round(y) * grid - this.gameStarter.mapScreener.top);
+        this.setLeft(thing, Math.round(x) * grid - this.gameStarter.mapScreener.left);
+        this.setTop(thing, Math.round(y) * grid - this.gameStarter.mapScreener.top);
     }
 
     /**
@@ -160,9 +166,6 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
 
         this.gameStarter.timeHandler.cancelAllCycles(thing);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKillNormal, thing);
-
-        if (thing.id) {
-            delete (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id];
-        }
+        this.gameStarter.groupHolder.removeFromGroup(thing, thing.groupType);
     }
 }

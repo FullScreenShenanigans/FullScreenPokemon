@@ -1,8 +1,8 @@
 ## Pokemon Creation
 
-The two main files that handle Pokemon creation are [`Equations.ts`](../src/components/Equations.ts) and [`Utilities.ts`](../src/components/Utilities.ts).
+The main file that handles Pokemon creation is [`Equations.ts`](../src/components/Equations.ts).
 `Equations.ts` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object.
-`Utilities.ts` facilitates the creating of a wild Pokemon by preparing parameters then calling `Equations.ts` creation of the Pokemon object.
+It also facilitates the creating of a wild Pokemon by preparing parameters then calling creation of the Pokemon object.
 
 A newly created Pokemon's member types can be found in [`Battles.ts`](../src/components/Battles.ts) under the `IPokemon` interface.
 
@@ -10,9 +10,7 @@ A newly created Pokemon's member types can be found in [`Battles.ts`](../src/com
 
 `Equations.ts` contains the functions necessary for choosing a random Pokemon (`chooseRandomWildPokemon`), creating a new Pokemon (`newPokemon`), choosing that new Pokemon's statistics (`newPokemonStatistics`), and choosing a new Pokemon's IVs and EVs (`newPokemonIVs` and `newPokemonEvs`).
 
-### Utilities
-
-`Utilities.ts` contains the function necessary for calling `newPokemon` in `Equations.ts` (`createPokemon`), which uses the chosen random Pokemon, from `Equations.ts` `chooseRandomWildPokemon`, to get the get the level of the chosen Pokemon and title which it then feeds to `newPokemon`.
+It also contains the function necessary for calling `newPokemon` in `Equations.ts` (`createPokemon`), which uses the chosen random Pokemon, from `Equations.ts` `chooseRandomWildPokemon`, to get the get the level of the chosen Pokemon and title which it then feeds to `newPokemon`.
 
 ### Unit Test and Trainer Battles
 
@@ -68,5 +66,5 @@ const options: IWildPokemonSchema[] = [
 
 // Chosen has a 75% chance of being a Squirtle and 25% chance of being a Charmander.
 const chosen: IWildPokemonSchema = fsp.equations.chooseRandomWildPokemon(options);
-const chosenPokemon = fsp.utilities.createPokemon(chosen);
+const chosenPokemon = fsp.equations.createPokemon(chosen);
 ```

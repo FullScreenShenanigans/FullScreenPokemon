@@ -1,5 +1,5 @@
 import { IAction, ITeamAndAction, IUnderEachTeam, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../Battles";
@@ -20,9 +20,9 @@ export type IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>) => b
 type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 
 /**
- * Battle functions used by FullScreenPokemon instances.
+ * Orders chosen actions by priority and/or speed.
  */
-export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Orders teams' chosen actions.
      *

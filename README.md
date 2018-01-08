@@ -9,23 +9,42 @@ A free HTML5 remake of the original Pokemon, expanded for modern browsing.
 
 ## Usage
 
-```typescript
+The built `src/index.html` uses [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) to fill the available window size with a game screen, option menus, and piped input events.
+It stores its generated instance as `window.FSP`.
+
+To do this in your own page, use the exported `createFspInterface` function.
+
+```javascript
+import { createFspInterface } from "fullscreenpokemon";
+
+createFspInterface(document.getElementById("game"))
+    .then(() => {
+        console.log("Ready to play!");
+        console.log(FSP);
+    });
+```
+
+You can also directly create a new `FullScreenPokemon` instance with a manual size.
+
+```javascript
 import { FullScreenPokemon } from "fullscreenpokemon";
 
-// Creates a new game with a 320x480 screen size.
+// Creates a new game with a 320x480 screen size
 const fsp = new FullScreenPokemon({
     height: 320,
     width: 480,
 });
 
-// Games contain a .canvas member for the screen.
+// Games contain a .canvas member for the screen
 document.body.appendChild(fsp.canvas);
+
+// Shows the initial in-game menu with start and load options
+fsp.gameplay.gameStart();
 ```
 
-By default, the game doesn't set up input events.
-You'll need to set up your own event registrations manually.
+> By default, the game doesn't set up input events.
+> You'll need to set up your own event registrations manually.
 
-The built `src/index.html` uses [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) to fill the available window size with a game screen, option menus, and piped input events.
 
 <!-- {{Development}} -->
 ## Development

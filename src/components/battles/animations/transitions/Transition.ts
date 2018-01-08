@@ -1,12 +1,12 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { ITransitionSettings } from "../Transitions";
 
 /**
- * Battle transition animation used by FullScreenPokemon instances.
+ * Base transition class for battle start transition animations.
  */
-export class Transition<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Transition<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Settings for the transition.
      */

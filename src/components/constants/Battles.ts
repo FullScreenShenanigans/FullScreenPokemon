@@ -1,17 +1,21 @@
+import { component } from "babyioc";
+
 import { Modifications } from "./battles/Modifications";
 import { Texts } from "./battles/Texts";
 
 /**
- * Battle constants used by FullScreenPokemon instances.
+ * Universal battle constants.
  */
 export class Battles {
     /**
      * Battle modifications for the second turn.
      */
-    public readonly modifications: Modifications = new Modifications();
+    @component(Modifications)
+    public readonly modifications: Modifications;
 
     /**
-     * Default texts during battles.
+     * Battle text generators.
      */
-    public readonly texts: Texts = new Texts();
+    @component(Texts)
+    public readonly texts: Texts;
 }

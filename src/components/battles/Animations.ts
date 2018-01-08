@@ -1,5 +1,6 @@
+import { component } from "babyioc";
 import { BattleOutcome, IAnimations, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Ending } from "./animations/Ending";
@@ -9,23 +10,26 @@ import { Starting } from "./animations/Starting";
 import { Things } from "./animations/Things";
 
 /**
- * Battle animations used by FullScreenPokemon instances.
+ * Animations for battle events.
  */
-export class Animations<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IAnimations {
+export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IAnimations {
     /**
-     * Opponent animations used by the FullScreenPokemon instance.
+     * Animations for opponent battle events.
      */
-    public readonly opponent: Opponent<TGameStartr> = new Opponent(this.gameStarter);
+    @component(Opponent)
+    public readonly opponent: Opponent<TGameStartr>;
 
     /**
-     * Player animations used by the FullScreenPokemon instance.
+     * Animations for player battle events.
      */
-    public readonly player: Player<TGameStartr> = new Player(this.gameStarter);
+    @component(Player)
+    public readonly player: Player<TGameStartr>;
 
     /**
      * Thing animations for battles.
      */
-    public readonly things: Things<TGameStartr> = new Things(this.gameStarter);
+    @component(Things)
+    public readonly things: Things<TGameStartr>;
 
     /**
      * Animation for a battle starting.

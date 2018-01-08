@@ -1,5 +1,6 @@
+import { component } from "babyioc";
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeamAndAction } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { FleeAttempt } from "./actions/FleeAttempt";
@@ -8,13 +9,14 @@ import { Moves } from "./Moves";
 import { DefaultMovesBag } from "./moves/MovesBag";
 
 /**
- * Player action animations used by FullScreenPokemon instances.
+ * Shared animations for team actions.
  */
-export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements IOnActions {
+export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IOnActions {
     /**
-     * Action effect animations.
+     * Battle animations for move effects.
      */
-    public readonly effects: Effects<TGameStartr> = new Effects(this.gameStarter);
+    @component(Effects)
+    public readonly effects: Effects<TGameStartr>;
 
     /**
      * Callback for when a team attempts to leave the battle.
@@ -33,7 +35,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param onComplete   Callback for when the action is done.
      */
     public item(action: ITeamAndAction<IItemAction>, onComplete: () => void): void {
-        console.log("Player item action:", action);
+        console.log("Team item action:", action);
         onComplete();
     }
 
@@ -56,7 +58,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends Component<TG
      * @param onComplete   Callback for when the action is done.
      */
     public switch(action: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
-        console.log("Player switch action:", action);
+        console.log("Team switch action:", action);
         onComplete();
     }
 }

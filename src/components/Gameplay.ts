@@ -15,17 +15,9 @@ interface IDataEventTarget extends EventTarget {
 }
 
 /**
- * Gameplay functions used by FullScreenPokemon instances.
+ * Event hooks for major gameplay state changes.
  */
 export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrGameplay<TGameStartr> {
-    /**
-     * Completely restarts the game. The StartOptions menu is shown.
-     */
-    public gameStart(): void {
-        this.startOptions();
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStart);
-    }
-
     /**
      * Sets the map to Blank and displays the StartOptions menu.
      */
@@ -53,6 +45,8 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
         this.gameStarter.menuGrapher.createMenu("StartOptions");
         this.gameStarter.menuGrapher.addMenuList("StartOptions", { options });
         this.gameStarter.menuGrapher.setActiveMenu("StartOptions");
+
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartOptions);
     }
 
     /**
@@ -61,10 +55,10 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public startPlay(): void {
         this.gameStarter.maps.setMap(
-            this.gameStarter.itemsHolder.getItem("map") || this.gameStarter.moduleSettings.maps.mapDefault,
+            this.gameStarter.itemsHolder.getItem("map") || "Blank",
             this.gameStarter.itemsHolder.getItem("location"),
             true);
-        this.gameStarter.maps.entranceResume();
+        this.gameStarter.maps.entrances.resume();
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartPlay);
     }
@@ -101,7 +95,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
                     const reader: FileReader = new FileReader();
                     reader.onloadend = (loadEvent: IDataProgressEvent): void => {
-                        this.gameStarter.saves.loadData(loadEvent.currentTarget.result);
+                        this.gameStarter.saves.loadRawData(loadEvent.currentTarget.result);
                         delete reader.onloadend;
                     };
                     reader.readAsText(file);
@@ -144,7 +138,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * Closes the game.
      */
     public onGameClose(): void {
-        this.gameStarter.saves.autoSave();
+        this.gameStarter.saves.autoSaveIfEnabled();
         console.log("Closed.");
     }
 }

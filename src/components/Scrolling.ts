@@ -29,7 +29,7 @@ export enum Scrollability {
 }
 
 /**
- * Scrolling functions used by FullScreenPokemon instances.
+ * Moves the screen and Things in it.
  */
 export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartrScrolling<TGameStartr> {
     /**
@@ -119,7 +119,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
      *
      * @returns The boundaries of the current Area.
      */
-    public getAreaBoundariesReal(): IAreaBoundaries {
+    public getAreaBoundariesReal = (): IAreaBoundaries => {
         const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
 
         if (!area) {
@@ -148,7 +148,7 @@ export class Scrolling<TGameStartr extends FullScreenPokemon> extends GameStartr
      *
      * @returns The direction(s) that are scrollable.
      */
-    public getScreenScrollability(): Scrollability {
+    public getScreenScrollability = (): Scrollability => {
         const area: IArea = this.gameStarter.areaSpawner.getArea() as IArea;
         if (!area) {
             return Scrollability.None;

@@ -1,3 +1,4 @@
+import { component } from "babyioc";
 import { IThing as IGameStartrThing, Things as GameStartrThings } from "gamestartr";
 import * as imenugraphr from "menugraphr";
 import * as itimehandlr from "timehandlr";
@@ -695,9 +696,15 @@ export interface IPokeball extends IDetector {
 }
 
 /**
- * Thing manipulation functions used by FullScreenPokemon instances.
+ * Adds and processes new Things into the game.
  */
 export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThings<TGameStartr> {
+    /**
+     * Stores known names of Things.
+     */
+    @component(ThingNames)
+    public readonly names: ThingNames;
+
     /**
      * Slight addition to the parent thingProcess Function. The Thing's hit
      * check type is cached immediately, and a default id is assigned if an id
@@ -709,18 +716,11 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      * @param defaults   The default settings for the Thing's class.
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
-
-    /**
-     * Stores known names of Things.
-     */
-    public readonly names = new ThingNames();
-
     public process(thing: IThing, title: string, settings: any, defaults: any): void {
         super.process(thing, title, settings, defaults);
 
-        // ThingHittr becomes very non-performant if functions aren't generated
-        // for each Thing constructor (optimization does not respect prototypal
-        // inheritance, sadly).
+        // ThingHittr becomes very non-performant if functions aren't generated for
+        // each Thing constructor (optimization does not respect prototypal inheritance, sadly).
         this.gameStarter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];
@@ -737,8 +737,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
 
     /**
      * Overriden Function to adds a new Thing to the game at a given position,
-     * relative to the top left corner of the screen. The Thing is also
-     * added to the Thing groupHolder.group container.
+     * relative to the top left corner of the screen.
      *
      * @param thingRaw   What type of Thing to add. This may be a String of
      *                   the class title, an Array containing the String
@@ -760,7 +759,6 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
 
         if (thing.id) {
             this.gameStarter.stateHolder.applyChanges(thing.id, thing);
-            (this.gameStarter.groupHolder.getGroup("Thing") as any)[thing.id] = thing;
         }
 
         if (typeof thing.direction !== "undefined") {

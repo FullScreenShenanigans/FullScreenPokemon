@@ -1,13 +1,13 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IKeyboardResultsMenu } from "../menus/Keyboards";
 import { IPlayer, IThing } from "../Things";
 
 /**
- * Intro cutscene functions used by FullScreenPokemon instances.
+ * Intro cutscene routines.
  */
-export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Cutscene for the beginning of the game introduction.
      *
@@ -97,7 +97,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
             opacity: 0.01,
         });
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(
             pokemon,
@@ -107,7 +109,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.physics.setMidY(pokemon, this.gameStarter.mapScreener.middleY);
         this.gameStarter.actions.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             pokemon,
             -8,
             this.gameStarter.mapScreener.middleX | 0,
@@ -147,13 +149,15 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         settings.player = player;
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(player, this.gameStarter.mapScreener.middleX + 96, 0);
         this.gameStarter.physics.setMidY(player, this.gameStarter.mapScreener.middleY);
         this.gameStarter.actions.animateFadeAttribute(player, "opacity", 0.15, 1, 3);
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             player,
             -8,
             middleX - player.width / 2,
@@ -181,7 +185,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * @param settings   Settings used for the cutscene.
      */
     public PlayerSlide(settings: any): void {
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.player,
             4,
             (this.gameStarter.mapScreener.middleX + 56) | 0,
@@ -232,7 +236,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.player,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -251,7 +255,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.menuGrapher.deleteMenu("Keyboard");
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.player,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -319,7 +323,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         settings.rival = rival;
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(rival, 0, 0);
         this.gameStarter.physics.setMidX(rival, this.gameStarter.mapScreener.middleX | 0);
@@ -355,7 +361,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
      * @param settings   Settings used for the cutscene.
      */
     public RivalSlide(settings: any): void {
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.rival,
             4,
             (this.gameStarter.mapScreener.middleX + 56) | 0,
@@ -406,7 +412,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.rival,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -425,7 +431,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
         this.gameStarter.menuGrapher.deleteMenu("Keyboard");
         this.gameStarter.menuGrapher.deleteMenu("NameOptions");
 
-        this.gameStarter.actions.sliding.slideHorizontally(
+        this.gameStarter.animations.sliding.slideHorizontally(
             settings.rival,
             -4,
             this.gameStarter.mapScreener.middleX | 0,
@@ -491,7 +497,9 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Compon
 
         settings.portrait = portrait;
 
-        this.gameStarter.groupHolder.applyOnAll(this.gameStarter.physics, this.gameStarter.physics.killNormal);
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+            this.gameStarter.physics.killNormal(thing);
+        });
 
         this.gameStarter.things.add(portrait, 0, 0);
         this.gameStarter.physics.setMidX(portrait, this.gameStarter.mapScreener.middleX | 0);

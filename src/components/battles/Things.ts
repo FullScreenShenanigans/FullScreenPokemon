@@ -1,14 +1,14 @@
 import { Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo } from "../Battles";
 import { IThing } from "../Things";
 
 /**
- * Thing visual handlers used by FullScreenPokemon instances.
+ * Sets Things visually representing each team.
  */
-export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Things<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Sets a team's visual Pokemon Thing.
      *
@@ -37,7 +37,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
         this.gameStarter.physics.setBottom(battleInfo.things.opponent, battleInfo.things.menu.top + 108);
         this.gameStarter.physics.setRight(battleInfo.things.opponent, battleInfo.things.menu.right - 16);
 
-        this.gameStarter.groupHolder.switchMemberGroup(battleInfo.things.opponent, battleInfo.things.opponent.groupType, "Text");
+        this.gameStarter.groupHolder.switchGroup(battleInfo.things.opponent, battleInfo.things.opponent.groupType, "Text");
     }
 
     /**
@@ -57,6 +57,6 @@ export class Things<TGameStartr extends FullScreenPokemon> extends Component<TGa
             battleInfo.things.menu.left,
             battleInfo.things.menu.bottom - battleInfo.things.player.height * 2);
 
-        this.gameStarter.groupHolder.switchMemberGroup(battleInfo.things.player, battleInfo.things.player.groupType, "Text");
+        this.gameStarter.groupHolder.switchGroup(battleInfo.things.player, battleInfo.things.player.groupType, "Text");
     }
 }

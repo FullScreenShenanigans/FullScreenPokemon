@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import { IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -30,9 +30,9 @@ export interface IModComponentClass {
 }
 
 /**
- * Mods used by FullScreenPokemon instances.
+ * Creates ModAttachr from mod classes.
  */
-export class Mods<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Mods<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Classes for known mods.
      */

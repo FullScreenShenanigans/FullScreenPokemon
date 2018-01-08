@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../Battles";
@@ -6,9 +6,9 @@ import { IArea, IMap, IWildPokemonSchema } from "../Maps";
 import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
 
 /**
- * Grass functions used by FullScreenPokemon instances.
+ * Visual and battle updates for walking in tall grass.
  */
-export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Marks a Character as being visually within grass.
      *
@@ -30,7 +30,7 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
         }
 
         this.gameStarter.things.add(thing.shadow, thing.left, thing.top);
-        this.gameStarter.groupHolder.switchMemberGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.gameStarter.groupHolder.switchGroup(thing.shadow, thing.shadow.groupType, "Terrain");
     }
 
     /**
@@ -137,6 +137,6 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends Component<TGam
 
         const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onWildGrassPokemonChosen, chosen);
-        return this.gameStarter.utilities.createPokemon(chosen);
+        return this.gameStarter.equations.createPokemon(chosen);
     }
 }

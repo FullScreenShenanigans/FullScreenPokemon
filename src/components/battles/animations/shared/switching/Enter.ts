@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
@@ -40,9 +40,9 @@ export interface IEnterSettings {
 }
 
 /**
- * Team entrance animations used by FullScreenPokemon instances.
+ * Shared team entrance animations.
  */
-export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Entrance settings for animation positions and sprites.
      */
@@ -98,7 +98,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends Component<TGam
         const goal: number = this.settings.getLeaderSlideToGoal(battleInfo);
         const timeout = 24;
 
-        this.gameStarter.actions.sliding.slideHorizontallyAndFadeOut(
+        this.gameStarter.animations.sliding.slideHorizontallyAndFadeOut(
             thing,
             goal,
             timeout,

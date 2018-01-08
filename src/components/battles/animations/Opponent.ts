@@ -1,5 +1,6 @@
+import { component } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
@@ -9,33 +10,37 @@ import { Actions } from "./shared/Actions";
 import { Switching } from "./shared/Switching";
 
 /**
- * Opponent animations used by FullScreenPokemon instances.
+ * Animations for opponent battle events.
  */
-export class Opponent<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> implements ITeamAnimations {
+export class Opponent<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ITeamAnimations {
     /**
-     * Opponent action animations used by the FullScreenPokemon instance.
+     * Shared animations for team actions.
      */
-    public readonly actions: Actions<TGameStartr> = new Actions<TGameStartr>(this.gameStarter);
+    @component(Actions)
+    public readonly actions: Actions<TGameStartr>;
 
     /**
-     * Opponent switching animations used by the FullScreenPokemon instance.
+     * Shared animations for teams switching Pokemon.
      */
-    public readonly switching: Switching<TGameStartr> = new Switching<TGameStartr>(this.gameStarter, {
-        enter: {
-            team: Team.opponent,
-            getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
-                const opponent: IThing = battleInfo.things.opponent;
-                const menu: IMenu = this.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
-                return menu.right + opponent.width / 2;
+    @component((container: Opponent<TGameStartr>) =>
+        new Switching(container, {
+            enter: {
+                team: Team.opponent,
+                getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
+                    const opponent: IThing = battleInfo.things.opponent;
+                    const menu: IMenu = container.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
+
+                    return menu.right + opponent.width / 2;
+                },
+                getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
+                    battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
+                getSmokeLeft: (battleInfo: IBattleInfo): number =>
+                    battleInfo.things.menu.right - 32,
+                getSmokeTop: (battleInfo: IBattleInfo): number =>
+                    battleInfo.things.menu.top + 32,
             },
-            getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
-                battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
-            getSmokeLeft: (battleInfo: IBattleInfo): number =>
-                battleInfo.things.menu.right - 32,
-            getSmokeTop: (battleInfo: IBattleInfo): number =>
-                battleInfo.things.menu.top + 32,
-        },
-    });
+        }))
+    public readonly switching: Switching<TGameStartr>;
 
     /**
      * Animation for when the opponent's actor's health changes.

@@ -12,7 +12,7 @@ describe("Collisions", () => {
 
         it("returns true when characters are touching", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const isCharacterTouchingCharacter = fsp.collisions.generateIsCharacterTouchingCharacter();
             const a = fsp.things.add<ICharacter>(stubCharacterType);
             const b = fsp.things.add<ICharacter>(stubCharacterType);
@@ -28,7 +28,7 @@ describe("Collisions", () => {
 
         it("returns false when characters aren't touching", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const isCharacterTouchingCharacter = fsp.collisions.generateIsCharacterTouchingCharacter();
             const a = fsp.things.add<ICharacter>(stubCharacterType);
             const b = fsp.things.add<ICharacter>(stubCharacterType);
@@ -44,7 +44,7 @@ describe("Collisions", () => {
 
         it("returns false when a character is following another", (): void => {
             // Arrange
-            const fsp = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const isCharacterTouchingCharacter = fsp.collisions.generateIsCharacterTouchingCharacter();
             const a = fsp.things.add<ICharacter>(stubCharacterType);
             const b = fsp.things.add<ICharacter>(stubCharacterType);

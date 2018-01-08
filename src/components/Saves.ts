@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import { IItems } from "itemsholdr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -31,9 +31,9 @@ export interface ISaveFile {
 }
 
 /**
- * Storage functions used by FullScreenPokemon instances.
+ * Saves and load game data.
  */
-export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.
@@ -89,7 +89,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
      * @param showText   Whether to display a status menu (by default, false).
      */
     public saveGame(showText: boolean = true): void {
-        const ticksRecorded: number = this.gameStarter.fpsAnalyzer.getNumRecorded();
+        const ticksRecorded: number = this.gameStarter.fpsAnalyzer.getRecordedTicks();
 
         this.gameStarter.itemsHolder.increase("time", ticksRecorded - this.gameStarter.ticksElapsed);
         this.gameStarter.ticksElapsed = ticksRecorded;
@@ -111,9 +111,9 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
     }
 
     /**
-     * Automatically saves the game.
+     * Automatically saves the game if auto-save is enabled.
      */
-    public autoSave(): void {
+    public autoSaveIfEnabled(): void {
         if (this.gameStarter.itemsHolder.getAutoSave()
             && !this.gameStarter.scenePlayer.getCutscene()
             && this.gameStarter.areaSpawner.getMapName() !== "Blank") {
@@ -148,9 +148,17 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends Component<TGam
      *
      * @param dataRaw   Raw data to be parsed as JSON.
      */
-    public loadData(dataRaw: string): void {
+    public loadRawData(dataRaw: string): void {
+        this.loadSaveFile(JSON.parse(dataRaw));
+    }
+
+    /**
+     * Loads JSON game data and sets it as the game state then starts gameplay.
+     *
+     * @param dataRaw   Raw data to be parsed as JSON.
+     */
+    public loadSaveFile(data: ISaveFile): void {
         this.clearSavedData();
-        const data: ISaveFile = JSON.parse(dataRaw);
         const keyStart = "StateHolder::";
 
         for (const key in data) {

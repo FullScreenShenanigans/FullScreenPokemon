@@ -1,12 +1,12 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMoveSchema } from "../constants/Moves";
 
 /**
- * Move equations used by FullScreenPokemon instances.
+ * Equations for battle moves.
  */
-export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Checks whether a move only has a status effect (does no damage, or nothing).
      *
@@ -54,7 +54,7 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends Component<TGam
      */
     public moveIsRelevantAgainst(moveSchema: IMoveSchema, types: string[]): boolean {
         for (const effect of moveSchema.effects) {
-            if (effect.type !== "damage" || (effect.probability && effect.probability !== 100)) {
+            if (effect.type !== "damage" || (effect.probability !== undefined && effect.probability !== 100)) {
                 continue;
             }
 

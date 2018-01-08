@@ -1,20 +1,15 @@
+import { component } from "babyioc";
 import { BattleOutcome, Queue } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
 import { IBattleOutcomeTextGenerator } from "../../constants/battles/Texts";
-import { Transitions } from "./Transitions";
 
 /**
- * Battle end animations used by FullScreenPokemon instances.
+ * Animations for the ends of battles.
  */
-export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
-    /**
-     * Transition animations used by the FullScreenPokemon instance.
-     */
-    public readonly transitions: Transitions<TGameStartr> = new Transitions(this.gameStarter);
-
+export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Runs ending battle animations.
      *
@@ -32,7 +27,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends Component<TGa
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
                 this.gameStarter.menuGrapher.addMenuDialog(
                     "GeneralText",
-                    finalTextGenerator(),
+                    finalTextGenerator(outcome),
                     onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
             });

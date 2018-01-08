@@ -1,4 +1,4 @@
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -61,9 +61,9 @@ export interface IKeyboardMenuSettings {
 }
 
 /**
- * Keyboard functions used by FullScreenPokemon instances.
+ * Manipulates the on-screen keyboard menus.
  */
-export class Keyboards<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Opens the Keyboard menu and binds it to some required callbacks.
      *

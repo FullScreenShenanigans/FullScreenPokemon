@@ -1,13 +1,13 @@
 import { BattleOutcome } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../../Battles";
 
 /**
- * Player fleeing logic used by FullScreenPokemon instances.
+ * Logic for whether the player may flee a battle.
  */
-export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Animates the player attempting to flee.
      *

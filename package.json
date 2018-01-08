@@ -8,9 +8,10 @@
         "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
     },
     "dependencies": {
+        "babyioc": "^0.7.4",
         "battlemovr": "^0.7.3",
         "flagswappr": "^0.7.2",
-        "gamestartr": "^0.7.5",
+        "gamestartr": "^0.7.6",
         "menugraphr": "^0.7.0",
         "stateholdr": "^0.7.1",
         "userwrappr": "^0.7.2"
@@ -33,7 +34,7 @@
         "node-sass": "^4.7.2",
         "requirejs": "^2.3.5",
         "run-for-every-file": "^1.1.0",
-        "shenanigans-manager": "^0.2.12",
+        "shenanigans-manager": "^0.2.16",
         "sinon": "^4.1.2",
         "sinon-chai": "^2.14.0",
         "stylelint": "^8.4.0",
@@ -59,8 +60,9 @@
         "gulp": "gulp",
         "init": "npm install && npm run setup && npm run verify",
         "setup": "npm run setup:copy && npm run setup:package && npm run setup:readme",
-        "setup:copy": "npm run setup:copy:default && npm run setup:copy:web",
+        "setup:copy": "npm run setup:copy:default && npm run test:setup:copy:maps && npm run setup:copy:web",
         "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
+        "setup:copy:maps": "run-for-every-file --src \"node_modules/shenanigans-manager/setup/maps/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./src/{{file}}\" --dest \".\"",
         "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"shenanigans-manager mustache --input {{src-file}} --output {{file}}\" --dest \".\" --only-files",
         "setup:package": "shenanigans-manager hydrate-package-json",
         "setup:readme": "shenanigans-manager hydrate-readme",
@@ -74,6 +76,7 @@
         "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
         "test:setup:copy": "npm run test:setup:copy:default",
         "test:setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/test/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./test/{{file}}\" --dest \".\" --only-files",
+        "test:setup:copy:maps": "run-for-every-file --src \"node_modules/shenanigans-manager/setup/maps/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./src/{{file}}\" --dest \".\"",
         "test:setup:dir": "mkdirp test",
         "test:setup:html": "shenanigans-manager generate-test-html",
         "test:setup:tsc": "tsc -p test",
@@ -117,6 +120,7 @@
                 "name": "UserWrappr-Delayed"
             }
         ],
+        "maps": true,
         "name": "FullScreenPokemon",
         "web": {
             "drivingObject": "FSP",

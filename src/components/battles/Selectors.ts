@@ -1,14 +1,14 @@
 import { ISelector, ISelectorFactory } from "battlemovr";
-import { Component } from "eightbittr";
+import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { OpponentSelector } from "./selectors/OpponentSelector";
 import { PlayerSelector } from "./selectors/PlayerSelector";
 
 /**
- * Battle action selectors used by FullScreenPokemon instances.
+ * Selects actions for each team.
  */
-export class Selectors<TGameStartr extends FullScreenPokemon> extends Component<TGameStartr> {
+export class Selectors<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Generates selectors for an opponent's actions.
      */
