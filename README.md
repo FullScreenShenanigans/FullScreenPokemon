@@ -49,9 +49,12 @@ fsp.gameplay.gameStart();
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/FullScreenPokemon
+git clone https://github.com/<your-name-here>/FullScreenPokemon
 cd FullScreenPokemon
+npm install
 npm run setup
 npm run verify
 ```
