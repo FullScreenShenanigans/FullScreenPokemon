@@ -96,7 +96,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private filterForPlayerFleeing: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForPlayerFleeing: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
         a.source.team === Team.player && a.action.type === "flee"
 
     /**
@@ -105,7 +105,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private filterForSwitch: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForSwitch: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
         a.action.type === "switch"
 
     /**
@@ -114,7 +114,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private filterForItem: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForItem: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
         a.action.type === "item"
 
     /**
@@ -124,7 +124,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private filterForPriority: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
+    private readonly filterForPriority: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
@@ -142,7 +142,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private filterForSpeed: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
+    private readonly filterForSpeed: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
@@ -169,6 +169,6 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
      * @returns Whether the action should go first.
      * @remarks This is added last so player moves go before wild Pokemon fleeing.
      */
-    private filterForMove: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForMove: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
         a.action.type === "move"
 }

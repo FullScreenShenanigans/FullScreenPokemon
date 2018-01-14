@@ -34,7 +34,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
      * @remarks No need to make probabilites add to 1 as the mod will just pick no item if generated
      *          number is higher than what the probabilities add up to.
      */
-    private static typeItems: { [i: string]: IItemProbabilities[] } = {
+    private static readonly typeItems: { [i: string]: IItemProbabilities[] } = {
         Normal: [
             {
                 name: "Potion",

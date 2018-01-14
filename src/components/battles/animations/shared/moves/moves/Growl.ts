@@ -11,28 +11,28 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
     /**
      * Starting x-position for notes.
      */
-    private noteStartX: number = this.teamAndAction.source.team === Team.player
+    private readonly noteStartX: number = this.teamAndAction.source.team === Team.player
         ? this.menu.left + this.attackerThing.width / 2
         : this.menu.right - this.attackerThing.width / 2;
 
     /**
      * Starting y-position for notes.
      */
-    private noteStartY: number = this.teamAndAction.source.team === Team.player
+    private readonly noteStartY: number = this.teamAndAction.source.team === Team.player
         ? this.menu.bottom - this.attackerThing.height
         : this.menu.top + this.attackerThing.height;
 
     /**
      * Horizontal delta for note movements.
      */
-    private noteDifferenceX: number = this.teamAndAction.source.team === Team.player
+    private readonly noteDifferenceX: number = this.teamAndAction.source.team === Team.player
         ? this.menu.right - this.noteStartX
         : this.menu.left - this.noteStartX;
 
     /**
      * Vertical delta for note movements.
      */
-    private noteDifferenceY: number = this.teamAndAction.source.team === Team.player
+    private readonly noteDifferenceY: number = this.teamAndAction.source.team === Team.player
         ? (this.menu.top + this.defenderThing.height / 2) - this.noteStartY
         : (this.menu.bottom - this.defenderThing.height) - this.noteStartY;
 

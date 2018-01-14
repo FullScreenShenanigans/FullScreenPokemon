@@ -15,7 +15,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
     /**
      * Id for the background Thing.
      */
-    private static backgroundId = "BattleDecorationBackground";
+    private static readonly backgroundId = "BattleDecorationBackground";
 
     /**
      * Decorations for health displays.
