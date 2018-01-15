@@ -6,7 +6,6 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
     new ObjectMakr({
         onMake: "onMake",
         indexMap: ["width", "height"],
-        doPropertiesFull: true,
         inheritance: {
             Quadrant: {},
             Map: {},

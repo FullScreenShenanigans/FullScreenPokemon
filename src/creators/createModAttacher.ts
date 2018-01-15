@@ -6,6 +6,6 @@ export const createModAttacher = (fsp: FullScreenPokemon): ModAttachr =>
     new ModAttachr({
         itemsHolder: fsp.itemsHolder,
         storeLocally: true,
-        transformModName: (name: string): string => `${fsp.itemsHolder.getPrefix()}::Mods::${name}`,
+        transformModName: (name: string): string => `Mods::${name}`,
         mods: fsp.mods.mods,
     });

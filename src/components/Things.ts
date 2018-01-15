@@ -712,12 +712,10 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      *
      * @param thing   The Thing being processed.
      * @param title   What type Thing this is (the name of the class).
-     * @param settings   Additional settings to be given to the Thing.
-     * @param defaults   The default settings for the Thing's class.
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
-    public process(thing: IThing, title: string, settings: any, defaults: any): void {
-        super.process(thing, title, settings, defaults);
+    public process(thing: IThing, title: string): void {
+        super.process(thing, title);
 
         // ThingHittr becomes very non-performant if functions aren't generated for
         // each Thing constructor (optimization does not respect prototypal inheritance, sadly).
