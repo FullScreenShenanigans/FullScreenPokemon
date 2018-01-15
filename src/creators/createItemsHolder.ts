@@ -2,9 +2,8 @@ import { ItemsHoldr } from "itemsholdr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-export const createItemsHolder = (fsp: FullScreenPokemon) =>
-    new ItemsHoldr({
-        autoSave: false,
+export const createItemsHolder = (fsp: FullScreenPokemon) => {
+    const itemsHolder = new ItemsHoldr({
         prefix: "FullScreenPokemon::",
         values: {
             area: {
@@ -66,3 +65,8 @@ export const createItemsHolder = (fsp: FullScreenPokemon) =>
         },
         ...fsp.settings.components.items,
     });
+
+    itemsHolder.setAutoSave(itemsHolder.getItem("autoSave"));
+
+    return itemsHolder;
+};

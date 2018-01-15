@@ -140,14 +140,19 @@ export class InterfaceSettingsFactory {
                 {
                     options: [
                         {
-                            getInitialValue: (): number => Math.round(this.game.audioPlayer.getVolume() * 100),
-                            maximum: 100,
-                            minimum: 0,
-                            saveValue: (value: number): void => {
-                                this.game.audioPlayer.setVolume(value / 100);
+                            getInitialValue: (): boolean => this.game.itemsHolder.getItem("autoSave"),
+                            saveValue: (autoSave: boolean): void => {
+                                this.game.itemsHolder.setAutoSave(autoSave);
+                                this.game.itemsHolder.setItem("autoSave", autoSave);
+
+                                if (autoSave) {
+                                    this.game.itemsHolder.saveAll();
+                                } else {
+                                    this.game.itemsHolder.saveItem("autoSave");
+                                }
                             },
-                            title: "Volume",
-                            type: OptionType.Number,
+                            title: "Auto Save",
+                            type: OptionType.Boolean,
                         },
                         {
                             getInitialValue: (): boolean => this.game.audioPlayer.getMuted(),
@@ -158,6 +163,13 @@ export class InterfaceSettingsFactory {
                             type: OptionType.Boolean,
                         },
                         {
+                            action: (): void => {
+                                this.game.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
+                            },
+                            title: "Screenshot",
+                            type: OptionType.Action,
+                        },
+                        {
                             getInitialValue: (): string => "1x",
                             options: [".25x", ".5x", "1x", "2x", "5x", "10x"],
                             saveValue: (value: string): void => {
@@ -165,15 +177,6 @@ export class InterfaceSettingsFactory {
                                 this.game.gamesRunner.setInterval(multiplier * (1000 / 60));
                             },
                             title: "Speed",
-                            type: OptionType.Select,
-                        },
-                        {
-                            getInitialValue: () => this.defaultSize,
-                            options: Object.keys(this.sizes),
-                            saveValue: async (value: string): Promise<void> => {
-                                await this.userWrapper.resetSize(this.sizes[value]);
-                            },
-                            title: "View Mode",
                             type: OptionType.Select,
                         },
                         ((): IBooleanSchema => {
@@ -195,11 +198,23 @@ export class InterfaceSettingsFactory {
                             };
                         })(),
                         {
-                            action: (): void => {
-                                this.game.utilities.takeScreenshot(`FullScreenPokemon ${Date.now()}`);
+                            getInitialValue: () => this.defaultSize,
+                            options: Object.keys(this.sizes),
+                            saveValue: async (value: string): Promise<void> => {
+                                await this.userWrapper.resetSize(this.sizes[value]);
                             },
-                            title: "Screenshot",
-                            type: OptionType.Action,
+                            title: "View Mode",
+                            type: OptionType.Select,
+                        },
+                        {
+                            getInitialValue: (): number => Math.round(this.game.audioPlayer.getVolume() * 100),
+                            maximum: 100,
+                            minimum: 0,
+                            saveValue: (value: number): void => {
+                                this.game.audioPlayer.setVolume(value / 100);
+                            },
+                            title: "Volume",
+                            type: OptionType.Number,
                         },
                     ],
                     title: "Options",

@@ -1,5 +1,5 @@
 import { GeneralComponent } from "gamestartr";
-import { IItems } from "itemsholdr";
+import { IExportedItems } from "itemsholdr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { PokedexListingStatus } from "./Constants";
@@ -39,7 +39,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IItems = this.gameStarter.itemsHolder.exportItems();
+        const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.exportItems();
 
         const collectionKeys: string[] = this.gameStarter.itemsHolder.getItem("stateCollectionKeys");
         if (collectionKeys) {
@@ -48,7 +48,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             }
         }
 
-        for (const key of this.gameStarter.itemsHolder.getKeys()) {
+        for (const key of Object.keys(oldLocalStorage)) {
             this.gameStarter.itemsHolder.removeItem(key);
         }
 
@@ -67,7 +67,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             return;
         }
 
-        const oldLocalStorage: IItems = this.gameStarter.itemsHolder.getItem("oldLocalStorage");
+        const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.getItem("oldLocalStorage");
         for (const key in oldLocalStorage) {
             if (!oldLocalStorage.hasOwnProperty(key)) {
                 continue;
