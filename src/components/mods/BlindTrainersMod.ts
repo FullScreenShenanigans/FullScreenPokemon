@@ -1,6 +1,7 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+import { ICharacter } from "../Things";
 import { ModComponent } from "./ModComponent";
 
 /**
@@ -17,10 +18,10 @@ export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Mod
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = true;
+            this.gameStarter.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            this.gameStarter.objectMaker.getClass("SightDetector").prototype.nocollide = false;
+            this.gameStarter.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = false;
         },
     };
 }

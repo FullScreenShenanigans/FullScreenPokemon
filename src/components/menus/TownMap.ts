@@ -24,7 +24,7 @@ export class TownMap<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public readonly open = (settings?: IMenuSchema): void => {
         const playerPosition: number[] = TownMap.townMapLocations["Pallet Town"];
-        const playerSize: any = this.gameStarter.objectMaker.getFullPropertiesOf("Player");
+        const playerSize: any = this.gameStarter.objectMaker.getPrototypeOf("Player");
 
         this.gameStarter.menuGrapher.createMenu("Town Map", settings);
         this.gameStarter.menuGrapher.createMenuThing("Town Map Inside", {

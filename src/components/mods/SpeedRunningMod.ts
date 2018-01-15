@@ -22,11 +22,11 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            const stats: any = this.gameStarter.objectMaker.getClass(SpeedRunningMod.playerClassName).prototype;
+            const stats: any = this.gameStarter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
             this.gameStarter.players[0].speed = stats.speed = 10;
         },
         [this.eventNames.onModDisable]: (): void => {
-            const stats: any = this.gameStarter.objectMaker.getClass(SpeedRunningMod.playerClassName).prototype;
+            const stats: any = this.gameStarter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
             const oldSpeed: number = this.gameStarter.settings.components.objects!.properties![SpeedRunningMod.playerClassName].speed;
             this.gameStarter.players[0].speed = stats.speed = oldSpeed;
         },

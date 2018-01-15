@@ -213,6 +213,7 @@ export class InterfaceSettingsFactory {
                                     .map((text: string): string => text.toLowerCase()),
                             options: this.keys,
                             saveValue: (newValue: string[], oldValue: string[]): void => {
+                                console.log({ newValue, oldValue });
                                 this.game.inputWriter.switchAliasValues(control, oldValue, newValue);
                             },
                             selections: 2,
