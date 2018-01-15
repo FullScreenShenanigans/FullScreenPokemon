@@ -453,22 +453,27 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @remarks This will need to be changed to accomodate rewarding multiple Pokemon.
      * @see http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      */
-    public experienceGained(player: any /* IBattler */, opponent: any /* IBattler */): number {
+    public experienceGained(opponent: any /* IBattler */): number {
         // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
-        const a: number = opponent.category === "Trainer" ? 1.5 : 1;
+        // const a: number = opponent.category === "Trainer" ? 1.5 : 1;
+        // Todo: Account for trainer-based exp modification.
+        const a: number = 1;
 
         // b is the base experience yield of the fainted Pokemon's species
         const b = 64; // (Bulbasaur) Todo: add this in
 
         // lf is the level of the fainted Pokemon
-        const lf: number = opponent.selectedActor.level;
+        const defeated: IPokemon = opponent.selectedActor as IPokemon;
+        const lf: number = defeated.level;
 
         // s is equal to (in Gen I), if Exp. All is not in the player's Bag...
         // Todo: Account for modifies like Exp. All
         const s = 1;
 
         // t is equal to 1 if the winning Pokemon's curent owner is its OT, or 1.5 if the Pokemon was gained in a domestic trade
-        const t: number = player.selectedActor.traded ? 1.5 : 1;
+        // const t: number = player.selectedActor.traded ? 1.5 : 1;
+        // Todo: Account for trade-based exp modification.
+        const t: number = 1;
 
         return (((a * t * b * lf) | 0) / ((s * 7) | 0)) | 0;
     }

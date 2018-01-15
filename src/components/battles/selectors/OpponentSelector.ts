@@ -28,6 +28,12 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Gen
             .filter((actor: IPokemon): boolean =>
                 actor.statistics.health.current !== 0)
             [0] as IPokemon | undefined;
+        const teamName: "player" | "opponent" = Team[team] as "player" | "opponent";
+        if (teamName === "opponent") {
+            const pokemon: IPokemon = this.gameStarter.itemsHolder.getItem("PokemonInParty")[0];
+            const gainedExp: number = this.gameStarter.equations.experienceGained(battleInfo.teams[Team[team]]);
+            this.gameStarter.experience.gainExperience(pokemon, gainedExp);
+        }
 
         if (newPokemon !== undefined) {
             this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
