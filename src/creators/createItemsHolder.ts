@@ -5,11 +5,6 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 export const createItemsHolder = (fsp: FullScreenPokemon) =>
     new ItemsHoldr({
         autoSave: false,
-        defaults: {
-            storeLocally: {
-                value: true,
-            },
-        },
         prefix: "FullScreenPokemon::",
         values: {
             area: {
