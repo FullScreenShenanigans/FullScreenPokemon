@@ -39,19 +39,19 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Viridian City::PokeMart", "CashierDetector", "dialog", false);
 
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "CrankyGrandpa", "alive", false);
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "CrankyGrandpaBlocker", "alive", false);
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "CrankyGranddaughter", "alive", false);
 
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "HappyGrandpa", "alive", true);
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "HappyGranddaughter", "alive", true);
     }
 

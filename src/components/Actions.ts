@@ -1057,7 +1057,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         this.gameStarter.itemsHolder.setItem("area", other.area);
         this.gameStarter.itemsHolder.setItem("location", undefined);
 
-        this.gameStarter.stateHolder.setCollection(`${area.map.name}::${area.name}`);
+        this.gameStarter.maps.setStateCollection(area);
 
         other.active = false;
         this.gameStarter.timeHandler.addEvent(

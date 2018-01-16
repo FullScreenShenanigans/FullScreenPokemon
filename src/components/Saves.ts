@@ -73,8 +73,10 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
                 continue;
             }
 
-            if (key.slice(0, "StateHolder".length) === "StateHolder") {
-                this.gameStarter.stateHolder.setCollection(key.slice(11), oldLocalStorage[key]);
+            const prefix = this.gameStarter.stateHolder.getPrefix();
+
+            if (key.slice(0, prefix.length) === prefix) {
+                this.gameStarter.stateHolder.setCollection(key.slice(prefix.length), oldLocalStorage[key]);
             } else {
                 this.gameStarter.itemsHolder.setItem(key, oldLocalStorage[key]);
             }
@@ -153,20 +155,20 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     }
 
     /**
-     * Loads JSON game data and sets it as the game state then starts gameplay.
+     * Loads JSON game data and sets it as the game state, then starts gameplay.
      *
      * @param dataRaw   Raw data to be parsed as JSON.
      */
     public loadSaveFile(data: ISaveFile): void {
         this.clearSavedData();
-        const keyStart = "StateHolder::";
+        const prefix = this.gameStarter.stateHolder.getPrefix();
 
         for (const key in data) {
             if (!data.hasOwnProperty(key)) {
                 continue;
             }
 
-            if (key.slice(0, keyStart.length) === keyStart) {
+            if (key.slice(0, prefix.length) === prefix) {
                 const split: string[] = key.split("::");
                 this.gameStarter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {

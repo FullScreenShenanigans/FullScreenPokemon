@@ -640,7 +640,7 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             this.gameStarter.itemsHolder.setItem("area", location.area.name);
             this.gameStarter.itemsHolder.setItem("location", name);
         }
-        this.gameStarter.stateHolder.setCollection(location.area.map.name + "::" + location.area.name);
+        this.setStateCollection(location.area);
 
         this.gameStarter.quadsKeeper.resetQuadrants();
 
@@ -848,5 +848,14 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         }
 
         return this.gameStarter.things.add([this.gameStarter.things.names.areaGate, properties], left, top) as IAreaGate;
+    }
+
+    /**
+     * Sets the current StateHoldr collection to an area.
+     *
+     * @param area   Area to store changes within.
+     */
+    public setStateCollection(area: IArea): void {
+        this.gameStarter.stateHolder.setCollection(`${area.map.name}::${area.name}`);
     }
 }

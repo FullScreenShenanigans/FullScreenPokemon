@@ -13,7 +13,7 @@
     "flagswappr": "^0.7.2",
     "gamestartr": "^0.7.10",
     "menugraphr": "^0.7.4",
-    "stateholdr": "^0.7.2",
+    "stateholdr": "^0.7.3",
     "userwrappr": "^0.7.3"
   },
   "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
