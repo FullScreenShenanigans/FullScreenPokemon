@@ -3,7 +3,7 @@ import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IModComponentClass } from "../Mods";
-import { EventNames } from "./EventNames";
+import { ModEventNames } from "./EventNames";
 
 /**
  * GameStartr component for a mod.
@@ -24,14 +24,14 @@ export abstract class ModComponent<TGameStartr extends FullScreenPokemon> extend
     /**
      * Keys for mod events.
      */
-    protected readonly eventNames: EventNames;
+    protected readonly eventNames: ModEventNames;
 
     /**
      * Initializes a new instance of the ModComponent class.
      *
      * @param source   GameStartr instance to wrap around, or one of its components.
      */
-    public constructor(source: TGameStartr | GeneralComponent<TGameStartr>, eventNames: EventNames) {
+    public constructor(source: TGameStartr | GeneralComponent<TGameStartr>, eventNames: ModEventNames) {
         super(source);
 
         this.eventNames = eventNames;

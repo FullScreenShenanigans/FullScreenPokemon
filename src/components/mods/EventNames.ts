@@ -1,9 +1,9 @@
-import { EventNames as ModAttachrEventNames } from "modattachr";
+import { ModEventNames as GameStartrModEventNames } from "gamestartr";
 
 /**
  * Keys for mod events.
  */
-export class EventNames extends ModAttachrEventNames {
+export class ModEventNames extends GameStartrModEventNames {
     /*
      * Key for the event when a player is added.
      */

@@ -1,9 +1,9 @@
-import { GeneralComponent } from "gamestartr";
+import { Mods as GameStartrMods } from "gamestartr";
 import { IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { BlindTrainersMod } from "./mods/BlindTrainersMod";
-import { EventNames } from "./mods/EventNames";
+import { ModEventNames } from "./mods/EventNames";
 import { InfiniteRepelMod } from "./mods/InfiniteRepelMod";
 import { JoeysRattataMod } from "./mods/JoeysRattataMod";
 import { Level100Mod } from "./mods/Level100Mod";
@@ -26,13 +26,13 @@ export interface IModComponentClass {
      */
     modName: string;
 
-    new<TGameStartr extends FullScreenPokemon>(gameStarter: TGameStartr, eventNames: EventNames): ModComponent<TGameStartr>;
+    new<TGameStartr extends FullScreenPokemon>(gameStarter: TGameStartr, eventNames: ModEventNames): ModComponent<TGameStartr>;
 }
 
 /**
- * Creates ModAttachr from mod classes.
+ * Creates a ModAttachr from mod classes.
  */
-export class Mods<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Mods<TGameStartr extends FullScreenPokemon> extends GameStartrMods<TGameStartr> {
     /**
      * Classes for known mods.
      */
@@ -54,7 +54,7 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends GeneralComponen
     /**
      * Keys for mod events.
      */
-    public readonly eventNames: EventNames = new EventNames();
+    public readonly eventNames = new ModEventNames();
 
     /**
      * Known mods, keyed by mod name.
