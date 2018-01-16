@@ -35,7 +35,7 @@
     "requirejs": "^2.3.5",
     "run-for-every-file": "^1.1.0",
     "shenanigans-manager": "^0.2.20",
-    "sinon": "^4.1.5",
+    "sinon": "^4.1.6",
     "sinon-chai": "^2.14.0",
     "stylelint": "^8.4.0",
     "stylelint-config-recommended-scss": "^3.0.0",
