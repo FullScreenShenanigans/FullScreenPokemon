@@ -66,7 +66,7 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.stateHolder.addCollectionChange(
+        this.gameStarter.stateHolder.addChangeToCollection(
             "Pallet Town::Oak's Lab", "Oak", "cutscene", "OakParcelDelivery");
     }
 }
