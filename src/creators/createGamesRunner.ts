@@ -39,7 +39,7 @@ export const createGamesRunner = (fsp: FullScreenPokemon): GamesRunnr =>
                 fsp.maintenance.maintainPlayer(fsp.players[0]);
             },
             (): void => {
-                fsp.timeHandler.handleEvents();
+                fsp.timeHandler.advance();
             },
         ],
     });
