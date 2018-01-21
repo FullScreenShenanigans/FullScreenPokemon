@@ -10,13 +10,13 @@
   "dependencies": {
     "babyioc": "^0.7.4",
     "battlemovr": "^0.7.3",
+    "changelinr": "^0.7.2",
     "flagswappr": "^0.7.2",
     "gamestartr": "^0.7.13",
     "menugraphr": "^0.7.4",
     "stateholdr": "^0.7.3",
-    "userwrappr": "^0.7.3",
-    "changelinr": "^0.7.2",
-    "stringfilr": "^0.7.2"
+    "stringfilr": "^0.7.2",
+    "userwrappr": "^0.7.3"
   },
   "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
   "devDependencies": {
@@ -28,24 +28,26 @@
     "@types/sinon": "^4.1.3",
     "@types/sinon-chai": "^2.7.29",
     "chai": "^4.1.2",
+    "concurrently": "^3.5.1",
     "glob": "^7.1.2",
-    "lolex": "^2.3.0",
+    "lolex": "^2.3.1",
     "mkdirp": "^0.5.1",
     "mocha": "^5.0.0",
     "mocha-headless-chrome": "^1.8.2",
     "node-sass": "^4.7.2",
     "requirejs": "^2.3.5",
     "run-for-every-file": "^1.1.0",
-    "shenanigans-manager": "^0.2.20",
-    "sinon": "^4.1.6",
+    "shenanigans-manager": "^0.2.22",
+    "sinon": "^4.2.0",
     "sinon-chai": "^2.14.0",
     "stylelint": "^8.4.0",
     "stylelint-config-recommended-scss": "^3.0.0",
     "stylelint-scss": "^2.2.0",
     "tslint": "5.9.1",
-    "tsutils": "^2.19.0",
+    "tsutils": "^2.19.1",
     "typedoc": "^0.9.0",
     "typescript": "^2.6.2",
+    "watch": "^1.0.2",
     "webpack": "^3.10.0"
   },
   "license": "MIT",
@@ -83,7 +85,7 @@
     "test:setup:html": "shenanigans-manager generate-test-html",
     "test:setup:tsc": "tsc -p test",
     "verify": "npm run src && npm run test && npm run dist && npm run docs",
-    "watch": "tsc -p . -w"
+    "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "shenanigans": {
     "externals": [
