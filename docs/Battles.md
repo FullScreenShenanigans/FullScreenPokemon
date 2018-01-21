@@ -1,6 +1,6 @@
 ## Battles
 
-Battles in FullScreenPokemon are driven by the [`Battles`](../src/components/Battles.ts) component and run by [BattleMovr](https://github.com/FullScreenShenanigans/FullScreenPokemon).
+Battles in FullScreenPokemon are driven by the [`Battles`](../src/components/Battles.ts) component and run by [BattleMovr](https://github.com/FullScreenShenanigans/BattleMovr).
 BattleMovr provides for keeping track of two teams of actors; `Battles` adds FullScreenPokemon-specific logic such as visualizing the battles.
 
 ### Simulating battles
@@ -11,8 +11,7 @@ Its settings object requires a `teams` member that contains a descriptor for the
 Each team descriptor requires an `actors` array of created Pokemon.
 Those are most easily made with `FSP.equations.createPokemon`.
 
-Team descriptors can optionally also take a `leader` object that indicate the team is a trainer rather than a wild Pokemon.
-
+You can retrieve the Pokemon in the player's party with `FSP.itemsHolder.getItem("PokemonInParty");`.
 
 ```javascript
 // Starts a battle with a wild level 50 Mew in the player's party
@@ -36,6 +35,8 @@ FSP.battles.startBattle({
     }
 });
 ```
+
+Team descriptors can optionally also take a `leader` object that indicate the team is a trainer rather than a wild Pokemon.
 
 ```javascript
 // Starts a battle against a bug catcher
