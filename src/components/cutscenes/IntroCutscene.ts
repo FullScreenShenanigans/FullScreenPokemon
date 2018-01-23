@@ -33,7 +33,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
         this.gameStarter.things.add(oak);
         this.gameStarter.physics.setMidX(oak, this.gameStarter.mapScreener.middleX | 0);
         this.gameStarter.physics.setMidY(oak, this.gameStarter.mapScreener.middleY | 0);
-        
+
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 this.gameStarter.actions.animateFadeAttribute(
