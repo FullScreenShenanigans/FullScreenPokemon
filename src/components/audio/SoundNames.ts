@@ -17,6 +17,7 @@ export class SoundNames {
     public readonly guide = "Guide";
     public readonly gym = "Gym";
     public readonly intotheHall = "Into the Hall";
+    public readonly introduction = "Bill Origin from Cerulean";
     public readonly itemFanfare = "Item Fanfare";
     public readonly jigglypuffSong = "Jigglypuff Song";
     public readonly lastBattleRival = "Last Battle Rival";
