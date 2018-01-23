@@ -20,11 +20,11 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
 
         settings.oak = oak;
 
-        console.warn("Cannot find Introduction audio theme!");
-        // await this.gameStarter.audioPlayer.play(this.gameStarter.audio.names.introduction, {
-        //     alias: this.gameStarter.audio.aliases.theme,
-        //    loop: true,
-        // });
+        this.gameStarter.audioPlayer.play(this.gameStarter.audio.names.introduction, {
+            alias: this.gameStarter.audio.aliases.theme,
+            loop: true,
+        });
+
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onIntroFadeIn, oak);
 
         this.gameStarter.maps.setMap("Blank", "White");
