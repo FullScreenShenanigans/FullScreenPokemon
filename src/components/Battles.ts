@@ -189,6 +189,11 @@ export interface IPokemonBattleOptions {
      * Things displayed in the battle.
      */
     things: IBattleThings;
+
+    /**
+     * Audio theme to be played after the battle is done.
+     */
+    endingtheme: string;
 }
 
 /**
@@ -221,6 +226,7 @@ export interface IPartialBattleOptions {
      * Texts to display in menus.
      */
     texts?: Partial<IPartialTextGenerators>;
+
 }
 
 /**
@@ -409,13 +415,13 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 };
             }
         }
-
         return {
             ...partialBattleOptions,
             fleeAttempts: 0,
             teams,
             texts,
             theme: "Battle Trainer",
+            endingtheme: this.gameStarter.mapScreener.theme,
         } as IBattleOptions;
     }
 }
