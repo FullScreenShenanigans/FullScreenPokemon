@@ -226,7 +226,6 @@ export interface IPartialBattleOptions {
      * Texts to display in menus.
      */
     texts?: Partial<IPartialTextGenerators>;
-
 }
 
 /**
@@ -415,6 +414,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 };
             }
         }
+
         return {
             ...partialBattleOptions,
             fleeAttempts: 0,

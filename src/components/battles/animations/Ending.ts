@@ -72,10 +72,12 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralCompon
     private finalize(battleInfo: IBattleInfo, outcome: BattleOutcome, onComplete: () => void): void {
         this.gameStarter.menuGrapher.deleteMenu("Battle");
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+
         this.gameStarter.audioPlayer.play(battleInfo.endingtheme, {
             alias: this.gameStarter.audio.aliases.theme,
             loop: true,
         });
+
         for (const i in battleInfo.things) {
             this.gameStarter.physics.killNormal(battleInfo.things[i]);
         }
