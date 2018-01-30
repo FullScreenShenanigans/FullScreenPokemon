@@ -226,6 +226,11 @@ export interface IPartialBattleOptions {
      * Texts to display in menus.
      */
     texts?: Partial<IPartialTextGenerators>;
+
+    /**
+     * Specifies whether to play an ending theme or not - Default set to true
+     */
+    playEnding?: boolean;
 }
 
 /**
@@ -415,6 +420,10 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
         }
 
+        if (!partialBattleOptions.playEnding)
+        {
+            partialBattleOptions.playEnding = true;
+        }
         return {
             ...partialBattleOptions,
             fleeAttempts: 0,
