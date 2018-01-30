@@ -420,10 +420,10 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
         }
 
-        if (!partialBattleOptions.playEnding)
-        {
+        if (!partialBattleOptions.playEnding) {
             partialBattleOptions.playEnding = true;
         }
+
         return {
             ...partialBattleOptions,
             fleeAttempts: 0,
