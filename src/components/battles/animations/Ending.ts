@@ -73,15 +73,6 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralCompon
         this.gameStarter.menuGrapher.deleteMenu("Battle");
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
-        if (battleInfo.playEnding) {
-            this.gameStarter.audioPlayer.play(battleInfo.endingtheme, {
-                alias: this.gameStarter.audio.aliases.theme,
-                loop: true,
-            });
-        } else {
-            this.gameStarter.audioPlayer.stopAll();
-        }
-
         for (const i in battleInfo.things) {
             this.gameStarter.physics.killNormal(battleInfo.things[i]);
         }
@@ -92,6 +83,15 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralCompon
 
         if (battleInfo.onComplete) {
             battleInfo.onComplete(outcome);
+        }
+
+        if (battleInfo.endingtheme !== undefined && battleInfo.endingtheme !== "None") {
+            this.gameStarter.audioPlayer.play(battleInfo.endingtheme, {
+                alias: this.gameStarter.audio.aliases.theme,
+                loop: true,
+            });
+        } else {
+            this.gameStarter.audioPlayer.stopAll();
         }
 
         onComplete();

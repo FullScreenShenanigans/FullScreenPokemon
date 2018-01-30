@@ -190,10 +190,6 @@ export interface IPokemonBattleOptions {
      */
     things: IBattleThings;
 
-    /**
-     * Audio theme to be played after the battle is done.
-     */
-    endingtheme: string;
 }
 
 /**
@@ -228,9 +224,9 @@ export interface IPartialBattleOptions {
     texts?: Partial<IPartialTextGenerators>;
 
     /**
-     * Specifies whether to play an ending theme or not - Default set to true
+     * Audio theme to be played after the battle is done.
      */
-    playEnding?: boolean;
+    endingtheme?: string;
 }
 
 /**
@@ -420,8 +416,8 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
         }
 
-        if (!partialBattleOptions.playEnding) {
-            partialBattleOptions.playEnding = true;
+        if (partialBattleOptions.endingtheme === undefined) {
+             partialBattleOptions.endingtheme = this.gameStarter.mapScreener.theme;
         }
 
         return {
@@ -430,7 +426,6 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             teams,
             texts,
             theme: "Battle Trainer",
-            endingtheme: this.gameStarter.mapScreener.theme,
         } as IBattleOptions;
     }
 }
