@@ -189,7 +189,6 @@ export interface IPokemonBattleOptions {
      * Things displayed in the battle.
      */
     things: IBattleThings;
-
 }
 
 /**
