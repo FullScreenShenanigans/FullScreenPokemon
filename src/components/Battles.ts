@@ -221,6 +221,11 @@ export interface IPartialBattleOptions {
      * Texts to display in menus.
      */
     texts?: Partial<IPartialTextGenerators>;
+
+    /**
+     * Audio theme to be played after the battle is done.
+     */
+    endingtheme?: string;
 }
 
 /**
@@ -408,6 +413,10 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                     ...partialBattleOptions.teams.player,
                 };
             }
+        }
+
+        if (partialBattleOptions.endingtheme === undefined) {
+             partialBattleOptions.endingtheme = this.gameStarter.mapScreener.theme;
         }
 
         return {

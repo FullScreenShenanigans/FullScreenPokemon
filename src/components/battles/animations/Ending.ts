@@ -85,6 +85,13 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             battleInfo.onComplete(outcome);
         }
 
+        if (battleInfo.endingtheme !== undefined) {
+            this.gameStarter.audioPlayer.play(battleInfo.endingtheme, {
+                alias: this.gameStarter.audio.aliases.theme,
+                loop: true,
+            });
+        }
+
         onComplete();
     }
 }
