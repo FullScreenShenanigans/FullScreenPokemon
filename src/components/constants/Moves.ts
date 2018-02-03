@@ -405,7 +405,13 @@ export class Moves {
         },
         "Gust": {
             type: "Normal",
-            effects: [],
+            effects: [
+                {
+                    damage: 40,
+                    target: EffectTarget.defender,
+                    type: "damage",
+                },
+            ],
             accuracy: 100,
             PP: 35,
         },
