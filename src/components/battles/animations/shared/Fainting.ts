@@ -45,6 +45,19 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
                 const playerName = this.gameStarter.itemsHolder.getItem("name");
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
 
+                if (teamName === "opponent") {
+                    const experienceToGain =  this.gameStarter.equations.experienceGained(
+                        battleInfo.teams.player, battleInfo.teams.opponent);
+                    partyIsWipedText.push([battleInfo.teams.player.selectedActor.nickname,
+                                           " gained ", experienceToGain.toString(), " experience!"]);
+                    const levelUp = this.gameStarter.experience.gainExperience
+                    (battleInfo.teams.player.selectedActor, experienceToGain);
+                    if (levelUp) {
+                    partyIsWipedText.push([battleInfo.teams.player.selectedActor.nickname,
+                                           " grew to level ", (battleInfo.teams.player.selectedActor.level).toString(), "!"]);
+                    }
+                }
+
                 this.gameStarter.physics.killNormal(thing);
                 this.gameStarter.physics.killNormal(blank);
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
