@@ -29,6 +29,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
      *
      * @param pokemon   The pokemon to give experience to.
      * @param experience   The amount of experience to give.
+     * @returns True if the pokemon leveled up, false otherwise.
      */
     public gainExperience(pokemon: IPokemon, experience: number): boolean {
         pokemon.experience += experience;
