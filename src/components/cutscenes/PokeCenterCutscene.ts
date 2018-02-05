@@ -80,7 +80,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      * @param settings   Settings used for the cutscene.
      */
     public Healing(settings: any): void {
-        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty);
         const balls: IThing[] = [];
         const dt = 35;
         const left: number = settings.machine.left + 20;
@@ -154,7 +154,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      */
     public HealingComplete(settings: any, args: any): void {
         const balls: IThing[] = args.balls;
-        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
+        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty);
 
         for (const ball of balls) {
             this.gameStarter.physics.killNormal(ball);
@@ -179,11 +179,13 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-        const map: string = this.gameStarter.itemsHolder.getItem("map");
+        const map: string = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.map);
         const mapInfo: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
         const location: string | undefined = mapInfo.locationDefault;
 
-        this.gameStarter.itemsHolder.setItem("lastPokecenter", { map, location });
+        this.gameStarter.itemsHolder.setItem(
+            this.gameStarter.items.names.lastPokecenter,
+            { map, location });
     }
 
     /**

@@ -140,10 +140,10 @@ export class InterfaceSettingsFactory {
                 {
                     options: [
                         {
-                            getInitialValue: (): boolean => this.game.itemsHolder.getItem("autoSave"),
+                            getInitialValue: (): boolean => this.game.itemsHolder.getItem(this.game.items.names.autoSave),
                             saveValue: (autoSave: boolean): void => {
                                 this.game.itemsHolder.setAutoSave(autoSave);
-                                this.game.itemsHolder.setItem("autoSave", autoSave);
+                                this.game.itemsHolder.setItem(this.game.items.names.autoSave, autoSave);
 
                                 if (autoSave) {
                                     this.game.itemsHolder.saveAll();

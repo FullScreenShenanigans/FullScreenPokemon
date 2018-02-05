@@ -41,7 +41,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     public clearSavedData(): void {
         const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.exportItems();
 
-        const collectionKeys: string[] = this.gameStarter.itemsHolder.getItem("stateCollectionKeys");
+        const collectionKeys: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.stateCollectionKeys);
         if (collectionKeys) {
             for (const collection of collectionKeys) {
                 oldLocalStorage[collection] = this.gameStarter.itemsHolder.getItem(collection);
@@ -53,9 +53,9 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         }
 
         this.gameStarter.itemsHolder.clear();
-        this.gameStarter.itemsHolder.setItem("oldLocalStorage", oldLocalStorage);
-        this.gameStarter.itemsHolder.saveItem("oldLocalStorage");
-        this.gameStarter.itemsHolder.setItem("stateCollectionKeys", []);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.oldLocalStorage, oldLocalStorage);
+        this.gameStarter.itemsHolder.saveItem(this.gameStarter.items.names.oldLocalStorage);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.stateCollectionKeys, []);
     }
 
     /**
@@ -63,11 +63,12 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * hasn't been saved, the data is restored under localStorage.
      */
     public checkForOldStorageData(): void {
-        if (!this.gameStarter.itemsHolder.getItem("oldLocalStorage") || this.gameStarter.itemsHolder.getItem("gameStarted")) {
+        if (!this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.oldLocalStorage)
+            || this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.gameStarted)) {
             return;
         }
 
-        const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.getItem("oldLocalStorage");
+        const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.oldLocalStorage);
         for (const key in oldLocalStorage) {
             if (!oldLocalStorage.hasOwnProperty(key)) {
                 continue;
@@ -93,7 +94,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     public saveGame(showText: boolean = true): void {
         const ticksRecorded: number = this.gameStarter.fpsAnalyzer.getRecordedTicks();
 
-        this.gameStarter.itemsHolder.increase("time", ticksRecorded - this.gameStarter.ticksElapsed);
+        this.gameStarter.itemsHolder.increase(this.gameStarter.items.names.time, ticksRecorded - this.gameStarter.ticksElapsed);
         this.gameStarter.ticksElapsed = ticksRecorded;
 
         this.saveCharacterPositions();
@@ -178,7 +179,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
 
         this.gameStarter.menuGrapher.deleteActiveMenu();
         this.gameStarter.gameplay.startPlay();
-        this.gameStarter.itemsHolder.setItem("gameStarted", true);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.gameStarted, true);
     }
 
     /**
@@ -258,7 +259,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      */
     public addItemToBag(item: string, amount: number = 1): void {
         this.gameStarter.utilities.combineArrayMembers(
-            this.gameStarter.itemsHolder.getItem("items"),
+            this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.items),
             item,
             amount,
             "item",
@@ -272,7 +273,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem("Pokedex");
+        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokedex);
         const title: string = titleRaw.join("");
         const caught: boolean = status === PokedexListingStatus.Caught;
         const seen: boolean = caught || (status === PokedexListingStatus.Seen);
@@ -294,7 +295,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             };
         }
 
-        this.gameStarter.itemsHolder.setItem("Pokedex", pokedex);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.pokedex, pokedex);
     }
 
     /**
@@ -304,7 +305,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
-        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem("Pokedex");
+        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokedex);
         const pokemon: { [i: string]: IPokemonListing } = this.gameStarter.constants.pokemon.byName;
         const titlesSorted: string[] = Object.keys(pokedex)
             .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);

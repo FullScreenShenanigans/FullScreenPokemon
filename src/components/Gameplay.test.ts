@@ -48,7 +48,7 @@ describe("Gameplay", () => {
             // Arrange
             const { fsp } = stubBlankGame();
 
-            fsp.itemsHolder.setItem("gameStarted", true);
+            fsp.itemsHolder.setItem(fsp.items.names.gameStarted, true);
 
             // Act
             fsp.gameplay.startOptions();

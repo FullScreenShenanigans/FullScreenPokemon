@@ -80,7 +80,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
      * @param settings  Settings used for the cutscene.
      */
     public Challenge(): void {
-        const starterRival: string[] = this.gameStarter.itemsHolder.getItem("starterRival");
+        const starterRival: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.starterRival);
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
                 this.gameStarter.scenePlayer.startCutscene("RivalRoute22Leaves");
@@ -89,7 +89,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
                 opponent: {
                     leader: {
                         title: "RivalPortrait".split(""),
-                        nickname: this.gameStarter.itemsHolder.getItem("nameRival"),
+                        nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.nameRival),
                     },
                     nextCutscene: "RivalRoute22Leaves",
                     reward: 280,

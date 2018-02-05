@@ -20,7 +20,7 @@ export class OakIntroCutscene<TGameStartr extends FullScreenPokemon> extends Gen
         settings.triggerer.alive = false;
         this.gameStarter.stateHolder.addChange(settings.triggerer.id, "alive", false);
 
-        if (this.gameStarter.itemsHolder.getItem("starter")) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.starter)) {
             this.gameStarter.mapScreener.blockInputs = false;
             return;
         }

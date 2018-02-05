@@ -11,7 +11,7 @@ Its settings object requires a `teams` member that contains a descriptor for the
 Each team descriptor requires an `actors` array of created Pokemon.
 Those are most easily made with `FSP.equations.createPokemon`.
 
-You can retrieve the Pokemon in the player's party with `FSP.itemsHolder.getItem("PokemonInParty");`.
+You can retrieve the Pokemon in the player's party with `FSP.itemsHolder.getItem(FSP.items.names.pokemonInParty);`.
 
 ```javascript
 // Starts a battle with a wild level 50 Mew in the player's party
@@ -26,9 +26,9 @@ FSP.battles.startBattle({
             ]
         },
         player: {
-            actors: FSP.itemsHolder.getItem("PokemonInParty"),
+            actors: FSP.itemsHolder.getItem(FSP.items.names.pokemonInParty),
             leader: {
-                nickname: FSP.itemsHolder.getItem("name"),
+                nickname: FSP.itemsHolder.getItem(FSP.items.names.name),
                 title: "Player".split("")
             }
         }
@@ -66,7 +66,7 @@ FSP.battles.startBattle({
                 })
             ],
             leader: {
-                nickname: FSP.itemsHolder.getItem("name"),
+                nickname: FSP.itemsHolder.getItem(FSP.items.names.name),
                 title: "Player".split("")
             }
         }

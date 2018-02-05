@@ -636,9 +636,9 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         this.gameStarter.pixelDrawer.setBackground((this.gameStarter.areaSpawner.getArea() as IArea).background);
 
         if (location.area.map.name !== "Blank") {
-            this.gameStarter.itemsHolder.setItem("map", location.area.map.name);
-            this.gameStarter.itemsHolder.setItem("area", location.area.name);
-            this.gameStarter.itemsHolder.setItem("location", name);
+            this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.map, location.area.map.name);
+            this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.area, location.area.name);
+            this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.location, name);
         }
         this.setStateCollection(location.area);
 

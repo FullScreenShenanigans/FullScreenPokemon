@@ -70,7 +70,7 @@ describe("Items", () => {
                 },
             ];
 
-            fsp.itemsHolder.setItem("items", items);
+            fsp.itemsHolder.setItem(fsp.items.names.items, items);
 
             // Act
             fsp.menus.items.open(settings);
