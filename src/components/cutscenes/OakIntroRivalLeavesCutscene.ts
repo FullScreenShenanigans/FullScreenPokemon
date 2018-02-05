@@ -15,7 +15,7 @@ export class OakIntroRivalLeavesCutscene<TGameStartr extends FullScreenPokemon> 
     public AfterBattle(): void {
         this.gameStarter.mapScreener.blockInputs = true;
 
-        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty)) {
+        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
             this.gameStarter.battles.healPokemon(pokemon);
         }
 

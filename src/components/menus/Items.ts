@@ -3,7 +3,6 @@ import { GeneralComponent } from "gamestartr";
 import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IItemSchema } from "../constants/Items";
-import { ItemNames } from "../items/ItemNames";
 import { IMenuSchema } from "../Menus";
 
 /**
@@ -70,7 +69,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param settings   Custom attributes to apply to the menu.
      */
     public open(settings: IItemsMenuSettings): void {
-        const listings: IInventoryListing[] = settings.items || this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.items);
+        const listings: IInventoryListing[] = settings.items || this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items);
         const options: any[] = listings.map((listing: IInventoryListing): any =>
             ({
                 text: listing.item,
@@ -134,7 +133,7 @@ export class Items<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         if (this.gameStarter.flagSwapper.flags.heldItems) {
             options.push({
                 callback: (): void => {
-                    const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty);
+                    const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
                     const chosenPokemon = partyPokemon[0];
                     chosenPokemon.item = listing.item.split("");
                     listing.amount = listing.amount - 1;

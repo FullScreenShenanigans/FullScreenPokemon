@@ -2,12 +2,12 @@ import { GeneralComponent } from "gamestartr";
 
 import { component } from "babyioc";
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { ItemNames } from "./items/ItemNames";
+import { ItemNames } from "./storage/ItemNames";
 
 /**
  * Settings for storing items in ItemsHoldrs.
  */
-export class Items<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Storage<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
      * Keys for ItemsHoldr items.
      */

@@ -47,7 +47,7 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
 export const stubBlankGame = (settings?: IGameStartrConstructorSettings) => {
     const { fsp, ...options } = stubFullScreenPokemon(settings);
 
-    fsp.itemsHolder.setItem(fsp.items.names.name, "Test".split(""));
+    fsp.itemsHolder.setItem(fsp.storage.names.name, "Test".split(""));
 
     fsp.maps.setMap("Blank");
     fsp.maps.addPlayer(0, 0);

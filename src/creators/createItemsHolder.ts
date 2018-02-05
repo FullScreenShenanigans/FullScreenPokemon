@@ -6,10 +6,10 @@ export const createItemsHolder = (fsp: FullScreenPokemon) => {
     const itemsHolder = new ItemsHoldr({
         prefix: "FullScreenPokemon::",
         values: {
-            [fsp.items.names.area]: {
+            [fsp.storage.names.area]: {
                 valueDefault: "",
             },
-            [fsp.items.names.badges]: {
+            [fsp.storage.names.badges]: {
                 valueDefault: {
                     Boulder: false,
                     Cascade: false,
@@ -21,52 +21,52 @@ export const createItemsHolder = (fsp: FullScreenPokemon) => {
                     Earth: false,
                 },
             },
-            [fsp.items.names.gameStarted]: {
+            [fsp.storage.names.gameStarted]: {
                 valueDefault: false,
             },
-            [fsp.items.names.hasPokedex]: {
+            [fsp.storage.names.hasPokedex]: {
                 valueDefault: false,
             },
-            [fsp.items.names.items]: {
+            [fsp.storage.names.items]: {
                 valueDefault: [],
             },
-            [fsp.items.names.lastPokecenter]: {
+            [fsp.storage.names.lastPokecenter]: {
                 valueDefault: {
                     map: "Pallet Town",
                     location: "Player's House Door",
                 },
             },
-            [fsp.items.names.location]: {
+            [fsp.storage.names.location]: {
                 valueDefault: "",
             },
-            [fsp.items.names.map]: {
+            [fsp.storage.names.map]: {
                 valueDefault: "",
             },
-            [fsp.items.names.money]: {
+            [fsp.storage.names.money]: {
                 valueDefault: 0,
                 minimum: 0,
             },
-            [fsp.items.names.name]: {},
-            [fsp.items.names.nameRival]: {},
-            [fsp.items.names.pokedex]: {
+            [fsp.storage.names.name]: {},
+            [fsp.storage.names.nameRival]: {},
+            [fsp.storage.names.pokedex]: {
                 valueDefault: {},
             },
-            [fsp.items.names.pokemonInParty]: {
+            [fsp.storage.names.pokemonInParty]: {
                 valueDefault: [],
             },
-            [fsp.items.names.pokemonInPC]: {
+            [fsp.storage.names.pokemonInPC]: {
                 valueDefault: [],
             },
-            [fsp.items.names.starter]: {},
-            [fsp.items.names.starterRival]: {},
-            [fsp.items.names.time]: {
+            [fsp.storage.names.starter]: {},
+            [fsp.storage.names.starterRival]: {},
+            [fsp.storage.names.time]: {
                 valueDefault: 0,
             },
         },
         ...fsp.settings.components.items,
     });
 
-    itemsHolder.setAutoSave(itemsHolder.getItem(fsp.items.names.autoSave));
+    itemsHolder.setAutoSave(itemsHolder.getItem(fsp.storage.names.autoSave));
 
     return itemsHolder;
 };

@@ -31,9 +31,9 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
         gameStarter: fsp,
         replacements: {
             "PLAYER": (): string[] =>
-                fsp.itemsHolder.getItem(fsp.items.names.name),
+                fsp.itemsHolder.getItem(fsp.storage.names.name),
             "RIVAL": (): string[] =>
-                fsp.itemsHolder.getItem(fsp.items.names.nameRival),
+                fsp.itemsHolder.getItem(fsp.storage.names.nameRival),
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
@@ -54,7 +54,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     "\t")
                     .split(""),
             "BADGES.LENGTH": (): string[] => {
-                const badges: { [i: string]: boolean } = fsp.itemsHolder.getItem(fsp.items.names.badges);
+                const badges: { [i: string]: boolean } = fsp.itemsHolder.getItem(fsp.storage.names.badges);
                 let total = 0;
 
                 for (const i in badges) {
@@ -66,7 +66,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 return total.toString().split("");
             },
             "POKEDEX.LENGTH": (): string[] => {
-                const pokedex: IPokedexListing[] = fsp.itemsHolder.getItem(fsp.items.names.pokedex);
+                const pokedex: IPokedexListing[] = fsp.itemsHolder.getItem(fsp.storage.names.pokedex);
                 if (!pokedex || !pokedex.length) {
                     return ["0"];
                 }
@@ -80,7 +80,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     .split("");
             },
             "TIME": (): string[] => {
-                const ticksRecorded: number = fsp.itemsHolder.getItem(fsp.items.names.time);
+                const ticksRecorded: number = fsp.itemsHolder.getItem(fsp.storage.names.time);
                 const ticksUnrecorded: number = fsp.fpsAnalyzer.getRecordedTicks() - fsp.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
                 const secondsTotal: number = Math.floor(ticksTotal / ((fsp.settings.components.runner || {}).interval || 1) || 0);
@@ -102,7 +102,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 return (hours + ":" + minutes).split("");
             },
             "MONEY": (): string[] =>
-                fsp.itemsHolder.getItem(fsp.items.names.money).toString().split(""),
+                fsp.itemsHolder.getItem(fsp.storage.names.money).toString().split(""),
         },
         sounds: {
             onInteraction: "Menu Bleep",

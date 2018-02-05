@@ -57,7 +57,7 @@ export class Ending<TGameStartr extends FullScreenPokemon> extends GeneralCompon
 
         if (this.gameStarter.battles.isPartyWiped()) {
             this.gameStarter.battles.healParty();
-            this.gameStarter.maps.setMap(this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.lastPokecenter));
+            this.gameStarter.maps.setMap(this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.lastPokecenter));
             this.gameStarter.mapScreener.blockInputs = false;
         }
     }

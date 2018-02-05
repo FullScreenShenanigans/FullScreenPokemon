@@ -269,7 +269,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
      * @param settings   Settings used for the cutscene.
      */
     public PlayerNameConfirm(settings: any): void {
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.name, settings.name);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.name, settings.name);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
@@ -445,7 +445,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
      * @param settings   Settings used for the cutscene.
      */
     public RivalNameConfirm(settings: any): void {
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.nameRival, settings.name);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.nameRival, settings.name);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
@@ -603,7 +603,7 @@ export class IntroCutscene<TGameStartr extends FullScreenPokemon> extends Genera
 
         this.gameStarter.menuGrapher.deleteActiveMenu();
         this.gameStarter.scenePlayer.stopCutscene();
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.gameStarted, true);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.gameStarted, true);
 
         this.gameStarter.maps.setMap("Pallet Town", "Start Game");
     }

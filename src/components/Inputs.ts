@@ -275,7 +275,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownSelect);
 
-        const selectItem: string = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.selectItem);
+        const selectItem: string = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.selectItem);
         if (!selectItem) {
             return;
         }

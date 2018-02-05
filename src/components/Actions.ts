@@ -910,7 +910,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%",
         ];
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.badges)[leader]) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.badges)[leader]) {
             dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
         }
 
@@ -926,11 +926,11 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   The Solid to be affected.
      */
     public activateHMCharacter = (player: IPlayer, thing: IHMCharacter): void => {
-        if (thing.requiredBadge && !this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.badges)[thing.requiredBadge]) {
+        if (thing.requiredBadge && !this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.badges)[thing.requiredBadge]) {
             return;
         }
 
-        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty)) {
+        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
             for (const move of pokemon.moves) {
                 if (move.title === thing.moveName) {
                     thing.moveCallback(player, pokemon);
@@ -1053,9 +1053,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         this.gameStarter.mapScreener.bottom = screenOffsetY + this.gameStarter.mapScreener.height;
         this.gameStarter.mapScreener.left = screenOffsetX;
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.map, other.map);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.area, other.area);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.location, undefined);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.map, other.map);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.area, other.area);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.location, undefined);
 
         this.gameStarter.maps.setStateCollection(area);
 

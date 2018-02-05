@@ -49,7 +49,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
      * @param args   Settings for the routine.
      */
     public Challenge(settings: any, args: any): void {
-        const starterRival: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.starterRival);
+        const starterRival: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starterRival);
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
                 this.gameStarter.scenePlayer.startCutscene("OakIntroRivalLeaves");
@@ -58,7 +58,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                 opponent: {
                     leader: {
                         title: "RivalPortrait".split(""),
-                        nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.nameRival),
+                        nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.nameRival),
                     },
                     nextCutscene: "OakIntroRivalLeaves",
                     reward: 175,
@@ -86,7 +86,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
         };
         let blocks: number;
 
-        switch (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.starterRival).join("")) {
+        switch (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starterRival).join("")) {
             case "SQUIRTLE":
                 blocks = 2;
                 break;

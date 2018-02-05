@@ -32,7 +32,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         }
 
         // If there's already a starter, ignore this sad last ball...
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.starter)) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starter)) {
             return;
         }
 
@@ -105,7 +105,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         rival.dialog = dialogRival;
         this.gameStarter.stateHolder.addChange(rival.id, "dialog", dialogRival);
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.starter, settings.chosen.join(""));
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starter, settings.chosen.join(""));
         settings.triggerer.hidden = true;
         this.gameStarter.stateHolder.addChange(settings.triggerer.id, "hidden", true);
         this.gameStarter.stateHolder.addChange(settings.triggerer.id, "nocollide", true);
@@ -127,8 +127,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             this.gameStarter.scenePlayer.bindRoutine("PlayerChoosesNickname"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.starter, settings.chosen);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.pokemonInParty, [
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starter, settings.chosen);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokemonInParty, [
             this.gameStarter.equations.newPokemon({
                 level: 5,
                 title: settings.chosen,
@@ -168,7 +168,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * Cutscene for the player finishing the naming process.
      */
     public PlayerSetsNickname(): void {
-        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty);
+        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
         const menu: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         const result: string[] = menu.completeValue;
 
@@ -211,7 +211,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
 
         settings.rivalPokemon = starterRival;
         settings.rivalSteps = steps;
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.starterRival, starterRival);
+        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starterRival, starterRival);
         this.gameStarter.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
         const pokeball: IPokeball = this.gameStarter.utilities.getExistingThingById("Pokeball" + starterRival.join("")) as IPokeball;

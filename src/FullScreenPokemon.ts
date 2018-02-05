@@ -36,7 +36,6 @@ import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
 import { Inputs } from "./components/Inputs";
-import { Items } from "./components/Items";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
@@ -44,6 +43,7 @@ import { Mods } from "./components/Mods";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
+import { Storage } from "./components/Storage";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
@@ -311,12 +311,6 @@ export class FullScreenPokemon extends GameStartr {
     public readonly graphics: Graphics<this>;
 
     /**
-     * Settings for storing items in ItemsHoldrs.
-     */
-    @component(Items)
-    public readonly items: Items<this>;
-
-    /**
      * Routes user input.
      */
     @component(Inputs)
@@ -353,10 +347,10 @@ export class FullScreenPokemon extends GameStartr {
     public readonly physics: Physics<this>;
 
     /**
-     * Adds and processes new Things into the game.
+     * Saves and load game data.
      */
-    @component(Things)
-    public readonly things: Things<this>;
+    @component(Saves)
+    public readonly saves: Saves<this>;
 
     /**
      * Moves the screen and Things in it.
@@ -365,10 +359,16 @@ export class FullScreenPokemon extends GameStartr {
     public readonly scrolling: Scrolling<this>;
 
     /**
-     * Saves and load game data.
+     * Settings for storing items in ItemsHoldrs.
      */
-    @component(Saves)
-    public readonly saves: Saves<this>;
+    @component(Storage)
+    public readonly storage: Storage<this>;
+
+    /**
+     * Adds and processes new Things into the game.
+     */
+    @component(Things)
+    public readonly things: Things<this>;
 
     /**
      * Miscellaneous utility functions.

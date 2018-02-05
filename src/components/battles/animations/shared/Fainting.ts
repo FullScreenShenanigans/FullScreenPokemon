@@ -42,7 +42,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
             this.gameStarter.physics.getMidY(thing) + thing.height * scale,
             1,
             (): void => {
-                const playerName = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.name);
+                const playerName = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.name);
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
 
                 this.gameStarter.physics.killNormal(thing);
