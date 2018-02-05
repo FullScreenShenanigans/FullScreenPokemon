@@ -75,7 +75,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param settings   Custom attributes to apply to the menu.
      */
     public openPartyMenu(settings: IPartyMenuSettings): void {
-        const listings: IPokemon[] = settings.pokemon || this.gameStarter.itemsHolder.getItem("PokemonInParty");
+        const listings: IPokemon[] = settings.pokemon || this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty);
 
         this.gameStarter.menuGrapher.createMenu("Pokemon", settings);
         this.gameStarter.menuGrapher.addMenuList("Pokemon", {
@@ -168,12 +168,13 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param settings   Settings for the selected Pokemon, including its HM moves.
      */
     public openPokemonMenuContext(settings: any): void {
+        const badges = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.badges);
         const moves: IMove[] = settings.pokemon.moves;
         const options: any[] = [];
 
         for (const action of moves) {
             const move: IHMMoveSchema = this.gameStarter.constants.moves.byName[action.title];
-            if (move.partyActivate && move.requiredBadge && this.gameStarter.itemsHolder.getItem("badges")[move.requiredBadge]) {
+            if (move.partyActivate && move.requiredBadge && badges[move.requiredBadge]) {
                 options.push({
                     text: action.title.toUpperCase(),
                     callback: (): void => {

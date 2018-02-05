@@ -6,10 +6,10 @@ export const createItemsHolder = (fsp: FullScreenPokemon) => {
     const itemsHolder = new ItemsHoldr({
         prefix: "FullScreenPokemon::",
         values: {
-            area: {
+            [fsp.items.names.area]: {
                 valueDefault: "",
             },
-            badges: {
+            [fsp.items.names.badges]: {
                 valueDefault: {
                     Boulder: false,
                     Cascade: false,
@@ -21,52 +21,52 @@ export const createItemsHolder = (fsp: FullScreenPokemon) => {
                     Earth: false,
                 },
             },
-            gameStarted: {
+            [fsp.items.names.gameStarted]: {
                 valueDefault: false,
             },
-            hasPokedex: {
+            [fsp.items.names.hasPokedex]: {
                 valueDefault: false,
             },
-            items: {
+            [fsp.items.names.items]: {
                 valueDefault: [],
             },
-            lastPokecenter: {
+            [fsp.items.names.lastPokecenter]: {
                 valueDefault: {
                     map: "Pallet Town",
                     location: "Player's House Door",
                 },
             },
-            location: {
+            [fsp.items.names.location]: {
                 valueDefault: "",
             },
-            map: {
+            [fsp.items.names.map]: {
                 valueDefault: "",
             },
-            money: {
+            [fsp.items.names.money]: {
                 valueDefault: 0,
                 minimum: 0,
             },
-            name: {},
-            nameRival: {},
-            Pokedex: {
+            [fsp.items.names.name]: {},
+            [fsp.items.names.nameRival]: {},
+            [fsp.items.names.pokedex]: {
                 valueDefault: {},
             },
-            PokemonInParty: {
+            [fsp.items.names.pokemonInParty]: {
                 valueDefault: [],
             },
-            PokemonInPC: {
+            [fsp.items.names.pokemonInPC]: {
                 valueDefault: [],
             },
-            starter: {},
-            starterRival: {},
-            time: {
+            [fsp.items.names.starter]: {},
+            [fsp.items.names.starterRival]: {},
+            [fsp.items.names.time]: {
                 valueDefault: 0,
             },
         },
         ...fsp.settings.components.items,
     });
 
-    itemsHolder.setAutoSave(itemsHolder.getItem("autoSave"));
+    itemsHolder.setAutoSave(itemsHolder.getItem(fsp.items.names.autoSave));
 
     return itemsHolder;
 };

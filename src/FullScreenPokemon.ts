@@ -36,6 +36,7 @@ import { Fishing } from "./components/Fishing";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
 import { Inputs } from "./components/Inputs";
+import { Items } from "./components/Items";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
@@ -308,6 +309,12 @@ export class FullScreenPokemon extends GameStartr {
      */
     @component(Graphics)
     public readonly graphics: Graphics<this>;
+
+    /**
+     * Settings for storing items in ItemsHoldrs.
+     */
+    @component(Items)
+    public readonly items: Items<this>;
 
     /**
      * Routes user input.

@@ -50,7 +50,7 @@ describe("Pause", () => {
             // Arrange
             const { fsp } = stubBlankGame();
 
-            fsp.itemsHolder.setItem("PokemonInParty", [
+            fsp.itemsHolder.setItem(fsp.items.names.pokemonInParty, [
                 fsp.equations.createPokemon({
                     level: 1,
                     title: "RATTATA".split(""),
@@ -71,7 +71,7 @@ describe("Pause", () => {
             // Arrange
             const { fsp } = stubBlankGame();
 
-            fsp.itemsHolder.setItem("hasPokedex", false);
+            fsp.itemsHolder.setItem(fsp.items.names.hasPokedex, false);
 
             // Act
             fsp.menus.pause.open();
@@ -87,7 +87,7 @@ describe("Pause", () => {
             // Arrange
             const { fsp } = stubBlankGame();
 
-            fsp.itemsHolder.setItem("hasPokedex", true);
+            fsp.itemsHolder.setItem(fsp.items.names.hasPokedex, true);
 
             // Act
             fsp.menus.pause.open();

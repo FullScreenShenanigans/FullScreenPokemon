@@ -177,7 +177,7 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 this.gameStarter.stateHolder.addChange(bookLeft.id, "alive", false);
                 this.gameStarter.stateHolder.addChange(bookRight.id, "alive", false);
 
-                this.gameStarter.itemsHolder.setItem("hasPokedex", true);
+                this.gameStarter.itemsHolder.setItem(this.gameStarter.items.names.hasPokedex, true);
             },
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");

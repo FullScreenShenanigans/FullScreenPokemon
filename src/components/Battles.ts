@@ -341,7 +341,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @returns Whether a player's party is wiped.
      */
     public isPartyWiped(): boolean {
-        for (const chosenPokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+        for (const chosenPokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty)) {
             if (chosenPokemon.statistics.health.current !== 0) {
                 return false;
             }
@@ -354,7 +354,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * Heals party back to full health.
      */
     public healParty(): void {
-        for (const pokemon of this.gameStarter.itemsHolder.getItem("PokemonInParty")) {
+        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty)) {
             this.gameStarter.battles.healPokemon(pokemon);
         }
     }
@@ -390,9 +390,9 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 selector: "opponent",
             },
             player: {
-                actors: this.gameStarter.itemsHolder.getItem("PokemonInParty") as IPokemon[],
+                actors: this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty) as IPokemon[],
                 leader: {
-                    nickname: this.gameStarter.itemsHolder.getItem("name"),
+                    nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.name),
                     title: "PlayerBack".split(""),
                 },
                 selector: "player",

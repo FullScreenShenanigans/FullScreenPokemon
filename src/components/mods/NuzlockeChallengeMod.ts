@@ -57,8 +57,8 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
             // }
         },
         [this.eventNames.onFaint]: (thing: IPokemon, actors: IPokemon[]): void => {
-            const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInParty");
-            const pcPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem("PokemonInPC");
+            const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty);
+            const pcPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInPC);
 
             actors.splice(actors.indexOf(thing), 1);
             partyPokemon.splice(partyPokemon.indexOf(thing), 1);

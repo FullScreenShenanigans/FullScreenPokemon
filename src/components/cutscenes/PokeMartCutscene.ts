@@ -239,14 +239,14 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
     public TryPurchase(_settings: any, args: any): void {
         const costTotal: number = args.costTotal;
 
-        if (this.gameStarter.itemsHolder.getItem("money") < costTotal) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.money) < costTotal) {
             this.gameStarter.scenePlayer.playRoutine("FailPurchase", args);
             return;
         }
 
-        this.gameStarter.itemsHolder.decrease("money", args.costTotal);
+        this.gameStarter.itemsHolder.decrease(this.gameStarter.items.names.money, args.costTotal);
         this.gameStarter.menuGrapher.createMenu("Money");
-        this.gameStarter.itemsHolder.getItem("items").push({
+        this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.items).push({
             item: args.reference.item,
             amount: args.amount,
         });

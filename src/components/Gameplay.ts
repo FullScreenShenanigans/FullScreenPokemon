@@ -34,7 +34,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
         this.gameStarter.saves.checkForOldStorageData();
 
-        if (this.gameStarter.itemsHolder.getItem("gameStarted")) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.gameStarted)) {
             options.unshift({
                 text: "CONTINUE",
                 callback: (): void => this.startPlay(),
@@ -55,8 +55,8 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public startPlay(): void {
         this.gameStarter.maps.setMap(
-            this.gameStarter.itemsHolder.getItem("map") || "Blank",
-            this.gameStarter.itemsHolder.getItem("location"),
+            this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.map) || "Blank",
+            this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.location),
             true);
         this.gameStarter.maps.entrances.resume();
 

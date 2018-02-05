@@ -43,14 +43,14 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             },
         ];
 
-        if (this.gameStarter.itemsHolder.getItem("hasPokedex") === true) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.hasPokedex) === true) {
             options.unshift({
                 text: "%%%%%%%POKEDEX%%%%%%%",
                 callback: this.open,
             });
         }
 
-        if (this.gameStarter.itemsHolder.getItem("PokemonInParty").length !== 0) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.items.names.pokemonInParty).length !== 0) {
             options.unshift({
                 text: "%%%%%%%POKEMON%%%%%%%",
                 callback: (): void => {
