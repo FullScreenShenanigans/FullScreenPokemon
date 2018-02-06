@@ -62,6 +62,7 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
                     partyIsWipedText.push(
                         [playerName, " is out of useable Pokemon!"],
                         [playerName, " blacked out!"]);
+
                 }
                 this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");

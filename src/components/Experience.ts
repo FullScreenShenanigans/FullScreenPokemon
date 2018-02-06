@@ -1,4 +1,5 @@
 import { GeneralComponent } from "gamestartr";
+
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "./Battles";
 
@@ -14,6 +15,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
     public levelup(pokemon: IPokemon): void {
         pokemon.level += 1;
         pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+
         // TODO: display text box containing levelup info
 
         const evolvedForm: string[] | undefined = this.gameStarter.evolution.checkEvolutions(pokemon);
