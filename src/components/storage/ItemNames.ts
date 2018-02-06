@@ -84,7 +84,7 @@ export class ItemNames<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Pokemon in the player's PC storage.
      */
-    public readonly pokemonInPC = "pokemonInPc";
+    public readonly pokemonInPC = "pokemonInPC";
 
     /**
      * Item name the player has listed under select.

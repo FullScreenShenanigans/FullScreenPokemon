@@ -43,7 +43,7 @@ import { Mods } from "./components/Mods";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
-import { Storage } from "./components/Storage";
+import { IStorageItems, Storage } from "./components/Storage";
 import { IPlayer, IThing, Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
@@ -152,7 +152,7 @@ export class FullScreenPokemon extends GameStartr {
      * Cache-based wrapper around localStorage.
      */
     @component(createItemsHolder)
-    public readonly itemsHolder: ItemsHoldr;
+    public readonly itemsHolder: ItemsHoldr<IStorageItems>;
 
     /**
      * Storage container and lazy loader for GameStartr maps.

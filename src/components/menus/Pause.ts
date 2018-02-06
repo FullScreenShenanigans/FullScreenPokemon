@@ -43,7 +43,7 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             },
         ];
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.hasPokedex) === true) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.hasPokedex)) {
             options.unshift({
                 text: "%%%%%%%POKEDEX%%%%%%%",
                 callback: this.open,

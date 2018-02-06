@@ -275,12 +275,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownSelect);
 
-        const selectItem: string = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.selectItem);
+        const selectItem = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.selectItem);
         if (!selectItem) {
             return;
         }
 
-        const itemSchema: IItemSchema = this.gameStarter.constants.items.byName[selectItem];
+        const itemSchema: IItemSchema = this.gameStarter.constants.items.byName[selectItem.join("")];
         if (!itemSchema.bagActivate) {
             throw new Error("Currently selected item does not have a .bagActivate.");
         }

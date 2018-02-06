@@ -1,9 +1,9 @@
 import { GeneralComponent } from "gamestartr";
-import { IExportedItems } from "itemsholdr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { PokedexListingStatus } from "./Constants";
 import { IPokedex, IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
+import { IStorageItems } from "./Storage";
 import { ICharacter } from "./Things";
 
 /**
@@ -39,17 +39,17 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.exportItems();
+        const oldLocalStorage: IStorageItems & { [i: string]: any } = this.gameStarter.itemsHolder.exportItems();
 
         const collectionKeys: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.stateCollectionKeys);
         if (collectionKeys) {
             for (const collection of collectionKeys) {
-                oldLocalStorage[collection] = this.gameStarter.itemsHolder.getItem(collection);
+                oldLocalStorage[collection] = this.gameStarter.itemsHolder.getItem(collection as keyof IStorageItems);
             }
         }
 
         for (const key of Object.keys(oldLocalStorage)) {
-            this.gameStarter.itemsHolder.removeItem(key);
+            this.gameStarter.itemsHolder.removeItem(key as keyof IStorageItems);
         }
 
         this.gameStarter.itemsHolder.clear();
@@ -68,18 +68,20 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             return;
         }
 
-        const oldLocalStorage: IExportedItems = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.oldLocalStorage);
-        for (const key in oldLocalStorage) {
-            if (!oldLocalStorage.hasOwnProperty(key)) {
-                continue;
-            }
+        const oldLocalStorage = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.oldLocalStorage);
+        if (oldLocalStorage !== undefined) {
+            for (const key in oldLocalStorage) {
+                if (!oldLocalStorage.hasOwnProperty(key)) {
+                    continue;
+                }
 
-            const prefix = this.gameStarter.stateHolder.getPrefix();
+                const prefix = this.gameStarter.stateHolder.getPrefix();
 
-            if (key.slice(0, prefix.length) === prefix) {
-                this.gameStarter.stateHolder.setCollection(key.slice(prefix.length), oldLocalStorage[key]);
-            } else {
-                this.gameStarter.itemsHolder.setItem(key, oldLocalStorage[key]);
+                if (key.slice(0, prefix.length) === prefix) {
+                    this.gameStarter.stateHolder.setCollection(key.slice(prefix.length), oldLocalStorage[key as keyof IStorageItems]);
+                } else {
+                    this.gameStarter.itemsHolder.setItem(key as keyof IStorageItems, oldLocalStorage[key as keyof IStorageItems]);
+                }
             }
         }
 
@@ -173,7 +175,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
                 const split: string[] = key.split("::");
                 this.gameStarter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {
-                this.gameStarter.itemsHolder.setItem(key, data[key]);
+                this.gameStarter.itemsHolder.setItem(key as keyof IStorageItems, data[key]);
             }
         }
 
