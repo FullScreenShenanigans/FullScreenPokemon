@@ -45,22 +45,36 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       * @param partyIsWipedText   Text to be displayed when the opposing pokemon faints.
       *
       */
-    public processBattleExperience(battleInfo: IBattleInfo, partyIsWipedText: (string | string[])[][]): void {
+    public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
         const experienceToGain =  this.gameStarter.equations.experienceGained(
             battleInfo.teams.player, battleInfo.teams.opponent);
 
         // BattleInfo should keep track of all pokemon the player has sent out in the battle and process
         // them one by one if they have not fainted to allow for shared exp. The same logic will apply
         // for an exp share where the pokemon holding the exp share is always considered to have been "sent out"
-        partyIsWipedText.push([battleInfo.teams.player.selectedActor.nickname,
-                               " gained ", experienceToGain.toString(), " experience!"]);
+        // The code below will be applied to each sent out in the battle
+        const battleText: (string | string[])[][] = [[battleInfo.teams.player.selectedActor.nickname,
+                                                      " gained ", experienceToGain.toString(), " experience!"]];
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
         const levelUp = this.gainExperience(battleInfo.teams.player.selectedActor, experienceToGain);
-        console.log(battleInfo.teams.player.selectedActor.experience);
         if (levelUp) {
-            partyIsWipedText.push([battleInfo.teams.player.selectedActor.nickname, " grew to level ",
-                                   (battleInfo.teams.player.selectedActor.level).toString(), "!"]);
+            battleText.push([battleInfo.teams.player.selectedActor.nickname, " grew to level ",
+                             (battleInfo.teams.player.selectedActor.level).toString(), "!"]);
+            const canLearMove = false;
+            if (canLearMove) {
+                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", battleText,
+                                                           () => this.learnBattleMove(battleInfo.teams.player.selectedActor
+                                                                            ,         onComplete));
+            } else {
+                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", battleText, onComplete);
+            }
+        } else {
+            this.gameStarter.menuGrapher.addMenuDialog("GeneralText", battleText, onComplete);
         }
-        // Call Learn Move Function which checks level and checks if move can be learned.
-        // LearnMove(Pokemon);
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+    private learnBattleMove(pokemon: IPokemon, onComplete: () => void): boolean {
+        //Deals with the process of learning a move - can be moved to its own class/module
+        return true;
     }
 }

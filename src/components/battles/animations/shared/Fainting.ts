@@ -46,9 +46,15 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
 
                 if (teamName === "opponent") {
-                    this.gameStarter.experience.processBattleExperience(battleInfo, partyIsWipedText);
-                }
+                    this.gameStarter.menuGrapher.createMenu("GeneralText");
+                    this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText,
+                                                               () => this.gameStarter.experience.processBattleExperience(battleInfo
+                                                            ,                                                            onComplete));
+                    this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                    this.gameStarter.physics.killNormal(thing);
+                    this.gameStarter.physics.killNormal(blank);
 
+                } else {
                 this.gameStarter.physics.killNormal(thing);
                 this.gameStarter.physics.killNormal(blank);
                 this.gameStarter.menuGrapher.createMenu("GeneralText");
@@ -57,9 +63,10 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
                         [playerName, " is out of useable Pokemon!"],
                         [playerName, " blacked out!"]);
                 }
-
                 this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
                 this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            }
+
             });
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
