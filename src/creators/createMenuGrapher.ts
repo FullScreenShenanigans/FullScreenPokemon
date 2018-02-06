@@ -3,7 +3,7 @@ import {
     MenuGraphr,
 } from "menugraphr";
 
-import { IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
+import { IPokedex, IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
 import { IDialog, IMenuBase, IMenuSchema } from "../components/Menus";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -66,16 +66,14 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 return total.toString().split("");
             },
             "POKEDEX.LENGTH": (): string[] => {
-                const pokedex: IPokedexListing[] = fsp.itemsHolder.getItem(fsp.storage.names.pokedex);
-                if (!pokedex || !pokedex.length) {
+                const pokedex: IPokedex = fsp.itemsHolder.getItem(fsp.storage.names.pokedex);
+                if (!pokedex) {
                     return ["0"];
                 }
 
-                return pokedex
-                    .map((listing: IPokedexListing): number =>
-                        Number(listing.seen))
-                    .reduce((a: number, b: number): number =>
-                        a + b)
+                return Object.keys(pokedex)
+                    .map((listing): number => Number(pokedex[listing].seen))
+                    .reduce((a: number, b: number): number => a + b)
                     .toString()
                     .split("");
             },
