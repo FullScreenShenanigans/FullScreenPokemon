@@ -46,30 +46,47 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
 
                 if (teamName === "opponent") {
-                    this.gameStarter.menuGrapher.createMenu("GeneralText");
-                    this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText,
-                                                               () => this.gameStarter.experience.processBattleExperience(battleInfo
-                                                            ,                                                            onComplete));
-                    this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-                    this.gameStarter.physics.killNormal(thing);
-                    this.gameStarter.physics.killNormal(blank);
-
+                    this.processOpponentFainting(partyIsWipedText, onComplete, battleInfo, thing, blank);
                 } else {
-                this.gameStarter.physics.killNormal(thing);
-                this.gameStarter.physics.killNormal(blank);
-                this.gameStarter.menuGrapher.createMenu("GeneralText");
-                if (this.gameStarter.battles.isPartyWiped()) {
-                    partyIsWipedText.push(
-                        [playerName, " is out of useable Pokemon!"],
-                        [playerName, " blacked out!"]);
-
-                }
-                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                    this.processPlayerFainting(partyIsWipedText, onComplete, battleInfo, thing, blank, playerName);
             }
-
             });
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }
+     /**
+      * Helper function to start the process of gaining experience
+      */
+    private processOpponentFainting(
+        partyIsWipedText: (string | string[])[][],
+        onComplete: () => void, battleInfo: IBattleInfo,
+        thing: IThing, blank: IThing) {
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.gameStarter.menuGrapher.addMenuDialog(
+        "GeneralText", partyIsWipedText,
+        () => this.gameStarter.experience.processBattleExperience(battleInfo, onComplete));
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.gameStarter.physics.killNormal(thing);
+        this.gameStarter.physics.killNormal(blank);
+    }
+
+     /**
+      * Helper function to start the process of a player's pokemon fainitng
+      */
+    private processPlayerFainting(
+        partyIsWipedText: (string | string[])[][],
+        onComplete: () => void, battleInfo: IBattleInfo,
+        thing: IThing, blank: IThing, playerName: string) {
+            this.gameStarter.physics.killNormal(thing);
+            this.gameStarter.physics.killNormal(blank);
+            this.gameStarter.menuGrapher.createMenu("GeneralText");
+            if (this.gameStarter.battles.isPartyWiped()) {
+            partyIsWipedText.push(
+                [playerName, " is out of useable Pokemon!"],
+                [playerName, " blacked out!"]);
+
+            }
+            this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
+            this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        }
 }

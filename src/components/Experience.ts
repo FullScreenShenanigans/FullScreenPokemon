@@ -2,7 +2,8 @@ import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "./Battles";
-
+import { Pokemon } from "./constants/Pokemon";
+import { IPokeball } from "./Things";
 /**
  * Calculates experience gains and level ups for Pokemon.
  */
@@ -44,39 +45,71 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       * Processes experience gain for one or more pokemon
       *
       * @param battleInfo   Information about the current battle.
-      * @param partyIsWipedText   Text to be displayed when the opposing pokemon faints.
+      * @param onComplete   Handler for when this is done.
       *
       */
     public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
         const experienceToGain =  this.gameStarter.equations.experienceGained(
             battleInfo.teams.player, battleInfo.teams.opponent);
 
-        // BattleInfo should keep track of all pokemon the player has sent out in the battle and process
-        // them one by one if they have not fainted to allow for shared exp. The same logic will apply
-        // for an exp share where the pokemon holding the exp share is always considered to have been "sent out"
-        // The code below will be applied to each sent out in the battle
-        const battleText: (string | string[])[][] = [[battleInfo.teams.player.selectedActor.nickname,
-                                                      " gained ", experienceToGain.toString(), " experience!"]];
+        const experienceText: (string | string[])[][] = [[
+            battleInfo.teams.player.selectedActor.nickname,
+            ` gained ${experienceToGain} experience!`]];
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         const levelUp = this.gainExperience(battleInfo.teams.player.selectedActor, experienceToGain);
         if (levelUp) {
-            battleText.push([battleInfo.teams.player.selectedActor.nickname, " grew to level ",
-                             (battleInfo.teams.player.selectedActor.level).toString(), "!"]);
-            const canLearMove = false;
-            if (canLearMove) {
-                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", battleText,
-                                                           () => this.learnBattleMove(battleInfo.teams.player.selectedActor
-                                                                            ,         onComplete));
-            } else {
-                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", battleText, onComplete);
-            }
+            this.gameStarter.menuGrapher.addMenuDialog(
+                "GeneralText", experienceText,
+                () => this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete));
         } else {
-            this.gameStarter.menuGrapher.addMenuDialog("GeneralText", battleText, onComplete);
+            this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, onComplete);
         }
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
+
+     /**
+      * Processes level up for a given pokemon
+      *
+      * @param pokemon   Pokemon who is going to level up.
+      * @param onComplete   Handler for when this is done.
+      *
+      */
+    private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        const experienceText: (string | string[])[][] = [[
+            pokemon.nickname,
+            ` grew to level ${pokemon.level}!`]];
+        if (this.canLearnMove(pokemon)) {
+            this.gameStarter.menuGrapher.addMenuDialog(
+                "GeneralText", experienceText,
+                () => this.learnBattleMove(pokemon, onComplete));
+        } else {
+            this.gameStarter.menuGrapher.addMenuDialog(
+                "GeneralText", experienceText, onComplete);
+        }
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+
+     /**
+      * Determines whether a pokemon should or shouldn't learn a move
+      *
+      * @param pokemon   Pokemon who is going to going to learn a move.
+      * @returns True is pokemon can learn a move at the given level, false otherwise
+      *
+      */
+    private canLearnMove(pokemon: IPokemon): boolean {
+        return false;
+    }
+
+     /**
+      * Processes learning a move during a battle for a given pokemon
+      *
+      * @param pokemon   Pokemon who is going to going to learn a move.
+      * @param onComplete   Handler for when this is done.
+      *
+      */
     private learnBattleMove(pokemon: IPokemon, onComplete: () => void): boolean {
-        //Deals with the process of learning a move - can be moved to its own class/module
         return true;
     }
+
 }
