@@ -38,6 +38,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
             this.levelup(pokemon);
             return true;
         }
+
         return false;
     }
 
@@ -56,14 +57,12 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
             ` gained ${experienceToGain} experience!`]];
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         const levelUp = this.gainExperience(battleInfo.teams.player.selectedActor, experienceToGain);
+        let callBack = onComplete;
         if (levelUp) {
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText", experienceText,
-                () => this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete));
-        } else {
-            this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, onComplete);
+            callBack = () => this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete);
         }
 
+        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -78,15 +77,12 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
         const experienceText: (string | string[])[][] = [[
             pokemon.nickname,
             ` grew to level ${pokemon.level}!`]];
+        let callBack = onComplete;
         if (this.canLearnMoveAtLevel(pokemon)) {
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText", experienceText,
-                () => this.learnBattleMove(pokemon, onComplete));
-        } else {
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText", experienceText, onComplete);
+           callBack = () => this.learnBattleMove(pokemon, onComplete);
         }
 
+        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -97,6 +93,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       * @returns Whether a Pokemon can learn a move at its current level
       */
     private canLearnMoveAtLevel(pokemon: IPokemon): boolean {
+        // TODO: implement this check
         return false;
     }
 
@@ -108,7 +105,8 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       *
       */
     private learnBattleMove(pokemon: IPokemon, onComplete: () => void) {
-        return;
+        // TODO: implement this function
+        onComplete();
     }
 
 }
