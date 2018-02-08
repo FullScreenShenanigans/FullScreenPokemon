@@ -30,7 +30,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
      *
      * @param pokemon   The pokemon to give experience to.
      * @param experience   The amount of experience to give.
-     * @returns True if the pokemon leveled up, false otherwise.
+     * @returns Whether the Pokemon leveled up.
      */
     public gainExperience(pokemon: IPokemon, experience: number): boolean {
         pokemon.experience += experience;
@@ -46,7 +46,6 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       *
       * @param battleInfo   Information about the current battle.
       * @param onComplete   Handler for when this is done.
-      *
       */
     public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
         const experienceToGain =  this.gameStarter.equations.experienceGained(
@@ -64,6 +63,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
         } else {
             this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, onComplete);
         }
+
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -72,14 +72,13 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       *
       * @param pokemon   Pokemon who is going to level up.
       * @param onComplete   Handler for when this is done.
-      *
       */
     private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         const experienceText: (string | string[])[][] = [[
             pokemon.nickname,
             ` grew to level ${pokemon.level}!`]];
-        if (this.canLearnMove(pokemon)) {
+        if (this.canLearnMoveAtLevel(pokemon)) {
             this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText", experienceText,
                 () => this.learnBattleMove(pokemon, onComplete));
@@ -87,17 +86,17 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
             this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText", experienceText, onComplete);
         }
+
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
      /**
-      * Determines whether a pokemon should or shouldn't learn a move
+      * Determines whether a Pokemon should learn a move
       *
       * @param pokemon   Pokemon who is going to going to learn a move.
-      * @returns True is pokemon can learn a move at the given level, false otherwise
-      *
+      * @returns Whether a Pokemon can learn a move at its current level
       */
-    private canLearnMove(pokemon: IPokemon): boolean {
+    private canLearnMoveAtLevel(pokemon: IPokemon): boolean {
         return false;
     }
 
@@ -108,8 +107,8 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       * @param onComplete   Handler for when this is done.
       *
       */
-    private learnBattleMove(pokemon: IPokemon, onComplete: () => void): boolean {
-        return true;
+    private learnBattleMove(pokemon: IPokemon, onComplete: () => void) {
+        return;
     }
 
 }
