@@ -102,7 +102,6 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       *
       * @param pokemon   Pokemon who is going to going to learn a move.
       * @param onComplete   Handler for when this is done.
-      *
       */
     private learnBattleMove(pokemon: IPokemon, onComplete: () => void) {
         // TODO: implement this function
