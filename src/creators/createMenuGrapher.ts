@@ -72,8 +72,8 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 }
 
                 return Object.keys(pokedex)
-                    .map((listing): number => Number(pokedex[listing].seen))
-                    .reduce((a: number, b: number): number => a + b)
+                    .filter((listing): boolean => !!pokedex[listing].seen)
+                    .length
                     .toString()
                     .split("");
             },
