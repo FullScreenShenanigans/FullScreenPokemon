@@ -41,7 +41,7 @@
     "shenanigans-manager": "^0.2.23",
     "sinon": "^4.2.2",
     "sinon-chai": "^2.14.0",
-    "stylelint": "^8.4.0",
+    "stylelint": "^9.0.0",
     "stylelint-config-recommended-scss": "^3.0.0",
     "stylelint-scss": "^2.2.0",
     "tslint": "5.9.1",
