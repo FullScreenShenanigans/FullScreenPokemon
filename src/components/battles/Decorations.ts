@@ -3,11 +3,10 @@ import { IBattleTeam } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IBattleInfo, IBattleThings } from "../Battles";
+import { IBattleInfo, IBattleThings, IPokemon } from "../Battles";
 import { IMenu } from "../Menus";
 import { IThing } from "../Things";
 import { Health } from "./decorations/Health";
-
 /**
  * Decoration handlers used by FullScreenPokemon instances.
  */
@@ -67,11 +66,17 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @param filled   How many balls are filled.
      * @param reverse   Whether to reverse the balls order.
      */
-    public addPokeballs(menu: string, filled: number, reverse?: boolean): void {
+    public addPokeballs(menu: string, team: IPokemon[], reverse?: boolean): void {
         const text: string[][] = [];
-
+        const filled = team.length;
         for (let i = 0; i < filled; i += 1) {
-            text.push(["Ball"]);
+            if (team[i].statistics.health.current === 0) {
+                text.push(["BallFainted"]);
+            } else if (team[i].status !== undefined) {
+                text.push(["BallStatus"]);
+            } else {
+                text.push(["Ball"]);
+            }
         }
 
         for (let i: number = filled; i < 6; i += 1) {

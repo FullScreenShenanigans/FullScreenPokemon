@@ -61,7 +61,6 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
         if (levelUp) {
             callBack = () => this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete);
         }
-
         this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
