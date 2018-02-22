@@ -71,7 +71,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
         const filled = team.length;
         for (let i = 0; i < filled; i += 1) {
             if (team[i].statistics.health.current === 0) {
-                text.push(["BallFainted"]);
+                text.push(["BallFaint"]);
             } else if (team[i].status !== undefined) {
                 text.push(["BallStatus"]);
             } else {

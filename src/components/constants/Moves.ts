@@ -986,14 +986,8 @@ export class Moves {
         },
         "Thunder Wave": {
             type: "Electric",
-            effects: [
-                {
-                    status: "paralyzed",
-                    target: EffectTarget.defender,
-                    type: "status",
-                },
-            ],
-            accuracy: 90,
+            effects: [],
+            accuracy: 100,
             PP: 20,
         },
         "Thunderbolt": {
