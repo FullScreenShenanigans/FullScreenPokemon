@@ -114,7 +114,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
             this.gameStarter.menuGrapher.createMenu("BattlePlayerPokeballs");
             this.gameStarter.battles.decorations.addPokeballs(
                 "BattlePlayerPokeballs",
-                battleInfo.teams.player.actors.length);
+                battleInfo.teams.player.actors);
         }
 
         if (battleInfo.teams.opponent.leader) {
@@ -122,7 +122,7 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
             this.gameStarter.menuGrapher.createMenu("BattleOpponentPokeballs");
             this.gameStarter.battles.decorations.addPokeballs(
                 "BattleOpponentPokeballs",
-                battleInfo.teams.opponent.actors.length,
+                battleInfo.teams.opponent.actors,
                 true);
         }
     }
