@@ -49,7 +49,7 @@
     "typedoc": "^0.10.0",
     "typescript": "^2.7.1",
     "watch": "^1.0.2",
-    "webpack": "^3.10.0"
+    "webpack": "^4.0.0"
   },
   "license": "MIT",
   "name": "fullscreenpokemon",
