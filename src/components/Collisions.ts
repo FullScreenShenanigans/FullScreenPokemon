@@ -390,7 +390,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             }
         }
 
-        if (thing.player === false) {
+        if (thing.title !== "Player") {
             return false;
         }
 
