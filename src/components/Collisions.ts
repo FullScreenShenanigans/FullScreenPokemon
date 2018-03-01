@@ -373,11 +373,11 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      */
     public collideLedge = (thing: ICharacter, other: IThing): boolean => {
         if (thing.ledge || !thing.walking) {
-            return false;
+            return true;
         }
 
         if (thing.direction !== other.direction) {
-            return true;
+            return false;
         }
 
         if (thing.direction % 2 === 0) {
@@ -393,8 +393,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         if (thing.title !== "Player") {
             return false;
         }
-
         this.gameStarter.actions.ledges.startLedgeHop(thing, other);
+
         return true;
     }
 
