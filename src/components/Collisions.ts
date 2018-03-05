@@ -393,6 +393,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         if (thing.title !== "Player") {
             return false;
         }
+
         this.gameStarter.actions.ledges.startLedgeHop(thing, other);
 
         return true;
