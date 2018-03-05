@@ -391,6 +391,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         }
 
         if (thing.title !== "Player") {
+            this.setThingBordering(thing, other, thing.direction);
             return false;
         }
 
