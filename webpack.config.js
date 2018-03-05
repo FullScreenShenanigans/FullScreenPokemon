@@ -9,10 +9,6 @@ const getEntriesAndSources = () => {
             {
                 entry: `./src/index.js`,
                 name: package.shenanigans.name,
-                sources: [
-                    "./**/*.js",
-                    "!./**/*.test.js",
-                ]
             }
         ]
         : package.shenanigans.entries;
@@ -44,9 +40,13 @@ for (const pair of entriesAndSources) {
 module.exports = {
     entry,
     externals,
+    mode: "production",
     output: {
         filename: "[name].js",
         libraryTarget: "amd",
         path: path.join(__dirname, "dist"),
+    },
+    performance: {
+        hints: false
     }
 };
