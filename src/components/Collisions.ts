@@ -97,12 +97,11 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                 // tslint:disable-next-line:no-parameter-reassignment
                 [thing, other] = [other as ICharacter, thing];
             }
-
+            //console.log(other);
             // The other's collide may return true to cancel overlapping checks
             if (other.collide && other.collide.call(this, thing, other)) {
                 return false;
             }
-
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
@@ -375,7 +374,8 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         if (thing.ledge || !thing.walking) {
             return true;
         }
-
+        console.log(thing);
+        console.log(other);
         if (thing.direction !== other.direction) {
             return false;
         }
@@ -389,12 +389,6 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                 return true;
             }
         }
-
-        if (thing.title !== "Player") {
-            this.setThingBordering(thing, other, thing.direction);
-            return false;
-        }
-
         this.gameStarter.actions.ledges.startLedgeHop(thing, other);
 
         return true;

@@ -46,6 +46,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         if (thing.roamingDirections.indexOf(direction) === -1) {
             this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
         } else {
+            //if (thing.name === "CaterpillerGuy") {console.log(thing.bordering); }
             this.gameStarter.actions.walking.startWalking(thing, direction);
         }
     }
@@ -77,7 +78,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 direction += 1;
             }
         }
-
+        direction = 2;
         return direction;
     }
 }

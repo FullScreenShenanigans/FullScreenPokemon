@@ -38,7 +38,6 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
         if (Math.abs(thing.left - other.right) < 4) {
             return Direction.Left;
         }
-
         return undefined;
     }
 
