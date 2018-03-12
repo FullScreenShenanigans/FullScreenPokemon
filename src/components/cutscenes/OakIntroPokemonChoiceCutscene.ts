@@ -1,3 +1,4 @@
+import { IMove, IStatistic } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -124,7 +125,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                     "Do you want to give a nickname to ", settings.chosen, "?",
                 ],
             ],
-            this.gameStarter.scenePlayer.bindRoutine("PlayerChoosesNickname"));
+            /*this.gameStarter.scenePlayer.bindRoutine("PlayerChoosesNickname")*/
+            this.gameStarter.scenePlayer.bindRoutine("lol"));
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
 
         this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starter, settings.chosen);
@@ -134,7 +136,134 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                 title: settings.chosen,
             }),
         ]);
+
         this.gameStarter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
+    }
+
+    public lol(): void {
+        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
+        this.gameStarter.menuGrapher.deleteMenu("GeneralText"); //it's needed
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+
+        const team: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
+        const peck: IMove = {
+            title: "Peck",
+            remaining: 10,
+            uses: 10,
+        };
+        const bite: IMove = {
+            title: "Bite",
+            remaining: 10,
+            uses: 10,
+        };
+        const bubble: IMove = {
+            title: "Bubble",
+            remaining: 10,
+            uses: 10,
+        };
+        team[0].moves[2] = peck;
+        team[0].moves[3] = bite;
+
+        if (team[0].moves.length < 4) {
+            this.gameStarter.menuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    [
+                        team[0].title.join("") + " learned PECK!",
+                    ],
+                ],
+                (): void => {
+
+                    team[0].moves[3] = bubble;
+                    this.gameStarter.menuGrapher.deleteActiveMenu();
+                });
+        } else {
+            this.gameStarter.menuGrapher.addMenuDialog(
+                "GeneralText",
+                [
+                    [
+                        team[0].title.join("") + " is trying to learn " + bubble.title + "!",
+                    ],
+                    "But, " + team[0].title.join("") + " can't learn more than 4 moves!",
+                    [
+                        "Delete an older move to make room for " + bubble.title + "?",
+                    ],
+                ],
+                (): void => {
+                    this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                        killOnB: ["GeneralText"],
+                    });
+                    console.log("lol: " + team[0]);
+                    this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                        options: [
+                            {
+                                text: "YES",
+                                callback: this.gameStarter.scenePlayer.bindRoutine("PlayerTakesPokemon"),
+                            },
+                            {
+                                text: "NO",
+                                callback: this.gameStarter.scenePlayer.bindRoutine("RefuseLearnMove", team[0], bubble),
+                            }],
+                    });
+                    this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+                });
+        }
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+
+    public RefuseLearnMove(pokemon: IPokemon, move: IMove) {
+
+        console.log("Refuse Learn: " + pokemon.title + " Move: " + move.title);
+        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
+        this.gameStarter.menuGrapher.deleteMenu("GeneralText"); //it's needed
+        this.gameStarter.menuGrapher.createMenu("GeneralText"); //you have to link back to lol() if it's no.
+
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                [
+                    "Abandon learning " + move.title + "?",
+                ],
+            ],
+            (): void => {
+                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                    killOnB: ["GeneralText"],
+                });
+                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                    options: [
+                        {
+                            text: "YES",
+                            callback: this.gameStarter.scenePlayer.bindRoutine("EndLearnMove", pokemon, move),
+                        },
+                        {
+                            text: "NO",
+                            callback: this.gameStarter.scenePlayer.bindRoutine("lol"),
+                        }],
+                });
+                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+            });
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
+
+    public EndLearnMove(pokemon: IPokemon, move: IMove) {
+        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
+        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
+
+        console.log("PKMN: " + pokemon.title + " Move: " + move.title);
+
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                [
+                    "Move is null here!", //pokemon.title.join("") + " did not learn " + move.title + "!"
+                ],
+            ],
+            (): void => {
+                this.gameStarter.menuGrapher.deleteActiveMenu();
+            });
+
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
