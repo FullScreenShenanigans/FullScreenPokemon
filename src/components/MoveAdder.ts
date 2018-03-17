@@ -27,72 +27,103 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
         this.gameStarter.menuGrapher.deleteMenu("GeneralText"); //it's needed
 
         let counter = false;
-        pokemon.moves.forEach((element) => {
+        for (const element of pokemon.moves) {
             if (element.title.toUpperCase() === move.title.toUpperCase()) {
                 counter = true;
             }
-        });
+        }
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         if (counter) { //dialog for when a pokemon already knows the move
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    [
-                        pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
-                    ],
-                ],
-                (): void => {
-                    this.gameStarter.menuGrapher.deleteActiveMenu();
-                },
-            );
+            this.alreadyKnowsMove(pokemon, move);
         } else if (pokemon.moves.length < 4) { //dialog for when pokemon has no move conflicts
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    [
-                        pokemon.title.join("") + " learned " + move.title.toUpperCase() + "!",
-                    ],
-                ],
-                (): void => {
-                    this.addMove(pokemon, move, pokemon.moves.length);
-                    this.gameStarter.menuGrapher.deleteActiveMenu();
-                },
-            );
+            this.learnsNewMove(pokemon, move);
         } else { //dialog for when a pokemon has more than 4 moves and needs to delete one
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    [
-                        pokemon.title.join("") + " is trying to learn " + move.title.toUpperCase() + "!",
-                    ],
-                    "But, " + pokemon.title.join("") + " can't learn more than 4 moves!",
-                    [
-                        "Delete an older move to make room for " + move.title.toUpperCase() + "?",
-                    ],
-                ],
-                (): void => {
-                    this.gameStarter.menuGrapher.createMenu("Yes/No", {
-                        killOnB: ["GeneralText"], //kills menu when this menu is killed
-                    });
-                    this.gameStarter.menuGrapher.addMenuList("Yes/No", {
-                        options: [
-                            {
-                                text: "YES",
-                                callback: () => this.acceptLearnMove(pokemon, move),
-                            },
-                            {
-                                text: "NO",
-                                callback: () => this.refuseLearnMove(pokemon, move),
-                            }],
-                    });
-                    this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
-                });
+            this.resolveMoveConflict(pokemon, move);
         }
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Brings up the dialog for when a move conflict exists and the player wants to replace a move.
+     * Provides the dialog in the case that a Pokemon is trying to learn a move it already knows.
+     *
+     * @param pokemon   The pokemon whose moveset is being modified.
+     * @param move   The move that's going to be added into the moveset.
+     */
+    private alreadyKnowsMove(pokemon: IPokemon, move: IMove) {
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                [
+                    pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
+                ],
+            ],
+            (): void => {
+                this.gameStarter.menuGrapher.deleteActiveMenu();
+            },
+        );
+    }
+
+    /**
+     * Provides the dialog for when a Pokemon has an open move slot and doesn't need to swap out an old move to learn a new one.
+     *
+     * @param pokemon   The pokemon whose moveset is being modified.
+     * @param move   The move that's going to be added into the moveset.
+     */
+    private learnsNewMove(pokemon: IPokemon, move: IMove) {
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                [
+                    pokemon.title.join("") + " learned " + move.title.toUpperCase() + "!",
+                ],
+            ],
+            (): void => {
+                this.addMove(pokemon, move, pokemon.moves.length);
+                this.gameStarter.menuGrapher.deleteActiveMenu();
+            },
+        );
+    }
+
+    /**
+     * Provides the dialog in the case that a Pokemon must swap out an old move for a new one.
+     * This assumes that the Pokemon already has 4 moves.
+     *
+     * @param pokemon   The pokemon whose moveset is being modified.
+     * @param move   The move that's going to be added into the moveset.
+     */
+    private resolveMoveConflict(pokemon: IPokemon, move: IMove) {
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                [
+                    pokemon.title.join("") + " is trying to learn " + move.title.toUpperCase() + "!",
+                ],
+                "But, " + pokemon.title.join("") + " can't learn more than 4 moves!",
+                [
+                    "Delete an older move to make room for " + move.title.toUpperCase() + "?",
+                ],
+            ],
+            (): void => {
+                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                    killOnB: ["GeneralText"], //kills menu when this menu is killed
+                });
+                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                    options: [
+                        {
+                            text: "YES",
+                            callback: () => this.acceptLearnMove(pokemon, move),
+                        },
+                        {
+                            text: "NO",
+                            callback: () => this.refuseLearnMove(pokemon, move),
+                        }],
+                });
+                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+        });
+    }
+
+    /**
+     * Brings up the dialog for selecting a move to replace with a new move.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
@@ -146,7 +177,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     }
 
     /**
-     * A helper function for acceptLearnMove().
+     * A function that gives the final dialog lines for resolving a move conflict as well as actually teaches
+     * a Pokemon a new move.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
