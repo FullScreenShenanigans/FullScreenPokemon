@@ -24,7 +24,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      */
     public startDialog(pokemon: IPokemon, move: IMove): void {
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText"); //it's needed
+        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
         let counter = false;
         for (const element of pokemon.moves) {
@@ -105,7 +105,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
             ],
             (): void => {
                 this.gameStarter.menuGrapher.createMenu("Yes/No", {
-                    killOnB: ["GeneralText"], //kills menu when this menu is killed
+                    killOnB: ["GeneralText"],
                 });
                 this.gameStarter.menuGrapher.addMenuList("Yes/No", {
                     options: [
@@ -213,8 +213,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      */
     private refuseLearnMove(pokemon: IPokemon, move: IMove) {
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText"); //it's needed
-        this.gameStarter.menuGrapher.createMenu("GeneralText"); //you have to link back to lol() if it's no.
+        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+        this.gameStarter.menuGrapher.createMenu("GeneralText");
 
         this.gameStarter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -225,7 +225,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
             ],
             (): void => {
                 this.gameStarter.menuGrapher.createMenu("Yes/No", {
-                    killOnB: ["GeneralText"], //kills menu when this menu is killed
+                    killOnB: ["GeneralText"],
                 });
                 this.gameStarter.menuGrapher.addMenuList("Yes/No", {
                     options: [
