@@ -26,45 +26,50 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
         this.gameStarter.menuGrapher.deleteMenu("GeneralText");
 
-        let counter = false;
-        for (const element of pokemon.moves) {
-            if (element.title.toUpperCase() === move.title.toUpperCase()) {
-                counter = true;
-            }
-        }
         this.gameStarter.menuGrapher.createMenu("GeneralText");
-        if (counter) { //dialog for when a pokemon already knows the move
-            this.alreadyKnowsMove(pokemon, move);
-        } else if (pokemon.moves.length < 4) { //dialog for when pokemon has no move conflicts
+        if (this.alreadyKnowsMove(pokemon, move)) {
+            return;
+        }
+        if (pokemon.moves.length < 4) {
             this.learnsNewMove(pokemon, move);
-        } else { //dialog for when a pokemon has more than 4 moves and needs to delete one
+        } else {
             this.resolveMoveConflict(pokemon, move);
         }
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Provides the dialog in the case that a Pokemon is trying to learn a move it already knows.
+     * Checks if a Pokemon is trying to learn a move it already knows.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
      */
-    private alreadyKnowsMove(pokemon: IPokemon, move: IMove) {
-        this.gameStarter.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
+    private alreadyKnowsMove(pokemon: IPokemon, move: IMove): boolean {
+        let counter = false;
+        for (const element of pokemon.moves) {
+            if (element.title === move.title) {
+                counter = true;
+            }
+        }
+
+        if (counter) {
+            this.gameStarter.menuGrapher.addMenuDialog(
+                "GeneralText",
                 [
-                    pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
+                    [
+                        pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
+                    ],
                 ],
-            ],
-            (): void => {
-                this.gameStarter.menuGrapher.deleteActiveMenu();
-            },
-        );
+                (): void => {
+                    this.gameStarter.menuGrapher.deleteActiveMenu();
+                },
+            );
+        }
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        return counter;
     }
 
     /**
-     * Provides the dialog for when a Pokemon has an open move slot and doesn't need to swap out an old move to learn a new one.
+     * Provides dialog for when a Pokemon has an open move slot.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
@@ -82,10 +87,11 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                 this.gameStarter.menuGrapher.deleteActiveMenu();
             },
         );
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Provides the dialog in the case that a Pokemon must swap out an old move for a new one.
+     * Provides dialog in the case that a Pokemon must swap out an old move for a new one.
      * This assumes that the Pokemon already has 4 moves.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
@@ -120,10 +126,11 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                 });
                 this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
         });
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Brings up the dialog for selecting a move to replace with a new move.
+     * Provides dialog for selecting an old move to be replaced.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
@@ -141,6 +148,12 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
             (): void => {
                 const moves: IMove[] = pokemon.moves;
 
+                const options: any[] = moves.map((temp: IMove): any =>
+                ({
+                    text: temp.title.toUpperCase(),
+                    callback: () => this.teachMove(pokemon, move, pokemon.moves.indexOf(temp)),
+                }));
+
                 const newPos: IMenuSchemaPosition = {
                     offset: {
                         top: -80,
@@ -151,25 +164,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                     position: newPos,
                     killOnB: ["GeneralText"],
                 });
-                this.gameStarter.menuGrapher.addMenuList("BattleFightList", {
-                    options: [
-                        {
-                            text: moves[0].title.toUpperCase(),
-                            callback: () => this.teachMove(pokemon, move, 0),
-                        },
-                        {
-                            text: moves[1].title.toUpperCase(),
-                            callback: () => this.teachMove(pokemon, move, 1),
-                        },
-                        {
-                            text: moves[2].title.toUpperCase(),
-                            callback: () => this.teachMove(pokemon, move, 2),
-                        },
-                        {
-                            text: moves[3].title.toUpperCase(),
-                            callback: () => this.teachMove(pokemon, move, 3),
-                        }],
-                });
+                this.gameStarter.menuGrapher.addMenuList("BattleFightList", { options });
                 this.gameStarter.menuGrapher.setActiveMenu("BattleFightList");
             },
         );
@@ -177,8 +172,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     }
 
     /**
-     * A function that gives the final dialog lines for resolving a move conflict as well as actually teaches
-     * a Pokemon a new move.
+     * Provides dialog for resolving a move conflict and teaching a Pokemon a new move.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
@@ -206,7 +200,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     }
 
     /**
-     * Brings up the dialog for when a move conflict exists and the player doesn't want to continue.
+     * Provides dialog for when a move conflict exists and the player doesn't want to continue.
      *
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
