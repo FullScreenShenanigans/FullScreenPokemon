@@ -20,7 +20,9 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
         if (this.gameStarter.utilities.getExistingThingById("Oak").hidden) {
             this.gameStarter.scenePlayer.stopCutscene();
 
-            this.gameStarter.menuGrapher.createMenu("GeneralText");
+            this.gameStarter.menuGrapher.createMenu("GeneralText", {
+                deleteOnFinish: true,
+            });
             this.gameStarter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
