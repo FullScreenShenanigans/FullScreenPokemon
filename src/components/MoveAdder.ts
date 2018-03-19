@@ -1,6 +1,7 @@
 import { IMove } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 import { IMenuSchemaPosition, IMenuSchemaPositionOffset } from "menugraphr";
+
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 
@@ -8,9 +9,9 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Adds a new move to a Pokemon's set of moves.
      *
-     * @param pokemon   The pokemon whose moveset is being modified.
-     * @param move   The move that's going to be added into the moveset.
-     * @param index   The position the move is going into in the Pokemon's moves.
+     * @param pokemon   Pokemon whose moveset is being modified.
+     * @param move   Move that's going to be added into the moveset.
+     * @param index   Position the move is going into in the Pokemon's moves.
      */
     public addMove(pokemon: IPokemon, move: IMove, index: number) {
         pokemon.moves[index] = move;
@@ -19,8 +20,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Brings up the dialog for teaching a Pokemon a new move.
      *
-     * @param pokemon   The pokemon whose moveset is being modified.
-     * @param move   The move that's going to be added into the moveset.
+     * @param pokemon   Pokemon whose moveset is being modified.
+     * @param move   Move that's going to be added into the moveset.
      */
     public startDialog(pokemon: IPokemon, move: IMove): void {
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
@@ -30,6 +31,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
         if (this.alreadyKnowsMove(pokemon, move)) {
             return;
         }
+
         if (pokemon.moves.length < 4) {
             this.learnsNewMove(pokemon, move);
         } else {
@@ -44,7 +46,6 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   The move that's going to be added into the moveset.
      */
     private alreadyKnowsMove(pokemon: IPokemon, move: IMove): boolean {
-
         for (const element of pokemon.moves) {
             if (element.title === move.title) {
                 this.gameStarter.menuGrapher.addMenuDialog(
@@ -130,8 +131,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Provides dialog for selecting an old move to be replaced.
      *
-     * @param pokemon   The pokemon whose moveset is being modified.
-     * @param move   The move that's going to be added into the moveset.
+     * @param pokemon   Pokemon whose moveset is being modified.
+     * @param move   Move that's going to be added into the moveset.
      */
     private acceptLearnMove(pokemon: IPokemon, move: IMove) {
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
@@ -172,8 +173,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Provides dialog for resolving a move conflict and teaching a Pokemon a new move.
      *
-     * @param pokemon   The pokemon whose moveset is being modified.
-     * @param move   The move that's going to be added into the moveset.
+     * @param pokemon   Pokemon whose moveset is being modified.
+     * @param move   Move that's going to be added into the moveset.
      */
     private teachMove(pokemon: IPokemon, move: IMove, index: number) {
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
@@ -200,8 +201,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Provides dialog for when a move conflict exists and the player doesn't want to continue.
      *
-     * @param pokemon   The pokemon whose moveset is being modified.
-     * @param move   The move that's going to be added into the moveset.
+     * @param pokemon   Pokemon whose moveset is being modified.
+     * @param move   Move that's going to be added into the moveset.
      */
     private refuseLearnMove(pokemon: IPokemon, move: IMove) {
         this.gameStarter.menuGrapher.deleteMenu("Yes/No");
