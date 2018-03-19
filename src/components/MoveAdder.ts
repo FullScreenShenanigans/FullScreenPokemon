@@ -44,28 +44,26 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   The move that's going to be added into the moveset.
      */
     private alreadyKnowsMove(pokemon: IPokemon, move: IMove): boolean {
-        let counter = false;
+
         for (const element of pokemon.moves) {
             if (element.title === move.title) {
-                counter = true;
+                this.gameStarter.menuGrapher.addMenuDialog(
+                    "GeneralText",
+                    [
+                        [
+                            pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
+                        ],
+                    ],
+                    (): void => {
+                        this.gameStarter.menuGrapher.deleteActiveMenu();
+                    },
+                );
+                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                return true;
             }
         }
 
-        if (counter) {
-            this.gameStarter.menuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    [
-                        pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
-                    ],
-                ],
-                (): void => {
-                    this.gameStarter.menuGrapher.deleteActiveMenu();
-                },
-            );
-        }
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-        return counter;
+        return false;
     }
 
     /**
