@@ -371,11 +371,12 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param other   A Ledge walked to by thing.
      */
     public collideLedge = (thing: ICharacter, other: IThing): boolean => {
+        if (thing.roaming === true) {
+            return false;
+        }
         if (thing.ledge || !thing.walking) {
             return true;
         }
-        console.log(thing);
-        console.log(other);
         if (thing.direction !== other.direction) {
             return false;
         }

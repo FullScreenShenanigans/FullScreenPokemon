@@ -78,7 +78,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 direction += 1;
             }
         }
-        direction = 2;
+
         return direction;
     }
 }

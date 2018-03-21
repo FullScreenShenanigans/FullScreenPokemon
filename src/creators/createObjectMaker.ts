@@ -989,7 +989,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             GymLabel: [64, 16],
             Ledge: {
                 width: 32,
-                height: 16,
+                height: 32,
                 spritewidth: 16,
                 direction: 2,
                 collide: fsp.collisions.collideLedge,
@@ -1003,7 +1003,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
             },
             LedgeOpening: {
                 width: 32,
-                height: 16,
+                height: 32,
                 spritewidth: 16,
                 nocollide: true,
             },
