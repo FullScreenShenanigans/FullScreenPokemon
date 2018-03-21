@@ -71,6 +71,16 @@ export interface ILevelUpStatsMenuSettings {
 export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
 
     /**
+     * A map to translate how status is stored in the code into in-game form.
+     */
+    private static statusTranslate: { [i: string]: string} = {
+        frozen: "FRZ",
+        paralyzed: "PAR",
+        poison: "PSN",
+        sleep: "SLP",
+    };
+
+    /**
      * Opens the Pokemon menu for the player's party.
      *
      * @param settings   Custom attributes to apply to the menu.
@@ -208,13 +218,6 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         });
         this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
     }
-
-    private static statusTranslate: { [i: string]: string} = {
-        frozen: "FRZ",
-        paralyzed: "PAR",
-        poison: "PSN",
-        sleep: "SLP",
-    };
 
     /**
      * Returns the in-game version of the Pokemon's status (e.g. "frozen" = "FRZ")
