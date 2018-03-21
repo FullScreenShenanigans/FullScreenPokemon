@@ -69,7 +69,6 @@ export interface ILevelUpStatsMenuSettings {
  * Manipulates Pokemon party and detail menus.
  */
 export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
-
     /**
      * A map to translate how status is stored in the code into in-game form.
      */
@@ -226,11 +225,9 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     private getStatus(pokemon: IPokemon): string {
         const status = pokemon.status;
-        if (status === undefined) {
-            return "OK";
-        } else {
-            return Pokemon.statusTranslate[status];
-        }
+        return status === undefined
+            ? "OK"
+            : Pokemon.statusTranslate[status];
     }
 
     /**
