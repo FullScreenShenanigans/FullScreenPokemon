@@ -1,0 +1,91 @@
+/* General elements */
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: black;
+    color: #fafafa;
+    overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+header {
+    height: 49px;
+    overflow: hidden;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+section {
+    clear: both;
+}
+
+a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+h1 {
+    margin: 0;
+    padding-bottom: 3px;
+    text-align: center;
+}
+
+
+/* General animations */
+
+.hoverable {
+    opacity: .84;
+    transition: 140ms opacity;
+}
+
+.hoverable:hover {
+    opacity: 1;
+}
+
+
+
+/* Game section */
+
+section#game {
+    min-height: 210px;
+    margin-bottom: 35px;
+}
+
+
+/* Text sections */
+
+section.section-text {
+    margin: auto;
+    padding: 21px 70px;
+    max-width: 910px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.link-github {
+    color: #cfc;
+}
+
+@media(max-width: 350px) {
+    section.section-text {
+        padding: 14px 7px;
+    }
+}
+
+@font-face {
+    font-family: "Press Start";
+    src:
+        url("theme/fonts/pressstart2p-webfont.eot?#iefix") format("embedded-opentype"),
+        url("theme/fonts/pressstart2p-webfont.woff") format("woff"),
+        url("theme/fonts/pressstart2p-webfont.ttf") format("truetype"),
+        url("theme/fonts/pressstart2p-webfont.svg") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
