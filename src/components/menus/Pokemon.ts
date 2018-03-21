@@ -209,6 +209,26 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     }
 
     /**
+     * Opens up the status menu for a Pokemon.
+     *
+     * @param pokemon   A Pokemon to show statistics of.
+     */
+    private addStatus(pokemon: IPokemon) {
+        const status = pokemon.status;
+        if (status === "frozen") {
+            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "FRZ");
+        } else if (status === "paralyzed") {
+            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "PAR");
+        } else if (status === "poison") {
+            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "PSN");
+        } else if (status === "sleep") {
+            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "SLP");
+        } else {
+            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+        }
+    }
+
+    /**
      * Opens a statistics menu for a Pokemon.
      *
      * @param pokemon   A Pokemon to show statistics of.
@@ -248,7 +268,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             "PokemonMenuStatsHP",
             pokemon.statistics.health.current + "/ " + pokemon.statistics.health.normal);
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.gameStarter.utilities.makeDigit(schema.number, 3, 0));
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+        this.addStatus(pokemon);
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
         if (pokemon.types.length >= 2) {
             this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsType2");
