@@ -69,6 +69,7 @@ export interface ILevelUpStatsMenuSettings {
  * Manipulates Pokemon party and detail menus.
  */
 export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+
     /**
      * Opens the Pokemon menu for the player's party.
      *
@@ -208,23 +209,24 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
     }
 
+    private static statusTranslate: { [i: string]: string} = {
+        frozen: "FRZ",
+        paralyzed: "PAR",
+        poison: "PSN",
+        sleep: "SLP",
+    };
+
     /**
-     * Opens up the status menu for a Pokemon.
+     * Returns the in-game version of the Pokemon's status (e.g. "frozen" = "FRZ")
      *
      * @param pokemon   A Pokemon to show statistics of.
      */
-    private addStatus(pokemon: IPokemon) {
+    private getStatus(pokemon: IPokemon): string {
         const status = pokemon.status;
-        if (status === "frozen") {
-            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "FRZ");
-        } else if (status === "paralyzed") {
-            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "PAR");
-        } else if (status === "poison") {
-            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "PSN");
-        } else if (status === "sleep") {
-            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "SLP");
+        if (status === undefined) {
+            return "OK";
         } else {
-            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+            return Pokemon.statusTranslate[status];
         }
     }
 
@@ -268,7 +270,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             "PokemonMenuStatsHP",
             pokemon.statistics.health.current + "/ " + pokemon.statistics.health.normal);
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.gameStarter.utilities.makeDigit(schema.number, 3, 0));
-        this.addStatus(pokemon);
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", this.getStatus(pokemon));
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
         if (pokemon.types.length >= 2) {
             this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsType2");
