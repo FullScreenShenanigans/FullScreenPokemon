@@ -72,7 +72,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     /**
      * A map to translate how status is stored in the code into in-game form.
      */
-    private static statusTranslate: { [i: string]: string} = {
+    private static readonly statusTranslate: { [i: string]: string} = {
         frozen: "FRZ",
         paralyzed: "PAR",
         poison: "PSN",
