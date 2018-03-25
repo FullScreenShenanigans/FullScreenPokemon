@@ -5,7 +5,8 @@ import { IPokemon } from "./Battles";
 import { MoveAdder } from "./MoveAdder";
 
 describe("MoveAdder", () => {
-    it("adds a new move to a Pokemon's moveset", (): void => {
+
+    it("adds/replaces a new move to a Pokemon's moveset when the move index is valid", (): void => {
         //Arrange
         const { fsp } = stubBlankGame();
         const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -19,13 +20,13 @@ describe("MoveAdder", () => {
         };
 
         //Act
-        fsp.moveadder.addMove(pokemon, peck, 1);
+        fsp.moveadder.addMove(pokemon, peck, 2);
 
         //Assert
-        expect(pokemon.moves[1].title === peck.title);
+        expect(pokemon.moves[2].title).to.be.equal(peck.title);
     });
 
-    it("attempts adding a move at a negative index to a Pokemon", (): void => {
+    it("does not add a move when a negative move index is given", (): void => {
         //Arrange
         const { fsp } = stubBlankGame();
         const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -42,10 +43,10 @@ describe("MoveAdder", () => {
         fsp.moveadder.addMove(pokemon, peck, -1);
 
         //Assert
-        expect(pokemon.moves[-1].title !== peck.title);
+        expect(pokemon.moves[-1]).to.be.equal(undefined);
     });
 
-    it("attempts adding more than 4 moves to a Pokemon", (): void => {
+    it("does not add a move when given move index is larger than the 4 allotted moveslots per Pokemon", (): void => {
         //Arrange
         const { fsp } = stubBlankGame();
         const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -62,10 +63,10 @@ describe("MoveAdder", () => {
         fsp.moveadder.addMove(pokemon, peck, 4);
 
         //Assert
-        expect(pokemon.moves[4].title !== peck.title);
+        expect(pokemon.moves[4]).to.be.equal(undefined);
     });
 
-    it("attempts to add a move a Pokemon already knows", (): void => {
+    it("does not add a move when the Pokemon already knows the move in another moveslot", (): void => {
         //Arrange
         const { fsp } = stubBlankGame();
         const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -89,6 +90,6 @@ describe("MoveAdder", () => {
         fsp.moveadder.addMove(pokemon, peck, 2);
 
         //Assert
-        expect(pokemon.moves[2].title === bite.title);
+        expect(pokemon.moves[2].title).to.be.equal(bite.title);
     });
 });
