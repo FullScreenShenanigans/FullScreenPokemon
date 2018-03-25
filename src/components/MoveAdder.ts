@@ -13,6 +13,14 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param index   The position the move is going into in the Pokemon's moves.
      */
     public addMove(pokemon: IPokemon, move: IMove, index: number) {
+        if (index < 0 || index > 3) {
+            return;
+        }
+        for (const element of pokemon.moves) {
+            if (element.title === move.title) {
+                return;
+            }
+        }
         pokemon.moves[index] = move;
     }
 
