@@ -40,6 +40,7 @@ import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
 import { Mods } from "./components/Mods";
+import { MoveAdder } from "./components/MoveAdder";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
@@ -339,6 +340,12 @@ export class FullScreenPokemon extends GameStartr {
      */
     @component(Mods)
     public readonly mods: Mods<this>;
+
+    /**
+     * Creates MoveAdder to teach Pokemon new moves.
+     */
+    @component(MoveAdder)
+    public readonly moveadder: MoveAdder<this>;
 
     /**
      * Physics functions to move Things around.
