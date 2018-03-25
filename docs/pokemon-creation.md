@@ -29,8 +29,8 @@ const pokemon: IPokemon = FSP.equations.newPokemon({
     level: pokemonLevel,
     moves: [{
         title: "Ember",
-        remaining: FSP.constants.moves.Ember.pp,
-        uses: FSP.constants.moves.Ember.pp
+        remaining: FSP.constants.moves.byName.Ember.pp,
+        uses: FSP.constants.moves.byName.Ember.pp
         }],
     title: pokemonTitle
 });
@@ -52,8 +52,8 @@ const options: IWildPokemonSchema[] = [
         level: 10,
         moves: [{
             title: "Ember",
-            remaining: FSP.constants.moves.Ember.pp,
-            uses: FSP.constants.moves.Ember.pp
+            remaining: FSP.constants.moves.byName.Ember.pp,
+            uses: FSP.constants.moves.byName.Ember.pp
         }],
         rate: 0.25
     },
