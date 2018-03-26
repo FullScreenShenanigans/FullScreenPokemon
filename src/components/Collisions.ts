@@ -97,7 +97,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                 // tslint:disable-next-line:no-parameter-reassignment
                 [thing, other] = [other as ICharacter, thing];
             }
-            //console.log(other);
+
             // The other's collide may return true to cancel overlapping checks
             if (other.collide && other.collide.call(this, thing, other)) {
                 return false;
@@ -374,15 +374,19 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         if (thing.roaming === true) {
             return false;
         }
+
         if (thing.ledge || !thing.walking) {
             return true;
         }
+
         if (thing.direction !== other.direction) {
             return false;
         }
+
         if (thing.top === other.bottom) {
             return false;
         }
+
         if (thing.direction % 2 === 0) {
             if (thing.left === other.right || thing.right === other.left) {
                 return true;
