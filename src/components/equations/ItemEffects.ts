@@ -1,4 +1,4 @@
-import { IMove } from "battlemovr";
+import { IMove, IStatistic } from "battlemovr";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -18,4 +18,18 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
 
         move.remaining = Math.min(move.remaining + amount, move.uses);
     }
+
+    /**
+     * Increases a stat
+     *
+     * @param statistic   The statistic that is being modified.
+     * @param amount   How much a statistic is increased by.
+     */
+    public addBattleStats(statistic: IStatistic, amount: number) {
+        if (amount < 0) {
+            throw new Error("Battle stat decrements aren't allowed");
+        }
+        statistic.current = Math.min(statistic.normal * 4, (statistic.normal / 2) * amount + statistic.current);
+    }
+
 }
