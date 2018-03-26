@@ -380,7 +380,9 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         if (thing.direction !== other.direction) {
             return false;
         }
-
+        if (thing.top === other.bottom) {
+            return false;
+        }
         if (thing.direction % 2 === 0) {
             if (thing.left === other.right || thing.right === other.left) {
                 return true;
