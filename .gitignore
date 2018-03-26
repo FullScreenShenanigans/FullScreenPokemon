@@ -2,7 +2,6 @@ dist/
 docs/generated/
 test/
 node_modules/
-*.css
 *.d.ts
 *.js*
 !./*.js

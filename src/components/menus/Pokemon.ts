@@ -70,6 +70,16 @@ export interface ILevelUpStatsMenuSettings {
  */
 export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
+     * A map to translate how status is stored in the code into in-game form.
+     */
+    private static readonly statusTranslate: { [i: string]: string} = {
+        frozen: "FRZ",
+        paralyzed: "PAR",
+        poison: "PSN",
+        sleep: "SLP",
+    };
+
+    /**
      * Opens the Pokemon menu for the player's party.
      *
      * @param settings   Custom attributes to apply to the menu.
@@ -209,6 +219,18 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     }
 
     /**
+     * Returns the in-game version of the Pokemon's status (e.g. "frozen" = "FRZ")
+     *
+     * @param pokemon   A Pokemon to show statistics of.
+     */
+    private getStatus(pokemon: IPokemon): string {
+        const status = pokemon.status;
+        return status === undefined
+            ? "OK"
+            : Pokemon.statusTranslate[status];
+    }
+
+    /**
      * Opens a statistics menu for a Pokemon.
      *
      * @param pokemon   A Pokemon to show statistics of.
@@ -248,7 +270,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             "PokemonMenuStatsHP",
             pokemon.statistics.health.current + "/ " + pokemon.statistics.health.normal);
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.gameStarter.utilities.makeDigit(schema.number, 3, 0));
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", "OK");
+        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", this.getStatus(pokemon));
         this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
         if (pokemon.types.length >= 2) {
             this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsType2");
