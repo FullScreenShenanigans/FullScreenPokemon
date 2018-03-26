@@ -7,15 +7,14 @@ import { IPokemon } from "../Battles";
 export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
 
     /**
-     * Restores a certain amount of PP to a Pokemon's move.
+     * Restores a certain amount of PP to a move.
      *
-     * @param pokemon   The pokemon whose moveset is being modified.
-     * @param index   The index of the moveset that is being modified.
+     * @param move   The move whose PP is being modified.
      * @param amount   The amount of PP that is being restored.
      */
     public addPP(move: IMove, amount: number) {
         if (amount < 0) {
-            return;
+            throw new Error("PP decrements aren't allowed");
         }
         move.remaining = Math.min(move.remaining + amount, move.uses);
     }
