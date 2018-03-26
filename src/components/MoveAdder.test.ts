@@ -39,17 +39,10 @@ describe("MoveAdder", () => {
             uses: 10,
         };
 
-        //expect(fsp.moveadder.addMove.bind(fsp, pokemon, peck, -1)).to.throw(new Error("Invalid move parameters"));
-
-        try {
-            //Act
-            fsp.moveadder.addMove(pokemon, peck, -1);
-        } catch (err) {
-            //Assert
-            expect(err).to.eql(new Error("Invalid move parameters"));
-        }
+        //Act + Assert
+        expect(fsp.moveadder.addMove.bind(fsp, pokemon, peck, -1)).to.throw("Invalid move parameters");
     });
-    /*
+
     it("does not add a move when given move index is larger than the 4 allotted moveslots per Pokemon", (): void => {
         //Arrange
         const { fsp } = stubBlankGame();
@@ -63,11 +56,8 @@ describe("MoveAdder", () => {
             uses: 10,
         };
 
-        //Act
-        fsp.moveadder.addMove(pokemon, peck, 4);
-
-        //Assert
-        expect(pokemon.moves[4]).to.be.equal(undefined);
+        //Act + Assert
+        expect(fsp.moveadder.addMove.bind(fsp, pokemon, peck, 4)).to.throw("Invalid move parameters");
     });
 
     it("does not add a move when the Pokemon already knows the move in another moveslot", (): void => {
@@ -87,14 +77,10 @@ describe("MoveAdder", () => {
             remaining: 10,
             uses: 10,
         };
-
-        //Act
         fsp.moveadder.addMove(pokemon, peck, 1);
         fsp.moveadder.addMove(pokemon, bite, 2);
-        fsp.moveadder.addMove(pokemon, peck, 2);
 
-        //Assert
-        expect(pokemon.moves[2].title).to.be.equal(bite.title);
+        //Act + Assert
+        expect(fsp.moveadder.addMove.bind(fsp, pokemon, peck, 2)).to.throw("This Pokemon already knows this move!");
     });
-    */
 });
