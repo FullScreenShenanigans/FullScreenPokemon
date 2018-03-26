@@ -5,7 +5,6 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
 
 export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
-
     /**
      * Restores a certain amount of PP to a move.
      *
@@ -16,6 +15,7 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
         if (amount < 0) {
             throw new Error("PP decrements aren't allowed");
         }
+
         move.remaining = Math.min(move.remaining + amount, move.uses);
     }
 }
