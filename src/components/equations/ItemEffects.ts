@@ -20,16 +20,39 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
     }
 
     /**
-     * Increases a stat
+     * Increases a stat by 1.
      *
      * @param statistic   The statistic that is being modified.
-     * @param amount   How much a statistic is increased by.
      */
-    public addBattleStats(statistic: IStatistic, amount: number) {
-        if (amount < 0) {
-            throw new Error("Battle stat decrements aren't allowed");
-        }
-        statistic.current = Math.min(statistic.normal * 4, (statistic.normal / 2) * amount + statistic.current);
+    private addBattleStat(statistic: IStatistic) {
+        statistic.current = Math.min(statistic.normal * 4, (statistic.normal / 2) + statistic.current);
+        console.log(statistic.current);
     }
 
+    /**
+     * Opens dialog menu for using a battle item like X Attack / X Defend.
+     *
+     * @param pokemon   The pokemon who the X Item is being used on.
+     * @param statistic   The stat that is being modified by the item.
+     * @param type   The string representing the stat name.
+     */
+    public useXItem(pokemon: IPokemon, statistic: IStatistic, type: string) {
+
+        //TODO: Implement X Accuracy
+        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+            deleteOnFinish: true,
+        });
+        this.gameStarter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            [
+                [
+                    "%%%%%%%PLAYER%%%%%%% used X " + type.toUpperCase() + "!",
+                ],
+                pokemon.title.join("") + "'s " + type.toUpperCase() + " rose!",
+            ],
+            (): void => {
+                this.addBattleStat(statistic);
+            });
+        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+    }
 }
