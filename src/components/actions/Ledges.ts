@@ -14,7 +14,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param other   The ledge the Character is hopping over.
      */
     public startLedgeHop(thing: ICharacter, other: IThing): void {
-        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing) * 1;
+        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
 
         thing.nocollide = true;
         thing.wantsToWalk = true;

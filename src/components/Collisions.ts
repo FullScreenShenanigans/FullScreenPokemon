@@ -383,6 +383,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             return false;
         }
 
+        // TODO: ensure this works for horizontal ledges (See issue #661)
         if (thing.top === other.bottom) {
             return false;
         }
