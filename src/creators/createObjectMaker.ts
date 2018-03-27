@@ -147,7 +147,6 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
                         MountainBottomLeft: {},
                         MountainBottomRight: {},
                     },
-                    OldLedge: {},
                     PlantLarge: {},
                     PlantSmall: {},
                     PokeCenterDesk: {
