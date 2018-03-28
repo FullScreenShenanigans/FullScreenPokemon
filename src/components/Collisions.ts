@@ -102,6 +102,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             if (other.collide && other.collide.call(this, thing, other)) {
                 return false;
             }
+
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
@@ -397,6 +398,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                 return true;
             }
         }
+
         this.gameStarter.actions.ledges.startLedgeHop(thing, other);
 
         return true;
