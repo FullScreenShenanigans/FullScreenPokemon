@@ -24,9 +24,8 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
      *
      * @param statistic   The statistic that is being modified.
      */
-    private addBattleStat(statistic: IStatistic) {
+    private increaseBattleStat(statistic: IStatistic) {
         statistic.current = Math.min(statistic.normal * 4, (statistic.normal / 2) + statistic.current);
-        console.log(statistic.current);
     }
 
     /**
@@ -39,6 +38,8 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
     public useXItem(pokemon: IPokemon, statistic: IStatistic, type: string) {
 
         //TODO: Implement X Accuracy
+        //https://github.com/FullScreenShenanigans/FullScreenPokemon/issues/657
+
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
@@ -51,7 +52,7 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
                 pokemon.title.join("") + "'s " + type.toUpperCase() + " rose!",
             ],
             (): void => {
-                this.addBattleStat(statistic);
+                this.increaseBattleStat(statistic);
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
