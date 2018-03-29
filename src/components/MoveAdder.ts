@@ -15,11 +15,11 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      */
     public addMove(pokemon: IPokemon, move: IMove, index: number) {
         if (index < 0 || index > 3) {
-            throw new Error("Invalid move parameters");
+            throw new Error("Invalid move parameters.");
         }
         for (const element of pokemon.moves) {
             if (element.title === move.title) {
-                throw new Error("This Pokemon already knows this move!");
+                throw new Error("This Pokemon already knows this move.");
             }
         }
         pokemon.moves[index] = move;
