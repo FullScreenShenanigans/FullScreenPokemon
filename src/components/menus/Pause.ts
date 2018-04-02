@@ -88,7 +88,6 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      */
     public readonly toggle = (settings?: IMenuSchema): void => {
         if (this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.gameStarter.menuGrapher.registerStart();
             return;
         }
 

@@ -631,7 +631,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         const options: IDialogOptions = dialog.options;
-        const generateCallback: (inDialog: string | IDialog) => void = (callbackDialog: string | IDialog): (() => void) | void => {
+        const generateCallback = (callbackDialog: string | IDialog): (() => void) | undefined => {
             if (!callbackDialog) {
                 return undefined;
             }

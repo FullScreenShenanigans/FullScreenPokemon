@@ -231,9 +231,6 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "text",
                         words: ["SEEN \r\n %%%%%%%POKEDEX.SEEN%%%%%%%"],
-                        position: {
-                            vertical: "top",
-                        },
                     } as IMenuChildSchema,
                     {
                         type: "text",
@@ -319,7 +316,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         size: {
                             width: 152,
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "LineDecoratorHorizontalRight",
@@ -406,7 +403,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 top: 2,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "CharInches",
@@ -635,7 +632,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: -20,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "BlackSquare",
@@ -650,7 +647,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: -22,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "HalfArrowHorizontal",
@@ -664,7 +661,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: -196,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "BlackSquare",
@@ -679,7 +676,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: -20,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "BlackSquare",
@@ -694,7 +691,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: -22,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "HalfArrowHorizontal",
@@ -708,7 +705,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: -122,
                             },
                         },
-                    } as IMenuThingSchema],
+                    }],
             },
             "PokemonMenuStatsTitle": {
                 size: {
@@ -769,7 +766,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: 4,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "HPBar",
@@ -931,7 +928,6 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 },
                 position: {
                     horizontal: "right",
-                    vertical: "top",
                     offset: {
                         top: 36,
                         left: -24,
@@ -1086,7 +1082,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                             horizontal: "stretch",
                             vertical: "center",
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "text",
                         words: ["BADGES"],
@@ -1159,13 +1155,12 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         thing: "PlayerPortrait",
                         position: {
                             horizontal: "right",
-                            vertical: "top",
                             offset: {
                                 left: -18,
                                 top: 14,
                             },
                         },
-                    } as IMenuThingSchema],
+                    }],
                 light: true,
                 container: "Player",
                 textSpeed: 0,
@@ -1194,7 +1189,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 top: 12,
                             },
                         },
-                    } as IMenuChildSchema,
+                    },
                     {
                         type: "thing",
                         thing: "BrockPortrait",
@@ -1204,7 +1199,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 top: 26,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "MistyPortrait",
@@ -1438,13 +1433,12 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                             height: 14,
                         },
                         position: {
-                            vertical: "top",
                             horizontal: "right",
                             offset: {
                                 left: -32,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "text",
                         words: ["MONEY"],
@@ -1552,7 +1546,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "thing",
                         thing: "TownMapNoWater",
-                    } as IMenuThingSchema],
+                    }],
                 container: "Town Map",
                 watery: true,
             } as IMenuBase,
@@ -1597,7 +1591,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         args: {
                             height: 24,
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "BlackSquare",
@@ -1684,7 +1678,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: 2,
                             },
                         },
-                    } as IMenuThingSchema],
+                    }],
                 container: "BattlePlayerHealth",
                 hidden: true,
                 textXOffset: 16,
@@ -1710,7 +1704,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 left: 4,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "HPBar",
@@ -1777,7 +1771,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         args: {
                             height: 23,
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "BlackSquare",
@@ -1872,7 +1866,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "thing",
                         thing: "CharHP",
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "HPBar",
@@ -1958,7 +1952,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 top: 24,
                             },
                         },
-                    } as IMenuThingSchema,
+                    },
                     {
                         type: "thing",
                         thing: "HPBar",
@@ -2104,15 +2098,15 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "menu",
                         name: "KeyboardKeys",
-                    } as IMenuChildSchema,
+                    },
                     {
                         type: "menu",
                         name: "KeyboardTitle",
-                    } as IMenuChildSchema,
+                    },
                     {
                         type: "menu",
                         name: "KeyboardResult",
-                    } as IMenuChildSchema,
+                    },
                 ],
                 plain: true,
             } as IMenuBase,
