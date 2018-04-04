@@ -65,10 +65,11 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
     /**
      * Gets a Thing known to exist by its ID.
      *
+     * @template TThing   Type of Thing to retrieve.
      * @param id   ID of a Thing.
      * @returns Thing under the ID.
      */
-    public getExistingThingById(id: string): IThing {
-        return this.gameStarter.groupHolder.getThing(id) as IThing;
+    public getExistingThingById<TThing extends IThing = IThing>(id: string): TThing {
+        return this.gameStarter.groupHolder.getThing(id) as TThing;
     }
 }

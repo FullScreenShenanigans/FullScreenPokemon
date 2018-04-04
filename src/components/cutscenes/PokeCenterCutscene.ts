@@ -3,20 +3,29 @@ import { GeneralComponent } from "gamestartr";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
 import { IMap } from "../Maps";
-import { IThing } from "../Things";
+import { ICharacter, IThing } from "../Things";
 
 /**
  * PokeCenter cutscene routines.
  */
 export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
     /**
+     * Rate at which balls appear.
+     */
+    public readonly ballAppearanceRate = 35;
+
+    /**
+     * Rate at which balls flicker.
+     */
+    public readonly ballFlickerRate = 21;
+
+    /**
      * Cutscene for a nurse's welcome at the Pokemon Center.
      *
-     * @param settings   Settings used for the cutscene.
      */
-    public Welcome(settings: any): void {
-        settings.nurse = this.gameStarter.utilities.getExistingThingById(settings.nurseId || "Nurse");
-        settings.machine = this.gameStarter.utilities.getExistingThingById(settings.machineId || "HealingMachine");
+    public readonly Welcome = (): void => {
+        const nurse = this.gameStarter.utilities.getExistingThingById<ICharacter>("Nurse");
+        const machine = this.gameStarter.utilities.getExistingThingById("HealingMachine");
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
@@ -26,7 +35,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
                 "We heal your %%%%%%%POKEMON%%%%%%% back to perfect health!",
                 "Shall we heal your %%%%%%%POKEMON%%%%%%%?",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Choose"),
+            (): void => this.choose(machine, nurse),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -34,19 +43,21 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
     /**
      * Cutscene for choosing whether or not to heal Pokemon.
      */
-    public Choose(): void {
-        this.gameStarter.menuGrapher.createMenu("Heal/Cancel");
+    private choose(machine: IThing, nurse: ICharacter): void {
+        this.gameStarter.menuGrapher.createMenu("Heal/Cancel", {
+            killOnB: ["GeneralText"],
+        });
         this.gameStarter.menuGrapher.addMenuList(
             "Heal/Cancel",
             {
                 options: [
                     {
+                        callback: (): void => this.chooseHeal(machine, nurse),
                         text: "HEAL",
-                        callback: this.gameStarter.scenePlayer.bindRoutine("ChooseHeal"),
                     },
                     {
+                        callback: this.chooseCancel,
                         text: "CANCEL",
-                        callback: this.gameStarter.scenePlayer.bindRoutine("ChooseCancel"),
                     },
                 ],
             },
@@ -57,7 +68,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
     /**
      * Cutscene for choosing to heal Pokemon.
      */
-    public ChooseHeal(): void {
+    private chooseHeal(machine: IThing, nurse: ICharacter): void {
         this.gameStarter.menuGrapher.deleteMenu("Heal/Cancel");
 
         this.gameStarter.menuGrapher.createMenu("GeneralText", {
@@ -69,7 +80,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             [
                 "Ok. We'll need your %%%%%%%POKEMON%%%%%%%.",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Healing"),
+            (): void => this.healing(machine, nurse),
         );
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -77,18 +88,16 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
     /**
      * Cutscene for placing Pokeballs into the healing machine.
      *
-     * @param settings   Settings used for the cutscene.
      */
-    public Healing(settings: any): void {
+    private healing(machine: IThing, nurse: ICharacter): void {
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
         const balls: IThing[] = [];
         const dt = 35;
-        const left: number = settings.machine.left + 20;
-        const top: number = settings.machine.top + 28;
+        const left: number = machine.left + 20;
+        const top: number = machine.top + 28;
         let i = 0;
 
-        settings.balls = balls;
-        this.gameStarter.actions.animateCharacterSetDirection(settings.nurse, 3);
+        this.gameStarter.actions.animateCharacterSetDirection(nurse, 3);
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {
@@ -104,29 +113,21 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             party.length);
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.scenePlayer.playRoutine(
-                "HealingAction",
-                {
-                    balls,
-                }),
+            (): void => this.healingAction(machine, nurse, balls),
             dt * (party.length + 1));
     }
 
     /**
      * Cutscene for Pokemon being healed in the healing machine.
      *
-     * @param settings   Settings used for the cutscene.
-     * @param args   Settings for the routine.
      */
-    public HealingAction(settings: any, args: any): void {
-        const balls: IThing[] = args.balls;
+    private healingAction(machine: IThing, nurse: ICharacter, balls: IThing[]): void {
         const numFlashes = 8;
         let i = 0;
-        let changer: Function;
 
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {
-                changer = i % 2 === 0
+                const changer = i % 2 === 0
                     ? (thing: IThing, className: string): void => this.gameStarter.graphics.addClass(thing, className)
                     : (thing: IThing, className: string): void => this.gameStarter.graphics.removeClass(thing, className);
 
@@ -134,16 +135,16 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
                     changer(ball, "lit");
                 }
 
-                changer(settings.machine, "lit");
+                changer(machine, "lit");
 
                 i += 1;
             },
-            21,
+            this.ballFlickerRate,
             numFlashes);
 
         this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.scenePlayer.playRoutine("HealingComplete", { balls }),
-            (numFlashes + 2) * 21);
+            (): void => this.healingComplete(nurse, balls),
+            (numFlashes + 2) * this.ballFlickerRate);
     }
 
     /**
@@ -152,8 +153,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      * @param settings   Settings used for the cutscene.
      * @param args Settings for the routine.
      */
-    public HealingComplete(settings: any, args: any): void {
-        const balls: IThing[] = args.balls;
+    private healingComplete(nurse: ICharacter, balls: IThing[]): void {
         const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
 
         for (const ball of balls) {
@@ -164,7 +164,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             this.gameStarter.battles.healPokemon(pokemon);
         }
 
-        this.gameStarter.actions.animateCharacterSetDirection(settings.nurse, 2);
+        this.gameStarter.actions.animateCharacterSetDirection(nurse, 2);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
         this.gameStarter.menuGrapher.addMenuDialog(
@@ -191,7 +191,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
     /**
      * Cutscene for choosing not to heal Pokemon.
      */
-    public ChooseCancel(): void {
+    private readonly chooseCancel = (): void => {
         this.gameStarter.menuGrapher.deleteMenu("Heal/Cancel");
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");
