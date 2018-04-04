@@ -285,6 +285,16 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
     }
 
     /**
+     * Determines whether a wild encounter should occur when walking.
+     *
+     * @returns Whether a wild encounter should occur.
+     * @see http://bulbapedia.bulbagarden.net/wiki/???????
+     */
+    public doesWalkingEncounterHappen(): boolean {
+        return this.gameStarter.numberMaker.randomBooleanFraction(50, 187.5);
+    }
+
+    /**
      * Determines whether a wild encounter should occur when walking through grass.
      *
      * @param grass   The grass Thing being walked through.

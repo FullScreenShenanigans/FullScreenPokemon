@@ -17,7 +17,7 @@ export class RandomizeWildPokemonMod<TGameStartr extends FullScreenPokemon> exte
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.eventNames.onWildGrassPokemonChosen]: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
+        [this.eventNames.onWildPokemonChosen]: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
             const pokemonName: string = chosen.title.join("");
             const pokemonTypes: string[] = this.gameStarter.constants.pokemon.byName[pokemonName].types;
             const randomPokemon: string[][] = [];

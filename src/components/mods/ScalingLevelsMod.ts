@@ -30,7 +30,7 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Mod
             // const opponent: IBattler = battleInfo.battlers.opponent;
             // const player: IBattler = battleInfo.battlers.player!;
             // const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
-            // const wildPokemonOptions: IWildPokemonSchema[] | undefined = (this.gameStarter.areaSpawner.getArea() as IArea)
+            // const wildPokemonOptions: IWildPokemonSchema[] | undefined = this.gameStarter.mapScreener.activeArea.wildPokemon;
             //     .wildPokemon.grass;
             // if (!wildPokemonOptions) {
             //     return;

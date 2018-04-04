@@ -57,6 +57,8 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralCompone
 
     /**
      * Marks a Character as no longer being visually within grass.
+     *
+     * @param thing   Character no longer in grass.
      */
     public exitGrassVisually(thing: ICharacter): void {
         this.gameStarter.physics.killNormal(thing.shadow!);
@@ -64,79 +66,5 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralCompone
 
         thing.shadow = undefined;
         thing.grass = undefined;
-    }
-
-    /**
-     * Starts grass battle if a Player is in grass, using the doesGrassEncounterHappen
-     * equation.
-     *
-     * @param thing   An in-game Player.
-     * @returns Whether a battle was started.
-     */
-    public checkPlayerGrassBattle(thing: IPlayer): boolean {
-        if (!thing.grass || this.gameStarter.menuGrapher.getActiveMenu()) {
-            return false;
-        }
-
-        if (!this.gameStarter.thingHitter.checkHitForThings(thing, thing.grass)) {
-            thing.grass = undefined;
-            return false;
-        }
-
-        if (!this.gameStarter.equations.doesGrassEncounterHappen(thing.grass)) {
-            return false;
-        }
-
-        thing.keys = thing.getKeys();
-        this.animateGrassBattleStart(thing, thing.grass);
-
-        return true;
-    }
-
-    /**
-     * Freezes a Character in grass and calls startBattle.
-     *
-     * @param thing   A Character about to start a battle.
-     * @param grass   Grass the Character is walking in.
-     */
-    public animateGrassBattleStart(thing: ICharacter, grass: IThing): void {
-        const wildPokemon: IPokemon = this.chooseWildPokemonForBattle(grass);
-        this.gameStarter.graphics.removeClass(thing, "walking");
-        if (thing.shadow) {
-            this.gameStarter.graphics.removeClass(thing.shadow, "walking");
-        }
-
-        this.gameStarter.actions.walking.animateCharacterPreventWalking(thing);
-
-        this.gameStarter.battles.startBattle({
-            teams: {
-                opponent: {
-                    actors: [wildPokemon],
-                },
-            },
-            texts: {
-                start: (team: IBattleTeam): string =>
-                    `Wild ${team.selectedActor.nickname.join("")} appeared!`,
-            },
-        });
-    }
-
-    /**
-     * Chooses a wild Pokemon to start a battle with.
-     *
-     * @param grass   Grass Scenery the player is in.
-     * @returns A wild Pokemon to start a battle with.
-     */
-    protected chooseWildPokemonForBattle(grass: IThing): IPokemon {
-        const grassMap: IMap = this.gameStarter.areaSpawner.getMap(grass.mapName) as IMap;
-        const grassArea: IArea = grassMap.areas[grass.areaName];
-        const options: IWildPokemonSchema[] | undefined = grassArea.wildPokemon.grass;
-        if (!options) {
-            throw new Error("Grass doesn't have any wild Pokemon options defined.");
-        }
-
-        const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onWildGrassPokemonChosen, chosen);
-        return this.gameStarter.equations.createPokemon(chosen);
     }
 }

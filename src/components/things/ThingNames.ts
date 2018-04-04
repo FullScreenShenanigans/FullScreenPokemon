@@ -9,6 +9,7 @@ export class ThingNames {
     public readonly explosionLarge = "ExplosionLarge";
     public readonly explosionSmall = "ExplosionSmall";
     public readonly fenceWide = "FenceWide";
+    public readonly grass = "Grass";
     public readonly healingMachineBall = "HealingMachineBall";
     public readonly nidorinoFront = "NIDORINOFront";
     public readonly note = "Note";

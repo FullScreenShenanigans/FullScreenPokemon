@@ -40,17 +40,21 @@ export interface IItemSchema {
 }
 
 /**
- * The type of rod that is being used.
+ * Type identifier for a rod.
+ */
+export type IRodType = "old" | "good" | "super";
+
+/**
+ * A type of rod that that can be used.
  */
 export interface IRod extends IItemSchema {
     /**
-     * The type of rod used. Can be old, good, or super.
-     * @todo Make type explicitly "old" | "good" | "super".
+     * Type of rod used.
      */
-    type: string;
+    type: IRodType;
 
     /**
-     * The name of the rod used.
+     * Name of the rod used.
      */
     title: string;
 }

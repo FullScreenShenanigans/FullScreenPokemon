@@ -1,8 +1,11 @@
 import { GeneralComponent } from "gamestartr";
 
+import { component } from "babyioc";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
+import { IWildPokemonSchema } from "../Maps";
 import { ICharacter, IPlayer } from "../Things";
+import { Encounters } from "./walking/Encounters";
 
 /**
  * A single instruction on a walking path.
@@ -35,6 +38,12 @@ export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGen
  * Starts, continues, and stops characters walking.
  */
 export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+    /**
+     * Checks for and starts wild Pokemon encounters during walking.
+     */
+    @component(Encounters)
+    public readonly encounters: Encounters<TGameStartr>;
+
     /**
      * Starts a Character walking on a predetermined path.
      *
@@ -118,7 +127,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             onContinueWalking();
         }
 
-        if (!thing.wantsToWalk || (thing.player && this.gameStarter.actions.grass.checkPlayerGrassBattle(thing as IPlayer))) {
+        if (!thing.wantsToWalk || (thing.player && this.tryStartWildPokemonEncounter(thing as IPlayer))) {
             this.stopWalking(thing);
             return;
         }
@@ -184,12 +193,32 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     }
 
     /**
+     *
+     * @param thing @
+     * @returns Whether a wild Pokemon encounter was started.
+     */
+    private tryStartWildPokemonEncounter(thing: IPlayer): boolean {
+        if (this.gameStarter.menuGrapher.getActiveMenu()) {
+            return false;
+        }
+
+        const wildPokemonOptions: IWildPokemonSchema[] | undefined = this.encounters.choices.getWildEncounterPokemonOptions(thing);
+        if (wildPokemonOptions === undefined || wildPokemonOptions.length === 0) {
+            return false;
+        }
+
+        this.encounters.starting.startWildEncounterBattle(thing, wildPokemonOptions);
+
+        return true;
+    }
+
+    /**
      * Sets the logical attributes of a walking Character.
      *
      * @param thing   The walking Character.
      * @param direction   What direction to walk in.
      */
-    protected setWalkingAttributes(thing: ICharacter, direction: Direction): void {
+    private setWalkingAttributes(thing: ICharacter, direction: Direction): void {
         thing.walking = true;
 
         this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
@@ -229,7 +258,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   The walking Character.
      */
-    protected setWalkingGraphics(thing: ICharacter): void {
+    private setWalkingGraphics(thing: ICharacter): void {
         const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
         const ticksPerStep: number = ticksPerBlock / 2;
 
@@ -260,7 +289,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     /**
      *
      */
-    protected parseWalkingInstruction(
+    private parseWalkingInstruction(
         instruction: IWalkingInstruction | IWalkingInstructionGenerator,
         thing: ICharacter): IWalkingInstruction {
         if (typeof instruction !== "function") {
