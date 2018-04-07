@@ -83,7 +83,6 @@
     "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
     "test:setup:copy": "npm run test:setup:copy:default",
     "test:setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/test/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./test/{{file}}\" --dest \".\" --only-files",
-    "test:setup:copy:maps": "run-for-every-file --src \"node_modules/shenanigans-manager/setup/maps/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./src/{{file}}\" --dest \".\"",
     "test:setup:dir": "mkdirp test",
     "test:setup:html": "shenanigans-manager generate-test-html",
     "test:setup:tsc": "tsc -p test",
