@@ -17,7 +17,7 @@ describe("EncounterStarting", () => {
             ];
 
             return { ...stubBlankGame(), wildPokemonOptions };
-        }
+        };
 
         it("starts a battle with a chosen Pokemon schema", () => {
             // Arrange
