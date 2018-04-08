@@ -197,6 +197,6 @@ export class Texts {
         start: (team: IBattleTeam): string =>
             team.leader
                 ? `${team.leader.nickname.join("")} wants to fight!`
-                : `WILD ${team} appeared!`,
+                : `WILD ${team.actors[0].title.join("")} appeared!`,
     };
 }
