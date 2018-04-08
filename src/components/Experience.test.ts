@@ -103,6 +103,7 @@ describe("Experience", () => {
 
         // Act
         clock.tick(250);
+        // Wild Pidgey Appeared
         skipBattleLine(clock, fsp, player);
         // Go chamander
         skipBattleLine(clock, fsp, player);
