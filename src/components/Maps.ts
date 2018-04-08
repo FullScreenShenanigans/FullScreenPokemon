@@ -24,6 +24,13 @@ import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
  */
 export interface IMapScreenr extends IMapScreenr {
     /**
+     * Which are the player is currently active in.
+     *
+     * @todo Consider moving this into GameStartr core.;
+     */
+    activeArea: IArea;
+
+    /**
      * Whether user inputs should be ignored.
      */
     blockInputs: boolean;
@@ -212,14 +219,14 @@ export interface IArea extends IAreaRaw, IStateSaveable, IMapsCreatrIArea {
     spawnedBy: IAreaSpawnedBy;
 
     /**
-     * Wild Pokemon that may appear in this Area.
-     */
-    wildPokemon: IAreaWildPokemonOptionGroups;
-
-    /**
      * Whether the Player has encountered a Pokemon in this area's grass.
      */
     pokemonEncountered?: boolean;
+
+    /**
+     * Wild Pokemon that may appear in this Area.
+     */
+    wildPokemon?: IAreaWildPokemonOptionGroups;
 }
 
 /**
@@ -282,9 +289,19 @@ export interface IAreaWildPokemonOptionGroups {
     grass?: IWildPokemonSchema[];
 
     /**
-     * Types of Pokemon that may appear in water.
+     * Types of Pokemon that may appear while fishing.
      */
     fishing?: IWildFishingPokemon;
+
+    /**
+     * Types of Pokemon that may appear while surfing.
+     */
+    surfing?: IWildPokemonSchema[];
+
+    /**
+     * Types of Pokemon that may appear while walking.
+     */
+    walking?: IWildPokemonSchema[];
 }
 
 /**
@@ -598,10 +615,8 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
         this.gameStarter.numberMaker.resetFromSeed(map.seed);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onSetMap, map);
 
-        return this.gameStarter.maps.setLocation(
-            location
-            || map.locationDefault
-            || "Blank",
+        return this.setLocation(
+            location || map.locationDefault || "Blank",
             noEntrance);
     }
 
@@ -631,8 +646,8 @@ export class Maps<TGameStartr extends FullScreenPokemon> extends GameStartrMaps<
             timestamp: new Date().getTime(),
         };
 
+        this.gameStarter.mapScreener.activeArea = location.area;
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onPreSetLocation, location);
-
         this.gameStarter.pixelDrawer.setBackground((this.gameStarter.areaSpawner.getArea() as IArea).background);
 
         if (location.area.map.name !== "Blank") {

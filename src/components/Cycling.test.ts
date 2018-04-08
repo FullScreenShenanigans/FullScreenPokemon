@@ -39,7 +39,7 @@ describe("Cycling", () => {
 
             fsp.mapScreener.variables.allowCycling = true;
             player.cycling = false;
-            player.surfing = true;
+            player.surfing = fsp.objectMaker.make("WaterEdgeTop");
 
             // Act
             const cycling = fsp.cycling.startCycling(player);

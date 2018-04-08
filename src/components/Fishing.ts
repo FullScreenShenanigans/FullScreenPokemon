@@ -1,3 +1,4 @@
+
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -63,7 +64,7 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     private playerLandedFish(player: IPlayer, rod: IRod): void {
         const currentMap: IMap = this.gameStarter.areaSpawner.getMap(player.mapName) as IMap;
         const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName];
-        const options: IWildPokemonSchema[] = (currentArea.wildPokemon.fishing as any)[rod.type];
+        const options: IWildPokemonSchema[] = currentArea.wildPokemon!.fishing![rod.type]!;
         const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
         const chosenPokemon: IPokemon = this.gameStarter.equations.createPokemon(chosen);
 

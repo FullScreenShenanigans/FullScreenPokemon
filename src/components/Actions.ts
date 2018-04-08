@@ -18,6 +18,7 @@ import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
     IMenuTriggerer, IPlayer, ISightDetector, IThemeDetector, IThing, ITransporter,
     ITransportSchema,
+    IWaterEdge,
 } from "./Things";
 
 /**
@@ -1052,6 +1053,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         this.gameStarter.mapScreener.right = screenOffsetX + this.gameStarter.mapScreener.width;
         this.gameStarter.mapScreener.bottom = screenOffsetY + this.gameStarter.mapScreener.height;
         this.gameStarter.mapScreener.left = screenOffsetX;
+        this.gameStarter.mapScreener.activeArea = this.gameStarter.areaSpawner.getMap().areas[other.area] as IArea;
 
         this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.map, other.map);
         this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.area, other.area);
@@ -1164,7 +1166,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         player.bordering[player.direction] = undefined;
         this.gameStarter.graphics.addClass(player, "surfing");
         console.log("Should start walking");
-        // This.animateCharacterStartWalking(player, player.direction, [1]);
+        // this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
     }
 }

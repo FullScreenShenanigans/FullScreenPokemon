@@ -190,7 +190,7 @@ export class ModEventNames extends GameStartrModEventNames {
     public readonly onSetMap = "onSetMap";
 
     /**
-     * Key for the event when a wild grass Pokemon is chosen.
+     * Key for the event when a wild Pokemon is chosen for battle.
      */
-    public readonly onWildGrassPokemonChosen = "onWildGrassPokemonChosen";
+    public readonly onWildPokemonChosen = "onWildPokemonChosen";
 }
