@@ -14,8 +14,7 @@ import { ICharacter, IPlayer, IThing } from "../Things";
  */
 const stubBlankGameWithNurseAndMachineAfterWelcome = () => {
     const { fsp, player, ...extras } = stubBlankGame({
-        width: 512,
-        height: 512,
+        automaticallyAdvanceMenus: true,
     });
     const firstPokemonInParty: IPokemon = fsp.equations.createPokemon({
         level: 77,
