@@ -26,6 +26,9 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
             audio: {
                 createSound: () => sinon.createStubInstance(AudioElementSound),
             },
+            drawing: {
+                framerateSkip: 9000001,
+            },
             items: { prefix },
             runner: {
                 tickCanceller: clock.clearTimeout,
