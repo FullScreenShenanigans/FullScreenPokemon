@@ -3,6 +3,7 @@ import { IGameStartrConstructorSettings } from "gamestartr";
 import * as lolex from "lolex";
 import * as sinon from "sinon";
 
+import { IMenu } from "./components/Menus";
 import { IPlayer } from "./components/Things";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
@@ -37,6 +38,12 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
         },
         width: settings.width || 256,
     });
+
+    // Makes menus auto-complete during unit tests without extra ticks or waiting
+    const menuPrototype = fsp.objectMaker.getPrototypeOf<IMenu>(fsp.things.names.menu);
+    menuPrototype.textSpeed = 0;
+    menuPrototype.finishAutomatically = true;
+    menuPrototype.finishLinesAutomatically = true;
 
     return { clock, fsp, prefix };
 };
