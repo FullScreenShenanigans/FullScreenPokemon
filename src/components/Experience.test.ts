@@ -1,6 +1,16 @@
 import { expect } from "chai";
+import { Clock } from "lolex";
+import { IListMenuProgress, MenuGraphr } from "menugraphr";
+import { Children } from "react";
+import { FullScreenPokemon } from "../";
 import { stubBlankGame } from "../fakes.test";
-import { IPartialBattleOptions, IPokemon } from "./Battles";
+import { IBattleTeam, IPartialBattleOptions, IPokemon } from "./Battles";
+import { IPlayer } from "./Things";
+
+const skipBattleLine = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer): void => {
+    fsp.inputs.keyDownA(player);
+    clock.tick(250);
+};
 
 describe("Experience", () => {
     it("Ensures a pokemon levels up through the function call", (): void => {
@@ -47,46 +57,67 @@ describe("Experience", () => {
     });
     it("Ensures a pokemon gains experience through during a battle", (): void => {
         // Arrange
-        const { fsp } = stubBlankGame();
-        fsp.maps.addPlayer(0, 0);
-        fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
-            fsp.equations.newPokemon({
-                level: 5,
-                title: "CHARMANDER".split(""),
-            }),
-        ]);
-        // const pokemon: IPokemon = fsp.equations.newPokemon({
-        //     level: 5,
-        //     title: "CHARMANDER".split(""),
-        // });
-        const enemyPokemon: IPokemon = fsp.equations.newPokemon({
-            level: 1,
-            title: "PIDGEY".split(""),
+        const { clock, fsp, player } = stubBlankGame();
+        const charmander = fsp.equations.newPokemon({
+            level: 99,
+            title: "CHARMANDER".split(""),
+            moves: [
+                {
+                    remaining: 10,
+                    title: "Growl",
+                    uses: 10,
+                },
+                {
+                    remaining: 10,
+                    title: "Scratch",
+                    uses: 10,
+                },
+            ],
         });
-        const battleInfo: IPartialBattleOptions = {
-            onComplete: (): void => {
-                fsp.scenePlayer.startCutscene("OakIntroRivalLeaves");
-            },
+        fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
+            charmander,
+        ]);
+        const enemyPokemon: IPokemon = fsp.equations.newPokemon({
+            level: 3,
+            title: "PIDGEY".split(""),
+            moves: [
+                {
+                    remaining: 10,
+                    title: "Growl",
+                    uses: 10,
+                },
+            ],
+        });
+        fsp.battles.startBattle({
             teams: {
                 opponent: {
-                    leader: {
-                        title: "RivalPortrait".split(""),
-                        nickname: fsp.itemsHolder.getItem(fsp.storage.names.nameRival),
-                    },
-                    nextCutscene: "OakIntroRivalLeaves",
-                    reward: 175,
-                    actors: [
-                        enemyPokemon,
-                    ],
+                    actors: [enemyPokemon],
                 },
             },
-        };
-        fsp.battles.startBattle(battleInfo);
+            texts: {
+                start: (team: IBattleTeam): string =>
+                    `Wild ${team.selectedActor.nickname.join("")} appeared!`,
+            },
+        });
+        const startingExperience = charmander.experience;
 
-        //processBattleExperience
         // Act
-        //fsp.experience.gainExperience(pokemon, 99);
-
+        clock.tick(250);
+        skipBattleLine(clock, fsp, player);
+        // Go chamander
+        skipBattleLine(clock, fsp, player);
+        // Selecting Fight
+        skipBattleLine(clock, fsp, player);
+        // Using scratch
+        skipBattleLine(clock, fsp, player);
+        // Charmander used scratch
+        skipBattleLine(clock, fsp, player);
+        // Pidgey fainted
+        skipBattleLine(clock, fsp, player);
+        // Chamander gained experience
+        skipBattleLine(clock, fsp, player);
         // Assert
-        //expect(pokemon.experience) .to.be.equal(100); , , , , , , , , , , , ,
+        console.log(fsp.menuGrapher);
+        //expect(charmander.experience).to.be.greaterThan(startingExperience);
     });
+});
