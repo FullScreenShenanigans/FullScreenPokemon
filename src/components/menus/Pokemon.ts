@@ -255,7 +255,6 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             },
             position: {
                 vertical: "bottom",
-                horizontal: "left",
                 offset: {
                     left: 3,
                     top: -3,
@@ -288,7 +287,6 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             type: "thing",
             thing: "LightGraySquare",
             position: {
-                horizontal: "left",
                 offset: {
                     top: 2,
                     left: 34,
