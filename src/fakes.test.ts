@@ -3,8 +3,16 @@ import { IGameStartrConstructorSettings } from "gamestartr";
 import * as lolex from "lolex";
 import * as sinon from "sinon";
 
+import { IMenu } from "./components/Menus";
 import { IPlayer } from "./components/Things";
 import { FullScreenPokemon } from "./FullScreenPokemon";
+
+export interface IStubFullScreenPokemonSettings extends Partial<IGameStartrConstructorSettings> {
+    /**
+     * Whether to enable MenuGraphr's finishAutomatically and finishLinesAutomatically.
+     */
+    automaticallyAdvanceMenus?: boolean;
+}
 
 /**
  * Creates a stubbed instance of the FullScreenPokemon class.
@@ -12,10 +20,11 @@ import { FullScreenPokemon } from "./FullScreenPokemon";
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class.
  */
-export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings) => {
-    settings = settings || {
+export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings = {}) => {
+    settings = {
         width: 256,
         height: 256,
+        ...settings,
     };
 
     const clock = lolex.createClock();
@@ -38,6 +47,15 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
         width: settings.width || 256,
     });
 
+    // Makes menus auto-complete during unit tests without extra ticks or waiting
+    if (settings.automaticallyAdvanceMenus) {
+        const menuPrototype = fsp.objectMaker.getPrototypeOf<IMenu>(fsp.things.names.menu);
+
+        menuPrototype.textSpeed = 0;
+        menuPrototype.finishAutomatically = true;
+        menuPrototype.finishLinesAutomatically = true;
+    }
+
     return { clock, fsp, prefix };
 };
 
@@ -47,7 +65,7 @@ export const stubFullScreenPokemon = (settings?: IGameStartrConstructorSettings)
  * @param settings   Size settings, if not a default small window size.
  * @returns A new instance of the FullScreenPokemon class with an in-progress game.
  */
-export const stubBlankGame = (settings?: IGameStartrConstructorSettings) => {
+export const stubBlankGame = (settings?: IStubFullScreenPokemonSettings) => {
     const { fsp, ...options } = stubFullScreenPokemon(settings);
 
     fsp.itemsHolder.setItem(fsp.storage.names.name, "Test".split(""));

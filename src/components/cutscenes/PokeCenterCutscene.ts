@@ -21,7 +21,6 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
 
     /**
      * Cutscene for a nurse's welcome at the Pokemon Center.
-     *
      */
     public readonly Welcome = (): void => {
         const nurse = this.gameStarter.utilities.getExistingThingById<ICharacter>("Nurse");

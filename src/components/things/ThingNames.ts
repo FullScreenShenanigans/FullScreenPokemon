@@ -11,6 +11,7 @@ export class ThingNames {
     public readonly fenceWide = "FenceWide";
     public readonly grass = "Grass";
     public readonly healingMachineBall = "HealingMachineBall";
+    public readonly menu = "Menu";
     public readonly nidorinoFront = "NIDORINOFront";
     public readonly note = "Note";
     public readonly oak = "Oak";
