@@ -1,11 +1,10 @@
 import { BattleOutcome } from "battlemovr";
 import { expect } from "chai";
-import { Clock } from "lolex";
 import { IListMenuProgress, MenuGraphr } from "menugraphr";
 import { Children } from "react";
 import { FullScreenPokemon } from "../";
 import { stubBlankGame } from "../fakes.test";
-import { IBattleTeam, IPartialBattleOptions, IPokemon } from "./Battles";
+import { IBattleInfo, IBattleTeam, IPartialBattleOptions, IPokemon } from "./Battles";
 import { IPlayer } from "./Things";
 
 describe("Experience", () => {
@@ -56,7 +55,7 @@ describe("Experience", () => {
     });
     it("Ensures a pokemon gains experience through during a battle", (): void => {
         // Arrange
-        const { clock, fsp, player } = stubBlankGame();
+        const { fsp, player } = stubBlankGame();
         const charmander = fsp.equations.newPokemon({
             level: 99,
             title: "CHARMANDER".split(""),
@@ -89,6 +88,8 @@ describe("Experience", () => {
         });
         const startingExperience = charmander.experience;
         const temp = () => 0;
+
+        // Act
         fsp.battles.startBattle({
             teams: {
                 opponent: {
@@ -101,16 +102,15 @@ describe("Experience", () => {
             },
         });
 
-        // Act
         const battleInfo = fsp.battleMover.getBattleInfo();
-        fsp.experience.processBattleExperience (battleInfo, temp);
+        fsp.experience.processBattleExperience(battleInfo, temp);
 
         // Assert
         expect(charmander.experience).to.be.greaterThan(startingExperience);
     });
     it("Ensures a pokemon levels up after a battle", (): void => {
         // Arrange
-        const { clock, fsp, player } = stubBlankGame();
+        const { fsp, player } = stubBlankGame();
         const charmander = fsp.equations.newPokemon({
             level: 1,
             title: "CHARMANDER".split(""),
@@ -143,6 +143,8 @@ describe("Experience", () => {
         });
         const startingExperience = charmander.experience;
         const temp = () => 0;
+
+        // Act
         fsp.battles.startBattle({
             teams: {
                 opponent: {
@@ -155,9 +157,8 @@ describe("Experience", () => {
             },
         });
 
-        // Act
         const battleInfo = fsp.battleMover.getBattleInfo();
-        fsp.experience.processBattleExperience (battleInfo, temp);
+        fsp.experience.processBattleExperience(battleInfo, temp);
 
         // Assert
         expect(charmander.level).to.be.equal(2);
