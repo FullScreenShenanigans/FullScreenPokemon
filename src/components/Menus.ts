@@ -4,6 +4,7 @@ import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
+import { Computer } from "./menus/Computer";
 import { Items } from "./menus/Items";
 import { Keyboards } from "./menus/Keyboards";
 import { Pause } from "./menus/Pause";
@@ -128,6 +129,12 @@ export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
  * Manipulates MenuGraphr menus.
  */
 export class Menus<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+    /**
+     * Menus for PokeCenter computers.
+     */
+    @component(Computer)
+    public readonly computer: Computer<TGameStartr>;
+
     /**
      * Manipulates item menus.
      */

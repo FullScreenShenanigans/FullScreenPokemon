@@ -865,6 +865,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends GeneralCompon
                 y: y + 76,
             },
             {
+                cutscene: "Computer",
                 thing: "Computer",
                 x: x + 416,
                 y: y + 96,

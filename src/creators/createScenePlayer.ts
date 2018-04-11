@@ -9,6 +9,10 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 export const createScenePlayer = (fsp: FullScreenPokemon): ScenePlayr =>
     new ScenePlayr({
         cutscenes: {
+            Computer: {
+                firstRoutine: "Open",
+                routineS: fsp.cutscenes.computer,
+            },
             DaisyTownMap: {
                 firstRoutine: "Greeting",
                 routines: fsp.cutscenes.daisyTownMap,

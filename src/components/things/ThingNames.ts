@@ -5,6 +5,7 @@ export class ThingNames {
     public readonly areaGate = "AreaGate";
     public readonly bubbleLarge = "BubbleLarge";
     public readonly bubbleSmall = "BubbleSmall";
+    public readonly computer = "Computer";
     public readonly exclamation = "Exclamation";
     public readonly explosionLarge = "ExplosionLarge";
     public readonly explosionSmall = "ExplosionSmall";
