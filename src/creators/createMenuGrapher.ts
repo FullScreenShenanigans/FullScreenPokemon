@@ -106,6 +106,13 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
             onInteraction: "Menu Bleep",
         },
         schemas: {
+            "Computer": {
+                keepOnBack: true,
+                size: {
+                    height: 160,
+                    width: 280,
+                },
+            },
             "StartOptions": {
                 size: {
                     width: 240,

@@ -2,6 +2,7 @@ import { component } from "babyioc";
 import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+import { ComputerCutscene } from "./cutscenes/ComputerCutscene";
 import { DaisyTownMapCutscene } from "./cutscenes/DaisyTownMapCutscene";
 import { ElderTrainingCutscene } from "./cutscenes/ElderTrainingCutscene";
 import { IntroCutscene } from "./cutscenes/IntroCutscene";
@@ -21,6 +22,12 @@ import { TrainerSpottedCutscene } from "./cutscenes/TrainerSpottedCutscene";
  * ScenePlayr cutscenes, keyed by name.
  */
 export class Cutscenes<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+    /**
+     * Computer cutscene routines.
+     */
+    @component(ComputerCutscene)
+    public readonly computer: ComputerCutscene<TGameStartr>;
+
     /**
      * DaisyTownMap cutscene routines.
      */
