@@ -10,6 +10,10 @@ node_modules/
 npm-debug.log
 debug.log
 
+# Code coverage
+coverage.json
+coverage/
+
 # Added by shenanigans-manager for maps testing
 Maps.test.ts
 
