@@ -24,7 +24,7 @@ export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameSt
         let startX: number;
         let startY: number;
 
-        if (this.direction === -1) {
+        if (this.direction === 1) {
             startX = menu.right - this.defenderThing.width / 2;
             startY = menu.top;
         } else {
