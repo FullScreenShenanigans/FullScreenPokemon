@@ -1,4 +1,5 @@
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
+import { Direction } from "../../../../../Constants";
 import { IMenu } from "../../../../../Menus";
 import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
@@ -24,7 +25,7 @@ export class Scratch<TGameStartr extends FullScreenPokemon> extends Move<TGameSt
         let startX: number;
         let startY: number;
 
-        if (this.direction === -1) {
+        if (this.direction === Direction.Right) {
             startX = menu.right - this.defenderThing.width / 2;
             startY = menu.top;
         } else {
