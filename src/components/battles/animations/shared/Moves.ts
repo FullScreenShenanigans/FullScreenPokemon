@@ -37,7 +37,12 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      */
     public playMove(teamAndAction: ITeamAndAction<IMoveAction>, callback: () => void): void {
         const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        const animatorType: typeof Move = this.movesBag[teamAndAction.action.move] || this.movesBag.default;
+        let animatorType: typeof Move = this.movesBag.default;
+        if (teamAndAction.action.move === "Scratch") {
+            animatorType = this.movesBag.SCRATCH;
+        } else {
+            animatorType = this.movesBag.default;
+        }
         const animator: Move<TGameStartr> = new animatorType(this.gameStarter, teamAndAction);
 
         this.gameStarter.menuGrapher.createMenu("GeneralText");

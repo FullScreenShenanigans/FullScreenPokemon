@@ -6,6 +6,8 @@ import { IBattleInfo, IPokemon } from "../../../../Battles";
 import { IMenu } from "../../../../Menus";
 import { IThing } from "../../../../Things";
 import { Scratch } from "./moves/Scratch";
+import { DefaultMovesBag } from "./MovesBag";
+
 /**
  * Runs a battle move.
  */
@@ -80,9 +82,6 @@ export class Move<TGameStartr extends FullScreenPokemon> extends GeneralComponen
      */
     public runAnimation(onComplete: () => void): void {
         console.log(`Still need to implement '${this.teamAndAction.action.move}'...`);
-        if (this.teamAndAction.action.move === "Scratch") {
-            Scratch.runAnimation();
-        }
         onComplete();
     }
 }
