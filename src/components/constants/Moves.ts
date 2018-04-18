@@ -795,7 +795,14 @@ export class Moves {
         },
         "Slash": {
             type: "Normal",
-            effects: [],
+            effects:
+            [
+                {
+                    damage: 70,
+                    target: EffectTarget.defender,
+                    type: "damage",
+                },
+            ],
             accuracy: 100,
             PP: 20,
         },
