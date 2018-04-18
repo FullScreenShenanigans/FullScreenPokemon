@@ -276,11 +276,11 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      */
     public removeItemFromBag(item: string, amount: number = 1): void {
         this.gameStarter.utilities.removeArrayMembers(
-        this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items),
-        item,
-        amount,
-        "item",
-        "amount");
+            this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items),
+            item,
+            amount,
+            "item",
+            "amount");
     }
 
     /**
