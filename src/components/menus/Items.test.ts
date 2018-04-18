@@ -207,4 +207,55 @@ describe("Items", () => {
             expect(settings.onToss).to.have.been.calledWithExactly(listing);
         });
     });
+
+    describe("tossItem", () => {
+        it("throws out an item when its amount reaches above zero", () => {
+            // Arrange
+            const { fsp, player } = stubBlankGame();
+            const settings = {
+                onUse: sinon.spy(),
+                onToss: sinon.spy(),
+            };
+            fsp.saves.addItemToBag("Potion");
+            fsp.saves.addItemToBag("Potion");
+
+            // Act
+            fsp.saves.removeItemFromBag("Potion");
+
+            // Assert
+            expect(fsp.itemsHolder.getItem(fsp.storage.names.items)[0].amount).to.be.equal(1);
+        });
+
+        it("throws out an item when its amount reaches below zero", () => {
+            // Arrange
+            const { fsp, player } = stubBlankGame();
+            const settings = {
+                onUse: sinon.spy(),
+                onToss: sinon.spy(),
+            };
+            fsp.saves.addItemToBag("Potion");
+
+            // Act
+            fsp.saves.removeItemFromBag("Potion");
+
+            // Assert
+            expect(fsp.itemsHolder.getItem(fsp.storage.names.items)[0]).to.be.equal(undefined);
+        });
+
+        it("does not throw out an item when item doesn't exist", () => {
+            // Arrange
+            const { fsp, player } = stubBlankGame();
+            const settings = {
+                onUse: sinon.spy(),
+                onToss: sinon.spy(),
+            };
+            fsp.saves.addItemToBag("Potion");
+
+            // Act
+            fsp.saves.removeItemFromBag("Fire Stone");
+
+            // Assert
+            expect(fsp.itemsHolder.getItem(fsp.storage.names.items)[0].amount).to.be.equal(1);
+        });
+    });
 });

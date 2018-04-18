@@ -59,7 +59,6 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
             [keyCount]: count,
         });
 
-        console.log(array);
         return true;
     }
 
