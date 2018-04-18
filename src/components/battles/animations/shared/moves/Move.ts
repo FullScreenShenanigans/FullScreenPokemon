@@ -5,8 +5,6 @@ import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../../Battles";
 import { IMenu } from "../../../../Menus";
 import { IThing } from "../../../../Things";
-import { Scratch } from "./moves/Scratch";
-import { DefaultMovesBag } from "./MovesBag";
 
 /**
  * Runs a battle move.

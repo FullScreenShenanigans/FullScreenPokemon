@@ -40,6 +40,8 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         let animatorType: typeof Move = this.movesBag.default;
         if (teamAndAction.action.move === "Scratch") {
             animatorType = this.movesBag.SCRATCH;
+        } else if (teamAndAction.action.move === "Slash") {
+            animatorType = this.movesBag.SLASH;
         } else {
             animatorType = this.movesBag.default;
         }
