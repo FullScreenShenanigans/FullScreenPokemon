@@ -4,7 +4,7 @@ node_js:
   - "node"
 
 script:
-  npm run setup && npm run verify
+  npm run setup && npm run verify:coverage
 
 # Recommended workaround for https://github.com/travis-ci/travis-ci/issues/8836
 sudo: required
