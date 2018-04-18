@@ -269,6 +269,21 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     }
 
     /**
+     * Removes an in-game item from the character's bag.
+     *
+     * @param item    Name of item being stored.
+     * @param amount   How many of the item to remove, if not 1.
+     */
+    public removeItemFromBag(item: string, amount: number = 1): void {
+        this.gameStarter.utilities.removeArrayMembers(
+        this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items),
+        item,
+        amount,
+        "item",
+        "amount");
+    }
+
+    /**
      * Adds a Pokemon by title to the Pokedex.
      *
      * @param titleRaw   The raw title of the Pokemon.
