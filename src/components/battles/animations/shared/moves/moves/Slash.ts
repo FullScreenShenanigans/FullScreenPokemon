@@ -18,15 +18,16 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
         const lineArray: IThing[] = [];
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const slashes: IThing[] = [
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.scratchLine),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.scratchLine),
+            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.scratchLine),
         ];
         let startX: number;
         let startY: number;
 
         if (this.direction === Direction.Right) {
-            startX = menu.right; //- this.defenderThing.width;
-            startY = menu.top + 8;
+            startX = menu.right;
+            startY = menu.top + this.defenderThing.height / 2;
         } else {
             startX = menu.left + this.defenderThing.width;
             startY = menu.bottom - (this.defenderThing.height + 8);
@@ -34,13 +35,14 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
 
         const offset: number = slashes[0].width / 2;
         this.gameStarter.things.add(slashes[0], startX, startY);
-        this.gameStarter.things.add(slashes[1], startX +  offset * this.direction * -2, startY);
-        //this.gameStarter.things.add(slashes[2], startX + offset * this.direction * -2, startY + offset * 2);
-
+        this.gameStarter.things.add(slashes[1], startX +  offset * this.direction * -5, startY);
+        this.gameStarter.things.add(slashes[2], startX + offset * this.direction * -10, startY);
+        let time = 0;
+        const explosionArray: IThing[] = [];
         this.gameStarter.timeHandler.addEventInterval(
             (): void => {
                 for (const slash of slashes) {
-                    const left: number = this.direction === 1 ? slash.left : slash.right - 3;
+                    const left: number = this.direction === Direction.Right ? slash.left : slash.right - 3;
                     const top: number =  slash.bottom - 3;
 
                     this.gameStarter.timeHandler.addEvent(
@@ -55,22 +57,16 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                         this.gameStarter.graphics.flipHoriz(line);
                     }
                     lineArray.push(line);
+                    if (time === 14) {
+                        const explosion = this.gameStarter.things.add(this.gameStarter.things.names.explosionSmall,
+                                                                      left - 18, top);
+                        explosionArray.push(explosion);
+                    }
                 }
+                time += 1;
             },
             1,
-            20);
-        // this.gameStarter.timeHandler.addEvent(
-        //         (): void => {
-        //             for (const line of lineArray) {
-        //                 this.gameStarter.battles.animations.things.flicker({
-        //                     clearTime: 10,
-        //                     interval: 2,
-        //                     thing: line,
-        //                 });
-        //             }
-        //         },
-        //         16);
-
+            16);
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 for (const slash of slashes) {
@@ -84,6 +80,9 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                         thing: line,
                     });
                 }
+                for (const explosion of explosionArray) {
+                    this.gameStarter.physics.killNormal(explosion);
+                }
 
                 for (const line of lineArray) {
                     this.gameStarter.physics.killNormal(line);
@@ -96,6 +95,6 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                     thing: this.defenderThing,
                 });
             },
-            21);
+            24);
     }
 }
