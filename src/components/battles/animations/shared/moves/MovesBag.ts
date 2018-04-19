@@ -4,6 +4,7 @@ import { Ember } from "./moves/Ember";
 import { Growl } from "./moves/Growl";
 import { QuickAttack } from "./moves/QuickAttack";
 import { Scratch } from "./moves/Scratch";
+import { Slash } from "./moves/Slash";
 import { Tackle } from "./moves/Tackle";
 import { TailWhip } from "./moves/TailWhip";
 
@@ -30,5 +31,6 @@ export const DefaultMovesBag: IMovesBag = {
     "SCRATCH": Scratch,
     "TACKLE": Tackle,
     "TAIL WHIP": TailWhip,
+    "SLASH" : Slash,
     "default": Move,
 };
