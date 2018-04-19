@@ -43,7 +43,7 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
             (): void => {
                 for (const slash of slashes) {
                     const left: number = this.direction === Direction.Right ? slash.left : slash.right - 3;
-                    const top: number =  slash.bottom - 3;
+                    const top: number = slash.bottom - 3;
 
                     this.gameStarter.timeHandler.addEvent(
                         (): void => this.gameStarter.physics.shiftHoriz(slash, differenceX * (this.direction * -1) / 16),
@@ -58,8 +58,9 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                     }
                     lineArray.push(line);
                     if (time === 14) {
-                        const explosion = this.gameStarter.things.add(this.gameStarter.things.names.explosionSmall,
-                                                                      left - 18, top);
+                        const explosion = this.gameStarter.things.add
+                            (this.gameStarter.things.names.explosionSmall,
+                             left - 18, top);
                         explosionArray.push(explosion);
                     }
                 }
