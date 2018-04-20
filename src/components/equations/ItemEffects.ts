@@ -98,4 +98,22 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
+
+    /**
+     * Allows you to add a wild Pokemon to either your party or PC.
+     *
+     * @param pokemon   A Pokemon that you're capturing.
+     */
+    public capturePokemon(pokemon: IPokemon) {
+        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).length >= 6) {
+            this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokemonInPC, [
+                pokemon,
+            ]);
+        } else {
+            this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokemonInParty, [
+                pokemon,
+            ]);
+        }
+    }
+
 }
