@@ -98,4 +98,11 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
             });
         this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
     }
+
+    /**
+     * Allows you to add a wild Pokemon to your party.
+     *
+     * @param pokemon   A Pokemon that you're capturing.
+     * @returns Whether the Pokemon was added to your party or not.
+     */
 }
