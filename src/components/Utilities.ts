@@ -63,6 +63,29 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
     }
 
     /**
+     * Decrements the value of a stackable item in an Array. If the value goes below zero, the item is removed.
+     *
+     * @param array   The Array containing the stackable items.
+     * @param title   The name of the stackable item whose value is going to be decremented.
+     * @param count   The number of these stackable items.
+     * @param keyTitle   The key associated with the item's name, such as "item".
+     * @param keyCount   The key associated with the item's count, such as "amount".
+     * @returns Whether the stackable item was removed.
+     */
+    public removeArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i][keyTitle] === title) {
+                array[i][keyCount] -= count;
+                if (array[i][keyCount] <= 0) {
+                    array.splice(i, 1);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Gets a Thing known to exist by its ID.
      *
      * @template TThing   Type of Thing to retrieve.
