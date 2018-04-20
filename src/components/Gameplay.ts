@@ -7,7 +7,7 @@ interface IDataMouseEvent extends MouseEvent {
 }
 
 interface IDataProgressEvent extends ProgressEvent {
-    currentTarget: IDataEventTarget;
+    currentTarget: IDataEventTarget | null;
 }
 
 interface IDataEventTarget extends EventTarget {
@@ -95,6 +95,10 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
                     const reader: FileReader = new FileReader();
                     reader.onloadend = (loadEvent: IDataProgressEvent): void => {
+                        if (!loadEvent.currentTarget) {
+                            return;
+                        }
+
                         this.gameStarter.saves.loadRawData(loadEvent.currentTarget.result);
                         delete reader.onloadend;
                     };
