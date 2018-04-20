@@ -6,14 +6,6 @@ interface IDataMouseEvent extends MouseEvent {
     dataTransfer: DataTransfer;
 }
 
-interface IDataProgressEvent extends ProgressEvent {
-    currentTarget: IDataEventTarget | null;
-}
-
-interface IDataEventTarget extends EventTarget {
-    result: string;
-}
-
 /**
  * Event hooks for major gameplay state changes.
  */
@@ -94,12 +86,13 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
                     }
 
                     const reader: FileReader = new FileReader();
-                    reader.onloadend = (loadEvent: IDataProgressEvent): void => {
-                        if (!loadEvent.currentTarget) {
+                    reader.onloadend = (loadEvent): void => {
+                        const currentTarget = loadEvent.currentTarget as FileReader | null;
+                        if (!currentTarget) {
                             return;
                         }
 
-                        this.gameStarter.saves.loadRawData(loadEvent.currentTarget.result);
+                        this.gameStarter.saves.loadRawData(currentTarget.result);
                         delete reader.onloadend;
                     };
                     reader.readAsText(file);
