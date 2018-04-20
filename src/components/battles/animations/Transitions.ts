@@ -2,6 +2,7 @@ import { GeneralComponent } from "gamestartr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { FlashTransition } from "./transitions/FlashTransition";
+import { InstantTransition } from "./transitions/InstantTransition";
 import { Transition } from "./transitions/Transition";
 
 /**
@@ -35,6 +36,7 @@ export class Transitions<TGameStartr extends FullScreenPokemon> extends GeneralC
      */
     private readonly transitions: ITransitions = {
         flash: FlashTransition,
+        instant: InstantTransition,
     };
 
     /**
