@@ -105,14 +105,4 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @param pokemon   A Pokemon that you're capturing.
      * @returns Whether the Pokemon was added to your party or not.
      */
-    public capturePokemon(pokemon: IPokemon): boolean {
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).length >= 6) {
-            return false;
-        }
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokemonInParty, [
-            pokemon,
-        ]);
-        return true;
-    }
-
 }
