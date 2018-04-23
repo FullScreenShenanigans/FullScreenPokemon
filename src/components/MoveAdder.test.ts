@@ -128,7 +128,7 @@ describe("MoveAdder", () => {
 
     describe("Dialog Menu", () => {
         it("teaches you a move when you have less than four moves", (): void => {
-            //Arrange
+            // Arrange
             const { fsp, player, ...extras } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
@@ -150,15 +150,15 @@ describe("MoveAdder", () => {
                 uses: 10,
             };
 
-            //Act
+            // Act
             fsp.moveadder.startDialog(pokemon, peck);
 
-            //Assert
+            // Assert
             expect(pokemon.moves[1].title).to.be.equal("Peck");
         });
 
         it("does not teach you a move when you have four moves and refuse to learn more", (): void => {
-            //Arrange
+            // Arrange
             const { fsp, player, ...extras } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
@@ -166,10 +166,10 @@ describe("MoveAdder", () => {
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
-                    {title: "Bide", remaining: 10, uses: 10},
-                    {title: "Bite", remaining: 10, uses: 10},
-                    {title: "Bubble", remaining: 10, uses: 10},
-                    {title: "Roar", remaining: 10, uses: 10}],
+                    { title: "Bide", remaining: 10, uses: 10 },
+                    { title: "Bite", remaining: 10, uses: 10 },
+                    { title: "Bubble", remaining: 10, uses: 10 },
+                    { title: "Roar", remaining: 10, uses: 10 }],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -177,16 +177,15 @@ describe("MoveAdder", () => {
                 uses: 10,
             };
 
-            //Act
+            // Act
             fsp.moveadder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
-
             fsp.menuGrapher.registerDirection(2);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
 
-            //Assert
+            // Assert
             expect(pokemon.moves[0].title).to.be.equal("Bide");
             expect(pokemon.moves[1].title).to.be.equal("Bite");
             expect(pokemon.moves[2].title).to.be.equal("Bubble");
@@ -194,7 +193,7 @@ describe("MoveAdder", () => {
         });
 
         it("teaches you a move in your second slot when you have four moves and select the second to replace", (): void => {
-            //Arrange
+            // Arrange
             const { fsp, player, ...extras } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
@@ -202,10 +201,10 @@ describe("MoveAdder", () => {
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
-                    {title: "Bide", remaining: 10, uses: 10},
-                    {title: "Bite", remaining: 10, uses: 10},
-                    {title: "Bubble", remaining: 10, uses: 10},
-                    {title: "Roar", remaining: 10, uses: 10}],
+                    { title: "Bide", remaining: 10, uses: 10 },
+                    { title: "Bite", remaining: 10, uses: 10 },
+                    { title: "Bubble", remaining: 10, uses: 10 },
+                    { title: "Roar", remaining: 10, uses: 10 }],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -213,7 +212,7 @@ describe("MoveAdder", () => {
                 uses: 10,
             };
 
-            //Act
+            // Act
             fsp.moveadder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
@@ -221,7 +220,7 @@ describe("MoveAdder", () => {
             fsp.menuGrapher.registerDirection(2);
             fsp.inputs.keyDownA(player);
 
-            //Assert
+            // Assert
             expect(pokemon.moves[0].title).to.be.equal("Bide");
             expect(pokemon.moves[1].title).to.be.equal("Peck");
             expect(pokemon.moves[2].title).to.be.equal("Bubble");
@@ -229,7 +228,7 @@ describe("MoveAdder", () => {
         });
 
         it("teaches you a move in your fourth slot when you have four moves and select the fourth to replace", (): void => {
-            //Arrange
+            // Arrange
             const { fsp, player, ...extras } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
@@ -237,10 +236,10 @@ describe("MoveAdder", () => {
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
-                    {title: "Bide", remaining: 10, uses: 10},
-                    {title: "Bite", remaining: 10, uses: 10},
-                    {title: "Bubble", remaining: 10, uses: 10},
-                    {title: "Roar", remaining: 10, uses: 10}],
+                    { title: "Bide", remaining: 10, uses: 10 },
+                    { title: "Bite", remaining: 10, uses: 10 },
+                    { title: "Bubble", remaining: 10, uses: 10 },
+                    { title: "Roar", remaining: 10, uses: 10 }],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -248,7 +247,7 @@ describe("MoveAdder", () => {
                 uses: 10,
             };
 
-            //Act
+            // Act
             fsp.moveadder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
@@ -258,7 +257,7 @@ describe("MoveAdder", () => {
             fsp.menuGrapher.registerDirection(2);
             fsp.inputs.keyDownA(player);
 
-            //Assert
+            // Assert
             expect(pokemon.moves[0].title).to.be.equal("Bide");
             expect(pokemon.moves[1].title).to.be.equal("Bite");
             expect(pokemon.moves[2].title).to.be.equal("Bubble");
@@ -266,7 +265,7 @@ describe("MoveAdder", () => {
         });
 
         it("teaches you a move when you respond no to abandoning learning a new move", (): void => {
-            //Arrange
+            // Arrange
             const { fsp, player, ...extras } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
@@ -274,10 +273,10 @@ describe("MoveAdder", () => {
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
-                    {title: "Bide", remaining: 10, uses: 10},
-                    {title: "Bite", remaining: 10, uses: 10},
-                    {title: "Bubble", remaining: 10, uses: 10},
-                    {title: "Roar", remaining: 10, uses: 10}],
+                    { title: "Bide", remaining: 10, uses: 10 },
+                    { title: "Bite", remaining: 10, uses: 10 },
+                    { title: "Bubble", remaining: 10, uses: 10 },
+                    { title: "Roar", remaining: 10, uses: 10 }],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -285,7 +284,7 @@ describe("MoveAdder", () => {
                 uses: 10,
             };
 
-            //Act
+            // Act
             fsp.moveadder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.menuGrapher.registerDirection(2);
@@ -298,7 +297,7 @@ describe("MoveAdder", () => {
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
 
-            //Assert
+            // Assert
             expect(pokemon.moves[0].title).to.be.equal("Peck");
             expect(pokemon.moves[1].title).to.be.equal("Bite");
             expect(pokemon.moves[2].title).to.be.equal("Bubble");
