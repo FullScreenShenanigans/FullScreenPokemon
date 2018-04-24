@@ -28,18 +28,19 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
             this.gameStarter.graphics.moveThingsToText(battleInfo.keptThings);
         }
 
+        // tslint:disable-next-line no-floating-promises
         this.gameStarter.audioPlayer.play(battleInfo.theme, {
             alias: this.gameStarter.audio.aliases.theme,
             loop: true,
-        }).then(() => {
-            this.transitions.play({
-                onComplete: (): void => {
-                    this.setupThings(battleInfo);
-                    this.runTeamEntrances(battleInfo, onComplete);
-                },
-            });
         });
 
+        this.transitions.play({
+            name: battleInfo.startTransition,
+            onComplete: (): void => {
+                this.setupThings(battleInfo);
+                this.runTeamEntrances(battleInfo, onComplete);
+            },
+        });
     }
 
     /**
