@@ -55,16 +55,16 @@ describe("Experience", () => {
     });
     it("Ensures a pokemon gains experience through during a battle", (): void => {
         // Arrange
-        const { fsp, player } = stubBlankGame();
+        const { fsp, player, clock } = stubBlankGame({
+            automaticallyAdvanceMenus: true,
+            width: window.innerWidth,
+            height: 700,
+        });
+        setInterval(() => clock.tick(10), 3);
         const charmander = fsp.equations.newPokemon({
             level: 99,
             title: "CHARMANDER".split(""),
             moves: [
-                {
-                    remaining: 10,
-                    title: "Growl",
-                    uses: 10,
-                },
                 {
                     remaining: 10,
                     title: "Scratch",
@@ -91,6 +91,7 @@ describe("Experience", () => {
 
         // Act
         fsp.battles.startBattle({
+            startTransition: "instant",
             teams: {
                 opponent: {
                     actors: [enemyPokemon],
@@ -102,11 +103,13 @@ describe("Experience", () => {
             },
         });
 
-        const battleInfo = fsp.battleMover.getBattleInfo();
-        fsp.experience.processBattleExperience(battleInfo, temp);
+        // fsp.menuGrapher.registerA();
+        window.FSP = fsp;
+        window.clock = clock;
+        document.body.appendChild(fsp.canvas);
 
         // Assert
-        expect(charmander.experience).to.be.greaterThan(startingExperience);
+        // expect(charmander.experience).to.be.greaterThan(startingExperience);
     });
     it("Ensures a pokemon levels up after a battle", (): void => {
         // Arrange
