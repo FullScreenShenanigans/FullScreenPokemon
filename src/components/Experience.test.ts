@@ -60,7 +60,6 @@ describe("Experience", () => {
             width: window.innerWidth,
             height: 700,
         });
-        setInterval(() => clock.tick(10), 3);
         const charmander = fsp.equations.newPokemon({
             level: 99,
             title: "CHARMANDER".split(""),
@@ -108,8 +107,22 @@ describe("Experience", () => {
         window.clock = clock;
         document.body.appendChild(fsp.canvas);
 
+        clock.tick(50000);
+
+        fsp.menuGrapher.registerA();
+        clock.tick(2000);
+
+        fsp.menuGrapher.registerA();
+        clock.tick(2000);
+
+        fsp.menuGrapher.registerA();
+        clock.tick(2000);
+
+        fsp.menuGrapher.registerA();
+        clock.tick(2000);
+
         // Assert
-        // expect(charmander.experience).to.be.greaterThan(startingExperience);
+        expect(charmander.experience).to.be.greaterThan(startingExperience);
     });
     it("Ensures a pokemon levels up after a battle", (): void => {
         // Arrange
