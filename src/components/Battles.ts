@@ -211,6 +211,11 @@ export interface IPartialBattleOptions {
     onComplete?: IOnBattleComplete;
 
     /**
+     * Transition name to start with, if not a random one.
+     */
+    startTransition?: string;
+
+    /**
      * Opposing teams in the battle.
      */
     teams?: Partial<IUnderEachTeam<Partial<ITeamDescriptor>>> & {
