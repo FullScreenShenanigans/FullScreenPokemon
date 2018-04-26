@@ -56,7 +56,7 @@ const processBattle = (fsp: FullScreenPokemon, enemyPokemon: IPokemon, player: I
 };
 
 describe("Battles", () => {
-    it("Battles display a status condition Pokeball sprite when a Pokemon is affected by a status condition", (): void => {
+    it("displays a status condition Pokeball sprite when a Pokemon is affected by a status condition", (): void => {
         // Arrange
         const { clock, fsp, player, charmander, enemyPokemon} = createGame();
         charmander.status = "paralyzed";
@@ -72,7 +72,7 @@ describe("Battles", () => {
         expect(menus.children[0].className).to.be.equal("CharBallStatus");
     });
 
-    it("Battles display a normal Pokeball sprite when a Pokemon is bot affected by any status conditions", (): void => {
+    it("displays a normal Pokeball sprite when a Pokemon is not affected by any status conditions", (): void => {
         // Arrange
         const { clock, fsp, player, charmander, enemyPokemon} = createGame();
         fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
@@ -87,7 +87,7 @@ describe("Battles", () => {
         expect(menus.children[0].className).to.be.equal("CharBall");
     });
 
-    it("Battles display a fainted Pokeball sprite when a Pokemon is fainted", (): void => {
+    it("displays a fainted Pokeball sprite when a Pokemon is fainted", (): void => {
         // Arrange
         const { clock, fsp, player, charmander, enemyPokemon} = createGame();
         const charmanderfainted = fsp.equations.newPokemon({
