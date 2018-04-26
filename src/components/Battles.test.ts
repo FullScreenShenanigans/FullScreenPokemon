@@ -8,11 +8,11 @@ import { IBattleTeam, IPartialBattleOptions, IPokemon } from "./Battles";
 import { IPlayer } from "./Things";
 
 const createGame = () => {
-    const { clock, fsp, player } = stubBlankGame(
-        {height: 1000,
-         width: 1000,
-         automaticallyAdvanceMenus: true},
-    );
+    const { clock, fsp, player } = stubBlankGame({
+        height: 1000,
+        width: 1000,
+        automaticallyAdvanceMenus: true,
+    });
     const charmander = fsp.equations.newPokemon({
         level: 99,
         title: "CHARMANDER".split(""),
@@ -37,7 +37,7 @@ const createGame = () => {
         ],
     });
 
-    return {clock, fsp, player, charmander, enemyPokemon};
+    return { clock, fsp, player, charmander, enemyPokemon };
 };
 
 const processBattle = (fsp: FullScreenPokemon, enemyPokemon: IPokemon, player: IPlayer, clock: Clock) => {
@@ -56,37 +56,39 @@ const processBattle = (fsp: FullScreenPokemon, enemyPokemon: IPokemon, player: I
 };
 
 describe("Battles", () => {
-    it("Ensures a status condition pokeball sprite is displayed when pokemon is affected by a status condition", (): void => {
-        //Arrange
+    it("Battles display a status condition Pokeball sprite when a Pokemon is affected by a status condition", (): void => {
+        // Arrange
         const { clock, fsp, player, charmander, enemyPokemon} = createGame();
         charmander.status = "paralyzed";
         fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
             charmander,
         ]);
 
-        //Act
+        // Act
         processBattle(fsp, enemyPokemon, player, clock);
 
-        //Assert
+        // Assert
         const menus = fsp.menuGrapher.getMenu("BattlePlayerPokeballs");
         expect(menus.children[0].className).to.be.equal("CharBallStatus");
     });
-    it("Ensures a healthly pokeball sprite is displayed when pokemon is healthy", (): void => {
-        //Arrange
+
+    it("Battles display a normal Pokeball sprite when a Pokemon is bot affected by any status conditions", (): void => {
+        // Arrange
         const { clock, fsp, player, charmander, enemyPokemon} = createGame();
         fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
             charmander,
         ]);
 
-        //Act
+        // Act
         processBattle(fsp, enemyPokemon, player, clock);
 
-        //Assert
+        // Assert
         const menus = fsp.menuGrapher.getMenu("BattlePlayerPokeballs");
         expect(menus.children[0].className).to.be.equal("CharBall");
     });
-    it("Ensures a fainted pokeball sprite is displayed when pokemon is fainted", (): void => {
-        //Arrange
+
+    it("Battles display a fainted Pokeball sprite when a Pokemon is fainted", (): void => {
+        // Arrange
         const { clock, fsp, player, charmander, enemyPokemon} = createGame();
         const charmanderfainted = fsp.equations.newPokemon({
             level: 99,
@@ -105,10 +107,10 @@ describe("Battles", () => {
             charmander,
         ]);
 
-        //Act
+        // Act
         processBattle(fsp, enemyPokemon, player, clock);
 
-        //Assert
+        // Assert
         const menus = fsp.menuGrapher.getMenu("BattlePlayerPokeballs");
         expect(menus.children[1].className).to.be.equal("CharBallFaint");
     });
