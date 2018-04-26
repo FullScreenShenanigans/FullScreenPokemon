@@ -70,7 +70,7 @@ const createGame = (charmanderLevel: number) => {
         ],
     });
 
-    return{ fsp, player, clock, charmander, enemyPokemon };
+    return { fsp, player, clock, charmander, enemyPokemon };
 };
 describe("Experience", () => {
     it("levels a Pokemon up through the levelup function", (): void => {
@@ -127,10 +127,24 @@ describe("Experience", () => {
         });
 
         // Act
-        const result = fsp.experience.gainExperience(pokemon, 100);
+        fsp.experience.gainExperience(pokemon, 100);
 
         // Assert
         expect(pokemon.level).to.be.equal(6);
+    });
+
+    it("checks that return value of gainexperience is true when a pokemon levels up", (): void => {
+        // Arrange
+        const { fsp } = stubBlankGame();
+        const pokemon: IPokemon = fsp.equations.newPokemon({
+            level: 5,
+            title: "CHARMANDER".split(""),
+        });
+
+        // Act
+        const result = fsp.experience.gainExperience(pokemon, 100);
+
+        // Assert
         expect(result).to.be.equal(true);
     });
 
