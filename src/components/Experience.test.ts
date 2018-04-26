@@ -74,123 +74,123 @@ const createGame = (charmanderLevel: number) => {
 };
 
 describe("Experience", () => {
-	describe("levelUp", () => {
-		it("levels a Pokemon up", (): void => {
-			// Arrange
-			const { fsp } = stubBlankGame();
-			const pokemon: IPokemon = fsp.equations.newPokemon({
-				level: 5,
-				title: "CHARMANDER".split(""),
-			});
+    describe("levelUp", () => {
+        it("levels a Pokemon up", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
 
-			// Act
-			fsp.experience.levelup(pokemon);
+            // Act
+            fsp.experience.levelup(pokemon);
 
-			// Assert
-			expect(pokemon.level).to.be.equal(6);
-		});
-	});
+            // Assert
+            expect(pokemon.level).to.be.equal(6);
+        });
+    });
 
-	describe("gainExperience", () => {
-		it("increases a Pokemon's experience", (): void => {
-			// Arrange
-			const { fsp } = stubBlankGame();
-			const pokemon: IPokemon = fsp.equations.newPokemon({
-				level: 5,
-				title: "CHARMANDER".split(""),
-			});
+    describe("gainExperience", () => {
+        it("increases a Pokemon's experience", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
 
-			// Act
-			const result = fsp.experience.gainExperience(pokemon, 50);
+            // Act
+            const result = fsp.experience.gainExperience(pokemon, 50);
 
-			// Assert
-			expect(pokemon.experience).to.be.equal(175);
-		});
+            // Assert
+            expect(pokemon.experience).to.be.equal(175);
+        });
 
-		it("doesn't level up a pokemon when it doesn't gain enough experience to do so", (): void => {
-			// Arrange
-			const { fsp } = stubBlankGame();
-			const pokemon: IPokemon = fsp.equations.newPokemon({
-				level: 5,
-				title: "CHARMANDER".split(""),
-			});
+        it("doesn't level up a pokemon when it doesn't gain enough experience to do so", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
 
-			// Act
-			fsp.experience.gainExperience(pokemon, 1);
+            // Act
+            fsp.experience.gainExperience(pokemon, 1);
 
-			// Assert
-			expect(pokemon.level).to.be.equal(6);
-		});
+            // Assert
+            expect(pokemon.level).to.be.equal(6);
+        });
 
-		it("returns false when a Pokemon doesn't level up", (): void => {
-			// Arrange
-			const { fsp } = stubBlankGame();
-			const pokemon: IPokemon = fsp.equations.newPokemon({
-				level: 5,
-				title: "CHARMANDER".split(""),
-			});
+        it("returns false when a Pokemon doesn't level up", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
 
-			// Act
-			const result = fsp.experience.gainExperience(pokemon, 50);
+            // Act
+            const result = fsp.experience.gainExperience(pokemon, 50);
 
-			// Assert
-			expect(result).to.be.equal(false);
-		});
+            // Assert
+            expect(result).to.be.equal(false);
+        });
 
-		it("levels up a pokemon when it gains enough experience to do so", (): void => {
-			// Arrange
-			const { fsp } = stubBlankGame();
-			const pokemon: IPokemon = fsp.equations.newPokemon({
-				level: 5,
-				title: "CHARMANDER".split(""),
-			});
+        it("levels up a pokemon when it gains enough experience to do so", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
 
-			// Act
-			fsp.experience.gainExperience(pokemon, 100);
+            // Act
+            fsp.experience.gainExperience(pokemon, 100);
 
-			// Assert
-			expect(pokemon.level).to.be.equal(6);
-		});
+            // Assert
+            expect(pokemon.level).to.be.equal(6);
+        });
 
-		it("returns true when a Pokemon levels up", (): void => {
-			// Arrange
-			const { fsp } = stubBlankGame();
-			const pokemon: IPokemon = fsp.equations.newPokemon({
-				level: 5,
-				title: "CHARMANDER".split(""),
-			});
+        it("returns true when a Pokemon levels up", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
 
-			// Act
-			const result = fsp.experience.gainExperience(pokemon, 100);
+            // Act
+            const result = fsp.experience.gainExperience(pokemon, 100);
 
-			// Assert
-			expect(result).to.be.equal(true);
-		});
-	});
+            // Assert
+            expect(result).to.be.equal(true);
+        });
+    });
 
-	describe("battles", () => {
-		it("makes a Pokemon gain experience through battle", (): void => {
-			// Arrange
-			const { fsp, player, clock, charmander, enemyPokemon } = createGame(99);
-			const startingExperience = charmander.experience;
+    describe("battles", () => {
+        it("makes a Pokemon gain experience through battle", (): void => {
+            // Arrange
+            const { fsp, player, clock, charmander, enemyPokemon } = createGame(99);
+            const startingExperience = charmander.experience;
 
-			// Act
-			startBattle(clock, fsp, player, enemyPokemon, charmander);
+            // Act
+            startBattle(clock, fsp, player, enemyPokemon, charmander);
 
-			// Assert
-			expect(charmander.experience).to.be.greaterThan(startingExperience);
-		});
+            // Assert
+            expect(charmander.experience).to.be.greaterThan(startingExperience);
+        });
 
-		it("makes a Pokemon level up through battle", (): void => {
-			// Arrange
-			const { fsp, player, clock, charmander, enemyPokemon } = createGame(1);
+        it("makes a Pokemon level up through battle", (): void => {
+            // Arrange
+            const { fsp, player, clock, charmander, enemyPokemon } = createGame(1);
 
-			// Act
-			startBattle(clock, fsp, player, enemyPokemon, charmander);
-			clock.tick(1500);
+            // Act
+            startBattle(clock, fsp, player, enemyPokemon, charmander);
+            clock.tick(1500);
 
-			// Assert
-			expect(charmander.level).to.be.equal(2);
-		});
-	});
+            // Assert
+            expect(charmander.level).to.be.equal(2);
+        });
+    });
 });
