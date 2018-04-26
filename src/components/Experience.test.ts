@@ -14,17 +14,10 @@ const skipBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer): void
     fsp.inputs.keyDownA(player);
     clock.tick(2000);
     fsp.inputs.keyDownA(player);
-    clock.tick(2000);
     fsp.inputs.keyDownA(player);
     clock.tick(2000);
     fsp.inputs.keyDownA(player);
-    clock.tick(2000);
-    fsp.inputs.keyDownA(player);
-    clock.tick(2000);
-    fsp.inputs.keyDownA(player);
-    clock.tick(2000);
-    fsp.inputs.keyDownA(player);
-    clock.tick(2000);
+    clock.tick(1000);
 };
 
 const startBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer, enemyPokemon: IPokemon, charmander: IPokemon) => {
@@ -44,7 +37,9 @@ const startBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer, enem
 };
 
 const createGame = (charmanderLevel: number) => {
-    const { fsp, player, clock } = stubBlankGame();
+    const { fsp, player, clock } = stubBlankGame(
+        {automaticallyAdvanceMenus: true},
+    );
     const charmander = fsp.equations.newPokemon({
         level: charmanderLevel,
         title: "CHARMANDER".split(""),
@@ -60,7 +55,7 @@ const createGame = (charmanderLevel: number) => {
         charmander,
     ]);
     const enemyPokemon: IPokemon = fsp.equations.newPokemon({
-        level: 3,
+        level: 1,
         title: "PIDGEY".split(""),
         moves: [
             {
@@ -147,6 +142,7 @@ describe("Experience", () => {
 
         // Act
         startBattle(clock, fsp, player, enemyPokemon, charmander);
+        clock.tick(1500);
 
         // Assert
         expect(charmander.level).to.be.equal(2);
