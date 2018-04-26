@@ -10,7 +10,8 @@ import { IPlayer } from "./Things";
 const createGame = () => {
     const { clock, fsp, player } = stubBlankGame(
         {height: 1000,
-         width: 1000},
+         width: 1000,
+         automaticallyAdvanceMenus: true},
     );
     const charmander = fsp.equations.newPokemon({
         level: 99,
@@ -52,8 +53,6 @@ const processBattle = (fsp: FullScreenPokemon, enemyPokemon: IPokemon, player: I
         },
     });
     fsp.inputs.keyDownA(player);
-    clock.tick(2000);
-
 };
 
 describe("Battles", () => {
