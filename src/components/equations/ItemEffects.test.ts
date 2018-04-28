@@ -5,7 +5,7 @@ import { ItemEffects } from "./ItemEffects";
 
 describe("ItemEffects", () => {
     describe("capturePokemon", () => {
-        it("adds a new Pokemon to your party when your party has less than six Pokemon", (): void => {
+        it("adds a new Pokemon to your party when your party has fewer than six Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -16,9 +16,11 @@ describe("ItemEffects", () => {
 
             // Act
             itemEffects.capturePokemon(pokemon);
+            itemEffects.capturePokemon(pokemon);
 
             // Assert
             expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[0].title).to.be.equal(pokemon.title);
+            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title).to.be.equal(pokemon.title);
         });
 
         it("does not add a new Pokemon to your party when your party has more than six Pokemon", (): void => {
