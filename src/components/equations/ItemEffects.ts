@@ -109,9 +109,7 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
         if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).length >= 6) {
             return false;
         }
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokemonInParty, [
-            pokemon,
-        ]);
+        this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).push(pokemon);
         return true;
     }
 }
