@@ -47,5 +47,46 @@ describe("ItemEffects", () => {
                 expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i].title).to.be.equal(squirtle.title);
             }
         });
+
+        it("function returns true when attempting to add a Pokemon to a party of less than six Pokemon", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "SQUIRTLE".split(""),
+            });
+            const itemEffects = new ItemEffects(fsp);
+            let retval: boolean;
+
+            // Act
+            retval = itemEffects.capturePokemon(pokemon);
+
+            // Assert
+            expect(retval).to.be.equal(true);
+        });
+
+        it("function returns false when attempting to add a Pokemon to a party of less than six Pokemon", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const squirtle: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "SQUIRTLE".split(""),
+            });
+            const charmander: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "CHARMANDER".split(""),
+            });
+            const itemEffects = new ItemEffects(fsp);
+            for (let i = 0; i < 6; i++) {
+                fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i] = squirtle;
+            }
+            let retval: boolean;
+
+            // Act
+            retval = itemEffects.capturePokemon(charmander);
+
+            // Assert
+            expect(retval).to.be.equal(false);
+        });
      });
 });
