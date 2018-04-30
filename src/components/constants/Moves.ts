@@ -636,7 +636,13 @@ export class Moves {
         },
         "Poison Sting": {
             type: "Poison",
-            effects: [],
+            effects: [
+                {
+                    damage: 15,
+                    target: EffectTarget.defender,
+                    type: "damage",
+                },
+            ],
             accuracy: 100,
             PP: 35,
         },
