@@ -602,7 +602,7 @@ export class Moves {
             type: "Normal",
             effects: [
                 {
-                    damage: 0,
+                    damage: 40,
                     target: EffectTarget.defender,
                     type: "damage",
                 },

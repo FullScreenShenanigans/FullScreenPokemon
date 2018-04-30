@@ -22,7 +22,16 @@ export class PayDay<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const coin = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         const startX: number[] = [];
         const startY: number[] = [];
-
+        const shiftDown = (): void => 
+        {
+            this.gameStarter.physics.shiftHoriz(coin, CoinXOffset);
+            this.gameStarter.physics.shiftVert(coin, CoinYOffset);
+        }
+        const shiftUp = (): void =>
+        {
+            this.gameStarter.physics.shiftHoriz(coin, CoinXOffset);
+            this.gameStarter.physics.shiftVert(coin, -CoinYOffset);
+        }
         if (this.direction === Direction.Right) {
             startX[0] = menu.right - this.defenderThing.width;
             startY[0] = menu.top;
@@ -31,8 +40,11 @@ export class PayDay<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         } else {
             startX[0] = menu.left + this.defenderThing.width;
             startY[0] = menu.bottom - (this.defenderThing.height + 8);
+            startX[1] = startX[0] - 50;
+            startY[1] = startY[0] - 50;
         }
-
+        const CoinXOffset = -8;
+        const CoinYOffset = 12;
         this.gameStarter.things.add(explosions[0], startX[0], startY[0]);
         this.gameStarter.timeHandler.addEvent(
             (): void => {
@@ -48,37 +60,27 @@ export class PayDay<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
             },
             8);
         this.gameStarter.timeHandler.addEvent(
-            (): void => 
-            {
-                this.gameStarter.physics.shiftHoriz(coin, -8);
-                this.gameStarter.physics.shiftVert(coin, 12);
-            },
-        10);
+            shiftDown,
+            10);
+        this.gameStarter.timeHandler.addEvent(
+            shiftUp,
+            14);
+        this.gameStarter.timeHandler.addEvent(
+            shiftDown,
+            18);
+        this.gameStarter.timeHandler.addEvent(
+            shiftUp,
+            22);
         this.gameStarter.timeHandler.addEvent(
             (): void => 
             {
-                this.gameStarter.physics.shiftHoriz(coin, -8);
-                this.gameStarter.physics.shiftVert(coin, -12);
-            },
-        14);
-        this.gameStarter.timeHandler.addEvent(
-            (): void => 
-            {
-                this.gameStarter.physics.shiftHoriz(coin, -8);
-                this.gameStarter.physics.shiftVert(coin, 12);
-            },
-        18);
-        this.gameStarter.timeHandler.addEvent(
-            (): void => 
-            {
-                this.gameStarter.physics.shiftHoriz(coin, -8);
-                this.gameStarter.physics.shiftVert(coin, -12);
-            },
-        22);
-        this.gameStarter.timeHandler.addEvent(
-            (): void => 
-            {
-                this.gameStarter.physics.killNormal(coin)
+                this.gameStarter.physics.killNormal(coin),
+                this.gameStarter.battles.animations.things.flicker({
+                    callback,
+                    clearTime: 12,
+                    interval: 6,
+                    thing: this.defenderThing,
+                });
             },
             26);
         }
