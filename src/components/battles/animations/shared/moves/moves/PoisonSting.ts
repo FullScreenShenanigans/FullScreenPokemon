@@ -1,7 +1,7 @@
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
-import { IThing } from "../../../../../Things";
 import { Direction } from "../../../../../Constants";
 import { IMenu } from "../../../../../Menus";
+import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
 
 /**
