@@ -7,6 +7,7 @@ import { Scratch } from "./moves/Scratch";
 import { Slash } from "./moves/Slash";
 import { Tackle } from "./moves/Tackle";
 import { TailWhip } from "./moves/TailWhip";
+import { PayDay } from "./moves/PayDay";
 
 /**
  * Battle move runners, keyed by move name.
@@ -32,5 +33,6 @@ export const DefaultMovesBag: IMovesBag = {
     "TACKLE": Tackle,
     "TAIL WHIP": TailWhip,
     "SLASH" : Slash,
+    "PAY DAY" : PayDay,
     "default": Move,
 };
