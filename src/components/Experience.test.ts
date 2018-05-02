@@ -119,7 +119,7 @@ describe("Experience", () => {
             fsp.experience.gainExperience(pokemon, 1);
 
             // Assert
-            expect(pokemon.level).to.be.equal(6);
+            expect(pokemon.level).to.be.equal(5);
         });
 
         it("returns false when a Pokemon doesn't level up", (): void => {
