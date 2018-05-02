@@ -37,5 +37,5 @@ export class PoisonSting<TGameStartr extends FullScreenPokemon> extends Move<TGa
                 });
             },
             2);
-        }
+    }
 }
