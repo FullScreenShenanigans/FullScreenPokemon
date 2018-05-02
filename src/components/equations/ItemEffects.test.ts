@@ -5,7 +5,23 @@ import { ItemEffects } from "./ItemEffects";
 
 describe("ItemEffects", () => {
     describe("capturePokemon", () => {
-        it("adds a new Pokemon to your party when your party has fewer than six Pokemon", (): void => {
+        it("adds a first Pokemon to your party when your party has no Pokemon", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "SQUIRTLE".split(""),
+            });
+            const itemEffects = new ItemEffects(fsp);
+
+            // Act
+            itemEffects.capturePokemon(pokemon);
+
+            // Assert
+            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[0].title).to.be.equal(pokemon.title);
+        });
+
+        it("adds a second Pokemon to your party when your party has one Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -19,11 +35,27 @@ describe("ItemEffects", () => {
             itemEffects.capturePokemon(pokemon);
 
             // Assert
-            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[0].title).to.be.equal(pokemon.title);
             expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title).to.be.equal(pokemon.title);
         });
 
-        it("does not add a new Pokemon to your party when your party has more than six Pokemon", (): void => {
+        it("adds a third Pokemon to your party when your party has two Pokemon", (): void => {
+            // Arrange
+            const { fsp } = stubBlankGame();
+            const pokemon: IPokemon = fsp.equations.newPokemon({
+                level: 5,
+                title: "SQUIRTLE".split(""),
+            });
+            const itemEffects = new ItemEffects(fsp);
+
+            // Act
+            itemEffects.capturePokemon(pokemon);
+            itemEffects.capturePokemon(pokemon);
+
+            // Assert
+            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title).to.be.equal(pokemon.title);
+        });
+
+        it("does not add a new Pokemon to your party when your party has six Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
             const squirtle: IPokemon = fsp.equations.newPokemon({
@@ -48,7 +80,7 @@ describe("ItemEffects", () => {
             }
         });
 
-        it("function returns true when attempting to add a Pokemon to a party of less than six Pokemon", (): void => {
+        it("returns true when it successfully adds a Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -56,16 +88,15 @@ describe("ItemEffects", () => {
                 title: "SQUIRTLE".split(""),
             });
             const itemEffects = new ItemEffects(fsp);
-            let retval: boolean;
 
             // Act
-            retval = itemEffects.capturePokemon(pokemon);
+            const result = itemEffects.capturePokemon(pokemon);
 
             // Assert
-            expect(retval).to.be.equal(true);
+            expect(result).to.be.equal(true);
         });
 
-        it("function returns false when attempting to add a Pokemon to a party of less than six Pokemon", (): void => {
+        it("returns false when it doesn't successfully add a Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
             const squirtle: IPokemon = fsp.equations.newPokemon({
@@ -80,13 +111,12 @@ describe("ItemEffects", () => {
             for (let i = 0; i < 6; i++) {
                 fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i] = squirtle;
             }
-            let retval: boolean;
 
             // Act
-            retval = itemEffects.capturePokemon(charmander);
+            const result = itemEffects.capturePokemon(charmander);
 
             // Assert
-            expect(retval).to.be.equal(false);
+            expect(result).to.be.equal(false);
         });
      });
 });
