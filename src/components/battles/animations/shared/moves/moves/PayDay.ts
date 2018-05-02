@@ -22,15 +22,15 @@ export class PayDay<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const coin = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
         const startX: number[] = [];
         const startY: number[] = [];
-        const CoinXOffset = -8;
-        const CoinYOffset = 12;
+        const coinXOffset = -8;
+        const coinYOffset = 12;
         const shiftDown = (): void => {
-            this.gameStarter.physics.shiftHoriz(coin, CoinXOffset);
-            this.gameStarter.physics.shiftVert(coin, CoinYOffset);
+            this.gameStarter.physics.shiftHoriz(coin, coinXOffset);
+            this.gameStarter.physics.shiftVert(coin, coinYOffset);
         };
         const shiftUp = (): void => {
-            this.gameStarter.physics.shiftHoriz(coin, CoinXOffset);
-            this.gameStarter.physics.shiftVert(coin, -CoinYOffset);
+            this.gameStarter.physics.shiftHoriz(coin, coinXOffset);
+            this.gameStarter.physics.shiftVert(coin, -coinYOffset);
         };
         if (this.direction === Direction.Right) {
             startX[0] = menu.right - this.defenderThing.width;
