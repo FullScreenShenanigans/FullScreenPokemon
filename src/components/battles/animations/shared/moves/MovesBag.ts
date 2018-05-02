@@ -2,6 +2,7 @@ import { Move } from "./Move";
 import { Bubble } from "./moves/Bubble";
 import { Ember } from "./moves/Ember";
 import { Growl } from "./moves/Growl";
+import { PayDay } from "./moves/PayDay";
 import { QuickAttack } from "./moves/QuickAttack";
 import { Scratch } from "./moves/Scratch";
 import { Slash } from "./moves/Slash";
@@ -32,5 +33,6 @@ export const DefaultMovesBag: IMovesBag = {
     "TACKLE": Tackle,
     "TAIL WHIP": TailWhip,
     "SLASH" : Slash,
+    "PAY DAY" : PayDay,
     "default": Move,
 };
