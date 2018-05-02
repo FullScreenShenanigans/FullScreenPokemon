@@ -600,7 +600,13 @@ export class Moves {
         },
         "Pay Day": {
             type: "Normal",
-            effects: [],
+            effects: [
+                {
+                    damage: 40,
+                    target: EffectTarget.defender,
+                    type: "damage",
+                },
+            ],
             accuracy: 100,
             PP: 20,
         },
