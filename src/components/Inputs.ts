@@ -3,7 +3,7 @@ import { GeneralComponent } from "gamestartr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
 import { IItemSchema } from "./constants/Items";
-import { ICharacter, IPlayer } from "./Things";
+import { IPlayer } from "./Things";
 
 /**
  * Routes user input.
@@ -20,7 +20,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   A Character that wants to move.
      * @returns Whether direction keys may trigger.
      */
-    public canDirectionsTrigger(thing: ICharacter): boolean {
+    public canDirectionsTrigger(thing: IPlayer): boolean {
         if (thing.following || thing.ledge) {
             return false;
         }
@@ -43,14 +43,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownUp(thing: ICharacter, event?: Event): void {
+    public keyDownUp(thing: IPlayer, event?: Event): void {
         if (!this.gameStarter.gameplay.canInputsTrigger(event) || !this.canDirectionsTrigger(thing)) {
             return;
         }
 
-        if (thing.player) {
-            (thing as IPlayer).keys[Direction.Top] = true;
-        }
+        thing.keys[Direction.Top] = true;
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Top),
@@ -66,14 +64,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownRight(thing: ICharacter, event?: Event): void {
+    public keyDownRight(thing: IPlayer, event?: Event): void {
         if (!this.gameStarter.gameplay.canInputsTrigger(event) || !this.canDirectionsTrigger(thing)) {
             return;
         }
 
-        if (thing.player) {
-            (thing as IPlayer).keys[Direction.Right] = true;
-        }
+        thing.keys[Direction.Right] = true;
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Right),
@@ -87,14 +83,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownDown(thing: ICharacter, event?: Event): void {
+    public keyDownDown(thing: IPlayer, event?: Event): void {
         if (!this.gameStarter.gameplay.canInputsTrigger(event) || !this.canDirectionsTrigger(thing)) {
             return;
         }
 
-        if (thing.player) {
-            (thing as IPlayer).keys[Direction.Bottom] = true;
-        }
+        thing.keys[Direction.Bottom] = true;
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Bottom),
@@ -110,14 +104,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownLeft(thing: ICharacter, event?: Event): void {
+    public keyDownLeft(thing: IPlayer, event?: Event): void {
         if (!this.gameStarter.gameplay.canInputsTrigger(event) || !this.canDirectionsTrigger(thing)) {
             return;
         }
 
-        if (thing.player) {
-            (thing as IPlayer).keys[Direction.Left] = true;
-        }
+        thing.keys[Direction.Left] = true;
 
         this.gameStarter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Left),
@@ -161,7 +153,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownA(thing: ICharacter, event?: Event): void {
+    public keyDownA(thing: IPlayer, event?: Event): void {
         if (!this.gameStarter.gameplay.canInputsTrigger(event) || this.gameStarter.gamesRunner.getPaused()) {
             return;
         }
@@ -176,8 +168,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
                     thing.bordering[thing.direction]);
             }
 
-            if ((thing as IPlayer).keys) {
-                (thing as IPlayer).keys.a = true;
+            if (thing.keys) {
+                thing.keys.a = true;
             }
         }
 
@@ -191,15 +183,15 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownB(thing: ICharacter, event?: Event): void {
+    public keyDownB(thing: IPlayer, event?: Event): void {
         if (!this.gameStarter.gameplay.canInputsTrigger(event) || this.gameStarter.gamesRunner.getPaused()) {
             return;
         }
 
         if (this.gameStarter.menuGrapher.getActiveMenu()) {
             this.gameStarter.menuGrapher.registerB();
-        } else if ((thing as IPlayer).keys) {
-            (thing as IPlayer).keys.b = true;
+        } else if (thing.keys) {
+            thing.keys.b = true;
         }
 
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownB);
@@ -212,7 +204,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyDownPause(_thing: ICharacter, event?: Event): void {
+    public keyDownPause(_thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
 
         this.gameStarter.menus.pause.toggle();
@@ -226,7 +218,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public async keyDownMute(_thing: ICharacter, event?: Event): Promise<void> {
+    public async keyDownMute(_thing: IPlayer, event?: Event): Promise<void> {
         this.gameStarter.gameplay.canInputsTrigger(event);
         await this.gameStarter.audioPlayer.setMuted(this.gameStarter.audioPlayer.getMuted());
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownMute);
@@ -267,13 +259,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpLeft(thing: ICharacter, event?: Event): void {
+    public keyUpLeft(thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpLeft);
 
-        if (thing.player) {
-            (thing as IPlayer).keys[Direction.Left] = false;
-        }
+        thing.keys[Direction.Left] = false;
 
         if (thing.nextDirection === Direction.Left) {
             thing.nextDirection = undefined;
@@ -289,13 +279,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpRight(thing: ICharacter, event?: Event): void {
+    public keyUpRight(thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpRight);
 
-        if (thing.player) {
-            (thing as IPlayer).keys[Direction.Right] = false;
-        }
+        thing.keys[Direction.Right] = false;
 
         if (thing.nextDirection === Direction.Right) {
             thing.nextDirection = undefined;
@@ -311,13 +299,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpUp(thing: ICharacter, event?: Event): void {
+    public keyUpUp(thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpUp);
 
-        if (thing.player) {
-            (thing as IPlayer).keys[0] = false;
-        }
+        thing.keys[0] = false;
 
         if (thing.nextDirection === Direction.Top) {
             thing.nextDirection = undefined;
@@ -333,13 +319,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpDown(thing: ICharacter, event?: Event): void {
+    public keyUpDown(thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpDown);
 
-        if (thing.player) {
-            (thing as IPlayer).keys[2] = false;
-        }
+        thing.keys[2] = false;
 
         if (thing.nextDirection === Direction.Bottom) {
             thing.nextDirection = undefined;
@@ -355,13 +339,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpA(thing: ICharacter, event?: Event): void {
+    public keyUpA(thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpA);
 
-        if (thing.player) {
-            (thing as IPlayer).keys.a = false;
-        }
+        thing.keys.a = false;
     }
 
     /**
@@ -370,13 +352,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpB(thing: ICharacter, event?: Event): void {
+    public keyUpB(thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpB);
 
-        if (thing.player) {
-            (thing as IPlayer).keys.b = false;
-        }
+        thing.keys.b = false;
     }
 
     /**
@@ -385,7 +365,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public keyUpPause(_thing: ICharacter, event?: Event): void {
+    public keyUpPause(_thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpPause);
     }
@@ -397,7 +377,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param _thing   The triggering Character.
      * @param event   The original user-caused Event.
      */
-    public mouseDownRight(_thing: ICharacter, event?: Event): void {
+    public mouseDownRight(_thing: IPlayer, event?: Event): void {
         this.gameStarter.gameplay.canInputsTrigger(event);
         this.gameStarter.menus.pause.toggle();
         this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onMouseDownRight);
