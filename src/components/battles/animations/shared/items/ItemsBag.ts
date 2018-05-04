@@ -16,6 +16,6 @@ export interface IItemsBag {
  * Built-in battle move runners, keyed by move name.
  */
 export const DefaultItemsBag: IItemsBag = {
-    "POKEBAL;": Pokeball,
-    "default": ItemAnimation,
+    POKEBALL: Pokeball,
+    default: ItemAnimation,
 };
