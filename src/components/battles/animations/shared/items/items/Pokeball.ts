@@ -5,12 +5,12 @@ import { IBattleBall } from "../../../../../constants/Items";
 import { ItemEffects } from "../../../../../equations/ItemEffects";
 import { IMenu } from "../../../../../Menus";
 import { IThing } from "../../../../../Things";
-import { Item } from "../Item";
+import { ItemAnimation } from "../ItemAnimation";
 
 /**
  * Animates a Pokeball item usage.
  */
-export class Pokeball<TGameStarter extends FullScreenPokemon> extends Item<TGameStarter> {
+export class Pokeball<TGameStarter extends FullScreenPokemon> extends ItemAnimation<TGameStarter> {
 
     /**
      * Runs the items animation.
@@ -18,11 +18,10 @@ export class Pokeball<TGameStarter extends FullScreenPokemon> extends Item<TGame
      * @param onComplete   Callback for when the animation is done.
      */
     public runAnimation(onComplete: () => void): void {
-        const arc = (x: number) => x ** 2 * 0.006805 - x * 10.8452 + 4610.268436;
-
         const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const currentX = menu.left + this.defenderThing.width * 3 / 4;
         const currentY = menu.bottom - 30;
+        const arc = (x: number) => (x - currentX) ** 2 * 0.006805 - (x - currentX) * 1.652 + currentY;
         let time = 0;
         const pokeball = this.gameStarter.objectMaker.make<IThing>("CharBallStatus"); //TODO: Replace w/ proper Pokeball sprite
         const itemType: IBattleBall = this.makeBattleBall();
@@ -58,7 +57,7 @@ export class Pokeball<TGameStarter extends FullScreenPokemon> extends Item<TGame
                         this.gameStarter.battleMover.stopBattle(outcome, onComplete);
                     } else {
                         const itemEffects = new ItemEffects(this);
-                        itemEffects.capturePokemon(this.attacker);
+                        //itemEffects.capturePokemon(this.attacker);
                     }
                 }
                 time += 1;
