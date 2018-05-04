@@ -1,11 +1,11 @@
 import { ItemAnimation } from "./ItemAnimation";
 import { Pokeball } from "./items/Pokeball";
 /**
- * Battle move runners, keyed by move name.
+ * Battle item runners, keyed by item name.
  */
 export interface IItemsBag {
     /**
-     * Move for when an implementation cannot be found.
+     * Item for when an implementation cannot be found.
      */
     default: typeof ItemAnimation;
 
@@ -13,7 +13,7 @@ export interface IItemsBag {
 }
 
 /**
- * Built-in battle move runners, keyed by move name.
+ * Built-in battle item runners, keyed by item name.
  */
 export const DefaultItemsBag: IItemsBag = {
     POKEBALL: Pokeball,

@@ -55,9 +55,8 @@ export class Pokeball<TGameStarter extends FullScreenPokemon> extends ItemAnimat
                         //stop battle
                         const outcome: BattleOutcome = 3;
                         this.gameStarter.battleMover.stopBattle(outcome, onComplete);
-                    } else {
                         const itemEffects = new ItemEffects(this);
-                        //itemEffects.capturePokemon(this.attacker);
+                        itemEffects.capturePokemon(this.attacker);
                     }
                 }
                 time += 1;
