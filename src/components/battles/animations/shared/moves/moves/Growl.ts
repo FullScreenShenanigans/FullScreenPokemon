@@ -80,7 +80,7 @@ export class Growl<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
         }
 
         this.eightBitter.timeHandler.addEvent(
-            (): void => this.eightBitter.physics.killNormal(note),
+            (): void => this.eightBitter.death.killNormal(note),
             dt + 40);
     }
 

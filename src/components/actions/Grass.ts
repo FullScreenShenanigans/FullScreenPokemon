@@ -61,7 +61,7 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * @param thing   Character no longer in grass.
      */
     public exitGrassVisually(thing: ICharacter): void {
-        this.eightBitter.physics.killNormal(thing.shadow!);
+        this.eightBitter.death.killNormal(thing.shadow!);
         this.eightBitter.saves.popStateHistory(thing, "height");
 
         thing.shadow = undefined;

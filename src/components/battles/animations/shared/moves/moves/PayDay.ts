@@ -46,14 +46,14 @@ export class PayDay<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
         this.eightBitter.things.add(explosions[0], startX[0], startY[0]);
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(explosions[0]);
+                this.eightBitter.death.killNormal(explosions[0]);
                 this.eightBitter.things.add(explosions[1], startX[1], startY[1]);
             },
             4);
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.eightBitter.things.add(coin, startX[0], startY[1] + 30);
-                this.eightBitter.physics.killNormal(explosions[1]);
+                this.eightBitter.death.killNormal(explosions[1]);
             },
             8);
         this.eightBitter.timeHandler.addEvent(
@@ -70,7 +70,7 @@ export class PayDay<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
             22);
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(coin);
+                this.eightBitter.death.killNormal(coin);
                 this.eightBitter.battles.animations.things.flicker({
                     callback,
                     clearTime: 12,

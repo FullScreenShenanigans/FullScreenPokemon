@@ -28,7 +28,7 @@ export class PoisonSting<TEightBittr extends FullScreenPokemon> extends Move<TEi
         this.eightBitter.things.add(explosion, startX, startY);
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(explosion);
+                this.eightBitter.death.killNormal(explosion);
                 this.eightBitter.battles.animations.things.flicker({
                     callback,
                     clearTime: 14,

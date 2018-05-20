@@ -156,7 +156,7 @@ export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends G
         const party: IPokemon[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
 
         for (const ball of balls) {
-            this.eightBitter.physics.killNormal(ball);
+            this.eightBitter.death.killNormal(ball);
         }
 
         for (const pokemon of party) {

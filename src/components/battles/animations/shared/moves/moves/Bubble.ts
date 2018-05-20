@@ -62,7 +62,7 @@ export class Bubble<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(bubbleLarge);
+                this.eightBitter.death.killNormal(bubbleLarge);
             },
             96);
     }
@@ -88,9 +88,9 @@ export class Bubble<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(bubbleLarge);
+                this.eightBitter.death.killNormal(bubbleLarge);
                 for (let j = 0; j < 4; j += 1) {
-                    this.eightBitter.physics.killNormal(bubblesSmall[j]);
+                    this.eightBitter.death.killNormal(bubblesSmall[j]);
                 }
             },
             72);
@@ -121,8 +121,8 @@ export class Bubble<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (let j = 0; j < 4; j += 1) {
-                    this.eightBitter.physics.killNormal(bubblesLarge[j]);
-                    this.eightBitter.physics.killNormal(bubblesSmall[j]);
+                    this.eightBitter.death.killNormal(bubblesLarge[j]);
+                    this.eightBitter.death.killNormal(bubblesSmall[j]);
                 }
             },
             42);
@@ -152,8 +152,8 @@ export class Bubble<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (let j = 0; j < 4; j += 1) {
-                    this.eightBitter.physics.killNormal(bubblesLarge[j]);
-                    this.eightBitter.physics.killNormal(bubblesSmall[j]);
+                    this.eightBitter.death.killNormal(bubblesLarge[j]);
+                    this.eightBitter.death.killNormal(bubblesSmall[j]);
                 }
             },
             24);

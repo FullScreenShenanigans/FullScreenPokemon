@@ -65,11 +65,11 @@ export class Scratch<TEightBittr extends FullScreenPokemon> extends Move<TEightB
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const scratch of scratches) {
-                    this.eightBitter.physics.killNormal(scratch);
+                    this.eightBitter.death.killNormal(scratch);
                 }
 
                 for (const line of lineArray) {
-                    this.eightBitter.physics.killNormal(line);
+                    this.eightBitter.death.killNormal(line);
                 }
 
                 this.eightBitter.battles.animations.things.flicker({

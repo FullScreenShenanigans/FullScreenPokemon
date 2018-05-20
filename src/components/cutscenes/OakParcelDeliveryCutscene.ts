@@ -171,8 +171,8 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
                     this.eightBitter.scenePlayer.bindRoutine("OakDescribesGoal"),
                     14);
 
-                this.eightBitter.physics.killNormal(bookLeft);
-                this.eightBitter.physics.killNormal(bookRight);
+                this.eightBitter.death.killNormal(bookLeft);
+                this.eightBitter.death.killNormal(bookRight);
 
                 this.eightBitter.stateHolder.addChange(bookLeft.id, "alive", false);
                 this.eightBitter.stateHolder.addChange(bookRight.id, "alive", false);
@@ -239,7 +239,7 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
                             direction: Direction.Bottom,
                         },
                         (): void => {
-                            this.eightBitter.physics.killNormal(settings.rival);
+                            this.eightBitter.death.killNormal(settings.rival);
                             this.eightBitter.mapScreener.blockInputs = false;
                         },
                     ]);

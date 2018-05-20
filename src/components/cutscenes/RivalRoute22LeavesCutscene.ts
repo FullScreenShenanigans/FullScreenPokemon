@@ -58,7 +58,7 @@ export class RivalRoute22LeavesCutscene<TEightBittr extends FullScreenPokemon> e
                 direction: Direction.Right,
             },
             (): void => {
-                this.eightBitter.physics.killNormal(rival);
+                this.eightBitter.death.killNormal(rival);
                 this.eightBitter.stateHolder.addChange(rival.id, "alive", false);
                 this.eightBitter.mapScreener.blockInputs = false;
             },

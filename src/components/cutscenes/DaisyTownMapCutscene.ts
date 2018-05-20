@@ -30,7 +30,7 @@ export class DaisyTownMapCutscene<TEightBittr extends FullScreenPokemon> extends
         const book: IThing = this.eightBitter.utilities.getExistingThingById("Book");
         const daisy: ICharacter = settings.triggerer;
 
-        this.eightBitter.physics.killNormal(book);
+        this.eightBitter.death.killNormal(book);
         this.eightBitter.stateHolder.addChange(book.id, "alive", false);
 
         delete daisy.cutscene;

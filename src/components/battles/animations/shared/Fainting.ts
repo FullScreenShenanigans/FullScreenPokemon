@@ -51,8 +51,8 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
                     this.processPlayerFainting(partyIsWipedText, onComplete, battleInfo, thing, blank, playerName);
                 }
                 this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
-                this.eightBitter.physics.killNormal(thing);
-                this.eightBitter.physics.killNormal(blank);
+                this.eightBitter.death.killNormal(thing);
+                this.eightBitter.death.killNormal(blank);
             });
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);

@@ -71,7 +71,7 @@ export class OakIntroRivalLeavesCutscene<TEightBittr extends FullScreenPokemon> 
                 direction: Direction.Bottom,
             },
             (): void => {
-                this.eightBitter.physics.killNormal(rival);
+                this.eightBitter.death.killNormal(rival);
                 this.eightBitter.stateHolder.addChange(rival.id, "alive", false);
                 this.eightBitter.menuGrapher.deleteActiveMenu();
 

@@ -98,7 +98,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         });
 
         this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.physics.killNormal(thing);
+            this.eightBitter.death.killNormal(thing);
         });
 
         this.eightBitter.things.add(
@@ -150,7 +150,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         settings.player = player;
 
         this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.physics.killNormal(thing);
+            this.eightBitter.death.killNormal(thing);
         });
 
         this.eightBitter.things.add(player, this.eightBitter.mapScreener.middleX + 96, 0);
@@ -324,7 +324,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         settings.rival = rival;
 
         this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.physics.killNormal(thing);
+            this.eightBitter.death.killNormal(thing);
         });
 
         this.eightBitter.things.add(rival, 0, 0);
@@ -498,7 +498,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         settings.portrait = portrait;
 
         this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.physics.killNormal(thing);
+            this.eightBitter.death.killNormal(thing);
         });
 
         this.eightBitter.things.add(portrait, 0, 0);
@@ -545,7 +545,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             (): void => {
                 this.eightBitter.things.add(silhouetteLarge);
                 this.eightBitter.physics.setMidObj(silhouetteLarge, settings.portrait);
-                this.eightBitter.physics.killNormal(settings.portrait);
+                this.eightBitter.death.killNormal(settings.portrait);
             },
             timeDelay);
 
@@ -553,7 +553,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             (): void => {
                 this.eightBitter.things.add(silhouetteSmall);
                 this.eightBitter.physics.setMidObj(silhouetteSmall, silhouetteLarge);
-                this.eightBitter.physics.killNormal(silhouetteLarge);
+                this.eightBitter.death.killNormal(silhouetteLarge);
             },
             timeDelay * 2);
 
@@ -561,7 +561,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             (): void => {
                 this.eightBitter.things.add(player);
                 this.eightBitter.physics.setMidObj(player, silhouetteSmall);
-                this.eightBitter.physics.killNormal(silhouetteSmall);
+                this.eightBitter.death.killNormal(silhouetteSmall);
             },
             timeDelay * 3);
 

@@ -814,7 +814,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         this.eightBitter.maps.addAreaGate(thing, area, x, y);
 
         area.spawned = true;
-        this.eightBitter.physics.killNormal(thing);
+        this.eightBitter.death.killNormal(thing);
     }
 
     /**

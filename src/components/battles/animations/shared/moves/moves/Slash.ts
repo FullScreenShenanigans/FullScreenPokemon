@@ -71,7 +71,7 @@ export class Slash<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const slash of slashes) {
-                    this.eightBitter.physics.killNormal(slash);
+                    this.eightBitter.death.killNormal(slash);
                 }
 
                 for (const line of lineArray) {
@@ -82,11 +82,11 @@ export class Slash<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
                     });
                 }
                 for (const explosion of explosionArray) {
-                    this.eightBitter.physics.killNormal(explosion);
+                    this.eightBitter.death.killNormal(explosion);
                 }
 
                 for (const line of lineArray) {
-                    this.eightBitter.physics.killNormal(line);
+                    this.eightBitter.death.killNormal(line);
                 }
 
                 this.eightBitter.battles.animations.things.flicker({

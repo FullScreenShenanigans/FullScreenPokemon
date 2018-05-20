@@ -30,7 +30,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GeneralCompon
     private setOpponentThing(thing: string, settings?: any): void {
         const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
-        this.eightBitter.physics.killNormal(battleInfo.things.opponent);
+        this.eightBitter.death.killNormal(battleInfo.things.opponent);
         battleInfo.things.opponent = this.eightBitter.objectMaker.make<IThing>(thing, settings);
 
         this.eightBitter.things.add(battleInfo.things.opponent);
@@ -49,7 +49,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GeneralCompon
     private setPlayerThing(thing: string, settings?: any): void {
         const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
-        this.eightBitter.physics.killNormal(battleInfo.things.player);
+        this.eightBitter.death.killNormal(battleInfo.things.player);
         battleInfo.things.player = this.eightBitter.objectMaker.make<IThing>(thing, settings);
 
         this.eightBitter.things.add(

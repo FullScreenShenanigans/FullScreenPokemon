@@ -75,18 +75,18 @@ export class QuickAttack<TEightBittr extends FullScreenPokemon> extends Move<TEi
         this.eightBitter.things.add(explosions[0], startX[0], startY[0]);
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(explosions[0]);
+                this.eightBitter.death.killNormal(explosions[0]);
                 this.eightBitter.things.add(explosions[1], startX[1], startY[1]);
             },
             4);
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.physics.killNormal(explosions[1]);
+                this.eightBitter.death.killNormal(explosions[1]);
                 this.eightBitter.things.add(explosions[2], startX[2], startY[2]);
             },
             8);
         this.eightBitter.timeHandler.addEvent(
-            (): void => this.eightBitter.physics.killNormal(explosions[2]),
+            (): void => this.eightBitter.death.killNormal(explosions[2]),
             12);
     }
 }

@@ -198,7 +198,7 @@ export class Keyboards<TEightBittr extends FullScreenPokemon> extends GeneralCom
         dialog[menuResults.selectedChild] = ["MDash"];
 
         for (const child of menuResults.children) {
-            this.eightBitter.physics.killNormal(child);
+            this.eightBitter.death.killNormal(child);
         }
 
         menuResults.children = [];

@@ -111,7 +111,7 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
         settings.triggerer.hidden = true;
         this.eightBitter.stateHolder.addChange(settings.triggerer.id, "hidden", true);
         this.eightBitter.stateHolder.addChange(settings.triggerer.id, "nocollide", true);
-        this.eightBitter.physics.killNormal(settings.triggerer);
+        this.eightBitter.death.killNormal(settings.triggerer);
 
         this.eightBitter.menuGrapher.deleteMenu("Yes/No");
         this.eightBitter.menuGrapher.createMenu("GeneralText");

@@ -71,7 +71,7 @@ export class Ember<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
 
         this.eightBitter.things.add(ember, x + 4, y + 12);
         this.eightBitter.battles.animations.things.flicker({
-            callback: (): void => this.eightBitter.physics.killNormal(ember),
+            callback: (): void => this.eightBitter.death.killNormal(ember),
             thing: ember,
         });
     }

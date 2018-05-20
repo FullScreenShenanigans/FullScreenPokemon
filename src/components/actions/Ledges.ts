@@ -35,7 +35,7 @@ export class Ledges<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param other   The ledge the Character is done hopping over.
      */
     public endLedgeHop(thing: ICharacter): void {
-        this.eightBitter.physics.killNormal(thing.shadow!);
+        this.eightBitter.death.killNormal(thing.shadow!);
         thing.nocollide = false;
         thing.wantsToWalk = false;
         thing.ledge = undefined;

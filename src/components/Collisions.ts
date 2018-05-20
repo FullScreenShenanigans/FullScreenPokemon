@@ -281,7 +281,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends GeneralCo
                     ],
                     (): void => {
                         this.eightBitter.menuGrapher.deleteActiveMenu();
-                        this.eightBitter.physics.killNormal(other);
+                        this.eightBitter.death.killNormal(other);
                         this.eightBitter.stateHolder.addChange(
                             other.id, "alive", false,
                         );

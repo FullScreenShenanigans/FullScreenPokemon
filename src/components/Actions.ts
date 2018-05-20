@@ -302,7 +302,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.eightBitter.physics.killNormal(thing);
+                    this.eightBitter.death.killNormal(thing);
                 }
             },
             7);
@@ -329,7 +329,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.eightBitter.physics.killNormal(thing);
+                    this.eightBitter.death.killNormal(thing);
                 }
             },
             14);
@@ -358,7 +358,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.eightBitter.physics.killNormal(thing);
+                    this.eightBitter.death.killNormal(thing);
                 }
             },
             21);
@@ -383,7 +383,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.physics.setBottom(exclamation, thing.top);
 
         this.eightBitter.timeHandler.addEvent(
-            (): void => this.eightBitter.physics.killNormal(exclamation),
+            (): void => this.eightBitter.death.killNormal(exclamation),
             timeout);
 
         if (callback) {
@@ -419,7 +419,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             1,
             speed,
             (): void => {
-                this.eightBitter.physics.killNormal(blank);
+                this.eightBitter.death.killNormal(blank);
                 if (callback) {
                     callback();
                 }
@@ -454,7 +454,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             0,
             speed,
             (): void => {
-                this.eightBitter.physics.killNormal(blank);
+                this.eightBitter.death.killNormal(blank);
                 if (callback) {
                     callback(settings, ...args);
                 }
@@ -713,7 +713,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             }
 
             this.eightBitter.stateHolder.addChange(other.id, "alive", false);
-            this.eightBitter.physics.killNormal(other);
+            this.eightBitter.death.killNormal(other);
         }
 
         if (other.cutscene) {
@@ -789,7 +789,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.walking.animateCharacterPreventWalking(thing);
 
         if (!other.keepAlive) {
-            this.eightBitter.physics.killNormal(other);
+            this.eightBitter.death.killNormal(other);
         }
 
         if (!this.eightBitter.menuGrapher.getMenu(name)) {
@@ -973,7 +973,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         }
 
         thing.activate.call(this, thing);
-        this.eightBitter.physics.killNormal(thing);
+        this.eightBitter.death.killNormal(thing);
         return true;
     }
 
@@ -988,7 +988,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         const area: IArea = map.areas[thing.area];
 
         if (area === this.eightBitter.areaSpawner.getArea()) {
-            this.eightBitter.physics.killNormal(thing);
+            this.eightBitter.death.killNormal(thing);
             return;
         }
 
@@ -996,7 +996,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             area.spawnedBy
             && area.spawnedBy === (this.eightBitter.areaSpawner.getArea() as IArea).spawnedBy
         ) {
-            this.eightBitter.physics.killNormal(thing);
+            this.eightBitter.death.killNormal(thing);
             return;
         }
 
@@ -1095,7 +1095,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
     public partyActivateCut = (player: IPlayer): void => {
         this.eightBitter.menuGrapher.deleteAllMenus();
         this.eightBitter.menus.pause.close();
-        this.eightBitter.physics.killNormal(player.bordering[player.direction]!);
+        this.eightBitter.death.killNormal(player.bordering[player.direction]!);
     }
 
     /**

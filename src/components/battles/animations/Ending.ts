@@ -75,7 +75,7 @@ export class Ending<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         this.eightBitter.menuGrapher.deleteMenu("GeneralText");
 
         for (const i in battleInfo.things) {
-            this.eightBitter.physics.killNormal(battleInfo.things[i]);
+            this.eightBitter.death.killNormal(battleInfo.things[i]);
         }
 
         if (battleInfo.keptThings) {
