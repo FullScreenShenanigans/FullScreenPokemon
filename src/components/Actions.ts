@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
 import { ITimeEvent } from "timehandlr";
 
@@ -49,36 +49,36 @@ export interface IColorFadeSettings {
 /**
  * Actions characters may perform walking around.
  */
-export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Sets characters following each other.
      */
     @component(Following)
-    public readonly following: Following<TGameStartr>;
+    public readonly following: Following<TEightBittr>;
 
     /**
      * Visual and battle updates for walking in tall grass.
      */
     @component(Grass)
-    public readonly grass: Grass<TGameStartr>;
+    public readonly grass: Grass<TEightBittr>;
 
     /**
      * Hops characters down ledges.
      */
     @component(Ledges)
-    public readonly ledges: Ledges<TGameStartr>;
+    public readonly ledges: Ledges<TEightBittr>;
 
     /**
      * Idle characters turning and walking in random directions.
      */
     @component(Roaming)
-    public readonly roaming: Roaming<TGameStartr>;
+    public readonly roaming: Roaming<TEightBittr>;
 
     /**
      * Starts, continues, and stops characters walking.
      */
     @component(Walking)
-    public readonly walking: Walking<TGameStartr>;
+    public readonly walking: Walking<TEightBittr>;
 
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
@@ -87,9 +87,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public spawnCharacter = (thing: ICharacter): void => {
         if (thing.sight) {
-            thing.sightDetector = this.gameStarter.things.add(
+            thing.sightDetector = this.eightBitter.things.add(
                 [
-                    this.gameStarter.things.names.sightDetector,
+                    this.eightBitter.things.names.sightDetector,
                     {
                         direction: thing.direction,
                         width: thing.sight * 8,
@@ -100,9 +100,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (thing.roaming) {
-            this.gameStarter.timeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => this.roaming.startRoaming(thing),
-                this.gameStarter.numberMaker.randomInt(70));
+                this.eightBitter.numberMaker.randomInt(70));
         }
     }
 
@@ -114,7 +114,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public spawnWindowDetector = (thing: IDetector): void => {
         if (!this.checkWindowDetector(thing)) {
-            this.gameStarter.timeHandler.addEventInterval(
+            this.eightBitter.timeHandler.addEventInterval(
                 (): boolean => this.checkWindowDetector(thing),
                 7,
                 Infinity);
@@ -128,10 +128,10 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public animatePlayerDialogFreeze(thing: IPlayer): void {
         this.walking.animateCharacterPreventWalking(thing);
-        this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
+        this.eightBitter.timeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
-            this.gameStarter.timeHandler.cancelEvent(thing.walkingFlipping);
+            this.eightBitter.timeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
     }
@@ -174,7 +174,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
         }
 
-        return this.gameStarter.timeHandler.addEvent(
+        return this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.animateFadeAttribute(
                     thing,
@@ -198,7 +198,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         // const battleName: string = other.battleName || other.title;
         // const battleSprite: string = other.battleSprite || battleName;
 
-        // this.gameStarter.battles.startBattle({
+        // this.eightBitter.battles.startBattle({
         //     battlers: {
         //         opponent: {
         //             name: battleName.split(""),
@@ -208,7 +208,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         //             reward: other.reward,
         //             actors: other.actors.map(
         //                 (schema: IWildPokemonSchema): IPokemon => {
-        //                     return this.gameStarter.equations.createPokemon(schema);
+        //                     return this.eightBitter.equations.createPokemon(schema);
         //                 })
         //         }
         //     },
@@ -241,32 +241,32 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         const things: IThing[] = [];
 
         for (let i = 0; i < 4; i += 1) {
-            things.push(this.gameStarter.things.add([title, settings]));
+            things.push(this.eightBitter.things.add([title, settings]));
         }
 
         if (groupType) {
             for (const thing of things) {
-                this.gameStarter.groupHolder.switchGroup(thing, thing.groupType, groupType);
+                this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, groupType);
             }
         }
 
-        this.gameStarter.physics.setLeft(things[0], x);
-        this.gameStarter.physics.setLeft(things[1], x);
+        this.eightBitter.physics.setLeft(things[0], x);
+        this.eightBitter.physics.setLeft(things[1], x);
 
-        this.gameStarter.physics.setRight(things[2], x);
-        this.gameStarter.physics.setRight(things[3], x);
+        this.eightBitter.physics.setRight(things[2], x);
+        this.eightBitter.physics.setRight(things[3], x);
 
-        this.gameStarter.physics.setBottom(things[0], y);
-        this.gameStarter.physics.setBottom(things[3], y);
+        this.eightBitter.physics.setBottom(things[0], y);
+        this.eightBitter.physics.setBottom(things[3], y);
 
-        this.gameStarter.physics.setTop(things[1], y);
-        this.gameStarter.physics.setTop(things[2], y);
+        this.eightBitter.physics.setTop(things[1], y);
+        this.eightBitter.physics.setTop(things[2], y);
 
-        this.gameStarter.graphics.flipHoriz(things[0]);
-        this.gameStarter.graphics.flipHoriz(things[1]);
+        this.eightBitter.graphics.flipHoriz(things[0]);
+        this.eightBitter.graphics.flipHoriz(things[1]);
 
-        this.gameStarter.graphics.flipVert(things[1]);
-        this.gameStarter.graphics.flipVert(things[2]);
+        this.eightBitter.graphics.flipVert(things[1]);
+        this.eightBitter.graphics.flipVert(things[2]);
 
         return things as [IThing, IThing, IThing, IThing];
     }
@@ -278,15 +278,15 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param amount   How far to move each Thing horizontally and vertically.
      */
     public animateExpandCorners(things: [IThing, IThing, IThing, IThing], amount: number): void {
-        this.gameStarter.physics.shiftHoriz(things[0], amount);
-        this.gameStarter.physics.shiftHoriz(things[1], amount);
-        this.gameStarter.physics.shiftHoriz(things[2], -amount);
-        this.gameStarter.physics.shiftHoriz(things[3], -amount);
+        this.eightBitter.physics.shiftHoriz(things[0], amount);
+        this.eightBitter.physics.shiftHoriz(things[1], amount);
+        this.eightBitter.physics.shiftHoriz(things[2], -amount);
+        this.eightBitter.physics.shiftHoriz(things[3], -amount);
 
-        this.gameStarter.physics.shiftVert(things[0], -amount);
-        this.gameStarter.physics.shiftVert(things[1], amount);
-        this.gameStarter.physics.shiftVert(things[2], amount);
-        this.gameStarter.physics.shiftVert(things[3], -amount);
+        this.eightBitter.physics.shiftVert(things[0], -amount);
+        this.eightBitter.physics.shiftVert(things[1], amount);
+        this.eightBitter.physics.shiftVert(things[2], amount);
+        this.eightBitter.physics.shiftVert(things[3], -amount);
     }
 
     /**
@@ -299,15 +299,15 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
         const things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.gameStarter.physics.killNormal(thing);
+                    this.eightBitter.physics.killNormal(thing);
                 }
             },
             7);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateSmokeMedium(x, y, callback),
             7);
     }
@@ -322,19 +322,19 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
         const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateExpandCorners(things, 4),
             7);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.gameStarter.physics.killNormal(thing);
+                    this.eightBitter.physics.killNormal(thing);
                 }
             },
             14);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateSmokeLarge(x, y, callback),
             14);
     }
@@ -351,20 +351,20 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
 
         this.animateExpandCorners(things, 10);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateExpandCorners(things, 8),
             7);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const thing of things) {
-                    this.gameStarter.physics.killNormal(thing);
+                    this.eightBitter.physics.killNormal(thing);
                 }
             },
             21);
 
         if (callback) {
-            this.gameStarter.timeHandler.addEvent(callback, 21);
+            this.eightBitter.timeHandler.addEvent(callback, 21);
         }
     }
 
@@ -377,17 +377,17 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @returns The exclamation Thing.
      */
     public animateExclamation(thing: IThing, timeout: number = 140, callback?: () => void): IThing {
-        const exclamation: IThing = this.gameStarter.things.add(this.gameStarter.things.names.exclamation);
+        const exclamation: IThing = this.eightBitter.things.add(this.eightBitter.things.names.exclamation);
 
-        this.gameStarter.physics.setMidXObj(exclamation, thing);
-        this.gameStarter.physics.setBottom(exclamation, thing.top);
+        this.eightBitter.physics.setMidXObj(exclamation, thing);
+        this.eightBitter.physics.setBottom(exclamation, thing.top);
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.physics.killNormal(exclamation),
+        this.eightBitter.timeHandler.addEvent(
+            (): void => this.eightBitter.physics.killNormal(exclamation),
             timeout);
 
         if (callback) {
-            this.gameStarter.timeHandler.addEvent(callback, timeout);
+            this.eightBitter.timeHandler.addEvent(callback, timeout);
         }
 
         return exclamation;
@@ -404,13 +404,13 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + this.gameStarter.things.names.square, {
-            width: this.gameStarter.mapScreener.width,
-            height: this.gameStarter.mapScreener.height,
+        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(color + this.eightBitter.things.names.square, {
+            width: this.eightBitter.mapScreener.width,
+            height: this.eightBitter.mapScreener.height,
             opacity: 0,
         });
 
-        this.gameStarter.things.add(blank);
+        this.eightBitter.things.add(blank);
 
         this.animateFadeAttribute(
             blank,
@@ -419,7 +419,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             1,
             speed,
             (): void => {
-                this.gameStarter.physics.killNormal(blank);
+                this.eightBitter.physics.killNormal(blank);
                 if (callback) {
                     callback();
                 }
@@ -439,13 +439,13 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.gameStarter.objectMaker.make<IThing>(color + this.gameStarter.things.names.square, {
-            width: this.gameStarter.mapScreener.width,
-            height: this.gameStarter.mapScreener.height,
+        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(color + this.eightBitter.things.names.square, {
+            width: this.eightBitter.mapScreener.width,
+            height: this.eightBitter.mapScreener.height,
             opacity: 1,
         });
 
-        this.gameStarter.things.add(blank);
+        this.eightBitter.things.add(blank);
 
         this.animateFadeAttribute(
             blank,
@@ -454,7 +454,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             0,
             speed,
             (): void => {
-                this.gameStarter.physics.killNormal(blank);
+                this.eightBitter.physics.killNormal(blank);
                 if (callback) {
                     callback(settings, ...args);
                 }
@@ -474,21 +474,21 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         thing.direction = direction;
 
         if (direction % 2 === 1) {
-            this.gameStarter.graphics.unflipHoriz(thing);
+            this.eightBitter.graphics.unflipHoriz(thing);
         }
 
-        this.gameStarter.graphics.removeClasses(
+        this.eightBitter.graphics.removeClasses(
             thing,
-            this.gameStarter.constants.directionClasses[Direction.Top],
-            this.gameStarter.constants.directionClasses[Direction.Right],
-            this.gameStarter.constants.directionClasses[Direction.Bottom],
-            this.gameStarter.constants.directionClasses[Direction.Left]);
+            this.eightBitter.constants.directionClasses[Direction.Top],
+            this.eightBitter.constants.directionClasses[Direction.Right],
+            this.eightBitter.constants.directionClasses[Direction.Bottom],
+            this.eightBitter.constants.directionClasses[Direction.Left]);
 
-        this.gameStarter.graphics.addClass(thing, this.gameStarter.constants.directionClasses[direction]);
+        this.eightBitter.graphics.addClass(thing, this.eightBitter.constants.directionClasses[direction]);
 
         if (direction === Direction.Right) {
-            this.gameStarter.graphics.flipHoriz(thing);
-            this.gameStarter.graphics.addClass(thing, this.gameStarter.constants.directionClasses[Direction.Left]);
+            this.eightBitter.graphics.flipHoriz(thing);
+            this.eightBitter.graphics.addClass(thing, this.eightBitter.constants.directionClasses[Direction.Left]);
         }
     }
 
@@ -498,7 +498,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   An in-game Thing.
      */
     public animateCharacterSetDirectionRandom(thing: IThing): void {
-        this.animateCharacterSetDirection(thing, this.gameStarter.numberMaker.randomIntWithin(0, 3));
+        this.animateCharacterSetDirection(thing, this.eightBitter.numberMaker.randomIntWithin(0, 3));
     }
 
     /**
@@ -512,31 +512,31 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
 
         if (detector.direction !== direction) {
             if (thing.direction % 2 === 0) {
-                this.gameStarter.physics.setWidth(detector, thing.width);
-                this.gameStarter.physics.setHeight(detector, thing.sight! * 8);
+                this.eightBitter.physics.setWidth(detector, thing.width);
+                this.eightBitter.physics.setHeight(detector, thing.sight! * 8);
             } else {
-                this.gameStarter.physics.setWidth(detector, thing.sight! * 8);
-                this.gameStarter.physics.setHeight(detector, thing.height);
+                this.eightBitter.physics.setWidth(detector, thing.sight! * 8);
+                this.eightBitter.physics.setHeight(detector, thing.height);
             }
             detector.direction = direction;
         }
 
         switch (direction) {
             case 0:
-                this.gameStarter.physics.setBottom(detector, thing.top);
-                this.gameStarter.physics.setMidXObj(detector, thing);
+                this.eightBitter.physics.setBottom(detector, thing.top);
+                this.eightBitter.physics.setMidXObj(detector, thing);
                 break;
             case 1:
-                this.gameStarter.physics.setLeft(detector, thing.right);
-                this.gameStarter.physics.setMidYObj(detector, thing);
+                this.eightBitter.physics.setLeft(detector, thing.right);
+                this.eightBitter.physics.setMidYObj(detector, thing);
                 break;
             case 2:
-                this.gameStarter.physics.setTop(detector, thing.bottom);
-                this.gameStarter.physics.setMidXObj(detector, thing);
+                this.eightBitter.physics.setTop(detector, thing.bottom);
+                this.eightBitter.physics.setMidXObj(detector, thing);
                 break;
             case 3:
-                this.gameStarter.physics.setRight(detector, thing.left);
-                this.gameStarter.physics.setMidYObj(detector, thing);
+                this.eightBitter.physics.setRight(detector, thing.left);
+                this.eightBitter.physics.setMidYObj(detector, thing);
                 break;
             default:
                 throw new Error("Unknown direction: " + direction + ".");
@@ -551,7 +551,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param other   A Character that thing has finished talking to.
      */
     public animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onDialogFinish, other);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onDialogFinish, other);
 
         thing.talking = false;
         other.talking = false;
@@ -571,19 +571,19 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (other.gift) {
-            this.gameStarter.menuGrapher.createMenu("GeneralText", {
+            this.eightBitter.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: true,
             });
-            this.gameStarter.menuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
                 (): void => this.animateCharacterDialogFinish(thing, other));
-            this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-            this.gameStarter.saves.addItemToBag(other.gift);
+            this.eightBitter.saves.addItemToBag(other.gift);
 
             other.gift = undefined;
-            this.gameStarter.stateHolder.addChange(other.id, "gift", undefined);
+            this.eightBitter.stateHolder.addChange(other.id, "gift", undefined);
 
             return;
         }
@@ -591,8 +591,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         if (other.dialogNext) {
             other.dialog = other.dialogNext;
             other.dialogNext = undefined;
-            this.gameStarter.stateHolder.addChange(other.id, "dialog", other.dialog);
-            this.gameStarter.stateHolder.addChange(other.id, "dialogNext", undefined);
+            this.eightBitter.stateHolder.addChange(other.id, "dialog", other.dialog);
+            this.eightBitter.stateHolder.addChange(other.id, "dialogNext", undefined);
         }
 
         if (other.dialogOptions) {
@@ -600,21 +600,21 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         } else if (other.trainer && !(other as IEnemy).alreadyBattled) {
             this.animateTrainerBattleStart(thing, other as IEnemy);
             (other as IEnemy).alreadyBattled = true;
-            this.gameStarter.stateHolder.addChange(other.id, "alreadyBattled", true);
+            this.eightBitter.stateHolder.addChange(other.id, "alreadyBattled", true);
         }
 
         if (other.trainer) {
             other.trainer = false;
-            this.gameStarter.stateHolder.addChange(other.id, "trainer", false);
+            this.eightBitter.stateHolder.addChange(other.id, "trainer", false);
 
             if (other.sight) {
                 other.sight = undefined;
-                this.gameStarter.stateHolder.addChange(other.id, "sight", undefined);
+                this.eightBitter.stateHolder.addChange(other.id, "sight", undefined);
             }
         }
 
         if (!other.dialogOptions) {
-            this.gameStarter.saves.autoSaveIfEnabled();
+            this.eightBitter.saves.autoSaveIfEnabled();
         }
     }
 
@@ -648,7 +648,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             } else {
                 words = (callbackDialog as IDialog).words || callbackDialog as string;
                 if ((callbackDialog as IDialog).cutscene) {
-                    callback = this.gameStarter.scenePlayer.bindCutscene(
+                    callback = this.eightBitter.scenePlayer.bindCutscene(
                         (callbackDialog as IDialog).cutscene!,
                         {
                             player: thing,
@@ -658,26 +658,26 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
 
             return (): void => {
-                this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-                this.gameStarter.menuGrapher.createMenu("GeneralText", {
+                this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+                this.eightBitter.menuGrapher.createMenu("GeneralText", {
                     deleteOnFinish: true,
                 });
-                this.gameStarter.menuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText", words, callback);
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
             };
         };
 
         console.warn("DialogOptions assumes type = Yes/No for now...");
 
-        this.gameStarter.menuGrapher.createMenu("Yes/No", {
+        this.eightBitter.menuGrapher.createMenu("Yes/No", {
             position: {
                 offset: {
                     left: 28,
                 },
             },
         });
-        this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+        this.eightBitter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
@@ -688,7 +688,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                     callback: generateCallback(options.No),
                 }],
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+        this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
@@ -712,19 +712,19 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
             }
 
-            this.gameStarter.stateHolder.addChange(other.id, "alive", false);
-            this.gameStarter.physics.killNormal(other);
+            this.eightBitter.stateHolder.addChange(other.id, "alive", false);
+            this.eightBitter.physics.killNormal(other);
         }
 
         if (other.cutscene) {
-            this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
+            this.eightBitter.scenePlayer.startCutscene(other.cutscene, {
                 player: thing,
                 triggerer: other,
             });
         }
 
         if (other.routine) {
-            this.gameStarter.scenePlayer.playRoutine(other.routine);
+            this.eightBitter.scenePlayer.playRoutine(other.routine);
         }
     }
 
@@ -735,12 +735,12 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param other   A Detector triggered by thing.
      */
     public activateThemePlayer = async (thing: IPlayer, other: IThemeDetector): Promise<void> => {
-        if (!thing.player || this.gameStarter.audioPlayer.hasSound(this.gameStarter.audio.aliases.theme, other.theme)) {
+        if (!thing.player || this.eightBitter.audioPlayer.hasSound(this.eightBitter.audio.aliases.theme, other.theme)) {
             return;
         }
 
-        await this.gameStarter.audioPlayer.play(other.theme, {
-            alias: this.gameStarter.audio.aliases.theme,
+        await this.eightBitter.audioPlayer.play(other.theme, {
+            alias: this.eightBitter.audio.aliases.theme,
             loop: true,
         });
     }
@@ -761,7 +761,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             return;
         }
 
-        this.gameStarter.scenePlayer.startCutscene(other.cutscene!, {
+        this.eightBitter.scenePlayer.startCutscene(other.cutscene!, {
             player: thing,
             triggerer: other,
         });
@@ -789,24 +789,24 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         this.walking.animateCharacterPreventWalking(thing);
 
         if (!other.keepAlive) {
-            this.gameStarter.physics.killNormal(other);
+            this.eightBitter.physics.killNormal(other);
         }
 
-        if (!this.gameStarter.menuGrapher.getMenu(name)) {
-            this.gameStarter.menuGrapher.createMenu(name, other.menuAttributes);
+        if (!this.eightBitter.menuGrapher.getMenu(name)) {
+            this.eightBitter.menuGrapher.createMenu(name, other.menuAttributes);
         }
 
         if (dialog) {
-            this.gameStarter.menuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.addMenuDialog(
                 name,
                 dialog,
                 (): void => {
                     const complete: () => void = (): void => {
-                        this.gameStarter.mapScreener.blockInputs = false;
+                        this.eightBitter.mapScreener.blockInputs = false;
                         delete thing.collidedTrigger;
                     };
 
-                    this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+                    this.eightBitter.menuGrapher.deleteMenu("GeneralText");
 
                     if (other.pushSteps) {
                         this.walking.startWalkingOnPath(
@@ -821,7 +821,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 });
         }
 
-        this.gameStarter.menuGrapher.setActiveMenu(name);
+        this.eightBitter.menuGrapher.setActiveMenu(name);
     }
 
     /**
@@ -839,9 +839,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         other.viewer.talking = true;
         other.active = false;
 
-        this.gameStarter.mapScreener.blockInputs = true;
+        this.eightBitter.mapScreener.blockInputs = true;
 
-        this.gameStarter.scenePlayer.startCutscene("TrainerSpotted", {
+        this.eightBitter.scenePlayer.startCutscene("TrainerSpotted", {
             player: thing,
             sightDetector: other,
             triggerer: other.viewer,
@@ -870,15 +870,15 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
 
         if (typeof transport === "string") {
             callback = (): void => {
-                this.gameStarter.maps.setLocation(transport);
+                this.eightBitter.maps.setLocation(transport);
             };
         } else if (typeof transport.map !== "undefined") {
             callback = (): void => {
-                this.gameStarter.maps.setMap(transport.map, transport.location);
+                this.eightBitter.maps.setMap(transport.map, transport.location);
             };
         } else if (typeof transport.location !== "undefined") {
             callback = (): void => {
-                this.gameStarter.maps.setLocation(transport.location);
+                this.eightBitter.maps.setLocation(transport.location);
             };
         } else {
             throw new Error(`Unknown transport type: '${transport}'`);
@@ -911,13 +911,13 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%",
         ];
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.badges)[leader]) {
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.badges)[leader]) {
             dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
         }
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", dialog);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", dialog);
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -927,11 +927,11 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   The Solid to be affected.
      */
     public activateHMCharacter = (player: IPlayer, thing: IHMCharacter): void => {
-        if (thing.requiredBadge && !this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.badges)[thing.requiredBadge]) {
+        if (thing.requiredBadge && !this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.badges)[thing.requiredBadge]) {
             return;
         }
 
-        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
+        for (const pokemon of this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty)) {
             for (const move of pokemon.moves) {
                 if (move.title === thing.moveName) {
                     thing.moveCallback(player, pokemon);
@@ -962,8 +962,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public checkWindowDetector(thing: IDetector): boolean {
         if (
             thing.bottom < 0
-            || thing.left > this.gameStarter.mapScreener.width
-            || thing.top > this.gameStarter.mapScreener.height
+            || thing.left > this.eightBitter.mapScreener.width
+            || thing.top > this.eightBitter.mapScreener.height
             || thing.right < 0) {
             return false;
         }
@@ -973,7 +973,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         thing.activate.call(this, thing);
-        this.gameStarter.physics.killNormal(thing);
+        this.eightBitter.physics.killNormal(thing);
         return true;
     }
 
@@ -984,25 +984,25 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   An IAreaSpawner to activate.
      */
     public spawnAreaSpawner = (thing: IAreaSpawner): void => {
-        const map: IMap = this.gameStarter.areaSpawner.getMap(thing.map) as IMap;
+        const map: IMap = this.eightBitter.areaSpawner.getMap(thing.map) as IMap;
         const area: IArea = map.areas[thing.area];
 
-        if (area === this.gameStarter.areaSpawner.getArea()) {
-            this.gameStarter.physics.killNormal(thing);
+        if (area === this.eightBitter.areaSpawner.getArea()) {
+            this.eightBitter.physics.killNormal(thing);
             return;
         }
 
         if (
             area.spawnedBy
-            && area.spawnedBy === (this.gameStarter.areaSpawner.getArea() as IArea).spawnedBy
+            && area.spawnedBy === (this.eightBitter.areaSpawner.getArea() as IArea).spawnedBy
         ) {
-            this.gameStarter.physics.killNormal(thing);
+            this.eightBitter.physics.killNormal(thing);
             return;
         }
 
-        area.spawnedBy = (this.gameStarter.areaSpawner.getArea() as IArea).spawnedBy;
+        area.spawnedBy = (this.eightBitter.areaSpawner.getArea() as IArea).spawnedBy;
 
-        this.gameStarter.maps.activateAreaSpawner(thing, area);
+        this.eightBitter.maps.activateAreaSpawner(thing, area);
     }
 
     /**
@@ -1017,7 +1017,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             return;
         }
 
-        const area: IArea = this.gameStarter.areaSpawner.getMap(other.map).areas[other.area] as IArea;
+        const area: IArea = this.eightBitter.areaSpawner.getMap(other.map).areas[other.area] as IArea;
         let areaOffsetX: number;
         let areaOffsetY: number;
 
@@ -1049,20 +1049,20 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         const screenOffsetX: number = areaOffsetX - thing.left;
         const screenOffsetY: number = areaOffsetY - thing.top;
 
-        this.gameStarter.mapScreener.top = screenOffsetY;
-        this.gameStarter.mapScreener.right = screenOffsetX + this.gameStarter.mapScreener.width;
-        this.gameStarter.mapScreener.bottom = screenOffsetY + this.gameStarter.mapScreener.height;
-        this.gameStarter.mapScreener.left = screenOffsetX;
-        this.gameStarter.mapScreener.activeArea = this.gameStarter.areaSpawner.getMap().areas[other.area] as IArea;
+        this.eightBitter.mapScreener.top = screenOffsetY;
+        this.eightBitter.mapScreener.right = screenOffsetX + this.eightBitter.mapScreener.width;
+        this.eightBitter.mapScreener.bottom = screenOffsetY + this.eightBitter.mapScreener.height;
+        this.eightBitter.mapScreener.left = screenOffsetX;
+        this.eightBitter.mapScreener.activeArea = this.eightBitter.areaSpawner.getMap().areas[other.area] as IArea;
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.map, other.map);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.area, other.area);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.location, undefined);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.map, other.map);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.area, other.area);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.location, undefined);
 
-        this.gameStarter.maps.setStateCollection(area);
+        this.eightBitter.maps.setStateCollection(area);
 
         other.active = false;
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 other.active = true;
             },
@@ -1093,9 +1093,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @todo Add an animation for what happens when the CuttableTree is cut.
      */
     public partyActivateCut = (player: IPlayer): void => {
-        this.gameStarter.menuGrapher.deleteAllMenus();
-        this.gameStarter.menus.pause.close();
-        this.gameStarter.physics.killNormal(player.bordering[player.direction]!);
+        this.eightBitter.menuGrapher.deleteAllMenus();
+        this.eightBitter.menus.pause.close();
+        this.eightBitter.physics.killNormal(player.bordering[player.direction]!);
     }
 
     /**
@@ -1107,10 +1107,10 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public partyActivateStrength = (player: IPlayer): void => {
         const boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
 
-        this.gameStarter.menuGrapher.deleteAllMenus();
-        this.gameStarter.menus.pause.close();
+        this.eightBitter.menuGrapher.deleteAllMenus();
+        this.eightBitter.menus.pause.close();
 
-        if (!this.gameStarter.thingHitter.checkHitForThings(player as any, boulder as any)
+        if (!this.eightBitter.thingHitter.checkHitForThings(player as any, boulder as any)
             || boulder.bordering[player.direction] !== undefined) {
             return;
         }
@@ -1139,8 +1139,8 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 throw new Error(`Unknown direction: '${player.direction}'.`);
         }
 
-        this.gameStarter.timeHandler.addEventInterval(
-            (): void => this.gameStarter.physics.shiftBoth(boulder, xvel, yvel),
+        this.eightBitter.timeHandler.addEventInterval(
+            (): void => this.eightBitter.physics.shiftBoth(boulder, xvel, yvel),
             1,
             8);
 
@@ -1156,15 +1156,15 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @todo Add the dialogue for when the Player starts surfing.
      */
     public partyActivateSurf = (player: IPlayer): void => {
-        this.gameStarter.menuGrapher.deleteAllMenus();
-        this.gameStarter.menus.pause.close();
+        this.eightBitter.menuGrapher.deleteAllMenus();
+        this.eightBitter.menus.pause.close();
 
         if (player.cycling) {
             return;
         }
 
         player.bordering[player.direction] = undefined;
-        this.gameStarter.graphics.addClass(player, "surfing");
+        this.eightBitter.graphics.addClass(player, "surfing");
         console.log("Should start walking");
         // this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;

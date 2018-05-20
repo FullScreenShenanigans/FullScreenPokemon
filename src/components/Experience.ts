@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "./Battles";
@@ -7,7 +7,7 @@ import { IPokeball } from "./Things";
 /**
  * Calculates experience gains and level ups for Pokemon.
  */
-export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Levels up a specified pokemon.
      *
@@ -15,13 +15,13 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
      */
     public levelup(pokemon: IPokemon): void {
         pokemon.level += 1;
-        pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+        pokemon.statistics = this.eightBitter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
 
         // TODO: display text box containing levelup info
 
-        const evolvedForm: string[] | undefined = this.gameStarter.evolution.checkEvolutions(pokemon);
+        const evolvedForm: string[] | undefined = this.eightBitter.evolution.checkEvolutions(pokemon);
         if (evolvedForm) {
-            this.gameStarter.evolution.evolve(pokemon, evolvedForm);
+            this.eightBitter.evolution.evolve(pokemon, evolvedForm);
         }
     }
 
@@ -34,7 +34,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
      */
     public gainExperience(pokemon: IPokemon, experience: number): boolean {
         pokemon.experience += experience;
-        if (pokemon.experience >= this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1)) {
+        if (pokemon.experience >= this.eightBitter.equations.experienceStarting(pokemon.title, pokemon.level + 1)) {
             this.levelup(pokemon);
             return true;
         }
@@ -49,21 +49,21 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       * @param onComplete   Handler for when this is done.
       */
     public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const experienceToGain =  this.gameStarter.equations.experienceGained(
+        const experienceToGain =  this.eightBitter.equations.experienceGained(
             battleInfo.teams.player, battleInfo.teams.opponent);
 
         const experienceText: (string | string[])[][] = [[
             battleInfo.teams.player.selectedActor.nickname,
             ` gained ${experienceToGain} experience!`]];
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
         const levelUp = this.gainExperience(battleInfo.teams.player.selectedActor, experienceToGain);
         let callBack = onComplete;
         if (levelUp) {
             callBack = () => this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete);
         }
 
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
      /**
@@ -73,7 +73,7 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
       * @param onComplete   Handler for when this is done.
       */
     private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
         const experienceText: (string | string[])[][] = [[
             pokemon.nickname,
             ` grew to level ${pokemon.level}!`]];
@@ -82,8 +82,8 @@ export class Experience<TGameStartr extends FullScreenPokemon> extends GeneralCo
            callBack = () => this.learnBattleMove(pokemon, onComplete);
         }
 
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
      /**

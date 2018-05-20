@@ -1,11 +1,11 @@
 import { IMove } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import { IMenuSchemaPosition, IMenuSchemaPositionOffset } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
 
-export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class MoveAdder<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Adds a new move to a Pokemon's set of moves.
      *
@@ -32,10 +32,10 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   Move that's going to be added into the moveset.
      */
     public startDialog(pokemon: IPokemon, move: IMove): void {
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.menuGrapher.deleteMenu("GeneralText");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
         if (this.alreadyKnowsMove(pokemon, move)) {
             return;
         }
@@ -56,7 +56,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
     private alreadyKnowsMove(pokemon: IPokemon, move: IMove): boolean {
         for (const element of pokemon.moves) {
             if (element.title === move.title) {
-                this.gameStarter.menuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         [
@@ -64,10 +64,10 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                         ],
                     ],
                     (): void => {
-                        this.gameStarter.menuGrapher.deleteActiveMenu();
+                        this.eightBitter.menuGrapher.deleteActiveMenu();
                     },
                 );
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
                 return true;
             }
         }
@@ -82,7 +82,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   The move that's going to be added into the moveset.
      */
     private learnsNewMove(pokemon: IPokemon, move: IMove) {
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -91,10 +91,10 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
             ],
             (): void => {
                 this.addMove(pokemon, move, pokemon.moves.length);
-                this.gameStarter.menuGrapher.deleteActiveMenu();
+                this.eightBitter.menuGrapher.deleteActiveMenu();
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -105,7 +105,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   The move that's going to be added into the moveset.
      */
     private resolveMoveConflict(pokemon: IPokemon, move: IMove) {
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -117,10 +117,10 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                 ],
             ],
             (): void => {
-                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"],
                 });
-                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
@@ -131,9 +131,9 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                             callback: () => this.refuseLearnMove(pokemon, move),
                         }],
                 });
-                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
         });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -143,9 +143,9 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   Move that's going to be added into the moveset.
      */
     private acceptLearnMove(pokemon: IPokemon, move: IMove) {
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -167,15 +167,15 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                         bottom: 80,
                     },
                 };
-                this.gameStarter.menuGrapher.createMenu("BattleFightList", {
+                this.eightBitter.menuGrapher.createMenu("BattleFightList", {
                     position: newPos,
                     killOnB: ["GeneralText"],
                 });
-                this.gameStarter.menuGrapher.addMenuList("BattleFightList", { options });
-                this.gameStarter.menuGrapher.setActiveMenu("BattleFightList");
+                this.eightBitter.menuGrapher.addMenuList("BattleFightList", { options });
+                this.eightBitter.menuGrapher.setActiveMenu("BattleFightList");
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -185,10 +185,10 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   Move that's going to be added into the moveset.
      */
     private teachMove(pokemon: IPokemon, move: IMove, index: number) {
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -203,7 +203,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
             (): void => {
                 this.addMove(pokemon, move, index);
         });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -213,11 +213,11 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param move   Move that's going to be added into the moveset.
      */
     private refuseLearnMove(pokemon: IPokemon, move: IMove) {
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
 
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -225,21 +225,21 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                 ],
             ],
             (): void => {
-                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"],
                 });
-                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
                             callback: () => {
-                                this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-                                this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-                                this.gameStarter.menuGrapher.createMenu("GeneralText", {
+                                this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+                                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                                this.eightBitter.menuGrapher.createMenu("GeneralText", {
                                     deleteOnFinish: true,
                                 });
 
-                                this.gameStarter.menuGrapher.addMenuDialog(
+                                this.eightBitter.menuGrapher.addMenuDialog(
                                     "GeneralText",
                                     [
                                         [
@@ -247,7 +247,7 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                                         ],
                                     ],
                                 );
-                                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
                             },
                         },
                         {
@@ -255,8 +255,8 @@ export class MoveAdder<TGameStartr extends FullScreenPokemon> extends GeneralCom
                             callback: () => this.startDialog(pokemon, move),
                         }],
                 });
-                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

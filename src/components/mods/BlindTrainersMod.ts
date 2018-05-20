@@ -7,7 +7,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to make all enemy trainers blind.
  */
-export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class BlindTrainersMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -18,10 +18,10 @@ export class BlindTrainersMod<TGameStartr extends FullScreenPokemon> extends Mod
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.gameStarter.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = true;
+            this.eightBitter.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            this.gameStarter.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = false;
+            this.eightBitter.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = false;
         },
     };
 }

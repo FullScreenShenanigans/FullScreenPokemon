@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { ISwitchAction, ISwitchingAnimations, ITeamAndAction, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { Shrinking } from "../../../animations/Shrinking";
@@ -20,12 +20,12 @@ export interface ISwitchingSettings {
 /**
  * Shared animations for teams switching Pokemon.
  */
-export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISwitchingAnimations {
+export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ISwitchingAnimations {
     /**
      * Shrinks (and expands) Things.
      */
     @component(Shrinking)
-    public readonly shrinking: Shrinking<TGameStartr>;
+    public readonly shrinking: Shrinking<TEightBittr>;
 
     /**
      * Switching settings for animation positions and sprites.
@@ -35,11 +35,11 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralCom
     /**
      * Initializes a new instance of the Switching class.
      *
-     * @param gameStarter   FullScreenPokemon instance this is used for.
+     * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Switching settings for animation positions and sprites.
      */
-    public constructor(gameStarter: TGameStartr | GeneralComponent<TGameStartr>, settings: ISwitchingSettings) {
-        super(gameStarter);
+    public constructor(eightBitter: TEightBittr | GeneralComponent<TEightBittr>, settings: ISwitchingSettings) {
+        super(eightBitter);
 
         this.settings = settings;
     }
@@ -50,7 +50,7 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param onComplete   Callback for when this is done.
      */
     public enter(onComplete: () => void): void {
-        new Enter(this.gameStarter, this.settings.enter).run(onComplete);
+        new Enter(this.eightBitter, this.settings.enter).run(onComplete);
     }
 
     /**
@@ -78,9 +78,9 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param onComplete   Callback for when this is done.
      */
     public switch(teamAndAction: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
-        this.gameStarter.menuGrapher.deleteMenu("Pokemon");
+        this.eightBitter.menuGrapher.deleteMenu("Pokemon");
         this.switchOut((): void => {
-            this.gameStarter.battleMover.switchSelectedActor(Team.player, teamAndAction.action.newActor);
+            this.eightBitter.battleMover.switchSelectedActor(Team.player, teamAndAction.action.newActor);
             this.enter(onComplete);
         });
     }
@@ -91,10 +91,10 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param onComplete   Callback for when this is done.
      */
     private switchOut(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.teams.player.retract(
                 battleInfo.teams.player,
@@ -104,6 +104,6 @@ export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralCom
                     battleInfo.things.player,
                     onComplete);
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

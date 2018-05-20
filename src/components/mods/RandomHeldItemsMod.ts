@@ -22,7 +22,7 @@ export interface IItemProbabilities {
  /**
   * Mod that randomizes items found on wild Pokemon.
   */
-export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class RandomHeldItemsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
      /**
       * Name of the mod.
       */
@@ -165,7 +165,7 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
     public readonly events: ICallbackRegister = {
          [this.eventNames.onNewPokemonCreation]: (chosenInfo: INewPokemon) => {
              const pokemonName: string = chosenInfo.title.join("");
-             const pokemonType: string = this.gameStarter.constants.pokemon.byName[pokemonName].types[0];
+             const pokemonType: string = this.eightBitter.constants.pokemon.byName[pokemonName].types[0];
              const chosenItem: string[] | undefined = this.randomHeldItemGenerator(pokemonType);
 
              if (chosenItem !== undefined) {
@@ -181,13 +181,13 @@ export class RandomHeldItemsMod<TGameStartr extends FullScreenPokemon> extends M
       * @returns The name of an item or undefined if no item generated.
       */
     private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
-            const probabilityOfHeldItem: number = this.gameStarter.numberMaker.randomReal1();
+            const probabilityOfHeldItem: number = this.eightBitter.numberMaker.randomReal1();
             let counter = 0;
 
             for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
                 counter += chosenObject.probability;
                 if (counter >= probabilityOfHeldItem) {
-                    return this.gameStarter.constants.items.byName[chosenObject.name].name;
+                    return this.eightBitter.constants.items.byName[chosenObject.name].name;
                 }
             }
 

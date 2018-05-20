@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import { IPipe } from "inputwritr";
 import { IMod } from "modattachr";
 import {
@@ -318,7 +318,7 @@ export class InterfaceSettingsFactory {
     }
 
     /**
-     * Reacts to the page becoming hidden by pausing the GameStartr.
+     * Reacts to the page becoming hidden by pausing the EightBittr.
      */
     private onPageHidden(): void {
         if (!this.game.gamesRunner.getPaused()) {
@@ -328,7 +328,7 @@ export class InterfaceSettingsFactory {
     }
 
     /**
-     * Reacts to the page becoming visible by unpausing the GameStartr.
+     * Reacts to the page becoming visible by unpausing the EightBittr.
      */
     private onPageVisible(): void {
         if (this.isPageHidden) {

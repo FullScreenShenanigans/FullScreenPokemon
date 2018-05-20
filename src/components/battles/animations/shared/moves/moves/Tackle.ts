@@ -6,7 +6,7 @@ import { Move } from "../Move";
 /**
  * Animates a Tackle battle move.
  */
-export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class Tackle<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Runs the move's animation.
      *
@@ -16,27 +16,27 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const dt = 7;
         let xvel: number = this.direction * 7;
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
-                this.gameStarter.physics.shiftHoriz(this.attackerThing, xvel);
+                this.eightBitter.physics.shiftHoriz(this.attackerThing, xvel);
             },
             1,
             dt * 2 - 1);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 xvel *= -1;
             },
             dt);
 
         if (this.teamAndAction.source.team === Team.player) {
-            this.gameStarter.timeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => this.flickerDefender(callback),
                 dt * 2);
         } else {
-            this.gameStarter.timeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => {
-                    this.gameStarter.battles.animations.things.shake({
+                    this.eightBitter.battles.animations.things.shake({
                         callback: (): void => {
                             this.flickerDefender(callback);
                         },
@@ -52,7 +52,7 @@ export class Tackle<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      * @param callback   Callback for when the animation is done.
      */
     private flickerDefender(callback: () => void): void {
-        this.gameStarter.battles.animations.things.flicker({
+        this.eightBitter.battles.animations.things.flicker({
             callback,
             clearTime: 14,
             interval: 5,

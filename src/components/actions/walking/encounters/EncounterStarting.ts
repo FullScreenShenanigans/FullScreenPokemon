@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { component } from "babyioc";
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
@@ -10,7 +10,7 @@ import { EncounterChoices } from "../encounters/EncounterChoices";
 /**
  * Starts wild Pokemon encounters during walking.
  */
-export class EncounterStarting<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class EncounterStarting<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Starts a wild encounter against one of the possible options.
      *
@@ -21,14 +21,14 @@ export class EncounterStarting<TGameStartr extends FullScreenPokemon> extends Ge
     public startWildEncounterBattle(thing: IPlayer, options: IWildPokemonSchema[]): void {
         const wildPokemon: IPokemon = this.chooseWildPokemonForBattle(options);
 
-        this.gameStarter.graphics.removeClass(thing, "walking");
+        this.eightBitter.graphics.removeClass(thing, "walking");
         if (thing.shadow) {
-            this.gameStarter.graphics.removeClass(thing.shadow, "walking");
+            this.eightBitter.graphics.removeClass(thing.shadow, "walking");
         }
 
-        this.gameStarter.actions.walking.animateCharacterPreventWalking(thing);
+        this.eightBitter.actions.walking.animateCharacterPreventWalking(thing);
 
-        this.gameStarter.battles.startBattle({
+        this.eightBitter.battles.startBattle({
             teams: {
                 opponent: {
                     actors: [wildPokemon],
@@ -48,10 +48,10 @@ export class EncounterStarting<TGameStartr extends FullScreenPokemon> extends Ge
      * @returns A wild Pokemon to start a battle with.
      */
     private chooseWildPokemonForBattle(options: IWildPokemonSchema[]): IPokemon {
-        const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
+        const chosen: IWildPokemonSchema = this.eightBitter.equations.chooseRandomWildPokemon(options);
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onWildPokemonChosen, chosen);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onWildPokemonChosen, chosen);
 
-        return this.gameStarter.equations.createPokemon(chosen);
+        return this.eightBitter.equations.createPokemon(chosen);
     }
 }

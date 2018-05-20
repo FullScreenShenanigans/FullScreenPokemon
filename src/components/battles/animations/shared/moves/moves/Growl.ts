@@ -7,7 +7,7 @@ import { Move } from "../Move";
 /**
  * Animates a Growl battle move.
  */
-export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class Growl<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Starting x-position for notes.
      */
@@ -43,16 +43,16 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
      */
     public runAnimation(onComplete: () => void): void {
         const notes: [IThing, IThing] = [
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.note),
+            this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.note),
+            this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.note),
         ];
 
         this.animateNote(notes[0], 10);
         this.animateNote(notes[1], 12);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.battles.animations.things.shake({
+                this.eightBitter.battles.animations.things.shake({
                     callback: onComplete,
                     dx: 3,
                     clearTime: 6,
@@ -71,7 +71,7 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
         let flip: -1 | 1 = 1;
 
         for (let i = 1; i <= 4; i += 1) {
-            this.gameStarter.timeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => {
                     this.shiftNote(note, flip);
                     flip *= -1;
@@ -79,8 +79,8 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
                 dt * i);
         }
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.physics.killNormal(note),
+        this.eightBitter.timeHandler.addEvent(
+            (): void => this.eightBitter.physics.killNormal(note),
             dt + 40);
     }
 
@@ -91,12 +91,12 @@ export class Growl<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
      * @param flip   Whether it's flipped.
      */
     private shiftNote(note: IThing, flip: -1 | 1): void {
-        this.gameStarter.physics.shiftHoriz(note, this.noteDifferenceX / 4);
+        this.eightBitter.physics.shiftHoriz(note, this.noteDifferenceX / 4);
 
         if (flip === 1) {
-            this.gameStarter.physics.shiftVert(note, this.noteDifferenceY / 60);
+            this.eightBitter.physics.shiftVert(note, this.noteDifferenceY / 60);
         } else {
-            this.gameStarter.physics.shiftVert(note, this.noteDifferenceY / -8);
+            this.eightBitter.physics.shiftVert(note, this.noteDifferenceY / -8);
         }
     }
 }

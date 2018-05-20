@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { IThing as IGameStartrThing, Things as GameStartrThings } from "gamestartr";
+import { IThing as IEightBittrThing, Things as EightBittrThings } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 import * as itimehandlr from "timehandlr";
 
@@ -22,7 +22,7 @@ export interface IThingsById {
 /**
  * An in-game Thing with size, velocity, position, and other information.
  */
-export interface IThing extends IGameStartrThing, IStateSaveable {
+export interface IThing extends IEightBittrThing, IStateSaveable {
     /**
      * What to do when a Character, commonly a Player, activates this Thing.
      *
@@ -698,7 +698,7 @@ export interface IPokeball extends IDetector {
 /**
  * Adds and processes new Things into the game.
  */
-export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThings<TGameStartr> {
+export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThings<TEightBittr> {
     /**
      * Stores known names of Things.
      */
@@ -719,14 +719,14 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
 
         // ThingHittr becomes very non-performant if functions aren't generated for
         // each Thing constructor (optimization does not respect prototypal inheritance, sadly).
-        this.gameStarter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
+        this.eightBitter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.bordering = [undefined, undefined, undefined, undefined];
 
         if (typeof thing.id === "undefined") {
             thing.id = [
-                this.gameStarter.areaSpawner.getMapName(),
-                this.gameStarter.areaSpawner.getAreaName(),
+                this.eightBitter.areaSpawner.getMapName(),
+                this.eightBitter.areaSpawner.getAreaName(),
                 thing.title,
                 (thing.name || "Anonymous"),
             ].join("::");
@@ -756,11 +756,11 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
         }
 
         if (thing.id) {
-            this.gameStarter.stateHolder.applyChanges(thing.id, thing);
+            this.eightBitter.stateHolder.applyChanges(thing.id, thing);
         }
 
         if (typeof thing.direction !== "undefined") {
-            this.gameStarter.actions.animateCharacterSetDirection(thing, thing.direction);
+            this.eightBitter.actions.animateCharacterSetDirection(thing, thing.direction);
         }
 
         return thing;
@@ -772,20 +772,20 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GameStartrThi
      * @param thing   A Thing being placed in the game.
      */
     public applySavedPosition(thing: IThing): void {
-        const savedInfo: any = this.gameStarter.stateHolder.getChanges(thing.id);
+        const savedInfo: any = this.eightBitter.stateHolder.getChanges(thing.id);
         if (!savedInfo) {
             return;
         }
 
         if (savedInfo.xloc) {
-            this.gameStarter.physics.setLeft(
+            this.eightBitter.physics.setLeft(
                 thing,
-                this.gameStarter.mapScreener.left + savedInfo.xloc);
+                this.eightBitter.mapScreener.left + savedInfo.xloc);
         }
         if (savedInfo.yloc) {
-            this.gameStarter.physics.setTop(
+            this.eightBitter.physics.setTop(
                 thing,
-                this.gameStarter.mapScreener.top + savedInfo.yloc);
+                this.eightBitter.mapScreener.top + savedInfo.yloc);
         }
     }
 }

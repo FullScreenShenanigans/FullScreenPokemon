@@ -1,5 +1,5 @@
 
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -10,7 +10,7 @@ import { IPlayer } from "./Things";
 /**
  * Runs the player trying to fish for Pokemon.
  */
-export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Fishing<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Starts the Player fishing.
      *
@@ -20,36 +20,36 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public startFishing(player: IPlayer, item: IItemSchema): void {
         if (player.bordering[player.direction] === undefined ||
             player.bordering[player.direction]!.title.indexOf("WaterEdge") === -1) {
-            this.gameStarter.menus.cannotDoThat();
+            this.eightBitter.menus.cannotDoThat();
             return;
         }
 
         const rod: IRod = item as IRod;
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
             ignoreA: true,
             ignoreB: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!",
             ]);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.physics.setWidth(player, 7, true);
-        this.gameStarter.graphics.addClass(player, "fishing");
+        this.eightBitter.physics.setWidth(player, 7, true);
+        this.eightBitter.graphics.addClass(player, "fishing");
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 if (!this.canLandFish()) {
-                    this.gameStarter.fishing.playerFailedLandingFish(player);
+                    this.eightBitter.fishing.playerFailedLandingFish(player);
                     return;
                 }
 
-                this.gameStarter.actions.animateExclamation(player);
-                this.gameStarter.fishing.playerLandedFish(player, rod);
+                this.eightBitter.actions.animateExclamation(player);
+                this.eightBitter.fishing.playerLandedFish(player, rod);
             },
             180,
         );
@@ -62,25 +62,25 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param rod   The rod that will be used to fish.
      */
     private playerLandedFish(player: IPlayer, rod: IRod): void {
-        const currentMap: IMap = this.gameStarter.areaSpawner.getMap(player.mapName) as IMap;
+        const currentMap: IMap = this.eightBitter.areaSpawner.getMap(player.mapName) as IMap;
         const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName];
         const options: IWildPokemonSchema[] = currentArea.wildPokemon!.fishing![rod.type]!;
-        const chosen: IWildPokemonSchema = this.gameStarter.equations.chooseRandomWildPokemon(options);
-        const chosenPokemon: IPokemon = this.gameStarter.equations.createPokemon(chosen);
+        const chosen: IWildPokemonSchema = this.eightBitter.equations.chooseRandomWildPokemon(options);
+        const chosenPokemon: IPokemon = this.eightBitter.equations.createPokemon(chosen);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.menuGrapher.createMenu("GeneralText", {
+                this.eightBitter.menuGrapher.createMenu("GeneralText", {
                     deleteOnFinish: true,
                 });
-                this.gameStarter.menuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "Oh! \n It's a bite!",
                     ],
                     (): void => {
                         console.log("Should start battle with", chosenPokemon);
-                        // this.gameStarter.battles.startBattle({
+                        // this.eightBitter.battles.startBattle({
                         //     battlers: {
                         //         opponent: {
                         //             name: chosenPokemon.title,
@@ -91,9 +91,9 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                         //     }
                         // });
                     });
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-                this.gameStarter.graphics.removeClass(player, "fishing");
-                this.gameStarter.physics.setWidth(player, 8, true);
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.graphics.removeClass(player, "fishing");
+                this.eightBitter.physics.setWidth(player, 8, true);
             },
             140,
         );
@@ -105,10 +105,10 @@ export class Fishing<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param player   A Player who does not land a fish.
      */
     public playerFailedLandingFish(player: IPlayer): void {
-        this.gameStarter.menuGrapher.deleteActiveMenu();
-        this.gameStarter.menus.displayMessage("rekt");
-        this.gameStarter.graphics.removeClass(player, "fishing");
-        this.gameStarter.physics.setWidth(player, 8, true);
+        this.eightBitter.menuGrapher.deleteActiveMenu();
+        this.eightBitter.menus.displayMessage("rekt");
+        this.eightBitter.graphics.removeClass(player, "fishing");
+        this.eightBitter.physics.setWidth(player, 8, true);
     }
 
     /**

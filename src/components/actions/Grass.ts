@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../Battles";
@@ -8,7 +8,7 @@ import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
 /**
  * Visual and battle updates for walking in tall grass.
  */
-export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Marks a Character as being visually within grass.
      *
@@ -18,19 +18,19 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     public enterGrassVisually(thing: ICharacter, other: IGrass): void {
         thing.grass = other;
 
-        this.gameStarter.saves.addStateHistory(thing, "height", thing.height);
+        this.eightBitter.saves.addStateHistory(thing, "height", thing.height);
 
-        thing.shadow = this.gameStarter.objectMaker.make<IThing>(thing.title, {
+        thing.shadow = this.eightBitter.objectMaker.make<IThing>(thing.title, {
             nocollide: true,
             id: thing.id + " shadow",
         });
 
         if (thing.shadow.className !== thing.className) {
-            this.gameStarter.graphics.setClass(thing.shadow, thing.className);
+            this.eightBitter.graphics.setClass(thing.shadow, thing.className);
         }
 
-        this.gameStarter.things.add(thing.shadow, thing.left, thing.top);
-        this.gameStarter.groupHolder.switchGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.eightBitter.things.add(thing.shadow, thing.left, thing.top);
+        this.eightBitter.groupHolder.switchGroup(thing.shadow, thing.shadow.groupType, "Terrain");
     }
 
     /**
@@ -41,17 +41,17 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      */
     public maintainGrassVisuals(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
-        if (!this.gameStarter.physics.isThingWithinGrass(thing, other)) {
+        if (!this.eightBitter.physics.isThingWithinGrass(thing, other)) {
             this.exitGrassVisually(thing);
             return;
         }
 
         // Keep the shadow in sync with thing in position and visuals.
-        this.gameStarter.physics.setLeft(thing.shadow!, thing.left);
-        this.gameStarter.physics.setTop(thing.shadow!, thing.top);
+        this.eightBitter.physics.setLeft(thing.shadow!, thing.left);
+        this.eightBitter.physics.setTop(thing.shadow!, thing.top);
 
         if (thing.shadow!.className !== thing.className) {
-            this.gameStarter.graphics.setClass(thing.shadow!, thing.className);
+            this.eightBitter.graphics.setClass(thing.shadow!, thing.className);
         }
     }
 
@@ -61,8 +61,8 @@ export class Grass<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param thing   Character no longer in grass.
      */
     public exitGrassVisually(thing: ICharacter): void {
-        this.gameStarter.physics.killNormal(thing.shadow!);
-        this.gameStarter.saves.popStateHistory(thing, "height");
+        this.eightBitter.physics.killNormal(thing.shadow!);
+        this.eightBitter.saves.popStateHistory(thing, "height");
 
         thing.shadow = undefined;
         thing.grass = undefined;

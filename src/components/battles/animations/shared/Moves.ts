@@ -1,5 +1,5 @@
 import { IMoveAction, ITeamAndAction, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
@@ -9,7 +9,7 @@ import { IMovesBag } from "./moves/MovesBag";
 /**
  * Announces and launches battle move animations.
  */
-export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Moves<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Battle move runners, keyed by move name.
      */
@@ -18,11 +18,11 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     /**
      * Initializes a new instance of the Moves class.
      *
-     * @param gameStarter   FullScreenPokemon instance this is used for.
+     * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param movesBag   Battle move runners, keyed by move name.
      */
-    public constructor(gameStarter: TGameStartr, movesBag: IMovesBag) {
-        super(gameStarter);
+    public constructor(eightBitter: TEightBittr, movesBag: IMovesBag) {
+        super(eightBitter);
 
         this.movesBag = movesBag;
     }
@@ -36,18 +36,18 @@ export class Moves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param callback   Callback for when the move is done.
      */
     public playMove(teamAndAction: ITeamAndAction<IMoveAction>, callback: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         const animatorType: typeof Move = this.movesBag[teamAndAction.action.move.toUpperCase()] || this.movesBag.default;
-        const animator: Move<TGameStartr> = new animatorType(this.gameStarter, teamAndAction);
+        const animator: Move<TEightBittr> = new animatorType(this.eightBitter, teamAndAction);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.teams[Team[teamAndAction.source.team]].move(
                 battleInfo.teams[Team[teamAndAction.source.team]],
                 battleInfo.teams[Team[teamAndAction.source.team]].selectedActor.title.join(""),
                 teamAndAction.action.move),
             (): void => animator.runAnimation(callback));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

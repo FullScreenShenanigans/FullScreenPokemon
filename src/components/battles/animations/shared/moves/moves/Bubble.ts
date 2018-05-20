@@ -5,7 +5,7 @@ import { Move } from "../Move";
 /**
  * Animates a Bubble battle move.
  */
-export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class Bubble<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Runs the move's animation.
      *
@@ -32,21 +32,21 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
 
         this.animateGroupOne(xPositions[0], yPositions[0]);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateGroupTwo(xPositions[1], yPositions[1]),
             24);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateGroupThree(xPositions[2], yPositions[2]),
             48);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.animateGroupFour(xPositions[3], yPositions[3]),
             72);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.battles.animations.things.shake({ callback });
+                this.eightBitter.battles.animations.things.shake({ callback });
             },
             100);
     }
@@ -58,11 +58,11 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      * @param y   Vertical position to animate on.
      */
     private animateGroupOne(x: number, y: number): void {
-        const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.bubbleLarge, x, y);
+        const bubbleLarge: IThing = this.eightBitter.things.add(this.eightBitter.things.names.bubbleLarge, x, y);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.physics.killNormal(bubbleLarge);
+                this.eightBitter.physics.killNormal(bubbleLarge);
             },
             96);
     }
@@ -74,23 +74,23 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
      * @param y   Vertical position to animate on.
      */
     private animateGroupTwo(x: number, y: number): void {
-        const bubbleLarge: IThing = this.gameStarter.things.add(this.gameStarter.things.names.bubbleLarge, x, y);
+        const bubbleLarge: IThing = this.eightBitter.things.add(this.eightBitter.things.names.bubbleLarge, x, y);
         const bubblesSmall: IThing[] = [];
 
         for (let j = 0; j < 4; j += 1) {
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
+            bubblesSmall[j] = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.bubbleSmall);
         }
 
-        this.gameStarter.things.add(bubblesSmall[0], x, y - 4);
-        this.gameStarter.things.add(bubblesSmall[1], x + 4, y - 3);
-        this.gameStarter.things.add(bubblesSmall[2], x + 8, y + 4);
-        this.gameStarter.things.add(bubblesSmall[3], x, y + 8);
+        this.eightBitter.things.add(bubblesSmall[0], x, y - 4);
+        this.eightBitter.things.add(bubblesSmall[1], x + 4, y - 3);
+        this.eightBitter.things.add(bubblesSmall[2], x + 8, y + 4);
+        this.eightBitter.things.add(bubblesSmall[3], x, y + 8);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.physics.killNormal(bubbleLarge);
+                this.eightBitter.physics.killNormal(bubbleLarge);
                 for (let j = 0; j < 4; j += 1) {
-                    this.gameStarter.physics.killNormal(bubblesSmall[j]);
+                    this.eightBitter.physics.killNormal(bubblesSmall[j]);
                 }
             },
             72);
@@ -107,22 +107,22 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesSmall: IThing[] = [];
 
         for (let j = 0; j < 3; j += 1) {
-            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleLarge);
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
+            bubblesLarge[j] = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.bubbleLarge);
+            bubblesSmall[j] = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.bubbleSmall);
         }
 
-        this.gameStarter.things.add(bubblesLarge[0], x, y - 4);
-        this.gameStarter.things.add(bubblesLarge[1], x, y);
-        this.gameStarter.things.add(bubblesLarge[2], x + 4, y - 2);
-        this.gameStarter.things.add(bubblesSmall[0], x, y - 4);
-        this.gameStarter.things.add(bubblesSmall[1], x, y + 8);
-        this.gameStarter.things.add(bubblesSmall[2], x + 8, y + 6);
+        this.eightBitter.things.add(bubblesLarge[0], x, y - 4);
+        this.eightBitter.things.add(bubblesLarge[1], x, y);
+        this.eightBitter.things.add(bubblesLarge[2], x + 4, y - 2);
+        this.eightBitter.things.add(bubblesSmall[0], x, y - 4);
+        this.eightBitter.things.add(bubblesSmall[1], x, y + 8);
+        this.eightBitter.things.add(bubblesSmall[2], x + 8, y + 6);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (let j = 0; j < 4; j += 1) {
-                    this.gameStarter.physics.killNormal(bubblesLarge[j]);
-                    this.gameStarter.physics.killNormal(bubblesSmall[j]);
+                    this.eightBitter.physics.killNormal(bubblesLarge[j]);
+                    this.eightBitter.physics.killNormal(bubblesSmall[j]);
                 }
             },
             42);
@@ -139,21 +139,21 @@ export class Bubble<TGameStartr extends FullScreenPokemon> extends Move<TGameSta
         const bubblesSmall: IThing[] = [];
 
         for (let j = 0; j < 4; j += 1) {
-            bubblesLarge[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleLarge);
-            bubblesSmall[j] = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.bubbleSmall);
+            bubblesLarge[j] = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.bubbleLarge);
+            bubblesSmall[j] = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.bubbleSmall);
         }
 
-        this.gameStarter.things.add(bubblesLarge[0], x + 4, y + 12);
-        this.gameStarter.things.add(bubblesLarge[1], x, y);
-        this.gameStarter.things.add(bubblesLarge[2], x + 8, y + 4);
-        this.gameStarter.things.add(bubblesSmall[0], x + 4, y - 4);
-        this.gameStarter.things.add(bubblesSmall[1], x + 8, y);
-        this.gameStarter.things.add(bubblesSmall[2], x, y + 12);
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.things.add(bubblesLarge[0], x + 4, y + 12);
+        this.eightBitter.things.add(bubblesLarge[1], x, y);
+        this.eightBitter.things.add(bubblesLarge[2], x + 8, y + 4);
+        this.eightBitter.things.add(bubblesSmall[0], x + 4, y - 4);
+        this.eightBitter.things.add(bubblesSmall[1], x + 8, y);
+        this.eightBitter.things.add(bubblesSmall[2], x, y + 12);
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (let j = 0; j < 4; j += 1) {
-                    this.gameStarter.physics.killNormal(bubblesLarge[j]);
-                    this.gameStarter.physics.killNormal(bubblesSmall[j]);
+                    this.eightBitter.physics.killNormal(bubblesLarge[j]);
+                    this.eightBitter.physics.killNormal(bubblesSmall[j]);
                 }
             },
             24);

@@ -28,7 +28,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
             "'": "Apostrophe",
             "�": "eFancy",
         },
-        gameStarter: fsp,
+        eightBitter: fsp,
         replacements: {
             "PLAYER": (): string[] =>
                 fsp.itemsHolder.getItem(fsp.storage.names.name),

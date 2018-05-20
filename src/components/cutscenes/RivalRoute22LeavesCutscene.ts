@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -8,14 +8,14 @@ import { ICharacter } from "../Things";
 /**
  * RivalRoute22Leaves cutscene routines.
  */
-export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class RivalRoute22LeavesCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for setting up rival walking away cutscene.
      */
     public AfterBattle(): void {
-        if (!this.gameStarter.battles.isPartyWiped()) {
-            this.gameStarter.mapScreener.blockInputs = true;
-            this.gameStarter.timeHandler.addEvent(this.gameStarter.scenePlayer.bindRoutine("Walking"), 49);
+        if (!this.eightBitter.battles.isPartyWiped()) {
+            this.eightBitter.mapScreener.blockInputs = true;
+            this.eightBitter.timeHandler.addEvent(this.eightBitter.scenePlayer.bindRoutine("Walking"), 49);
         }
     }
 
@@ -23,7 +23,7 @@ export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> e
      * Cutscene for the rival leaving after being defeated.
      */
     public Walking(): void {
-        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.eightBitter.utilities.getExistingThingById("Rival") as ICharacter;
         const walkingInstructions: IWalkingInstructions = [
             {
                 blocks: 1,
@@ -58,14 +58,14 @@ export class RivalRoute22LeavesCutscene<TGameStartr extends FullScreenPokemon> e
                 direction: Direction.Right,
             },
             (): void => {
-                this.gameStarter.physics.killNormal(rival);
-                this.gameStarter.stateHolder.addChange(rival.id, "alive", false);
-                this.gameStarter.mapScreener.blockInputs = false;
+                this.eightBitter.physics.killNormal(rival);
+                this.eightBitter.stateHolder.addChange(rival.id, "alive", false);
+                this.eightBitter.mapScreener.blockInputs = false;
             },
         ];
 
         rival.nocollide = true;
-        this.gameStarter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
-        this.gameStarter.scenePlayer.stopCutscene();
+        this.eightBitter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
+        this.eightBitter.scenePlayer.stopCutscene();
     }
 }

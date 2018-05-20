@@ -7,7 +7,7 @@ import { Move } from "../Move";
 /**
  * Animates a Slash battle move.
  */
-export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class Slash<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Runs the move's animation.
      *
@@ -16,11 +16,11 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
     public runAnimation(callback: () => void): void {
         const differenceX: number = this.defenderThing.width / 2;
         const lineArray: IThing[] = [];
-        const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.eightBitter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         const slashes: IThing[] = [
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.scratchLine),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.scratchLine),
-            this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.scratchLine),
+            this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.scratchLine),
+            this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.scratchLine),
+            this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.scratchLine),
         ];
         let startX: number;
         let startY: number;
@@ -34,32 +34,32 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
         }
 
         const offset: number = slashes[0].width / 2;
-        this.gameStarter.things.add(slashes[0], startX, startY);
-        this.gameStarter.things.add(slashes[1], startX +  offset * this.direction * -5, startY);
-        this.gameStarter.things.add(slashes[2], startX + offset * this.direction * -10, startY);
+        this.eightBitter.things.add(slashes[0], startX, startY);
+        this.eightBitter.things.add(slashes[1], startX +  offset * this.direction * -5, startY);
+        this.eightBitter.things.add(slashes[2], startX + offset * this.direction * -10, startY);
         let time = 0;
         const explosionArray: IThing[] = [];
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 for (const slash of slashes) {
                     const left: number = this.direction === Direction.Right ? slash.left : slash.right - 3;
                     const top: number = slash.bottom - 3;
 
-                    this.gameStarter.timeHandler.addEvent(
-                        (): void => this.gameStarter.physics.shiftHoriz(slash, differenceX * (this.direction * -1) / 16),
+                    this.eightBitter.timeHandler.addEvent(
+                        (): void => this.eightBitter.physics.shiftHoriz(slash, differenceX * (this.direction * -1) / 16),
                         1);
-                    this.gameStarter.timeHandler.addEvent(
-                        (): void => this.gameStarter.physics.shiftVert(slash, differenceX * (this.direction) / 16),
+                    this.eightBitter.timeHandler.addEvent(
+                        (): void => this.eightBitter.physics.shiftVert(slash, differenceX * (this.direction) / 16),
                         1);
 
-                    const line: IThing = this.gameStarter.things.add(this.gameStarter.things.names.scratchLine, left, top);
+                    const line: IThing = this.eightBitter.things.add(this.eightBitter.things.names.scratchLine, left, top);
                     if (this.direction === 1) {
-                        this.gameStarter.graphics.flipHoriz(line);
+                        this.eightBitter.graphics.flipHoriz(line);
                     }
                     lineArray.push(line);
                     if (time === 14) {
-                        const explosion = this.gameStarter.things.add
-                            (this.gameStarter.things.names.explosionSmall,
+                        const explosion = this.eightBitter.things.add
+                            (this.eightBitter.things.names.explosionSmall,
                              left - 18, top);
                         explosionArray.push(explosion);
                     }
@@ -68,28 +68,28 @@ export class Slash<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
             },
             1,
             16);
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 for (const slash of slashes) {
-                    this.gameStarter.physics.killNormal(slash);
+                    this.eightBitter.physics.killNormal(slash);
                 }
 
                 for (const line of lineArray) {
-                    this.gameStarter.battles.animations.things.flicker({
+                    this.eightBitter.battles.animations.things.flicker({
                         clearTime: 10,
                         interval: 2,
                         thing: line,
                     });
                 }
                 for (const explosion of explosionArray) {
-                    this.gameStarter.physics.killNormal(explosion);
+                    this.eightBitter.physics.killNormal(explosion);
                 }
 
                 for (const line of lineArray) {
-                    this.gameStarter.physics.killNormal(line);
+                    this.eightBitter.physics.killNormal(line);
                 }
 
-                this.gameStarter.battles.animations.things.flicker({
+                this.eightBitter.battles.animations.things.flicker({
                     callback,
                     clearTime: 14,
                     interval: 5,

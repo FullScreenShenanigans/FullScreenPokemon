@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Battles } from "./constants/Battles";
@@ -52,7 +52,7 @@ export enum PokedexListingStatus {
 /**
  * Universal game constants.
  */
-export class Constants<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Constants<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Static scale of 2, to expand to two pixels per one game pixel.
      */

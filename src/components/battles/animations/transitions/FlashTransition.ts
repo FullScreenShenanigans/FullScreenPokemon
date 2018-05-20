@@ -5,7 +5,7 @@ import { Transition } from "./Transition";
 /**
  * Flashing battle transition animation.
  */
-export class FlashTransition<TGameStartr extends FullScreenPokemon> extends Transition<TGameStartr> {
+export class FlashTransition<TEightBittr extends FullScreenPokemon> extends Transition<TEightBittr> {
     /**
      * How much to change the visible opacity each change.
      */
@@ -50,12 +50,12 @@ export class FlashTransition<TGameStartr extends FullScreenPokemon> extends Tran
         const color: string = this.flashColors[this.completed % this.flashColors.length];
         this.completed += 1;
 
-        this.gameStarter.actions.animateFadeToColor({
+        this.eightBitter.actions.animateFadeToColor({
             color,
             change: this.change,
             speed: this.speed,
             callback: (): void => {
-                this.gameStarter.actions.animateFadeFromColor({
+                this.eightBitter.actions.animateFadeFromColor({
                     color,
                     change: this.change,
                     speed: this.speed,

@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { PokedexListingStatus } from "./Constants";
@@ -33,29 +33,29 @@ export interface ISaveFile {
 /**
  * Saves and load game data.
  */
-export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Saves<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IStorageItems & { [i: string]: any } = this.gameStarter.itemsHolder.exportItems();
+        const oldLocalStorage: IStorageItems & { [i: string]: any } = this.eightBitter.itemsHolder.exportItems();
 
-        const collectionKeys: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.stateCollectionKeys);
+        const collectionKeys: string[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.stateCollectionKeys);
         if (collectionKeys) {
             for (const collection of collectionKeys) {
-                oldLocalStorage[collection] = this.gameStarter.itemsHolder.getItem(collection as keyof IStorageItems);
+                oldLocalStorage[collection] = this.eightBitter.itemsHolder.getItem(collection as keyof IStorageItems);
             }
         }
 
         for (const key of Object.keys(oldLocalStorage)) {
-            this.gameStarter.itemsHolder.removeItem(key as keyof IStorageItems);
+            this.eightBitter.itemsHolder.removeItem(key as keyof IStorageItems);
         }
 
-        this.gameStarter.itemsHolder.clear();
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.oldLocalStorage, oldLocalStorage);
-        this.gameStarter.itemsHolder.saveItem(this.gameStarter.storage.names.oldLocalStorage);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.stateCollectionKeys, []);
+        this.eightBitter.itemsHolder.clear();
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.oldLocalStorage, oldLocalStorage);
+        this.eightBitter.itemsHolder.saveItem(this.eightBitter.storage.names.oldLocalStorage);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.stateCollectionKeys, []);
     }
 
     /**
@@ -63,29 +63,29 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * hasn't been saved, the data is restored under localStorage.
      */
     public checkForOldStorageData(): void {
-        if (!this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.oldLocalStorage)
-            || this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.gameStarted)) {
+        if (!this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.oldLocalStorage)
+            || this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.gameStarted)) {
             return;
         }
 
-        const oldLocalStorage = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.oldLocalStorage);
+        const oldLocalStorage = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.oldLocalStorage);
         if (oldLocalStorage !== undefined) {
             for (const key in oldLocalStorage) {
                 if (!oldLocalStorage.hasOwnProperty(key)) {
                     continue;
                 }
 
-                const prefix = this.gameStarter.stateHolder.getPrefix();
+                const prefix = this.eightBitter.stateHolder.getPrefix();
 
                 if (key.slice(0, prefix.length) === prefix) {
-                    this.gameStarter.stateHolder.setCollection(key.slice(prefix.length), oldLocalStorage[key as keyof IStorageItems]);
+                    this.eightBitter.stateHolder.setCollection(key.slice(prefix.length), oldLocalStorage[key as keyof IStorageItems]);
                 } else {
-                    this.gameStarter.itemsHolder.setItem(key as keyof IStorageItems, oldLocalStorage[key as keyof IStorageItems]);
+                    this.eightBitter.itemsHolder.setItem(key as keyof IStorageItems, oldLocalStorage[key as keyof IStorageItems]);
                 }
             }
         }
 
-        this.gameStarter.itemsHolder.saveAll();
+        this.eightBitter.itemsHolder.saveAll();
     }
 
     /**
@@ -94,24 +94,24 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param showText   Whether to display a status menu (by default, false).
      */
     public saveGame(showText: boolean = true): void {
-        const ticksRecorded: number = this.gameStarter.fpsAnalyzer.getRecordedTicks();
+        const ticksRecorded: number = this.eightBitter.fpsAnalyzer.getRecordedTicks();
 
-        this.gameStarter.itemsHolder.increase(this.gameStarter.storage.names.time, ticksRecorded - this.gameStarter.ticksElapsed);
-        this.gameStarter.ticksElapsed = ticksRecorded;
+        this.eightBitter.itemsHolder.increase(this.eightBitter.storage.names.time, ticksRecorded - this.eightBitter.ticksElapsed);
+        this.eightBitter.ticksElapsed = ticksRecorded;
 
         this.saveCharacterPositions();
-        this.gameStarter.stateHolder.saveCollection();
-        this.gameStarter.itemsHolder.saveAll();
+        this.eightBitter.stateHolder.saveCollection();
+        this.eightBitter.itemsHolder.saveAll();
 
         if (!showText) {
             return;
         }
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.menuGrapher.deleteAllMenus(),
+        this.eightBitter.timeHandler.addEvent(
+            (): void => this.eightBitter.menuGrapher.deleteAllMenus(),
             49);
     }
 
@@ -119,9 +119,9 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * Automatically saves the game if auto-save is enabled.
      */
     public autoSaveIfEnabled(): void {
-        if (this.gameStarter.itemsHolder.getAutoSave()
-            && !this.gameStarter.scenePlayer.getCutscene()
-            && this.gameStarter.areaSpawner.getMapName() !== "Blank") {
+        if (this.eightBitter.itemsHolder.getAutoSave()
+            && !this.eightBitter.scenePlayer.getCutscene()
+            && this.eightBitter.areaSpawner.getMapName() !== "Blank") {
             this.saveGame(false);
         }
     }
@@ -140,11 +140,11 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         link.setAttribute(
             "href",
             "data:text/json;charset=utf-8," + encodeURIComponent(
-                JSON.stringify(this.gameStarter.itemsHolder.exportItems())));
+                JSON.stringify(this.eightBitter.itemsHolder.exportItems())));
 
-        this.gameStarter.container.appendChild(link);
+        this.eightBitter.container.appendChild(link);
         link.click();
-        this.gameStarter.container.removeChild(link);
+        this.eightBitter.container.removeChild(link);
     }
 
     /**
@@ -164,7 +164,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      */
     public loadSaveFile(data: ISaveFile): void {
         this.clearSavedData();
-        const prefix = this.gameStarter.stateHolder.getPrefix();
+        const prefix = this.eightBitter.stateHolder.getPrefix();
 
         for (const key in data) {
             if (!data.hasOwnProperty(key)) {
@@ -173,22 +173,22 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
 
             if (key.slice(0, prefix.length) === prefix) {
                 const split: string[] = key.split("::");
-                this.gameStarter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
+                this.eightBitter.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {
-                this.gameStarter.itemsHolder.setItem(key as keyof IStorageItems, data[key]);
+                this.eightBitter.itemsHolder.setItem(key as keyof IStorageItems, data[key]);
             }
         }
 
-        this.gameStarter.menuGrapher.deleteActiveMenu();
-        this.gameStarter.gameplay.startPlay();
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.gameStarted, true);
+        this.eightBitter.menuGrapher.deleteActiveMenu();
+        this.eightBitter.gameplay.startPlay();
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.gameStarted, true);
     }
 
     /**
      * Saves the positions of all Characters in the game.
      */
     public saveCharacterPositions(): void {
-        for (const character of this.gameStarter.groupHolder.getGroup("Character") as ICharacter[]) {
+        for (const character of this.eightBitter.groupHolder.getGroup("Character") as ICharacter[]) {
             this.saveCharacterPosition(character, character.id);
         }
     }
@@ -200,15 +200,15 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param id   The ID associated with the Character.
      */
     public saveCharacterPosition(character: ICharacter, id: string): void {
-        this.gameStarter.stateHolder.addChange(
+        this.eightBitter.stateHolder.addChange(
             id,
             "xloc",
-            (character.left + this.gameStarter.mapScreener.left));
-        this.gameStarter.stateHolder.addChange(
+            (character.left + this.eightBitter.mapScreener.left));
+        this.eightBitter.stateHolder.addChange(
             id,
             "yloc",
-            (character.top + this.gameStarter.mapScreener.top));
-        this.gameStarter.stateHolder.addChange(
+            (character.top + this.eightBitter.mapScreener.top));
+        this.eightBitter.stateHolder.addChange(
             id,
             "direction",
             character.direction);
@@ -260,8 +260,8 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param amount   How many of the item to add, if not 1.
      */
     public addItemToBag(item: string, amount: number = 1): void {
-        this.gameStarter.utilities.combineArrayMembers(
-            this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items),
+        this.eightBitter.utilities.combineArrayMembers(
+            this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.items),
             item,
             amount,
             "item",
@@ -275,8 +275,8 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param amount   How many of the item to remove, if not 1.
      */
     public removeItemFromBag(item: string, amount: number = 1): void {
-        this.gameStarter.utilities.removeArrayMembers(
-            this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items),
+        this.eightBitter.utilities.removeArrayMembers(
+            this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.items),
             item,
             amount,
             "item",
@@ -290,7 +290,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokedex);
+        const pokedex: IPokedex = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokedex);
         const title: string = titleRaw.join("");
         const caught: boolean = status === PokedexListingStatus.Caught;
         const seen: boolean = caught || (status === PokedexListingStatus.Seen);
@@ -312,7 +312,7 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             };
         }
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokedex, pokedex);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.pokedex, pokedex);
     }
 
     /**
@@ -322,8 +322,8 @@ export class Saves<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @returns Pokedex listings in ascending order.
      */
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
-        const pokedex: IPokedex = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokedex);
-        const pokemon: { [i: string]: IPokemonListing } = this.gameStarter.constants.pokemon.byName;
+        const pokedex: IPokedex = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokedex);
+        const pokemon: { [i: string]: IPokemonListing } = this.eightBitter.constants.pokemon.byName;
         const titlesSorted: string[] = Object.keys(pokedex)
             .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);
         let i: number;

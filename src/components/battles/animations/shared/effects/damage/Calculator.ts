@@ -1,5 +1,5 @@
 import { IDamageEffect, IMoveAction, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IPokemon } from "../../../../../Battles";
@@ -8,7 +8,7 @@ import { IMoveSchema } from "../../../../../constants/Moves";
 /**
  * Calculates damage dealt from battle moves.
  */
-export class Calculator<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Calculator<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Calculates how much damage a move should do to a Pokemon.
      *
@@ -54,11 +54,11 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
      */
     public getDamageModifier(move: string, attacker: IPokemon, defender: IPokemon): number {
-        const moveSchema: IMoveSchema = this.gameStarter.constants.moves.byName[move];
+        const moveSchema: IMoveSchema = this.eightBitter.constants.moves.byName[move];
         const stab: number = attacker.types.indexOf(moveSchema.type) !== -1 ? 1.5 : 1;
         const type: number = this.getTypeEffectiveness(move, defender);
 
-        return stab * type * this.gameStarter.numberMaker.randomWithin(0.85, 1);
+        return stab * type * this.eightBitter.numberMaker.randomWithin(0.85, 1);
     }
 
     /**
@@ -70,13 +70,13 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
     public getTypeEffectiveness(move: string, defender: IPokemon): number {
-        const defenderTypes: string[] = this.gameStarter.constants.pokemon.byName[defender.title.join("")].types;
-        const typeIndices: { [i: string]: number } = this.gameStarter.constants.types.indices;
-        const moveIndex: number = typeIndices[this.gameStarter.constants.moves.byName[move].type];
+        const defenderTypes: string[] = this.eightBitter.constants.pokemon.byName[defender.title.join("")].types;
+        const typeIndices: { [i: string]: number } = this.eightBitter.constants.types.indices;
+        const moveIndex: number = typeIndices[this.eightBitter.constants.moves.byName[move].type];
         let total = 1;
 
         for (const defenderType of defenderTypes) {
-            const effectivenesses: number[] = this.gameStarter.constants.types.effectivenessTable[moveIndex];
+            const effectivenesses: number[] = this.eightBitter.constants.types.effectivenessTable[moveIndex];
             total *= effectivenesses[typeIndices[defenderType]];
         }
 
@@ -92,8 +92,8 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
      */
     public isCriticalHit(move: string, attacker: IPokemon): boolean {
-        const moveInfo: IMoveSchema = this.gameStarter.constants.moves.byName[move];
-        const baseSpeed: number = this.gameStarter.constants.pokemon.byName[attacker.title.join("")].speed;
+        const moveInfo: IMoveSchema = this.eightBitter.constants.moves.byName[move];
+        const baseSpeed: number = this.eightBitter.constants.pokemon.byName[attacker.title.join("")].speed;
         let denominator = 512;
 
         // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit,
@@ -113,6 +113,6 @@ export class Calculator<TGameStartr extends FullScreenPokemon> extends GeneralCo
 
         // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%,
         // it instead becomes 255/256 or about 99.6%.
-        return this.gameStarter.numberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
+        return this.eightBitter.numberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
     }
 }

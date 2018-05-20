@@ -4,7 +4,7 @@ import { Move } from "../Move";
 /**
  * Animates a TailWhip battle move.
  */
-export class TailWhip<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class TailWhip<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Runs the move's animation.
      *
@@ -14,21 +14,21 @@ export class TailWhip<TGameStartr extends FullScreenPokemon> extends Move<TGameS
         const dt = 11;
         const dx = 16;
 
-        this.gameStarter.physics.shiftHoriz(this.attackerThing, dx * this.direction);
+        this.eightBitter.physics.shiftHoriz(this.attackerThing, dx * this.direction);
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.physics.shiftHoriz(this.attackerThing, -dx * this.direction),
+        this.eightBitter.timeHandler.addEvent(
+            (): void => this.eightBitter.physics.shiftHoriz(this.attackerThing, -dx * this.direction),
             dt);
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.physics.shiftHoriz(this.attackerThing, dx * this.direction),
+        this.eightBitter.timeHandler.addEvent(
+            (): void => this.eightBitter.physics.shiftHoriz(this.attackerThing, dx * this.direction),
             dt * 2);
-        this.gameStarter.timeHandler.addEvent(
-            (): void => this.gameStarter.physics.shiftHoriz(this.attackerThing, -dx * this.direction),
+        this.eightBitter.timeHandler.addEvent(
+            (): void => this.eightBitter.physics.shiftHoriz(this.attackerThing, -dx * this.direction),
             dt * 3);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.battles.animations.things.shake({ callback });
+                this.eightBitter.battles.animations.things.shake({ callback });
             },
             (dt * 3.5) | 0);
     }

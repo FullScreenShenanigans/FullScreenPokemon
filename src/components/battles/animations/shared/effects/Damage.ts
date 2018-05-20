@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { IDamageEffect, IMoveAction, IStatistic, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IPokemon } from "../../../../Battles";
@@ -9,12 +9,12 @@ import { Calculator } from "./damage/Calculator";
 /**
  * Runs damage effect animations for FullScreenPokemon instances.
  */
-export class Damage<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Damage<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Calculates damage dealt from battle moves.
      */
     @component(Calculator)
-    private readonly calculator: Calculator<TGameStartr>;
+    private readonly calculator: Calculator<TEightBittr>;
 
     /**
      * Runs the damage animation for a battle move effect.
@@ -27,7 +27,7 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends GeneralCompon
         const statistic: IStatistic = teamAndAction.target.actor.statistics.health;
         const amount: number = this.calculator.calculateDamage(teamAndAction, effect);
 
-        this.gameStarter.battles.decorations.health.animatePokemonHealthBar(
+        this.eightBitter.battles.decorations.health.animatePokemonHealthBar(
             teamAndAction.target.team,
             statistic.current,
             statistic.current - amount,
@@ -37,7 +37,7 @@ export class Damage<TGameStartr extends FullScreenPokemon> extends GeneralCompon
                     return;
                 }
 
-                this.gameStarter.battles.animations.getTeamAnimations(teamAndAction.target.team)
+                this.eightBitter.battles.animations.getTeamAnimations(teamAndAction.target.team)
                     .actions.effects.fainting.run(
                         teamAndAction.target.actor as IPokemon,
                         teamAndAction.target.team, onComplete);

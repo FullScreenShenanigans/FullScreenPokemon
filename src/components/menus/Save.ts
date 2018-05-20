@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMenuSchema } from "../Menus";
@@ -6,33 +6,33 @@ import { IMenuSchema } from "../Menus";
 /**
  * Opens the Save menu.
  */
-export class Save<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Save<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Opens the Save menu.
      */
     public readonly open = (): void => {
-        this.gameStarter.menuGrapher.createMenu("Save");
+        this.eightBitter.menuGrapher.createMenu("Save");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", "Would you like to SAVE the game?");
 
-        this.gameStarter.menuGrapher.createMenu("Yes/No", {
-            onBPress: (): void => this.gameStarter.menuGrapher.deleteAllMenus(),
+        this.eightBitter.menuGrapher.createMenu("Yes/No", {
+            onBPress: (): void => this.eightBitter.menuGrapher.deleteAllMenus(),
         });
-        this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+        this.eightBitter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.gameStarter.saves.downloadSaveGame(),
+                    callback: (): void => this.eightBitter.saves.downloadSaveGame(),
                 },
                 {
                     text: "NO",
-                    callback: (): void => this.gameStarter.menuGrapher.deleteAllMenus(),
+                    callback: (): void => this.eightBitter.menuGrapher.deleteAllMenus(),
                 },
             ],
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+        this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
 
-        this.gameStarter.saves.autoSaveIfEnabled();
+        this.eightBitter.saves.autoSaveIfEnabled();
     }
 }

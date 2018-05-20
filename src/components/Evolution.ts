@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -75,7 +75,7 @@ export type IRequirementHandler = (args: IRequirementHandlerArgs<IEvolutionModif
 /**
  * Logic for what Pokemon are able to evolve into.
  */
-export class Evolution<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Evolution<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
@@ -120,7 +120,7 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
      */
     public checkEvolutions(pokemon: IPokemon, modifier?: IEvolutionModifier): string[] | undefined {
-        const evolutions: IPokemonEvolution[] | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].evolutions;
+        const evolutions: IPokemonEvolution[] | undefined = this.eightBitter.constants.pokemon.byName[pokemon.title.join("")].evolutions;
         if (!evolutions) {
             return undefined;
         }
@@ -142,8 +142,8 @@ export class Evolution<TGameStartr extends FullScreenPokemon> extends GeneralCom
      */
     public evolve(pokemon: IPokemon, evolvedForm: string[]): void {
         pokemon.title = evolvedForm;
-        pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
-        pokemon.types = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].types;
+        pokemon.statistics = this.eightBitter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+        pokemon.types = this.eightBitter.constants.pokemon.byName[pokemon.title.join("")].types;
     }
 
     /**

@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
@@ -6,7 +6,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * Hops characters down ledges.
  */
-export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Ledges<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Starts a Character hopping over a ledge.
      *
@@ -14,7 +14,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param other   The ledge the Character is hopping over.
      */
     public startLedgeHop(thing: ICharacter, other: IThing): void {
-        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
+        const ticksPerBlock: number = this.eightBitter.equations.walkingTicksPerBlock(thing);
 
         thing.nocollide = true;
         thing.wantsToWalk = true;
@@ -23,7 +23,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
         this.addHopOffset(thing);
         this.addHopShadow(thing);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.endLedgeHop(thing),
             ticksPerBlock * 2);
     }
@@ -35,7 +35,7 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param other   The ledge the Character is done hopping over.
      */
     public endLedgeHop(thing: ICharacter): void {
-        this.gameStarter.physics.killNormal(thing.shadow!);
+        this.eightBitter.physics.killNormal(thing.shadow!);
         thing.nocollide = false;
         thing.wantsToWalk = false;
         thing.ledge = undefined;
@@ -48,16 +48,16 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   A Character hopping over a ledge.
      */
     protected addHopOffset(thing: ICharacter): void {
-        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
+        const ticksPerBlock: number = this.eightBitter.equations.walkingTicksPerBlock(thing);
         let dy = -2;
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 dy *= -1;
             },
             ticksPerBlock + 1);
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 thing.offsetY += dy;
             },
@@ -71,9 +71,9 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param thing   A Character hopping over a ledge.
      */
     protected addHopShadow(thing: ICharacter): void {
-        thing.shadow = this.gameStarter.things.add(this.gameStarter.things.names.shadow);
+        thing.shadow = this.eightBitter.things.add(this.eightBitter.things.names.shadow);
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): boolean => this.updateShadowPosition(thing),
             1,
             Infinity);
@@ -90,8 +90,8 @@ export class Ledges<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             return true;
         }
 
-        this.gameStarter.physics.setMidXObj(thing.shadow, thing);
-        this.gameStarter.physics.setBottom(thing.shadow, thing.bottom);
+        this.eightBitter.physics.setMidXObj(thing.shadow, thing);
+        this.eightBitter.physics.setBottom(thing.shadow, thing.bottom);
         return false;
     }
 }

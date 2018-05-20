@@ -1,9 +1,9 @@
-import { ModEventNames as GameStartrModEventNames } from "gamestartr";
+import { ModEventNames as EightBittrModEventNames } from "eightbittr";
 
 /**
  * Keys for mod events.
  */
-export class ModEventNames extends GameStartrModEventNames {
+export class ModEventNames extends EightBittrModEventNames {
     /*
      * Key for the event when a player is added.
      */

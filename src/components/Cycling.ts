@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPlayer } from "./Things";
@@ -6,7 +6,7 @@ import { IPlayer } from "./Things";
 /**
  * Starts and stop characters cycling.
  */
-export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Cycling<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Starts the Player cycling if the current Area allows it.
      *
@@ -19,16 +19,16 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             return false;
         }
 
-        if (!this.gameStarter.mapScreener.variables.allowCycling) {
+        if (!this.eightBitter.mapScreener.variables.allowCycling) {
             return false;
         }
 
         thing.cycling = true;
-        this.gameStarter.saves.addStateHistory(thing, "speed", thing.speed);
+        this.eightBitter.saves.addStateHistory(thing, "speed", thing.speed);
         thing.speed = thing.speed * 2;
 
-        this.gameStarter.graphics.addClass(thing, "cycling");
-        this.gameStarter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got on the bicycle!");
+        this.eightBitter.graphics.addClass(thing, "cycling");
+        this.eightBitter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got on the bicycle!");
 
         return true;
     }
@@ -41,11 +41,11 @@ export class Cycling<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
 
-        this.gameStarter.graphics.removeClass(thing, "cycling");
-        this.gameStarter.saves.popStateHistory(thing, "speed");
-        this.gameStarter.timeHandler.cancelClassCycle(thing, "cycling");
+        this.eightBitter.graphics.removeClass(thing, "cycling");
+        this.eightBitter.saves.popStateHistory(thing, "speed");
+        this.eightBitter.timeHandler.cancelClassCycle(thing, "cycling");
 
-        this.gameStarter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got off the bicycle.");
+        this.eightBitter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got off the bicycle.");
     }
 
     /**

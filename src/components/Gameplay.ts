@@ -1,4 +1,4 @@
-import { Gameplay as GameStartrGameplay } from "gamestartr";
+import { Gameplay as EightBittrGameplay } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -9,7 +9,7 @@ interface IDataMouseEvent extends MouseEvent {
 /**
  * Event hooks for major gameplay state changes.
  */
-export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrGameplay<TGameStartr> {
+export class Gameplay<TEightBittr extends FullScreenPokemon> extends EightBittrGameplay<TEightBittr> {
     /**
      * Sets the map to Blank and displays the StartOptions menu.
      */
@@ -24,21 +24,21 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
                 callback: (): void => this.loadFile(),
             }];
 
-        this.gameStarter.saves.checkForOldStorageData();
+        this.eightBitter.saves.checkForOldStorageData();
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.gameStarted)) {
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.gameStarted)) {
             options.unshift({
                 text: "CONTINUE",
                 callback: (): void => this.startPlay(),
             });
         }
 
-        this.gameStarter.maps.setMap("Blank");
-        this.gameStarter.menuGrapher.createMenu("StartOptions");
-        this.gameStarter.menuGrapher.addMenuList("StartOptions", { options });
-        this.gameStarter.menuGrapher.setActiveMenu("StartOptions");
+        this.eightBitter.maps.setMap("Blank");
+        this.eightBitter.menuGrapher.createMenu("StartOptions");
+        this.eightBitter.menuGrapher.addMenuList("StartOptions", { options });
+        this.eightBitter.menuGrapher.setActiveMenu("StartOptions");
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartOptions);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGameStartOptions);
     }
 
     /**
@@ -46,25 +46,25 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * onGameStartPlay mod trigger.
      */
     public startPlay(): void {
-        this.gameStarter.maps.setMap(
-            this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.map) || "Blank",
-            this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.location),
+        this.eightBitter.maps.setMap(
+            this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.map) || "Blank",
+            this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.location),
             true);
-        this.gameStarter.maps.entrances.resume();
+        this.eightBitter.maps.entrances.resume();
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartPlay);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGameStartPlay);
     }
 
     /**
      * Starts the game's intro, and fires the onGameStartIntro mod trigger.
      */
     public startIntro(): void {
-        this.gameStarter.saves.clearSavedData();
-        this.gameStarter.scenePlayer.startCutscene("Intro", {
+        this.eightBitter.saves.clearSavedData();
+        this.eightBitter.scenePlayer.startCutscene("Intro", {
             disablePauseMenu: true,
         });
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartIntro);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGameStartIntro);
     }
 
     /**
@@ -72,7 +72,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * game state. The onGameStartIntro mod event is triggered.
      */
     public loadFile(): void {
-        const dummy: HTMLInputElement = this.gameStarter.utilities.createElement(
+        const dummy: HTMLInputElement = this.eightBitter.utilities.createElement(
             "input",
             {
                 type: "file",
@@ -92,7 +92,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
                             return;
                         }
 
-                        this.gameStarter.saves.loadRawData(currentTarget.result);
+                        this.eightBitter.saves.loadRawData(currentTarget.result);
                         delete reader.onloadend;
                     };
                     reader.readAsText(file);
@@ -101,7 +101,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
 
         dummy.click();
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGameStartIntro);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGameStartIntro);
     }
 
     /**
@@ -135,7 +135,7 @@ export class Gameplay<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * Closes the game.
      */
     public onGameClose(): void {
-        this.gameStarter.saves.autoSaveIfEnabled();
+        this.eightBitter.saves.autoSaveIfEnabled();
         console.log("Closed.");
     }
 }

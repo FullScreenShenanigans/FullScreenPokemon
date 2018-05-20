@@ -7,7 +7,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to allow cycling indoors.
  */
-export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class RunningIndoorsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -18,27 +18,27 @@ export class RunningIndoorsMod<TGameStartr extends FullScreenPokemon> extends Mo
      */
     public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
-            const area: IArea = this.gameStarter.mapScreener.activeArea;
+            const area: IArea = this.eightBitter.mapScreener.activeArea;
             if (!area) {
                 return;
             }
 
-            this.gameStarter.saves.addStateHistory(area, "allowCycling", area.allowCycling);
+            this.eightBitter.saves.addStateHistory(area, "allowCycling", area.allowCycling);
             area.allowCycling = true;
-            this.gameStarter.mapScreener.variables.allowCycling = true;
+            this.eightBitter.mapScreener.variables.allowCycling = true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            const area: IArea = this.gameStarter.mapScreener.activeArea;
+            const area: IArea = this.eightBitter.mapScreener.activeArea;
             if (!area) {
                 return;
             }
 
-            this.gameStarter.saves.popStateHistory(area, "allowCycling");
+            this.eightBitter.saves.popStateHistory(area, "allowCycling");
 
-            if (!area.allowCycling && this.gameStarter.players[0].cycling) {
-                this.gameStarter.cycling.stopCycling(this.gameStarter.players[0]);
+            if (!area.allowCycling && this.eightBitter.players[0].cycling) {
+                this.eightBitter.cycling.stopCycling(this.eightBitter.players[0]);
             }
-            this.gameStarter.mapScreener.variables.allowCycling = area.allowCycling;
+            this.eightBitter.mapScreener.variables.allowCycling = area.allowCycling;
         },
         [this.eventNames.onSetLocation]: (): void => {
             this.events.onModEnable();

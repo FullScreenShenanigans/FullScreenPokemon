@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -63,7 +63,7 @@ export interface IKeyboardMenuSettings {
 /**
  * Manipulates the on-screen keyboard menus.
  */
-export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Keyboards<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Opens the Keyboard menu and binds it to some required callbacks.
      *
@@ -83,8 +83,8 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
         const onComplete: () => void = settings.callback || onKeyPress;
         const lowercase: boolean = !!settings.lowercase;
         const letters: string[] = lowercase
-            ? this.gameStarter.constants.keysLowercase
-            : this.gameStarter.constants.keysUppercase;
+            ? this.eightBitter.constants.keysLowercase
+            : this.eightBitter.constants.keysUppercase;
         const options: any[] = letters.map((letter: string): any =>
             ({
                 text: [letter],
@@ -94,18 +94,18 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
                     : onComplete,
             }));
 
-        this.gameStarter.menuGrapher.createMenu("Keyboard", {
+        this.eightBitter.menuGrapher.createMenu("Keyboard", {
             settings,
             onKeyPress,
             onComplete,
             ignoreB: false,
         } as IMenuSchema);
 
-        this.gameStarter.menuGrapher.addMenuDialog("KeyboardTitle", [[
+        this.eightBitter.menuGrapher.addMenuDialog("KeyboardTitle", [[
             settings.title || "",
         ]]);
 
-        this.gameStarter.menuGrapher.addMenuList("KeyboardKeys", {
+        this.eightBitter.menuGrapher.addMenuList("KeyboardKeys", {
             options,
             selectedIndex: settings.selectedIndex,
             bottom: {
@@ -117,10 +117,10 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
                 },
             },
         });
-        this.gameStarter.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
-        this.gameStarter.menuGrapher.setActiveMenu("KeyboardKeys");
+        this.eightBitter.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
+        this.eightBitter.menuGrapher.setActiveMenu("KeyboardKeys");
 
-        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuResults: IKeyboardResultsMenu = this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         menuResults.completeValue = completeValue;
         menuResults.displayedValue = displayedValue;
         menuResults.selectedChild = settings.selectedChild || completeValue.length;
@@ -132,8 +132,8 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * Adds a value to the keyboard menu from the currently selected item.
      */
     public addKeyboardMenuValue(): void {
-        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
-        const menuKeys: imenugraphr.IGridCell = this.gameStarter.menuGrapher.getMenuSelectedOption("KeyboardKeys");
+        const menuResults: IKeyboardResultsMenu = this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuKeys: imenugraphr.IGridCell = this.eightBitter.menuGrapher.getMenuSelectedOption("KeyboardKeys");
 
         menuResults.completeValue.push(menuKeys.value);
         menuResults.displayedValue[menuResults.selectedChild] = menuKeys.text[0] as string;
@@ -150,7 +150,7 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * Removes the rightmost keyboard menu value.
      */
     public removeKeyboardMenuValue(): void {
-        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuResults: IKeyboardResultsMenu = this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         if (menuResults.selectedChild <= 0) {
             return;
         }
@@ -166,9 +166,9 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * Switches the keyboard menu's case.
      */
     protected switchKeyboardCase(): void {
-        const menuKeyboard: IMenu = this.gameStarter.menuGrapher.getMenu("Keyboard") as IMenu;
-        const menuKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
-        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuKeyboard: IMenu = this.eightBitter.menuGrapher.getMenu("Keyboard") as IMenu;
+        const menuKeys: IListMenu = this.eightBitter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const menuResults: IKeyboardResultsMenu = this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
 
         this.openKeyboardMenu({
             ...menuKeyboard.settings,
@@ -184,35 +184,35 @@ export class Keyboards<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * Closes the keyboard menu.
      */
     public closeKeyboardMenu(): void {
-        this.gameStarter.menuGrapher.deleteMenu("Keyboard");
+        this.eightBitter.menuGrapher.deleteMenu("Keyboard");
     }
 
     /**
      * Recreates the display of current results and cursor.
      */
     protected resetResultsDisplay(): void {
-        const menuResults: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menuResults: IKeyboardResultsMenu = this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         const dialog: [string][] = menuResults.displayedValue
             .map((text: string): [string] => [text]);
 
         dialog[menuResults.selectedChild] = ["MDash"];
 
         for (const child of menuResults.children) {
-            this.gameStarter.physics.killNormal(child);
+            this.eightBitter.physics.killNormal(child);
         }
 
         menuResults.children = [];
 
-        this.gameStarter.menuGrapher.addMenuDialog("KeyboardResult", [dialog]);
+        this.eightBitter.menuGrapher.addMenuDialog("KeyboardResult", [dialog]);
     }
 
     /**
      *
      */
     protected moveSelectionToEnd(): void {
-        const menuKeys: IListMenu = this.gameStarter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const menuKeys: IListMenu = this.eightBitter.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
 
-        this.gameStarter.menuGrapher.setSelectedIndex(
+        this.eightBitter.menuGrapher.setSelectedIndex(
             "KeyboardKeys",
             menuKeys.gridColumns - 1,
             menuKeys.gridRows - 2); // assume there's a bottom option

@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,20 +7,20 @@ import { ICharacter, IThing } from "../Things";
 /**
  * OakParcelDelivery cutscene routines.
  */
-export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for when the player delivers the parcel to Oak.
      *
      * @param settings   Settings used for the cutscene.
      */
     public Greeting(settings: any): void {
-        settings.rival = this.gameStarter.utilities.getExistingThingById("Rival");
+        settings.rival = this.eightBitter.utilities.getExistingThingById("Rival");
         settings.oak = settings.triggerer;
         delete settings.oak.cutscene;
         delete settings.oak.dialog;
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: Oh, %%%%%%%PLAYER%%%%%%%!",
@@ -32,26 +32,26 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!",
             ],
             (): void => {
-                this.gameStarter.timeHandler.addEvent(
-                    this.gameStarter.scenePlayer.bindRoutine("RivalInterrupts"),
+                this.eightBitter.timeHandler.addEvent(
+                    this.eightBitter.scenePlayer.bindRoutine("RivalInterrupts"),
                     14);
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Viridian City::PokeMart", "CashierDetector", "dialog", false);
 
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "CrankyGrandpa", "alive", false);
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "CrankyGrandpaBlocker", "alive", false);
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "CrankyGranddaughter", "alive", false);
 
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "HappyGrandpa", "alive", true);
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Viridian City::Land", "HappyGranddaughter", "alive", true);
     }
 
@@ -59,15 +59,15 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      * Cutscene for when the rival interrupts Oak and the player.
      */
     public RivalInterrupts(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Gramps!",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("RivalWalksUp"),
+            this.eightBitter.scenePlayer.bindRoutine("RivalWalksUp"),
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -76,22 +76,22 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksUp(settings: any): void {
-        const doormat: IThing = this.gameStarter.utilities.getExistingThingById("DoormatLeft");
-        const rival: ICharacter = this.gameStarter.things.add(this.gameStarter.things.names.rival, doormat.left, doormat.top) as ICharacter;
+        const doormat: IThing = this.eightBitter.utilities.getExistingThingById("DoormatLeft");
+        const rival: ICharacter = this.eightBitter.things.add(this.eightBitter.things.names.rival, doormat.left, doormat.top) as ICharacter;
 
         rival.alive = true;
         settings.rival = rival;
 
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+        this.eightBitter.menuGrapher.deleteMenu("GeneralText");
 
-        this.gameStarter.actions.walking.startWalkingOnPath(
+        this.eightBitter.actions.walking.startWalkingOnPath(
             rival,
             [
                 {
                     blocks: 8,
                     direction: Direction.Top,
                 },
-                this.gameStarter.scenePlayer.bindRoutine("RivalInquires"),
+                this.eightBitter.scenePlayer.bindRoutine("RivalInquires"),
             ]);
     }
 
@@ -99,45 +99,45 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      * Cutscene for the rival asking Oak why he was called.
      */
     public RivalInquires(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: What did you call me for?",
             ],
             (): void => {
-                this.gameStarter.timeHandler.addEvent(
-                    this.gameStarter.scenePlayer.bindRoutine("OakRequests"),
+                this.eightBitter.timeHandler.addEvent(
+                    this.eightBitter.scenePlayer.bindRoutine("OakRequests"),
                     14);
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak requesting something of the player and rival.
      */
     public OakRequests(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Oak: Oh right! I have a request of you two.",
             ],
             (): void => {
-                this.gameStarter.timeHandler.addEvent(
-                    this.gameStarter.scenePlayer.bindRoutine("OakDescribesPokedex"),
+                this.eightBitter.timeHandler.addEvent(
+                    this.eightBitter.scenePlayer.bindRoutine("OakDescribesPokedex"),
                     14);
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak describing the Pokedex.
      */
     public OakDescribesPokedex(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "On the desk there is my invention, %%%%%%%POKEDEX%%%%%%%!",
@@ -145,50 +145,50 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "It's a hi-tech encyclopedia!",
             ],
             (): void => {
-                this.gameStarter.timeHandler.addEvent(
-                    this.gameStarter.scenePlayer.bindRoutine("OakGivesPokedex"),
+                this.eightBitter.timeHandler.addEvent(
+                    this.eightBitter.scenePlayer.bindRoutine("OakGivesPokedex"),
                     14);
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak giving the player and rival Pokedexes.
      */
     public OakGivesPokedex(): void {
-        const bookLeft: IThing = this.gameStarter.utilities.getExistingThingById("BookLeft");
-        const bookRight: IThing = this.gameStarter.utilities.getExistingThingById("BookRight");
+        const bookLeft: IThing = this.eightBitter.utilities.getExistingThingById("BookLeft");
+        const bookRight: IThing = this.eightBitter.utilities.getExistingThingById("BookRight");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "OAK: %%%%%%%PLAYER%%%%%%% and %%%%%%%RIVAL%%%%%%%! Take these with you!",
                 "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!",
             ],
             (): void => {
-                this.gameStarter.timeHandler.addEvent(
-                    this.gameStarter.scenePlayer.bindRoutine("OakDescribesGoal"),
+                this.eightBitter.timeHandler.addEvent(
+                    this.eightBitter.scenePlayer.bindRoutine("OakDescribesGoal"),
                     14);
 
-                this.gameStarter.physics.killNormal(bookLeft);
-                this.gameStarter.physics.killNormal(bookRight);
+                this.eightBitter.physics.killNormal(bookLeft);
+                this.eightBitter.physics.killNormal(bookRight);
 
-                this.gameStarter.stateHolder.addChange(bookLeft.id, "alive", false);
-                this.gameStarter.stateHolder.addChange(bookRight.id, "alive", false);
+                this.eightBitter.stateHolder.addChange(bookLeft.id, "alive", false);
+                this.eightBitter.stateHolder.addChange(bookRight.id, "alive", false);
 
-                this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.hasPokedex, true);
+                this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.hasPokedex, true);
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for Oak describing his life goal.
      */
     public OakDescribesGoal(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "To make a complete guide on all the %%%%%%%POKEMON%%%%%%% in the world...",
@@ -199,12 +199,12 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "This is a great undertaking in %%%%%%%POKEMON%%%%%%% history!",
             ],
             (): void => {
-                this.gameStarter.timeHandler.addEvent(
-                    this.gameStarter.scenePlayer.bindRoutine("RivalAccepts"),
+                this.eightBitter.timeHandler.addEvent(
+                    this.eightBitter.scenePlayer.bindRoutine("RivalAccepts"),
                     14);
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -213,10 +213,10 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
      * @param settings   Settings used for the cutscene.
      */
     public RivalAccepts(settings: any): void {
-        this.gameStarter.actions.animateCharacterSetDirection(settings.rival, 1);
+        this.eightBitter.actions.animateCharacterSetDirection(settings.rival, 1);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Alright Gramps! Leave it all to me!",
@@ -225,13 +225,13 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                 "I'll tell her not to lend you one, %%%%%%%PLAYER%%%%%%%! Hahaha!",
             ],
             (): void => {
-                this.gameStarter.scenePlayer.stopCutscene();
-                this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-                this.gameStarter.mapScreener.blockInputs = true;
+                this.eightBitter.scenePlayer.stopCutscene();
+                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                this.eightBitter.mapScreener.blockInputs = true;
 
                 delete settings.oak.activate;
                 settings.rival.nocollide = true;
-                this.gameStarter.actions.walking.startWalkingOnPath(
+                this.eightBitter.actions.walking.startWalkingOnPath(
                     settings.rival,
                     [
                         {
@@ -239,8 +239,8 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                             direction: Direction.Bottom,
                         },
                         (): void => {
-                            this.gameStarter.physics.killNormal(settings.rival);
-                            this.gameStarter.mapScreener.blockInputs = false;
+                            this.eightBitter.physics.killNormal(settings.rival);
+                            this.eightBitter.mapScreener.blockInputs = false;
                         },
                     ]);
 
@@ -249,14 +249,14 @@ export class OakParcelDeliveryCutscene<TGameStartr extends FullScreenPokemon> ex
                     "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!",
                 ];
 
-                this.gameStarter.stateHolder.addChange(
+                this.eightBitter.stateHolder.addChange(
                     settings.oak.id, "dialog", settings.oak.dialog,
                 );
-                this.gameStarter.stateHolder.addChange(
+                this.eightBitter.stateHolder.addChange(
                     settings.oak.id, "cutscene", undefined,
                 );
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

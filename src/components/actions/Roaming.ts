@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,7 +7,7 @@ import { ICharacter } from "../Things";
 /**
  * Idle characters turning and walking in random directions.
  */
-export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Roaming<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Starts a Character roaming in random directions.
      *
@@ -18,11 +18,11 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             return;
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.startRoaming(thing),
-            this.gameStarter.numberMaker.randomInt(210) + 70);
+            this.eightBitter.numberMaker.randomInt(210) + 70);
 
-        if (!thing.talking && !this.gameStarter.menuGrapher.getActiveMenu()) {
+        if (!thing.talking && !this.eightBitter.menuGrapher.getActiveMenu()) {
             this.takeRoamingStep(thing);
         }
     }
@@ -44,9 +44,9 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (thing.roamingDirections.indexOf(direction) === -1) {
-            this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
+            this.eightBitter.actions.animateCharacterSetDirection(thing, direction);
         } else {
-            this.gameStarter.actions.walking.startWalking(thing, direction);
+            this.eightBitter.actions.walking.startWalking(thing, direction);
         }
     }
 
@@ -70,7 +70,7 @@ export class Roaming<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             return undefined;
         }
 
-        direction = this.gameStarter.numberMaker.randomInt(totalAllowed);
+        direction = this.eightBitter.numberMaker.randomInt(totalAllowed);
 
         for (let i = 0; i <= direction; i += 1) {
             if (thing.bordering[i]) {

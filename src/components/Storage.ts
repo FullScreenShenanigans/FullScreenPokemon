@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
@@ -44,10 +44,10 @@ export interface IStorageItems {
 /**
  * Settings for storing items in ItemsHoldrs.
  */
-export class Storage<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Storage<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Keys for ItemsHoldr items.
      */
     @component(ItemNames)
-    public readonly names: ItemNames<TGameStartr>;
+    public readonly names: ItemNames<TEightBittr>;
 }

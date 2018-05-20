@@ -9,7 +9,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to scale enemy Pokemon to be around the same level as the trainer's party.
  */
-export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class ScalingLevelsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -30,24 +30,24 @@ export class ScalingLevelsMod<TGameStartr extends FullScreenPokemon> extends Mod
             // const opponent: IBattler = battleInfo.battlers.opponent;
             // const player: IBattler = battleInfo.battlers.player!;
             // const isWildBattle: boolean = opponent.name === opponent.actors[0].nickname;
-            // const wildPokemonOptions: IWildPokemonSchema[] | undefined = this.gameStarter.mapScreener.activeArea.wildPokemon;
+            // const wildPokemonOptions: IWildPokemonSchema[] | undefined = this.eightBitter.mapScreener.activeArea.wildPokemon;
             //     .wildPokemon.grass;
             // if (!wildPokemonOptions) {
             //     return;
             // }
 
-            // const statistics: string[] = this.gameStarter.constants.pokemon.statisticNames;
+            // const statistics: string[] = this.eightBitter.constants.pokemon.statisticNames;
             // const enemyPokemonAvg: number = isWildBattle ?
-            //     this.gameStarter.equations.averageLevelWildPokemon(wildPokemonOptions) :
-            //     this.gameStarter.equations.averageLevel(opponent.actors);
-            // const playerPokemonAvg: number = this.gameStarter.equations.averageLevel(player.actors);
+            //     this.eightBitter.equations.averageLevelWildPokemon(wildPokemonOptions) :
+            //     this.eightBitter.equations.averageLevel(opponent.actors);
+            // const playerPokemonAvg: number = this.eightBitter.equations.averageLevel(player.actors);
 
             // for (const actor of opponent.actors as IPokemon[]) {
-            //     const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[actor.title.join("")];
+            //     const schema: IPokemonListing = this.eightBitter.constants.pokemon.byName[actor.title.join("")];
             //     actor.level += playerPokemonAvg - enemyPokemonAvg;
 
             //     for (const statistic of statistics) {
-            //         actor.statistics[statistic] = this.gameStarter.equations.pokemonStatistic(
+            //         actor.statistics[statistic] = this.eightBitter.equations.pokemonStatistic(
             //             statistic,
             //             schema[statistic],
             //             actor.level,

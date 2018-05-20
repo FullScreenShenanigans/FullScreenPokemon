@@ -1,12 +1,12 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 
 /**
  * Runs status effect animations for FullScreenPokemon instances.
  */
-export class Statuses<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Statuses<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Runs the status effect animation for a battle move effect.
      *

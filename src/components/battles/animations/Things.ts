@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IThing } from "../../Things";
@@ -62,7 +62,7 @@ export interface IShakeSettings {
 /**
  * Thing animations for battles.
  */
-export class Things<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Things<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
      * flag for a little while.
@@ -75,14 +75,14 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GeneralCompon
 
         settings.thing.flickering = true;
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 settings.thing.hidden = !settings.thing.hidden;
             },
             interval,
             clearTime || 49);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 settings.thing.flickering = settings.thing.hidden = false;
 
@@ -104,21 +104,21 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GeneralCompon
         let dx = 0;
         let dy = 0;
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
-                this.gameStarter.groupHolder.callOnAll((thing: IThing) => {
-                    this.gameStarter.physics.shiftBoth(thing, dx, dy);
+                this.eightBitter.groupHolder.callOnAll((thing: IThing) => {
+                    this.eightBitter.physics.shiftBoth(thing, dx, dy);
                 });
             },
             1,
             clearTime * interval);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 dx *= -1;
                 dy *= -1;
 
-                this.gameStarter.timeHandler.addEventInterval(
+                this.eightBitter.timeHandler.addEventInterval(
                     (): void => {
                         dx *= -1;
                         dy *= -1;
@@ -127,7 +127,7 @@ export class Things<TGameStartr extends FullScreenPokemon> extends GeneralCompon
                     clearTime);
 
                 if (settings.callback) {
-                    this.gameStarter.timeHandler.addEvent(settings.callback, interval * clearTime);
+                    this.eightBitter.timeHandler.addEvent(settings.callback, interval * clearTime);
                 }
             },
             (interval / 2) | 0);

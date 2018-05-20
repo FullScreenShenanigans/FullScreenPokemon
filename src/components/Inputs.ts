@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
@@ -8,7 +8,7 @@ import { ICharacter, IPlayer } from "./Things";
 /**
  * Routes user input.
  */
-export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Quickly tapping direction keys means to look in a direction, not walk.
      */
@@ -25,15 +25,15 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             return false;
         }
 
-        if (this.gameStarter.gamesRunner.getPaused()) {
+        if (this.eightBitter.gamesRunner.getPaused()) {
             return false;
         }
 
-        if (this.gameStarter.menuGrapher.getActiveMenu()) {
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
             return true;
         }
 
-        return !this.gameStarter.mapScreener.blockInputs;
+        return !this.eightBitter.mapScreener.blockInputs;
     }
 
     /**
@@ -52,11 +52,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             (thing as IPlayer).keys[Direction.Top] = true;
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Top),
             this.inputTimeTolerance);
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownUp);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownUp);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -79,7 +79,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             (thing as IPlayer).keys[Direction.Right] = true;
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Right),
             this.inputTimeTolerance);
 
@@ -104,11 +104,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             (thing as IPlayer).keys[Direction.Bottom] = true;
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Bottom),
             this.inputTimeTolerance);
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownDown);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownDown);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -131,11 +131,11 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             (thing as IPlayer).keys[Direction.Left] = true;
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Left),
             this.inputTimeTolerance);
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownLeft);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownLeft);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -155,8 +155,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             return;
         }
 
-        if (this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.gameStarter.menuGrapher.registerDirection(direction);
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerDirection(direction);
             return;
         }
 
@@ -164,10 +164,10 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
         thing.wantsToWalk = true;
 
         if (!thing.walking) {
-            this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
+            this.eightBitter.actions.animateCharacterSetDirection(thing, direction);
         }
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownDirectionReal, direction);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownDirectionReal, direction);
     }
 
     /**
@@ -178,12 +178,12 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownA(thing: ICharacter, event?: Event): void {
-        if (this.gameStarter.gamesRunner.getPaused()) {
+        if (this.eightBitter.gamesRunner.getPaused()) {
             return;
         }
 
-        if (this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.gameStarter.menuGrapher.registerA();
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerA();
         } else if (thing.bordering[thing.direction]) {
             if (thing.bordering[thing.direction]!.activate) {
                 thing.bordering[thing.direction]!.activate!.call(
@@ -197,7 +197,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
             }
         }
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownA);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownA);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -212,17 +212,17 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownB(thing: ICharacter, event?: Event): void {
-        if (this.gameStarter.gamesRunner.getPaused()) {
+        if (this.eightBitter.gamesRunner.getPaused()) {
             return;
         }
 
-        if (this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.gameStarter.menuGrapher.registerB();
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerB();
         } else if ((thing as IPlayer).keys) {
             (thing as IPlayer).keys.b = true;
         }
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownB);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownB);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -237,8 +237,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownPause(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.menus.pause.toggle();
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownPause);
+        this.eightBitter.menus.pause.toggle();
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownPause);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -253,8 +253,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public async keyDownMute(_thing: ICharacter, event?: Event): Promise<void> {
-        await this.gameStarter.audioPlayer.setMuted(this.gameStarter.audioPlayer.getMuted());
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownMute);
+        await this.eightBitter.audioPlayer.setMuted(this.eightBitter.audioPlayer.getMuted());
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownMute);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -269,24 +269,24 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @todo Extend the use for any registered item, not just the bicycle.
      */
     public keyDownSelect(thing: IPlayer, event?: Event): void {
-        if (this.gameStarter.menuGrapher.getActiveMenu() || thing.walking) {
+        if (this.eightBitter.menuGrapher.getActiveMenu() || thing.walking) {
             return;
         }
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyDownSelect);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownSelect);
 
-        const selectItem = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.selectItem);
+        const selectItem = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.selectItem);
         if (!selectItem) {
             return;
         }
 
-        const itemSchema: IItemSchema = this.gameStarter.constants.items.byName[selectItem.join("")];
+        const itemSchema: IItemSchema = this.eightBitter.constants.items.byName[selectItem.join("")];
         if (!itemSchema.bagActivate) {
             throw new Error("Currently selected item does not have a .bagActivate.");
         }
 
         if (!itemSchema.bagActivate.call(this, thing, itemSchema)) {
-            this.gameStarter.menus.displayMessage(itemSchema.error || "");
+            this.eightBitter.menus.displayMessage(itemSchema.error || "");
         }
 
         if (event && event.preventDefault) {
@@ -301,7 +301,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpLeft(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpLeft);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpLeft);
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Left] = false;
@@ -326,7 +326,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpRight(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpRight);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpRight);
 
         if (thing.player) {
             (thing as IPlayer).keys[Direction.Right] = false;
@@ -351,7 +351,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpUp(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpUp);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpUp);
 
         if (thing.player) {
             (thing as IPlayer).keys[0] = false;
@@ -376,7 +376,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpDown(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpDown);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpDown);
 
         if (thing.player) {
             (thing as IPlayer).keys[2] = false;
@@ -401,7 +401,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpA(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpA);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpA);
 
         if (thing.player) {
             (thing as IPlayer).keys.a = false;
@@ -419,7 +419,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpB(thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpB);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpB);
 
         if (thing.player) {
             (thing as IPlayer).keys.b = false;
@@ -437,7 +437,7 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpPause(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKeyUpPause);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpPause);
 
         if (event && event.preventDefault) {
             event.preventDefault();
@@ -452,8 +452,8 @@ export class Inputs<TGameStartr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public mouseDownRight(_thing: ICharacter, event?: Event): void {
-        this.gameStarter.menus.pause.toggle();
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onMouseDownRight);
+        this.eightBitter.menus.pause.toggle();
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onMouseDownRight);
 
         if (event && event.preventDefault) {
             event.preventDefault();

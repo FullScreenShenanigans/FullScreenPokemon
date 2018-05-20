@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import { IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -6,40 +6,40 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 /**
  * PokeMart cutscene routines.
  */
-export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class PokeMartCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for speaking to a PokeMart cashier.
      */
     public Greeting(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
             ignoreA: true,
             ignoreB: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Hi there! \n May I help you?",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Options"));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.scenePlayer.bindRoutine("Options"));
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene showing the PokeMart action options.
      */
     public Options(): void {
-        this.gameStarter.menuGrapher.createMenu("Money");
+        this.eightBitter.menuGrapher.createMenu("Money");
 
-        this.gameStarter.menuGrapher.createMenu("Buy/Sell", {
+        this.eightBitter.menuGrapher.createMenu("Buy/Sell", {
             killOnB: ["Money", "GeneralText"],
-            onMenuDelete: this.gameStarter.scenePlayer.bindRoutine("Exit"),
+            onMenuDelete: this.eightBitter.scenePlayer.bindRoutine("Exit"),
         });
-        this.gameStarter.menuGrapher.addMenuList("Buy/Sell", {
+        this.eightBitter.menuGrapher.addMenuList("Buy/Sell", {
             options: [
                 {
                     text: "BUY",
-                    callback: this.gameStarter.scenePlayer.bindRoutine("BuyMenu"),
+                    callback: this.eightBitter.scenePlayer.bindRoutine("BuyMenu"),
                 },
                 {
                     text: "SELL",
@@ -47,11 +47,11 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
                 },
                 {
                     text: "QUIT",
-                    callback: this.gameStarter.menuGrapher.registerB,
+                    callback: this.eightBitter.menuGrapher.registerB,
                 },
             ],
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Buy/Sell");
+        this.eightBitter.menuGrapher.setActiveMenu("Buy/Sell");
     }
 
     /**
@@ -74,7 +74,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
                         x: 42 - String(cost).length * 3.5,
                         y: 4,
                     }],
-                    callback: this.gameStarter.scenePlayer.bindRoutine(
+                    callback: this.eightBitter.scenePlayer.bindRoutine(
                         "SelectAmount",
                         {
                             reference,
@@ -87,28 +87,28 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
 
         options.push({
             text: "CANCEL",
-            callback: this.gameStarter.menuGrapher.registerB,
+            callback: this.eightBitter.menuGrapher.registerB,
         });
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Take your time.",
             ],
             (): void => {
-                this.gameStarter.menuGrapher.createMenu("ShopItems", {
+                this.eightBitter.menuGrapher.createMenu("ShopItems", {
                     backMenu: "Buy/Sell",
                 });
-                this.gameStarter.menuGrapher.addMenuList("ShopItems", {
+                this.eightBitter.menuGrapher.addMenuList("ShopItems", {
                     options,
                 });
-                this.gameStarter.menuGrapher.setActiveMenu("ShopItems");
+                this.eightBitter.menuGrapher.setActiveMenu("ShopItems");
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -122,10 +122,10 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
         const amount: number = args.amount;
         const cost: number = args.cost;
         const costTotal: number = cost * amount;
-        const text: string = this.gameStarter.utilities.makeDigit(amount, 2)
-            + this.gameStarter.utilities.makeDigit("$" + costTotal, 8, " ");
+        const text: string = this.eightBitter.utilities.makeDigit(amount, 2)
+            + this.eightBitter.utilities.makeDigit("$" + costTotal, 8, " ");
 
-        this.gameStarter.menuGrapher.createMenu("ShopItemsAmount", {
+        this.eightBitter.menuGrapher.createMenu("ShopItemsAmount", {
             childrenSchemas: [
                 {
                     type: "text",
@@ -147,23 +147,23 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
                         },
                     },
                 } as IMenuWordSchema],
-            onUp: this.gameStarter.scenePlayer.bindRoutine(
+            onUp: this.eightBitter.scenePlayer.bindRoutine(
                 "SelectAmount",
                 {
                     amount: (amount === 99) ? 1 : amount + 1,
                     cost,
                     reference,
                 }),
-            onDown: this.gameStarter.scenePlayer.bindRoutine(
+            onDown: this.eightBitter.scenePlayer.bindRoutine(
                 "SelectAmount",
                 {
                     amount: (amount === 1) ? 99 : amount - 1,
                     cost,
                     reference,
                 }),
-            callback: this.gameStarter.scenePlayer.bindRoutine("ConfirmPurchase", args),
+            callback: this.eightBitter.scenePlayer.bindRoutine("ConfirmPurchase", args),
         });
-        this.gameStarter.menuGrapher.setActiveMenu("ShopItemsAmount");
+        this.eightBitter.menuGrapher.setActiveMenu("ShopItemsAmount");
     }
 
     /**
@@ -178,16 +178,16 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
         const amount: number = args.amount;
         const costTotal: number = args.costTotal = cost * amount;
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?",
             ],
             (): void => {
-                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
                     position: {
                         horizontal: "right",
                         vertical: "bottom",
@@ -196,28 +196,28 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
                             left: 0,
                         },
                     },
-                    onMenuDelete: this.gameStarter.scenePlayer.bindRoutine(
+                    onMenuDelete: this.eightBitter.scenePlayer.bindRoutine(
                         "CancelPurchase",
                     ),
                     container: "ShopItemsAmount",
                 });
-                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: this.gameStarter.scenePlayer.bindRoutine(
+                            callback: this.eightBitter.scenePlayer.bindRoutine(
                                 "TryPurchase", args),
                         },
                         {
                             text: "NO",
-                            callback: this.gameStarter.scenePlayer.bindRoutine(
+                            callback: this.eightBitter.scenePlayer.bindRoutine(
                                 "CancelPurchase"),
                         },
                     ],
                 });
-                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -226,7 +226,7 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
      * @param settings   Settings used for the cutscene.
      */
     public CancelPurchase(): void {
-        this.gameStarter.scenePlayer.playRoutine("BuyMenu");
+        this.eightBitter.scenePlayer.playRoutine("BuyMenu");
     }
 
     /**
@@ -239,27 +239,27 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
     public TryPurchase(_settings: any, args: any): void {
         const costTotal: number = args.costTotal;
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.money) < costTotal) {
-            this.gameStarter.scenePlayer.playRoutine("FailPurchase", args);
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.money) < costTotal) {
+            this.eightBitter.scenePlayer.playRoutine("FailPurchase", args);
             return;
         }
 
-        this.gameStarter.itemsHolder.decrease(this.gameStarter.storage.names.money, args.costTotal);
-        this.gameStarter.menuGrapher.createMenu("Money");
-        this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.items).push({
+        this.eightBitter.itemsHolder.decrease(this.eightBitter.storage.names.money, args.costTotal);
+        this.eightBitter.menuGrapher.createMenu("Money");
+        this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.items).push({
             item: args.reference.item,
             amount: args.amount,
         });
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Here you are! \n Thank you!",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("ContinueShopping"));
+            this.eightBitter.scenePlayer.bindRoutine("ContinueShopping"));
 
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -267,58 +267,58 @@ export class PokeMartCutscene<TGameStartr extends FullScreenPokemon> extends Gen
      * PokeMart purchase.
      */
     public FailPurchase(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "You don't have enough money.",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("ContinueShopping"),
+            this.eightBitter.scenePlayer.bindRoutine("ContinueShopping"),
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for asking if the player wants to continue shopping.
      */
     public ContinueShopping(): void {
-        if (this.gameStarter.menuGrapher.getMenu("Yes/No")) {
-            delete this.gameStarter.menuGrapher.getMenu("Yes/No").onMenuDelete;
+        if (this.eightBitter.menuGrapher.getMenu("Yes/No")) {
+            delete this.eightBitter.menuGrapher.getMenu("Yes/No").onMenuDelete;
         }
 
-        this.gameStarter.menuGrapher.deleteMenu("ShopItems");
-        this.gameStarter.menuGrapher.deleteMenu("ShopItemsAmount");
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.menuGrapher.deleteMenu("ShopItems");
+        this.eightBitter.menuGrapher.deleteMenu("ShopItemsAmount");
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Is there anything else I can do?",
             ]);
 
-        this.gameStarter.menuGrapher.setActiveMenu("Buy/Sell");
+        this.eightBitter.menuGrapher.setActiveMenu("Buy/Sell");
 
-        this.gameStarter.saves.autoSaveIfEnabled();
+        this.eightBitter.saves.autoSaveIfEnabled();
     }
 
     /**
      * Cutscene for the player choosing to stop shopping.
      */
     public Exit(): void {
-        this.gameStarter.scenePlayer.stopCutscene();
+        this.eightBitter.scenePlayer.stopCutscene();
 
-        this.gameStarter.menuGrapher.deleteMenu("Buy/Sell");
-        this.gameStarter.menuGrapher.deleteMenu("Money");
+        this.eightBitter.menuGrapher.deleteMenu("Buy/Sell");
+        this.eightBitter.menuGrapher.deleteMenu("Money");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Thank you!",
             ],
-            this.gameStarter.menuGrapher.deleteActiveMenu,
+            this.eightBitter.menuGrapher.deleteActiveMenu,
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

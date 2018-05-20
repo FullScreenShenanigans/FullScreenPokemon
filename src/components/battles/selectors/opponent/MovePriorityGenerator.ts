@@ -1,5 +1,5 @@
 import { IMove } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../../../Battles";
@@ -24,7 +24,7 @@ export interface IMovePossibility {
 /**
  * Determines priorities of battle move possibilities.
  */
-export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class MovePriorityGenerator<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Generates priorities for potential moves.
      *
@@ -43,7 +43,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
         // Modification 1: Do not use a move that only statuses if the defending Pokemon already has a status.
         if (defendingTeam.selectedActor.status && !attackingTeam.dumb) {
             for (const possibility of possibilities) {
-                if (this.gameStarter.equations.moves.moveOnlyStatuses(this.gameStarter.constants.moves.byName[possibility.move])) {
+                if (this.eightBitter.equations.moves.moveOnlyStatuses(this.eightBitter.constants.moves.byName[possibility.move])) {
                     possibility.priority += 5;
                 }
             }
@@ -54,7 +54,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             for (const possibility of possibilities) {
                 this.applyMoveEffectPriority(
                     possibility,
-                    this.gameStarter.constants.battles.modifications.turnTwo,
+                    this.eightBitter.constants.battles.modifications.turnTwo,
                     defendingTeam.selectedActor,
                     1);
             }
@@ -66,7 +66,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             for (const possibility of possibilities) {
                 this.applyMoveEffectPriority(
                     possibility,
-                    this.gameStarter.constants.battles.modifications.goodAi,
+                    this.eightBitter.constants.battles.modifications.goodAi,
                     defendingTeam.selectedActor,
                     1);
             }
@@ -90,7 +90,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             return true;
         }
 
-        return team.leader.title.join("") in this.gameStarter.constants.battles.modifications.turnTwo.opponentType;
+        return team.leader.title.join("") in this.eightBitter.constants.battles.modifications.turnTwo.opponentType;
     }
 
     /**
@@ -108,7 +108,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
             return true;
         }
 
-        return team.leader.title.join("") in this.gameStarter.constants.battles.modifications.goodAi.opponentType;
+        return team.leader.title.join("") in this.eightBitter.constants.battles.modifications.goodAi.opponentType;
     }
 
     /**
@@ -124,7 +124,7 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
         modification: IBattleModification,
         target: IPokemon,
         amount: number): void {
-        const moveSchema: IMoveSchema = this.gameStarter.constants.moves.byName[possibility.move];
+        const moveSchema: IMoveSchema = this.eightBitter.constants.moves.byName[possibility.move];
 
         for (const preference of modification.preferences) {
             switch (preference[0]) {
@@ -136,21 +136,21 @@ export class MovePriorityGenerator<TGameStartr extends FullScreenPokemon> extend
                     break;
 
                 case "Statistic":
-                    if (this.gameStarter.equations.moves.moveChangesStatisticByAmount(moveSchema, preference[1], preference[2] as number)) {
+                    if (this.eightBitter.equations.moves.moveChangesStatisticByAmount(moveSchema, preference[1], preference[2] as number)) {
                         possibility.priority -= amount;
                         return;
                     }
                     break;
 
                 case "Super":
-                    if (this.gameStarter.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)) {
+                    if (this.eightBitter.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)) {
                         possibility.priority -= amount;
                         return;
                     }
                     break;
 
                 case "Weak":
-                    if (this.gameStarter.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)) {
+                    if (this.eightBitter.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)) {
                         possibility.priority += amount;
                         return;
                     }

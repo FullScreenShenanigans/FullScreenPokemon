@@ -1,5 +1,5 @@
 import { IAction, ITeamAndAction, IUnderEachTeam, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../Battles";
@@ -22,7 +22,7 @@ type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 /**
  * Orders chosen actions by priority and/or speed.
  */
-export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class ActionsOrderer<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Orders teams' chosen actions.
      *
@@ -129,8 +129,8 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
             return false;
         }
 
-        const aMove: IMoveSchema = this.gameStarter.constants.moves.byName[a.action.move];
-        const bMove: IMoveSchema = this.gameStarter.constants.moves.byName[b.action.move];
+        const aMove: IMoveSchema = this.eightBitter.constants.moves.byName[a.action.move];
+        const bMove: IMoveSchema = this.eightBitter.constants.moves.byName[b.action.move];
 
         return aMove.priority! > bMove.priority!;
     }
@@ -147,7 +147,7 @@ export class ActionsOrderer<TGameStartr extends FullScreenPokemon> extends Gener
             return false;
         }
 
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         let aPokemon: IPokemon;
         let bPokemon: IPokemon;
 

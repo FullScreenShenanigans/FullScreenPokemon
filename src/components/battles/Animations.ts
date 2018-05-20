@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { BattleOutcome, IAnimations, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Ending } from "./animations/Ending";
@@ -12,24 +12,24 @@ import { Things } from "./animations/Things";
 /**
  * Animations for battle events.
  */
-export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IAnimations {
+export class Animations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements IAnimations {
     /**
      * Animations for opponent battle events.
      */
     @component(Opponent)
-    public readonly opponent: Opponent<TGameStartr>;
+    public readonly opponent: Opponent<TEightBittr>;
 
     /**
      * Animations for player battle events.
      */
     @component(Player)
-    public readonly player: Player<TGameStartr>;
+    public readonly player: Player<TEightBittr>;
 
     /**
      * Thing animations for battles.
      */
     @component(Things)
-    public readonly things: Things<TGameStartr>;
+    public readonly things: Things<TEightBittr>;
 
     /**
      * Animation for a battle starting.
@@ -37,7 +37,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param onComplete   Callback for when this is done.
      */
     public readonly start = (onComplete: () => void): void => {
-        new Starting(this.gameStarter).run(onComplete);
+        new Starting(this.eightBitter).run(onComplete);
     }
 
     /**
@@ -47,7 +47,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param onComplete   Callback for when this is done.
      */
     public readonly complete = (outcome: BattleOutcome, onComplete: () => void): void => {
-        new Ending(this.gameStarter).run(outcome, onComplete);
+        new Ending(this.eightBitter).run(outcome, onComplete);
     }
 
     /**
@@ -56,7 +56,7 @@ export class Animations<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @param team   Which team's animator to retrieve.
      * @returns The team's animator.
      */
-    public getTeamAnimations(team: Team): Opponent<TGameStartr> | Player<TGameStartr> {
+    public getTeamAnimations(team: Team): Opponent<TEightBittr> | Player<TEightBittr> {
         return team === Team.opponent ? this.opponent : this.player;
     }
 }

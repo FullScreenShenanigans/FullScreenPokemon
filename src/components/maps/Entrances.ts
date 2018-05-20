@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,14 +7,14 @@ import { ILocation } from "../Maps";
 /**
  * Map entrance animations.
  */
-export class Entrances<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Entrances<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * A blank Map entrance Function where no Character is placed.
      */
     public readonly blank = (): void => {
-        this.gameStarter.maps.addPlayer(0, 0);
+        this.eightBitter.maps.addPlayer(0, 0);
 
-        this.gameStarter.players[0].hidden = true;
+        this.eightBitter.players[0].hidden = true;
     }
 
     /**
@@ -23,22 +23,22 @@ export class Entrances<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @param location   Location within the Map being entered.
      */
     public readonly normal = (location: ILocation): void => {
-        this.gameStarter.maps.addPlayer(location.xloc || 0, location.yloc || 0);
+        this.eightBitter.maps.addPlayer(location.xloc || 0, location.yloc || 0);
 
-        this.gameStarter.actions.animateCharacterSetDirection(
-            this.gameStarter.players[0],
+        this.eightBitter.actions.animateCharacterSetDirection(
+            this.eightBitter.players[0],
             location.direction || Direction.Top);
 
-        this.gameStarter.scrolling.centerMapScreen();
+        this.eightBitter.scrolling.centerMapScreen();
 
         if (location.cutscene) {
-            this.gameStarter.scenePlayer.startCutscene(location.cutscene, {
-                player: this.gameStarter.players[0],
+            this.eightBitter.scenePlayer.startCutscene(location.cutscene, {
+                player: this.eightBitter.players[0],
             });
         }
 
-        if (location.routine && this.gameStarter.scenePlayer.getCutsceneName()) {
-            this.gameStarter.scenePlayer.playRoutine(location.routine);
+        if (location.routine && this.eightBitter.scenePlayer.getCutsceneName()) {
+            this.eightBitter.scenePlayer.playRoutine(location.routine);
         }
     }
 
@@ -47,10 +47,10 @@ export class Entrances<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * of play. Retrieves Character position from the previous save state.
      */
     public readonly resume = (): void => {
-        const savedInfo: any = this.gameStarter.stateHolder.getChanges("player") || {};
+        const savedInfo: any = this.eightBitter.stateHolder.getChanges("player") || {};
 
-        this.gameStarter.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
-        this.gameStarter.actions.animateCharacterSetDirection(this.gameStarter.players[0], savedInfo.direction || Direction.Top);
-        this.gameStarter.scrolling.centerMapScreen();
+        this.eightBitter.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
+        this.eightBitter.actions.animateCharacterSetDirection(this.eightBitter.players[0], savedInfo.direction || Direction.Top);
+        this.eightBitter.scrolling.centerMapScreen();
     }
 }

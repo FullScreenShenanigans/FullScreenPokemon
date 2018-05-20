@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPartialBattleOptions } from "../Battles";
@@ -9,37 +9,37 @@ import { ICharacter } from "../Things";
 /**
  * OakIntroRivalBattle cutscene routines.
  */
-export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class OakIntroRivalBattleCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for the rival challenging the player to a Pokemon battle.
      *
      * @param settings   Settings used for the cutscene.
      */
     public async Approach(settings: any): Promise<void> {
-        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.eightBitter.utilities.getExistingThingById("Rival") as ICharacter;
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 
-        await this.gameStarter.audioPlayer.play(
-            this.gameStarter.audio.names.rivalAppears,
+        await this.eightBitter.audioPlayer.play(
+            this.eightBitter.audio.names.rivalAppears,
             {
-                alias: this.gameStarter.audio.aliases.theme,
+                alias: this.eightBitter.audio.aliases.theme,
                 loop: true,
             });
 
         settings.rival = rival;
-        this.gameStarter.actions.animateCharacterSetDirection(rival, Direction.Bottom);
-        this.gameStarter.actions.animateCharacterSetDirection(settings.player, Direction.Top);
+        this.eightBitter.actions.animateCharacterSetDirection(rival, Direction.Bottom);
+        this.eightBitter.actions.animateCharacterSetDirection(settings.player, Direction.Top);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
                 "Come on, I'll take you on!",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Challenge", { further }));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.scenePlayer.bindRoutine("Challenge", { further }));
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -49,21 +49,21 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
      * @param args   Settings for the routine.
      */
     public Challenge(settings: any, args: any): void {
-        const starterRival: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starterRival);
+        const starterRival: string[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.starterRival);
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
-                this.gameStarter.scenePlayer.startCutscene("OakIntroRivalLeaves");
+                this.eightBitter.scenePlayer.startCutscene("OakIntroRivalLeaves");
             },
             teams: {
                 opponent: {
                     leader: {
                         title: "RivalPortrait".split(""),
-                        nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.nameRival),
+                        nickname: this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.nameRival),
                     },
                     nextCutscene: "OakIntroRivalLeaves",
                     reward: 175,
                     actors: [
-                        this.gameStarter.equations.newPokemon({
+                        this.eightBitter.equations.newPokemon({
                             level: 5,
                             title: starterRival,
                         }),
@@ -82,11 +82,11 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                 },
             },
             // noBlackout: true,
-            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.eightBitter.graphics.collectBattleKeptThings(["player", "Rival"]),
         };
         let blocks: number;
 
-        switch (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starterRival).join("")) {
+        switch (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.starterRival).join("")) {
             case "SQUIRTLE":
                 blocks = 2;
                 break;
@@ -104,7 +104,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
             blocks += 1;
         }
 
-        this.gameStarter.actions.walking.startWalkingOnPath(
+        this.eightBitter.actions.walking.startWalkingOnPath(
             settings.rival,
             [
                 {
@@ -116,7 +116,7 @@ export class OakIntroRivalBattleCutscene<TGameStartr extends FullScreenPokemon> 
                     direction: Direction.Bottom,
                 },
                 (): void => {
-                    this.gameStarter.battles.startBattle(battleInfo);
+                    this.eightBitter.battles.startBattle(battleInfo);
                 },
             ]);
     }

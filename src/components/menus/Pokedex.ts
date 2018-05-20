@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokedexInformation, IPokemonListing } from "../constants/Pokemon";
@@ -6,23 +6,23 @@ import { IPokedexInformation, IPokemonListing } from "../constants/Pokemon";
 /**
  * Opens the Pokedex and its individual listings.
  */
-export class Pokedex<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Pokedex<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Opens the Pokedex menu.
      */
     public readonly open = (): void => {
-        const listings: (IPokedexInformation | undefined)[] = this.gameStarter.saves.getPokedexListingsOrdered();
+        const listings: (IPokedexInformation | undefined)[] = this.eightBitter.saves.getPokedexListingsOrdered();
         let currentListing: IPokedexInformation;
 
-        this.gameStarter.menuGrapher.createMenu("Pokedex");
-        this.gameStarter.menuGrapher.addMenuList("Pokedex", {
+        this.eightBitter.menuGrapher.createMenu("Pokedex");
+        this.eightBitter.menuGrapher.addMenuList("Pokedex", {
             options: listings.map((listing: IPokedexInformation, i: number): any => {
-                const characters: any[] = this.gameStarter.utilities.makeDigit(i + 1, 3, 0).split("");
+                const characters: any[] = this.eightBitter.utilities.makeDigit(i + 1, 3, 0).split("");
                 const output: any = {
                     text: characters,
                     callback: (): void => {
                         currentListing = listing;
-                        this.gameStarter.menuGrapher.setActiveMenu("PokedexOptions");
+                        this.eightBitter.menuGrapher.setActiveMenu("PokedexOptions");
                     },
                 };
 
@@ -58,17 +58,17 @@ export class Pokedex<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 return output;
             }),
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Pokedex");
+        this.eightBitter.menuGrapher.setActiveMenu("Pokedex");
 
-        this.gameStarter.menuGrapher.createMenu("PokedexOptions");
-        this.gameStarter.menuGrapher.addMenuList("PokedexOptions", {
+        this.eightBitter.menuGrapher.createMenu("PokedexOptions");
+        this.eightBitter.menuGrapher.addMenuList("PokedexOptions", {
             options: [
                 {
                     callback: (): void => {
                         this.openPokedexListing(
                             currentListing.title,
                             (): void => {
-                                this.gameStarter.menuGrapher.setActiveMenu("PokedexOptions");
+                                this.eightBitter.menuGrapher.setActiveMenu("PokedexOptions");
                             });
                     },
                     text: "DATA",
@@ -81,15 +81,15 @@ export class Pokedex<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 },
                 {
                     callback: (): void => {
-                        this.gameStarter.menus.townMap.open({
+                        this.eightBitter.menus.townMap.open({
                             backMenu: "PokedexOptions",
                         });
-                        this.gameStarter.menus.townMap.showPokemonLocations(currentListing.title);
+                        this.eightBitter.menus.townMap.showPokemonLocations(currentListing.title);
                     },
                     text: "AREA",
                 },
                 {
-                    callback: this.gameStarter.menuGrapher.registerB,
+                    callback: this.eightBitter.menuGrapher.registerB,
                     text: "QUIT",
                 },
             ],
@@ -103,35 +103,35 @@ export class Pokedex<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param callback   A callback for when the menu is closed.
      */
     public openPokedexListing(title: string[], callback?: (...args: any[]) => void, menuSettings?: any): void {
-        const pokemon: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
+        const pokemon: IPokemonListing = this.eightBitter.constants.pokemon.byName[title.join("")];
         const height: string[] = pokemon.height;
         const feet: string = [].slice.call(height[0]).reverse().join("");
         const inches: string = [].slice.call(height[1]).reverse().join("");
         const onCompletion: () => any = (): void => {
-            this.gameStarter.menuGrapher.deleteMenu("PokedexListing");
+            this.eightBitter.menuGrapher.deleteMenu("PokedexListing");
             if (callback) {
                 callback();
             }
         };
 
-        this.gameStarter.menuGrapher.createMenu("PokedexListing", menuSettings);
-        this.gameStarter.menuGrapher.createMenuThing("PokedexListingSprite", {
+        this.eightBitter.menuGrapher.createMenu("PokedexListing", menuSettings);
+        this.eightBitter.menuGrapher.createMenuThing("PokedexListingSprite", {
             thing: title.join("") + "Front",
             type: "thing",
             args: {
                 flipHoriz: true,
             },
         });
-        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingName", [[title]]);
-        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
-        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
-        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
-        this.gameStarter.menuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog("PokedexListingName", [[title]]);
+        this.eightBitter.menuGrapher.addMenuDialog("PokedexListingLabel", pokemon.label);
+        this.eightBitter.menuGrapher.addMenuDialog("PokedexListingHeightFeet", feet);
+        this.eightBitter.menuGrapher.addMenuDialog("PokedexListingHeightInches", inches);
+        this.eightBitter.menuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokedexListingNumber",
-            this.gameStarter.utilities.makeDigit(pokemon.number, 3, "0"));
+            this.eightBitter.utilities.makeDigit(pokemon.number, 3, "0"));
 
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokedexListingInfo",
             pokemon.info[0],
             (): void => {
@@ -140,11 +140,11 @@ export class Pokedex<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                     return;
                 }
 
-                this.gameStarter.menuGrapher.createMenu("PokedexListingInfo");
-                this.gameStarter.menuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
-                this.gameStarter.menuGrapher.setActiveMenu("PokedexListingInfo");
+                this.eightBitter.menuGrapher.createMenu("PokedexListingInfo");
+                this.eightBitter.menuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
+                this.eightBitter.menuGrapher.setActiveMenu("PokedexListingInfo");
             });
 
-        this.gameStarter.menuGrapher.setActiveMenu("PokedexListingInfo");
+        this.eightBitter.menuGrapher.setActiveMenu("PokedexListingInfo");
     }
 }

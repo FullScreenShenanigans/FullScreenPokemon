@@ -1,10 +1,10 @@
 import { IMove, IStatistic } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
 
-export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class ItemEffects<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Restores a certain amount of PP to a move.
      *
@@ -40,10 +40,10 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
         //TODO: Implement X Accuracy
         //https://github.com/FullScreenShenanigans/FullScreenPokemon/issues/657
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -54,7 +54,7 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
             (): void => {
                 this.increaseBattleStat(statistic);
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -68,7 +68,7 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
             throw new Error("Invalid percentage value.");
         }
 
-        for (const statisticName of this.gameStarter.constants.pokemon.statisticNames) {
+        for (const statisticName of this.eightBitter.constants.pokemon.statisticNames) {
             pokemon.statistics[statisticName].current = (statisticName === "health") ? pokemon.statistics[statisticName].normal * percentage
                 : pokemon.statistics[statisticName].current = pokemon.statistics[statisticName].normal;
         }
@@ -83,10 +83,10 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @param percentage   The percentage of health restored by the revive (use 50% for Revive, 100% for Max Revive).
      */
     public useRevive(pokemon: IPokemon, percentage: number) {
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -96,7 +96,7 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
             (): void => {
                 this.revivePokemon(pokemon, percentage);
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -106,10 +106,10 @@ export class ItemEffects<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @returns Whether the Pokemon was added to your party or not.
      */
     public capturePokemon(pokemon: IPokemon): boolean {
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).length >= 6) {
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty).length >= 6) {
             return false;
         }
-        this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).push(pokemon);
+        this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty).push(pokemon);
         return true;
     }
 }

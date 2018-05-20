@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -10,7 +10,7 @@ import { ICharacter, IPlayer } from "../Things";
 /**
  * RivalRoute22 cutscene routines.
  */
-export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for encountering the rival on Route 22.
      *
@@ -20,7 +20,7 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
         const player: IPlayer = settings.player;
         const triggerer: ICharacter = settings.triggerer;
         const playerUpper: number = Number(Math.abs(player.top - triggerer.top) < 4);
-        const rival: ICharacter = this.gameStarter.objectMaker.make<ICharacter>(this.gameStarter.things.names.rival, {
+        const rival: ICharacter = this.eightBitter.objectMaker.make<ICharacter>(this.eightBitter.things.names.rival, {
             direction: 0,
             nocollide: true,
             opacity: 0,
@@ -37,16 +37,16 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
         ];
 
         if (playerUpper) {
-                walkingInstructions.push(() => this.gameStarter.actions.animateCharacterSetDirection(rival, 0));
+                walkingInstructions.push(() => this.eightBitter.actions.animateCharacterSetDirection(rival, 0));
         }
 
         settings.rival = rival;
 
-        walkingInstructions.push(this.gameStarter.scenePlayer.bindRoutine("RivalTalks"));
+        walkingInstructions.push(this.eightBitter.scenePlayer.bindRoutine("RivalTalks"));
 
-        this.gameStarter.actions.animateFadeAttribute(rival, "opacity", 0.2, 1, 3);
-        this.gameStarter.things.add(rival, triggerer.left - 112, triggerer.top + 96);
-        this.gameStarter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
+        this.eightBitter.actions.animateFadeAttribute(rival, "opacity", 0.2, 1, 3);
+        this.eightBitter.things.add(rival, triggerer.left - 112, triggerer.top + 96);
+        this.eightBitter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
     }
 
     /**
@@ -55,13 +55,13 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
      * @param settings   Settings used for the cutscene.
      */
     public RivalTalks(settings: any): void {
-        this.gameStarter.actions.animateCharacterSetDirection(
+        this.eightBitter.actions.animateCharacterSetDirection(
             settings.player,
             // tslint:disable-next-line no-unnecessary-type-assertion
-            this.gameStarter.physics.getDirectionBordering(settings.player, settings.rival)!);
+            this.eightBitter.physics.getDirectionBordering(settings.player, settings.rival)!);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: Hey! %%%%%%%PLAYER%%%%%%%!",
@@ -70,8 +70,8 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
                 "The guard won't let you through!",
                 "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("Challenge"));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.scenePlayer.bindRoutine("Challenge"));
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -80,25 +80,25 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
      * @param settings  Settings used for the cutscene.
      */
     public Challenge(): void {
-        const starterRival: string[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starterRival);
+        const starterRival: string[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.starterRival);
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
-                this.gameStarter.scenePlayer.startCutscene("RivalRoute22Leaves");
+                this.eightBitter.scenePlayer.startCutscene("RivalRoute22Leaves");
             },
             teams: {
                 opponent: {
                     leader: {
                         title: "RivalPortrait".split(""),
-                        nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.nameRival),
+                        nickname: this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.nameRival),
                     },
                     nextCutscene: "RivalRoute22Leaves",
                     reward: 280,
                     actors: [
-                        this.gameStarter.equations.newPokemon({
+                        this.eightBitter.equations.newPokemon({
                             level: 8,
                             title: starterRival,
                         }),
-                        this.gameStarter.equations.newPokemon({
+                        this.eightBitter.equations.newPokemon({
                             level: 9,
                             title: "PIDGEY".split(""),
                         }),
@@ -112,9 +112,9 @@ export class RivalRoute22Cutscene<TGameStartr extends FullScreenPokemon> extends
                     [BattleOutcome.playerVictory]: (): string => "Aww! You just lucked out!",
                 },
             },
-            keptThings: this.gameStarter.graphics.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.eightBitter.graphics.collectBattleKeptThings(["player", "Rival"]),
         };
 
-        this.gameStarter.battles.startBattle(battleInfo);
+        this.eightBitter.battles.startBattle(battleInfo);
       }
 }

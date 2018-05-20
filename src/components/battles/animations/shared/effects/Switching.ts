@@ -1,12 +1,12 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 
 /**
  * Runs switching move animations for FullScreenPokemon instances.
  */
-export class Switching<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Runs the missed move animation for a battle move effect.
      *

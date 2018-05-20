@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { IMoveAction, IMoveEffect, ITeamAndAction, Queue, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
@@ -14,42 +14,42 @@ import { Fainting } from "./Fainting";
 /**
  * Battle animations for move effects.
  */
-export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Effects<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Runs animations for fainting.
      */
     @component(Fainting)
-    public readonly fainting: Fainting<TGameStartr>;
+    public readonly fainting: Fainting<TEightBittr>;
 
     /**
      * Runs animations for effect damages.
      */
     @component(Damage)
-    private readonly damage: Damage<TGameStartr>;
+    private readonly damage: Damage<TEightBittr>;
 
     /**
      * Runs animations for missed effects.
      */
     @component(Missed)
-    private readonly missed: Missed<TGameStartr>;
+    private readonly missed: Missed<TEightBittr>;
 
     /**
      * Runs animations for statistic effects.
      */
     @component(Statistics)
-    private readonly statistics: Statistics<TGameStartr>;
+    private readonly statistics: Statistics<TEightBittr>;
 
     /**
      * Runs animations for status effects.
      */
     @component(Statuses)
-    private readonly statuses: Statuses<TGameStartr>;
+    private readonly statuses: Statuses<TEightBittr>;
 
     /**
      * Runs animations for switching effects.
      */
     @component(Switching)
-    private readonly switching: Switching<TGameStartr>;
+    private readonly switching: Switching<TEightBittr>;
 
     /**
      * Runs a move action's effects consecutively.
@@ -60,7 +60,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public runMoveEffects(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
         const queue: Queue = new Queue();
 
-        for (const effect of this.gameStarter.constants.moves.byName[teamAndAction.action.move].effects) {
+        for (const effect of this.eightBitter.constants.moves.byName[teamAndAction.action.move].effects) {
             queue.add((afterEffect: () => void): void => this.runEffect(teamAndAction, effect, afterEffect));
             queue.add((afterEffect: () => void): void => this.runAfterEffect(teamAndAction, afterEffect));
         }
@@ -75,7 +75,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   Callback for when the effect is done.
      */
     private runEffect(teamAndAction: ITeamAndAction<IMoveAction>, effect: IMoveEffect, onComplete: () => void): void {
-        if (this.gameStarter.numberMaker.randomIntWithin(0, 100) > effect.probability!) {
+        if (this.eightBitter.numberMaker.randomIntWithin(0, 100) > effect.probability!) {
             this.missed.run(teamAndAction, effect, onComplete);
             return;
         }
@@ -114,7 +114,7 @@ export class Effects<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             return;
         }
 
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
         battleInfo.teams[Team[teamAndAction.target.team]].selector.afterKnockout(
             battleInfo,

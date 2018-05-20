@@ -1,4 +1,4 @@
-import { Graphics as GameStartrGraphics } from "gamestartr";
+import { Graphics as EightBittrGraphics } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IThing } from "./Things";
@@ -6,7 +6,7 @@ import { IThing } from "./Things";
 /**
  * Changes the visual appearance of Things.
  */
-export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrGraphics<TGameStartr> {
+export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrGraphics<TEightBittr> {
     /**
      * Collects all unique Things that should be kept on top of battle intro animations.
      *
@@ -14,14 +14,14 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      * @returns The unique Things that will be kept.
      */
     public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        const things: IThing[] = [this.gameStarter.players[0]];
+        const things: IThing[] = [this.eightBitter.players[0]];
         const used: { [i: string]: IThing } = {
-            [this.gameStarter.players[0].title]: this.gameStarter.players[0],
+            [this.eightBitter.players[0].title]: this.eightBitter.players[0],
         };
 
         for (const thingRaw of thingsRaw) {
             const thing: IThing = thingRaw.constructor === String
-                ? this.gameStarter.utilities.getExistingThingById(thingRaw as string)
+                ? this.eightBitter.utilities.getExistingThingById(thingRaw as string)
                 : thingRaw as IThing;
 
             if (!used[thing.title]) {
@@ -40,7 +40,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public moveThingsToText(things: IThing[]): void {
         for (const thing of things) {
-            this.gameStarter.groupHolder.switchGroup(thing, thing.groupType, "Text");
+            this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, "Text");
         }
     }
 
@@ -51,7 +51,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      *          as the first Text Thing after keptThings were added.
      */
     public moveThingsBeforeBackgrounds(things: IThing[]): void {
-        const texts: IThing[] = this.gameStarter.groupHolder.getGroup("Text") as IThing[];
+        const texts: IThing[] = this.eightBitter.groupHolder.getGroup("Text") as IThing[];
 
         for (const thing of things) {
             texts.splice(texts.indexOf(thing), 1);
@@ -66,7 +66,7 @@ export class Graphics<TGameStartr extends FullScreenPokemon> extends GameStartrG
      */
     public moveThingsFromText(things: IThing[]): void {
         for (const keptThing of things) {
-            this.gameStarter.groupHolder.switchGroup(keptThing, "Text", keptThing.groupType);
+            this.eightBitter.groupHolder.switchGroup(keptThing, "Text", keptThing.groupType);
         }
     }
 }

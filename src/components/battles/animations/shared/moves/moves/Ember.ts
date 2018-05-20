@@ -5,7 +5,7 @@ import { Move } from "../Move";
 /**
  * Animates an Ember battle move.
  */
-export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class Ember<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Runs the move's animation.
      *
@@ -27,16 +27,16 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
         }
 
         for (let i = 0; i < 3; i += 1) {
-            this.gameStarter.timeHandler.addEvent(
+            this.eightBitter.timeHandler.addEvent(
                 (): void => {
                     this.animateEmbers(xPositions[i], yPosition);
                 },
                 i * 24);
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.battles.animations.things.shake({
+                this.eightBitter.battles.animations.things.shake({
                     callback,
                     clearTime: 4,
                     dx: 3,
@@ -54,7 +54,7 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
     private animateEmbers(x: number, y: number): void {
         this.createEmber("EmberSmall", x, y);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
                 (): void => {
                     this.createEmber("EmberLarge", x, y);
                 },
@@ -67,11 +67,11 @@ export class Ember<TGameStartr extends FullScreenPokemon> extends Move<TGameStar
      * @param title   Title of the ember's Thing.
      */
     private createEmber(title: "EmberSmall" | "EmberLarge", x: number, y: number): void {
-        const ember: IThing = this.gameStarter.objectMaker.make<IThing>(title);
+        const ember: IThing = this.eightBitter.objectMaker.make<IThing>(title);
 
-        this.gameStarter.things.add(ember, x + 4, y + 12);
-        this.gameStarter.battles.animations.things.flicker({
-            callback: (): void => this.gameStarter.physics.killNormal(ember),
+        this.eightBitter.things.add(ember, x + 4, y + 12);
+        this.eightBitter.battles.animations.things.flicker({
+            callback: (): void => this.eightBitter.physics.killNormal(ember),
             thing: ember,
         });
     }

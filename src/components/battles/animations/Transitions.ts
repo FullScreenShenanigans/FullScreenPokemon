@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { FlashTransition } from "./transitions/FlashTransition";
@@ -30,7 +30,7 @@ interface ITransitions {
 /**
  * Flashy animation transitions to start battles.
  */
-export class Transitions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Transitions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Transitions, keyed by name.
      */
@@ -45,8 +45,8 @@ export class Transitions<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @param settings   Settings to play the transition.
      */
     public play<TSettings extends ITransitionSettings>(settings: TSettings): void {
-        const name: string = settings.name || this.gameStarter.numberMaker.randomArrayMember(Object.keys(this.transitions));
+        const name: string = settings.name || this.eightBitter.numberMaker.randomArrayMember(Object.keys(this.transitions));
 
-        new (this.transitions[name] || Transition)(this.gameStarter, settings).play();
+        new (this.transitions[name] || Transition)(this.eightBitter, settings).play();
     }
 }

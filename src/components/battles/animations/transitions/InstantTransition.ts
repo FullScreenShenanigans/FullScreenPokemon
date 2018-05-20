@@ -7,7 +7,7 @@ import { Transition } from "./Transition";
  *
  * @remarks Useful for tests!
  */
-export class InstantTransition<TGameStartr extends FullScreenPokemon> extends Transition<TGameStartr> {
+export class InstantTransition<TEightBittr extends FullScreenPokemon> extends Transition<TEightBittr> {
     /**
      * Plays and immediately finishes the transition.
      */

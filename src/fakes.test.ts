@@ -1,5 +1,5 @@
 import { AudioElementSound } from "audioplayr";
-import { IGameStartrConstructorSettings } from "gamestartr";
+import { IEightBittrConstructorSettings } from "eightbittr";
 import * as lolex from "lolex";
 import * as sinon from "sinon";
 
@@ -7,7 +7,7 @@ import { IMenu } from "./components/Menus";
 import { IPlayer } from "./components/Things";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
-export interface IStubFullScreenPokemonSettings extends Partial<IGameStartrConstructorSettings> {
+export interface IStubFullScreenPokemonSettings extends Partial<IEightBittrConstructorSettings> {
     /**
      * Whether to enable MenuGraphr's finishAutomatically and finishLinesAutomatically.
      */

@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -6,7 +6,7 @@ import { Direction } from "../Constants";
 /**
  * OakParcelPickup cutscene routines.
  */
-export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class OakParcelPickupCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for the PokeMart clerk calling the player to pick up Oak's parcel.
      *
@@ -14,16 +14,16 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
      */
     public Greeting(settings: any): void {
         settings.triggerer.alive = false;
-        this.gameStarter.stateHolder.addChange(settings.triggerer.id, "alive", false);
+        this.eightBitter.stateHolder.addChange(settings.triggerer.id, "alive", false);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Hey! You came from PALLET TOWN?",
             ],
-            this.gameStarter.scenePlayer.bindRoutine("WalkToCounter"));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.scenePlayer.bindRoutine("WalkToCounter"));
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -32,7 +32,7 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
      * @param settings   Settings used for the cutscene.
      */
     public WalkToCounter(settings: any): void {
-        this.gameStarter.actions.walking.startWalkingOnPath(
+        this.eightBitter.actions.walking.startWalkingOnPath(
             settings.player,
             [
                 {
@@ -43,7 +43,7 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
                     blocks: 1,
                     direction: Direction.Left,
                 },
-                this.gameStarter.scenePlayer.bindRoutine("CounterDialog"),
+                this.eightBitter.scenePlayer.bindRoutine("CounterDialog"),
             ]);
     }
 
@@ -51,8 +51,8 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
      * Cutscene for the player receiving the parcel from the PokeMart clerk.
      */
     public CounterDialog(): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "You know PROF. Oak, right?",
@@ -60,13 +60,13 @@ export class OakParcelPickupCutscene<TGameStartr extends FullScreenPokemon> exte
                 "%%%%%%%PLAYER%%%%%%% got OAK's PARCEL!",
             ],
             (): void => {
-                this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-                this.gameStarter.scenePlayer.stopCutscene();
-                this.gameStarter.mapScreener.blockInputs = false;
+                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                this.eightBitter.scenePlayer.stopCutscene();
+                this.eightBitter.mapScreener.blockInputs = false;
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.stateHolder.addChangeToCollection(
+        this.eightBitter.stateHolder.addChangeToCollection(
             "Pallet Town::Oak's Lab", "Oak", "cutscene", "OakParcelDelivery");
     }
 }

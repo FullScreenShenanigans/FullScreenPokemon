@@ -1,4 +1,4 @@
-import { Physics as GameStartrPhysics } from "gamestartr";
+import { Physics as EightBittrPhysics } from "eightbittr";
 import { GroupHoldr } from "groupholdr";
 import { MapScreenr } from "mapscreenr";
 import { ModAttachr } from "modattachr";
@@ -14,7 +14,7 @@ import { ICharacter, IGrass, IThing } from "./Things";
 /**
  * Physics functions to move Things around.
  */
-export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPhysics<TGameStartr> {
+export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPhysics<TEightBittr> {
     /**
      * Determines the bordering direction from one Thing to another.
      *
@@ -140,11 +140,11 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
      */
     public snapToGrid(thing: IThing): void {
         const grid = 32;
-        const x: number = (this.gameStarter.mapScreener.left + thing.left) / grid;
-        const y: number = (this.gameStarter.mapScreener.top + thing.top) / grid;
+        const x: number = (this.eightBitter.mapScreener.left + thing.left) / grid;
+        const y: number = (this.eightBitter.mapScreener.top + thing.top) / grid;
 
-        this.setLeft(thing, Math.round(x) * grid - this.gameStarter.mapScreener.left);
-        this.setTop(thing, Math.round(y) * grid - this.gameStarter.mapScreener.top);
+        this.setLeft(thing, Math.round(x) * grid - this.eightBitter.mapScreener.left);
+        this.setTop(thing, Math.round(y) * grid - this.eightBitter.mapScreener.top);
     }
 
     /**
@@ -164,8 +164,8 @@ export class Physics<TGameStartr extends FullScreenPokemon> extends GameStartrPh
         thing.numquads = 0;
         thing.movement = undefined;
 
-        this.gameStarter.timeHandler.cancelAllCycles(thing);
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onKillNormal, thing);
-        this.gameStarter.groupHolder.removeFromGroup(thing, thing.groupType);
+        this.eightBitter.timeHandler.cancelAllCycles(thing);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKillNormal, thing);
+        this.eightBitter.groupHolder.removeFromGroup(thing, thing.groupType);
     }
 }

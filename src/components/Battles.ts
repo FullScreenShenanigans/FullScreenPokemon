@@ -2,7 +2,7 @@ import { component } from "babyioc";
 import {
     IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
 } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { ActionsOrderer } from "./battles/ActionsOrderer";
@@ -281,36 +281,36 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
 /**
  * BattleMovr hooks to run trainer battles.
  */
-export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Battles<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Orders chosen actions by priority and/or speed.
      */
     @component(ActionsOrderer)
-    public readonly actionsOrderer: ActionsOrderer<TGameStartr>;
+    public readonly actionsOrderer: ActionsOrderer<TEightBittr>;
 
     /**
      * Animations for battle events.
      */
     @component(Animations)
-    public readonly animations: Animations<TGameStartr>;
+    public readonly animations: Animations<TEightBittr>;
 
     /**
      * Places decorative in-battle Things.
      */
     @component(Decorations)
-    public readonly decorations: Decorations<TGameStartr>;
+    public readonly decorations: Decorations<TEightBittr>;
 
     /**
      * Selects actions for each team.
      */
     @component(Selectors)
-    public readonly selectors: Selectors<TGameStartr>;
+    public readonly selectors: Selectors<TEightBittr>;
 
     /**
      * Sets Things visually representing each team.
      */
     @component(Things)
-    public readonly things: Things<TGameStartr>;
+    public readonly things: Things<TEightBittr>;
 
     /**
      * Starts a new battle.
@@ -320,7 +320,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public startBattle(partialBattleOptions: IPartialBattleOptions): void {
         const battleOptions: IBattleOptions = this.fillOutBattleOptions(partialBattleOptions);
 
-        this.gameStarter.battleMover.startBattle(battleOptions);
+        this.eightBitter.battleMover.startBattle(battleOptions);
     }
 
     /**
@@ -329,12 +329,12 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param pokemon   An in-game Pokemon to heal.
      */
     public healPokemon(pokemon: IPokemon): void {
-        for (const statisticName of this.gameStarter.constants.pokemon.statisticNames) {
+        for (const statisticName of this.eightBitter.constants.pokemon.statisticNames) {
             pokemon.statistics[statisticName].current = pokemon.statistics[statisticName].normal;
         }
 
         for (const move of pokemon.moves) {
-            move.remaining = this.gameStarter.constants.moves.byName[move.title].PP;
+            move.remaining = this.eightBitter.constants.moves.byName[move.title].PP;
         }
 
         pokemon.status = undefined;
@@ -346,7 +346,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @returns Whether a player's party is wiped.
      */
     public isPartyWiped(): boolean {
-        for (const chosenPokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
+        for (const chosenPokemon of this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty)) {
             if (chosenPokemon.statistics.health.current !== 0) {
                 return false;
             }
@@ -359,8 +359,8 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * Heals party back to full health.
      */
     public healParty(): void {
-        for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
-            this.gameStarter.battles.healPokemon(pokemon);
+        for (const pokemon of this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty)) {
+            this.eightBitter.battles.healPokemon(pokemon);
         }
     }
 
@@ -371,7 +371,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @returns Whether the team can flee.
      */
     public canTeamAttemptFlee(team: Team): boolean {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         return !(team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent).leader;
     }
 
@@ -382,10 +382,10 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @returns Completed options to start a battle.
      */
     private fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
-        const texts: IBattleTextGenerators = this.gameStarter.utilities.proliferate(
+        const texts: IBattleTextGenerators = this.eightBitter.utilities.proliferate(
             {},
             {
-                ...this.gameStarter.constants.battles.texts.defaultBattleTexts,
+                ...this.eightBitter.constants.battles.texts.defaultBattleTexts,
                 ...partialBattleOptions.texts,
             });
 
@@ -395,9 +395,9 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 selector: "opponent",
             },
             player: {
-                actors: this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty) as IPokemon[],
+                actors: this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty) as IPokemon[],
                 leader: {
-                    nickname: this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.name),
+                    nickname: this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.name),
                     title: "PlayerBack".split(""),
                 },
                 selector: "player",
@@ -421,7 +421,7 @@ export class Battles<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (partialBattleOptions.endingtheme === undefined) {
-             partialBattleOptions.endingtheme = this.gameStarter.mapScreener.theme;
+             partialBattleOptions.endingtheme = this.eightBitter.mapScreener.theme;
         }
 
         return {

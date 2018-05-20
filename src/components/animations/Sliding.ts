@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
@@ -6,7 +6,7 @@ import { IThing } from "../Things";
 /**
  * Slides Things across the screen.
  */
-export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Sliding<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Slides a Thing across the screen horizontally over time.
      *
@@ -17,11 +17,11 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   A callback for when the Thing reaches the goal.
      */
     public slideHorizontally(thing: IThing, change: number, goal: number, speed: number, onComplete?: () => void): void {
-        this.gameStarter.physics.shiftHoriz(thing, change);
+        this.eightBitter.physics.shiftHoriz(thing, change);
 
         if (change > 0) {
-            if (this.gameStarter.physics.getMidX(thing) >= goal) {
-                this.gameStarter.physics.setMidX(thing, goal);
+            if (this.eightBitter.physics.getMidX(thing) >= goal) {
+                this.eightBitter.physics.setMidX(thing, goal);
                 if (onComplete) {
                     onComplete();
                 }
@@ -29,8 +29,8 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 return;
             }
         } else {
-            if (this.gameStarter.physics.getMidX(thing) <= goal) {
-                this.gameStarter.physics.setMidX(thing, goal);
+            if (this.eightBitter.physics.getMidX(thing) <= goal) {
+                this.eightBitter.physics.setMidX(thing, goal);
                 if (onComplete) {
                     onComplete();
                 }
@@ -39,7 +39,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.slideHorizontally(
                     thing,
@@ -61,19 +61,19 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   A callback for when the Thing reaches the goal.
      */
     public slideVertically(thing: IThing, change: number, goal: number, speed: number, onComplete?: () => void): void {
-        this.gameStarter.physics.shiftVert(thing, change);
+        this.eightBitter.physics.shiftVert(thing, change);
 
         if (change > 0) {
-            if (this.gameStarter.physics.getMidY(thing) >= goal) {
-                this.gameStarter.physics.setMidY(thing, goal);
+            if (this.eightBitter.physics.getMidY(thing) >= goal) {
+                this.eightBitter.physics.setMidY(thing, goal);
                 if (onComplete) {
                     onComplete();
                 }
                 return;
             }
         } else {
-            if (this.gameStarter.physics.getMidY(thing) <= goal) {
-                this.gameStarter.physics.setMidY(thing, goal);
+            if (this.eightBitter.physics.getMidY(thing) <= goal) {
+                this.eightBitter.physics.setMidY(thing, goal);
                 if (onComplete) {
                     onComplete();
                 }
@@ -82,7 +82,7 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             }
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.slideVertically(
                     thing,
@@ -105,14 +105,14 @@ export class Sliding<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     public slideHorizontallyAndFadeOut(thing: IThing, goal: number, timeout: number, onComplete?: () => void): void {
         this.slideHorizontally(
             thing,
-            (goal - this.gameStarter.physics.getMidX(thing)) / timeout,
+            (goal - this.eightBitter.physics.getMidX(thing)) / timeout,
             goal,
             1,
             onComplete);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.actions.animateFadeAttribute(
+                this.eightBitter.actions.animateFadeAttribute(
                     thing,
                     "opacity",
                     -2 / timeout,

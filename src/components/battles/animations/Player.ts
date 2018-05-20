@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
@@ -12,22 +12,22 @@ import { Switching } from "./shared/Switching";
 /**
  * Animations for player battle events.
  */
-export class Player<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ITeamAnimations {
+export class Player<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ITeamAnimations {
     /**
      * Shared animations for team actions.
      */
     @component(Actions)
-    public readonly actions: Actions<TGameStartr>;
+    public readonly actions: Actions<TEightBittr>;
 
     /**
      * Shared animations for teams switching Pokemon.
      */
-    @component((container: Player<TGameStartr>) => new Switching<TGameStartr>(container.gameStarter, {
+    @component((container: Player<TEightBittr>) => new Switching<TEightBittr>(container.eightBitter, {
         enter: {
             team: Team.player,
             getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
                 const player: IThing = battleInfo.things.player;
-                const menu: IMenu = container.gameStarter.menuGrapher.getMenu("GeneralText") as IMenu;
+                const menu: IMenu = container.eightBitter.menuGrapher.getMenu("GeneralText") as IMenu;
 
                 return menu.left - player.width / 2;
             },
@@ -39,7 +39,7 @@ export class Player<TGameStartr extends FullScreenPokemon> extends GeneralCompon
                 battleInfo.things.menu.bottom - 32,
         },
     }))
-    public readonly switching: Switching<TGameStartr>;
+    public readonly switching: Switching<TEightBittr>;
 
     /**
      * Animation for when the player's actor's health changes.

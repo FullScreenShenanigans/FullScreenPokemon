@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../Battles";
@@ -8,7 +8,7 @@ import { IThing } from "../../../Things";
 /**
  * Animations for a Pokemon fainting.
  */
-export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Runs a fainting animation.
      *
@@ -17,32 +17,32 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
      * @param onComplete   Handler for when this is done.
      */
     public run(pokemon: IPokemon, team: Team, onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         const teamName: "player" | "opponent" = Team[team] as "player" | "opponent";
         const thing: IThing = battleInfo.things[teamName];
         const scale = thing.scale === undefined
             ? 1
             : thing.scale;
-        const blank: IThing = this.gameStarter.battles.decorations.addThingAsText(
+        const blank: IThing = this.eightBitter.battles.decorations.addThingAsText(
             "WhiteSquare",
             {
                 width: thing.width * scale,
                 height: thing.height * scale,
             });
 
-        this.gameStarter.battles.decorations.moveToBeforeBackground(blank);
-        this.gameStarter.battles.decorations.moveToBeforeBackground(thing);
+        this.eightBitter.battles.decorations.moveToBeforeBackground(blank);
+        this.eightBitter.battles.decorations.moveToBeforeBackground(thing);
 
-        this.gameStarter.physics.setLeft(blank, thing.left);
-        this.gameStarter.physics.setTop(blank, thing.top + thing.height * scale);
+        this.eightBitter.physics.setLeft(blank, thing.left);
+        this.eightBitter.physics.setTop(blank, thing.top + thing.height * scale);
 
-        this.gameStarter.animations.sliding.slideVertically(
+        this.eightBitter.animations.sliding.slideVertically(
             thing,
             8,
-            this.gameStarter.physics.getMidY(thing) + thing.height * scale,
+            this.eightBitter.physics.getMidY(thing) + thing.height * scale,
             1,
             (): void => {
-                const playerName = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.name);
+                const playerName = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.name);
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
 
                 if (teamName === "opponent") {
@@ -50,12 +50,12 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
                 } else {
                     this.processPlayerFainting(partyIsWipedText, onComplete, battleInfo, thing, blank, playerName);
                 }
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-                this.gameStarter.physics.killNormal(thing);
-                this.gameStarter.physics.killNormal(blank);
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.physics.killNormal(thing);
+                this.eightBitter.physics.killNormal(blank);
             });
 
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }
 
      /**
@@ -65,10 +65,10 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
         partyIsWipedText: (string | string[])[][],
         onComplete: () => void, battleInfo: IBattleInfo,
         thing: IThing, blank: IThing) {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText", partyIsWipedText,
-            () => this.gameStarter.experience.processBattleExperience(battleInfo, onComplete));
+            () => this.eightBitter.experience.processBattleExperience(battleInfo, onComplete));
     }
 
      /**
@@ -78,13 +78,13 @@ export class Fainting<TGameStartr extends FullScreenPokemon> extends GeneralComp
         partyIsWipedText: (string | string[])[][],
         onComplete: () => void, battleInfo: IBattleInfo,
         thing: IThing, blank: IThing, playerName: string[]) {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        if (this.gameStarter.battles.isPartyWiped()) {
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        if (this.eightBitter.battles.isPartyWiped()) {
             partyIsWipedText.push(
             [playerName, " is out of useable Pokemon!"],
             [playerName, " blacked out!"]);
         }
 
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);
     }
 }

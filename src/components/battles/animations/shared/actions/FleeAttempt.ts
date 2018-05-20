@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../../Battles";
@@ -7,7 +7,7 @@ import { IBattleInfo, IPokemon } from "../../../../Battles";
 /**
  * Logic for whether the player may flee a battle.
  */
-export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class FleeAttempt<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Animates the player attempting to flee.
      *
@@ -27,13 +27,13 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends GeneralC
      * Handler for the player successfully fleeing.
      */
     public succeed(): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.flee.success(),
-            (): void => this.gameStarter.battleMover.stopBattle(BattleOutcome.playerFled));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            (): void => this.eightBitter.battleMover.stopBattle(BattleOutcome.playerFled));
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -42,20 +42,20 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @param onComplete   Callback for when this is done.
      */
     public fail(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.flee.fail(),
             onComplete);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * @returns Whether the player may flee.
      */
     private canEscape(): boolean {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         const playerPokemon: IPokemon = battleInfo.teams.player.selectedActor;
         const opponentPokemon: IPokemon = battleInfo.teams.player.selectedActor;
         const a: number = playerPokemon.statistics.speed.current;
@@ -68,6 +68,6 @@ export class FleeAttempt<TGameStartr extends FullScreenPokemon> extends GeneralC
             return true;
         }
 
-        return this.gameStarter.numberMaker.randomInt(256) < f;
+        return this.eightBitter.numberMaker.randomInt(256) < f;
     }
 }

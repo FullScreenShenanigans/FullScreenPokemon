@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings } from "../../Battles";
@@ -9,12 +9,12 @@ import { Transitions } from "./Transitions";
 /**
  * Animations for the starts of battles.
  */
-export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Starting<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Flashy animation transitions to start battles.
      */
     @component(Transitions)
-    public readonly transitions: Transitions<TGameStartr>;
+    public readonly transitions: Transitions<TEightBittr>;
 
     /**
      * Runs starting battle animations.
@@ -22,15 +22,15 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
         if (battleInfo.keptThings) {
-            this.gameStarter.graphics.moveThingsToText(battleInfo.keptThings);
+            this.eightBitter.graphics.moveThingsToText(battleInfo.keptThings);
         }
 
         // tslint:disable-next-line no-floating-promises
-        this.gameStarter.audioPlayer.play(battleInfo.theme, {
-            alias: this.gameStarter.audio.aliases.theme,
+        this.eightBitter.audioPlayer.play(battleInfo.theme, {
+            alias: this.eightBitter.audio.aliases.theme,
             loop: true,
         });
 
@@ -49,11 +49,11 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
      * @param battleInfo   Info for the current battle.
      */
     private setupThings(battleInfo: IBattleInfo): void {
-        this.gameStarter.menuGrapher.createMenu("Battle");
-        battleInfo.things = this.gameStarter.battles.decorations.createInitialThings(battleInfo);
+        this.eightBitter.menuGrapher.createMenu("Battle");
+        battleInfo.things = this.eightBitter.battles.decorations.createInitialThings(battleInfo);
 
         if (battleInfo.keptThings) {
-            this.gameStarter.graphics.moveThingsBeforeBackgrounds(battleInfo.keptThings);
+            this.eightBitter.graphics.moveThingsBeforeBackgrounds(battleInfo.keptThings);
         }
     }
 
@@ -73,30 +73,30 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
         let opponentGoal: number;
 
         // They should be visible halfway through (2 * (1 / timeout))
-        this.gameStarter.actions.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
-        this.gameStarter.actions.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
+        this.eightBitter.actions.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
+        this.eightBitter.actions.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
 
-        playerX = this.gameStarter.physics.getMidX(player);
-        opponentX = this.gameStarter.physics.getMidX(opponent);
+        playerX = this.eightBitter.physics.getMidX(player);
+        opponentX = this.eightBitter.physics.getMidX(opponent);
         playerGoal = menu.left + player.width / 2;
         opponentGoal = menu.right - opponent.width / 2;
 
-        this.gameStarter.animations.sliding.slideHorizontally(
+        this.eightBitter.animations.sliding.slideHorizontally(
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
             1);
 
-        this.gameStarter.animations.sliding.slideHorizontally(
+        this.eightBitter.animations.sliding.slideHorizontally(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,
             1);
 
-        this.gameStarter.saves.addPokemonToPokedex(battleInfo.teams.opponent.selectedActor.title, PokedexListingStatus.Seen);
+        this.eightBitter.saves.addPokemonToPokedex(battleInfo.teams.opponent.selectedActor.title, PokedexListingStatus.Seen);
 
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.showPlayerPokeballs(battleInfo);
                 this.runOpeningText(battleInfo, onComplete);
@@ -111,17 +111,17 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
      */
     private showPlayerPokeballs(battleInfo: IBattleInfo): void {
         if (battleInfo.teams.player.leader) {
-            this.gameStarter.menuGrapher.createMenu("BattlePlayerHealth");
-            this.gameStarter.menuGrapher.createMenu("BattlePlayerPokeballs");
-            this.gameStarter.battles.decorations.addPokeballs(
+            this.eightBitter.menuGrapher.createMenu("BattlePlayerHealth");
+            this.eightBitter.menuGrapher.createMenu("BattlePlayerPokeballs");
+            this.eightBitter.battles.decorations.addPokeballs(
                 "BattlePlayerPokeballs",
                 battleInfo.teams.player.actors);
         }
 
         if (battleInfo.teams.opponent.leader) {
-            this.gameStarter.menuGrapher.createMenu("BattleOpponentHealth");
-            this.gameStarter.menuGrapher.createMenu("BattleOpponentPokeballs");
-            this.gameStarter.battles.decorations.addPokeballs(
+            this.eightBitter.menuGrapher.createMenu("BattleOpponentHealth");
+            this.eightBitter.menuGrapher.createMenu("BattleOpponentPokeballs");
+            this.eightBitter.battles.decorations.addPokeballs(
                 "BattleOpponentPokeballs",
                 battleInfo.teams.opponent.actors,
                 true);
@@ -135,18 +135,18 @@ export class Starting<TGameStartr extends FullScreenPokemon> extends GeneralComp
      * @param onComplete   Callback for when this is done.
      */
     private runOpeningText(battleInfo: IBattleInfo, onComplete: () => void): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: battleInfo.automaticMenus,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.start(battleInfo.teams.opponent),
             (): void => {
-                this.gameStarter.menuGrapher.deleteMenu("BattlePlayerHealth");
-                this.gameStarter.menuGrapher.deleteMenu("BattleOpponentHealth");
-                this.gameStarter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.deleteMenu("BattlePlayerHealth");
+                this.eightBitter.menuGrapher.deleteMenu("BattleOpponentHealth");
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
                 onComplete();
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

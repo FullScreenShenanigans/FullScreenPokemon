@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { component } from "babyioc";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -37,12 +37,12 @@ export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGen
 /**
  * Starts, continues, and stops characters walking.
  */
-export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Walking<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Checks for and starts wild Pokemon encounters during walking.
      */
     @component(Encounters)
-    public readonly encounters: Encounters<TGameStartr>;
+    public readonly encounters: Encounters<TEightBittr>;
 
     /**
      * Starts a Character walking on a predetermined path.
@@ -78,7 +78,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                         thing.wantsToWalk = false;
 
                         if (thing.direction !== currentInstruction.direction) {
-                            this.gameStarter.actions.animateCharacterSetDirection(thing, currentInstruction.direction);
+                            this.eightBitter.actions.animateCharacterSetDirection(thing, currentInstruction.direction);
                         }
 
                         return;
@@ -101,16 +101,16 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onContinueWalking   Callback to run before continuing walking.
      */
     public startWalking(thing: ICharacter, direction: Direction, onContinueWalking?: Function): void {
-        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
+        const ticksPerBlock: number = this.eightBitter.equations.walkingTicksPerBlock(thing);
 
         this.setWalkingAttributes(thing, direction);
         this.setWalkingGraphics(thing);
 
         if (thing.follower) {
-            this.startWalking(thing.follower, this.gameStarter.physics.getDirectionBetween(thing.follower, thing));
+            this.startWalking(thing.follower, this.eightBitter.physics.getDirectionBetween(thing.follower, thing));
         }
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
             ticksPerBlock + 1);
     }
@@ -137,14 +137,14 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (thing.follower) {
-            this.gameStarter.actions.following.continueFollowing(
+            this.eightBitter.actions.following.continueFollowing(
                 thing.follower,
-                this.gameStarter.physics.getDirectionBetween(thing.follower, thing));
+                this.eightBitter.physics.getDirectionBetween(thing.follower, thing));
         }
 
-        this.gameStarter.physics.snapToGrid(thing);
+        this.eightBitter.physics.snapToGrid(thing);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
             ticksPerBlock);
     }
@@ -159,20 +159,20 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         thing.yvel = 0;
         thing.walking = false;
 
-        this.gameStarter.graphics.removeClasses(thing, "walking", "standing");
-        this.gameStarter.timeHandler.cancelClassCycle(thing, "walking");
+        this.eightBitter.graphics.removeClasses(thing, "walking", "standing");
+        this.eightBitter.timeHandler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
-            this.gameStarter.timeHandler.cancelEvent(thing.walkingFlipping);
+            this.eightBitter.timeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
 
         if (thing.follower) {
-            this.gameStarter.actions.following.pauseFollowing(thing.follower);
+            this.eightBitter.actions.following.pauseFollowing(thing.follower);
         }
 
         if (thing.sightDetector) {
-            this.gameStarter.actions.animatePositionSightDetector(thing);
+            this.eightBitter.actions.animatePositionSightDetector(thing);
             thing.sightDetector.nocollide = false;
         }
     }
@@ -188,7 +188,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
 
         if (thing.player) {
             (thing as IPlayer).keys = (thing as IPlayer).getKeys();
-            this.gameStarter.mapScreener.blockInputs = true;
+            this.eightBitter.mapScreener.blockInputs = true;
         }
     }
 
@@ -198,7 +198,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @returns Whether a wild Pokemon encounter was started.
      */
     private tryStartWildPokemonEncounter(thing: IPlayer): boolean {
-        if (this.gameStarter.menuGrapher.getActiveMenu()) {
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
             return false;
         }
 
@@ -221,7 +221,7 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
     private setWalkingAttributes(thing: ICharacter, direction: Direction): void {
         thing.walking = true;
 
-        this.gameStarter.actions.animateCharacterSetDirection(thing, direction);
+        this.eightBitter.actions.animateCharacterSetDirection(thing, direction);
 
         if (thing.sightDetector) {
             thing.sightDetector.nocollide = true;
@@ -259,24 +259,24 @@ export class Walking<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   The walking Character.
      */
     private setWalkingGraphics(thing: ICharacter): void {
-        const ticksPerBlock: number = this.gameStarter.equations.walkingTicksPerBlock(thing);
+        const ticksPerBlock: number = this.eightBitter.equations.walkingTicksPerBlock(thing);
         const ticksPerStep: number = ticksPerBlock / 2;
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.timeHandler.addClassCycle(
+                this.eightBitter.timeHandler.addClassCycle(
                     thing,
                     ["walking", "standing"],
                     "walking",
                     ticksPerStep);
 
-                thing.walkingFlipping = this.gameStarter.timeHandler.addEventInterval(
+                thing.walkingFlipping = this.eightBitter.timeHandler.addEventInterval(
                     (): void => {
                         if (thing.direction % 2 === 0) {
                             if (thing.flipHoriz) {
-                                this.gameStarter.graphics.unflipHoriz(thing);
+                                this.eightBitter.graphics.unflipHoriz(thing);
                             } else {
-                                this.gameStarter.graphics.flipHoriz(thing);
+                                this.eightBitter.graphics.flipHoriz(thing);
                             }
                         }
                     },

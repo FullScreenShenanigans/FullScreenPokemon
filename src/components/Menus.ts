@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -128,60 +128,60 @@ export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
 /**
  * Manipulates MenuGraphr menus.
  */
-export class Menus<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Menus<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Menus for PokeCenter computers.
      */
     @component(Computer)
-    public readonly computer: Computer<TGameStartr>;
+    public readonly computer: Computer<TEightBittr>;
 
     /**
      * Manipulates item menus.
      */
     @component(Items)
-    public readonly items: Items<TGameStartr>;
+    public readonly items: Items<TEightBittr>;
 
     /**
      * Manipulates the on-screen keyboard menus.
      */
     @component(Keyboards)
-    public readonly keyboards: Keyboards<TGameStartr>;
+    public readonly keyboards: Keyboards<TEightBittr>;
 
     /**
      * Opens and closes the root pause menu.
      */
     @component(Pause)
-    public readonly pause: Pause<TGameStartr>;
+    public readonly pause: Pause<TEightBittr>;
 
     /**
      * Opens the Player menu.
      */
     @component(Player)
-    public readonly player: Player<TGameStartr>;
+    public readonly player: Player<TEightBittr>;
 
     /**
      * Opens the Pokedex and its individual listings.
      */
     @component(Pokedex)
-    public readonly pokedex: Pokedex<TGameStartr>;
+    public readonly pokedex: Pokedex<TEightBittr>;
 
     /**
      * Manipulates Pokemon party and detail menus.
      */
     @component(Pokemon)
-    public readonly pokemon: Pokemon<TGameStartr>;
+    public readonly pokemon: Pokemon<TEightBittr>;
 
     /**
      * Opens the Save menu.
      */
     @component(Save)
-    public readonly save: Save<TGameStartr>;
+    public readonly save: Save<TEightBittr>;
 
     /**
      * Opens and animates displays on the Town Map menu.
      */
     @component(TownMap)
-    public readonly townMap: TownMap<TGameStartr>;
+    public readonly townMap: TownMap<TEightBittr>;
 
     /**
      * Displays message when a Player tries to use an item that cannot be used.
@@ -196,15 +196,15 @@ export class Menus<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param message   The message to be displayed.
      */
     public displayMessage(message: string): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 message,
             ],
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

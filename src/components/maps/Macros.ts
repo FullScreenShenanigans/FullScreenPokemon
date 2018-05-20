@@ -1,11 +1,11 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * Map creation macros.
  */
-export class Macros<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Macros<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *
@@ -1040,7 +1040,7 @@ export class Macros<TGameStartr extends FullScreenPokemon> extends GeneralCompon
                 x: x + 32,
                 y: y + 160,
                 id: reference.responderId,
-                activate: this.gameStarter.actions.activateCutsceneResponder,
+                activate: this.eightBitter.actions.activateCutsceneResponder,
                 cutscene: "PokeMart",
                 keepAlive: true,
                 items: reference.items,

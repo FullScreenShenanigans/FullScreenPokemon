@@ -7,15 +7,15 @@ import { Move } from "../Move";
 /**
  * Animates a PoisonSting battle move.
  */
-export class PoisonSting<TGameStartr extends FullScreenPokemon> extends Move<TGameStartr> {
+export class PoisonSting<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
     /**
      * Runs the move's animation.
      *
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        const explosion = this.gameStarter.objectMaker.make<IThing>(this.gameStarter.things.names.explosionSmall);
-        const menu: IMenu = this.gameStarter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const explosion = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.explosionSmall);
+        const menu: IMenu = this.eightBitter.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let startX: number;
         let startY: number;
         if (this.direction === Direction.Right) {
@@ -25,11 +25,11 @@ export class PoisonSting<TGameStartr extends FullScreenPokemon> extends Move<TGa
             startX = menu.left + this.defenderThing.width;
             startY = menu.bottom - (this.defenderThing.height + 8);
         }
-        this.gameStarter.things.add(explosion, startX, startY);
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.things.add(explosion, startX, startY);
+        this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.gameStarter.physics.killNormal(explosion);
-                this.gameStarter.battles.animations.things.flicker({
+                this.eightBitter.physics.killNormal(explosion);
+                this.eightBitter.battles.animations.things.flicker({
                     callback,
                     clearTime: 14,
                     interval: 5,

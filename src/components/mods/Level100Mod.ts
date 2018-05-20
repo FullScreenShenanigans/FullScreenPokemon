@@ -7,7 +7,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to make the trainer's Pokemon all level 100.
  */
-export class Level100Mod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class Level100Mod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -18,18 +18,18 @@ export class Level100Mod<TGameStartr extends FullScreenPokemon> extends ModCompo
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
-                this.gameStarter.saves.addStateHistory(pokemon, "level", pokemon.level);
+            for (const pokemon of this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty)) {
+                this.eightBitter.saves.addStateHistory(pokemon, "level", pokemon.level);
 
                 pokemon.level = 100;
-                pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+                pokemon.statistics = this.eightBitter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
             }
         },
         [this.eventNames.onModDisable]: (): void => {
-            for (const pokemon of this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty)) {
-                this.gameStarter.saves.popStateHistory(pokemon, "level");
+            for (const pokemon of this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty)) {
+                this.eightBitter.saves.popStateHistory(pokemon, "level");
 
-                pokemon.statistics = this.gameStarter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+                pokemon.statistics = this.eightBitter.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
             }
         },
     };

@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { SoundAliases } from "./audio/SoundAliases";
@@ -8,7 +8,7 @@ import { SoundNames } from "./audio/SoundNames";
 /**
  * Friendly sound aliases and names for audio.
  */
-export class Audio<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Audio<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Aliases for playable sounds.
      */

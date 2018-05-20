@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMenuSchema } from "../Menus";
@@ -6,14 +6,14 @@ import { IMenuSchema } from "../Menus";
 /**
  * Opens the Player menu.
  */
-export class Player<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Player<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Opens the Player menu.
      *
      * @param settings   Custom attributes to apply to the menu.
      */
     public open(settings: IMenuSchema): void {
-        this.gameStarter.menuGrapher.createMenu("Player", settings);
-        this.gameStarter.menuGrapher.setActiveMenu("Player");
+        this.eightBitter.menuGrapher.createMenu("Player", settings);
+        this.eightBitter.menuGrapher.setActiveMenu("Player");
     }
 }

@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { FleeAttempt } from "./actions/FleeAttempt";
@@ -11,12 +11,12 @@ import { DefaultMovesBag } from "./moves/MovesBag";
 /**
  * Shared animations for team actions.
  */
-export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements IOnActions {
+export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements IOnActions {
     /**
      * Battle animations for move effects.
      */
     @component(Effects)
-    public readonly effects: Effects<TGameStartr>;
+    public readonly effects: Effects<TEightBittr>;
 
     /**
      * Callback for when a team attempts to leave the battle.
@@ -25,7 +25,7 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   Callback for when the action is done.
      */
     public flee(_action: ITeamAndAction<IFleeAction>, onComplete: () => void): void {
-        new FleeAttempt<TGameStartr>(this.gameStarter).attempt(onComplete);
+        new FleeAttempt<TEightBittr>(this.eightBitter).attempt(onComplete);
     }
 
     /**
@@ -46,9 +46,9 @@ export class Actions<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   Callback for when the action is done.
      */
     public move(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
-        new Moves(this.gameStarter, DefaultMovesBag).playMove(
+        new Moves(this.eightBitter, DefaultMovesBag).playMove(
             teamAndAction,
-            (): void => new Effects(this.gameStarter).runMoveEffects(teamAndAction, onComplete));
+            (): void => new Effects(this.eightBitter).runMoveEffects(teamAndAction, onComplete));
     }
 
     /**

@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -8,7 +8,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * PokeCenter cutscene routines.
  */
-export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Rate at which balls appear.
      */
@@ -23,11 +23,11 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      * Cutscene for a nurse's welcome at the Pokemon Center.
      */
     public readonly Welcome = (): void => {
-        const nurse = this.gameStarter.utilities.getExistingThingById<ICharacter>("Nurse");
-        const machine = this.gameStarter.utilities.getExistingThingById("HealingMachine");
+        const nurse = this.eightBitter.utilities.getExistingThingById<ICharacter>("Nurse");
+        const machine = this.eightBitter.utilities.getExistingThingById("HealingMachine");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Welcome to our %%%%%%%POKEMON%%%%%%% CENTER!",
@@ -36,17 +36,17 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             ],
             (): void => this.choose(machine, nurse),
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for choosing whether or not to heal Pokemon.
      */
     private choose(machine: IThing, nurse: ICharacter): void {
-        this.gameStarter.menuGrapher.createMenu("Heal/Cancel", {
+        this.eightBitter.menuGrapher.createMenu("Heal/Cancel", {
             killOnB: ["GeneralText"],
         });
-        this.gameStarter.menuGrapher.addMenuList(
+        this.eightBitter.menuGrapher.addMenuList(
             "Heal/Cancel",
             {
                 options: [
@@ -61,27 +61,27 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
                 ],
             },
         );
-        this.gameStarter.menuGrapher.setActiveMenu("Heal/Cancel");
+        this.eightBitter.menuGrapher.setActiveMenu("Heal/Cancel");
     }
 
     /**
      * Cutscene for choosing to heal Pokemon.
      */
     private chooseHeal(machine: IThing, nurse: ICharacter): void {
-        this.gameStarter.menuGrapher.deleteMenu("Heal/Cancel");
+        this.eightBitter.menuGrapher.deleteMenu("Heal/Cancel");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             ignoreA: true,
             finishAutomatically: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Ok. We'll need your %%%%%%%POKEMON%%%%%%%.",
             ],
             (): void => this.healing(machine, nurse),
         );
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -89,20 +89,20 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      *
      */
     private healing(machine: IThing, nurse: ICharacter): void {
-        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
+        const party: IPokemon[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
         const balls: IThing[] = [];
         const dt = 35;
         const left: number = machine.left + 20;
         const top: number = machine.top + 28;
         let i = 0;
 
-        this.gameStarter.actions.animateCharacterSetDirection(nurse, 3);
+        this.eightBitter.actions.animateCharacterSetDirection(nurse, 3);
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 balls.push(
-                    this.gameStarter.things.add(
-                        this.gameStarter.things.names.healingMachineBall,
+                    this.eightBitter.things.add(
+                        this.eightBitter.things.names.healingMachineBall,
                         left + (i % 2) * 12,
                         top + Math.floor(i / 2) * 10),
                 );
@@ -111,7 +111,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             dt,
             party.length);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.healingAction(machine, nurse, balls),
             dt * (party.length + 1));
     }
@@ -124,11 +124,11 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
         const numFlashes = 8;
         let i = 0;
 
-        this.gameStarter.timeHandler.addEventInterval(
+        this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 const changer = i % 2 === 0
-                    ? (thing: IThing, className: string): void => this.gameStarter.graphics.addClass(thing, className)
-                    : (thing: IThing, className: string): void => this.gameStarter.graphics.removeClass(thing, className);
+                    ? (thing: IThing, className: string): void => this.eightBitter.graphics.addClass(thing, className)
+                    : (thing: IThing, className: string): void => this.eightBitter.graphics.removeClass(thing, className);
 
                 for (const ball of balls) {
                     changer(ball, "lit");
@@ -141,7 +141,7 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
             this.ballFlickerRate,
             numFlashes);
 
-        this.gameStarter.timeHandler.addEvent(
+        this.eightBitter.timeHandler.addEvent(
             (): void => this.healingComplete(nurse, balls),
             (numFlashes + 2) * this.ballFlickerRate);
     }
@@ -153,37 +153,37 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      * @param args Settings for the routine.
      */
     private healingComplete(nurse: ICharacter, balls: IThing[]): void {
-        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
+        const party: IPokemon[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
 
         for (const ball of balls) {
-            this.gameStarter.physics.killNormal(ball);
+            this.eightBitter.physics.killNormal(ball);
         }
 
         for (const pokemon of party) {
-            this.gameStarter.battles.healPokemon(pokemon);
+            this.eightBitter.battles.healPokemon(pokemon);
         }
 
-        this.gameStarter.actions.animateCharacterSetDirection(nurse, 2);
+        this.eightBitter.actions.animateCharacterSetDirection(nurse, 2);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Thank you! \n Your %%%%%%%POKEMON%%%%%%% are fighting fit!",
                 "We hope to see you again!",
             ],
             (): void => {
-                this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-                this.gameStarter.scenePlayer.stopCutscene();
+                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                this.eightBitter.scenePlayer.stopCutscene();
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-        const map: string = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.map);
-        const mapInfo: IMap = this.gameStarter.areaSpawner.getMap() as IMap;
+        const map: string = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.map);
+        const mapInfo: IMap = this.eightBitter.areaSpawner.getMap() as IMap;
         const location: string | undefined = mapInfo.locationDefault;
 
-        this.gameStarter.itemsHolder.setItem(
-            this.gameStarter.storage.names.lastPokecenter,
+        this.eightBitter.itemsHolder.setItem(
+            this.eightBitter.storage.names.lastPokecenter,
             { map, location });
     }
 
@@ -191,18 +191,18 @@ export class PokeCenterCutscene<TGameStartr extends FullScreenPokemon> extends G
      * Cutscene for choosing not to heal Pokemon.
      */
     private readonly chooseCancel = (): void => {
-        this.gameStarter.menuGrapher.deleteMenu("Heal/Cancel");
+        this.eightBitter.menuGrapher.deleteMenu("Heal/Cancel");
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "We hope to see you again!",
             ],
             (): void => {
-                this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-                this.gameStarter.scenePlayer.stopCutscene();
+                this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+                this.eightBitter.scenePlayer.stopCutscene();
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

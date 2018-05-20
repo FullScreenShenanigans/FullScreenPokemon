@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -9,7 +9,7 @@ import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge }
 /**
  * ThingHittr collision function generators.
  */
-export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Collisions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
@@ -106,12 +106,12 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             // Both the thing and other should know they're bordering each other
             // If other is a large solid, this will be irreleveant, so it's ok
             // that multiple borderings will be replaced by the most recent
-            switch (this.gameStarter.physics.getDirectionBordering(thing, other)) {
+            switch (this.eightBitter.physics.getDirectionBordering(thing, other)) {
                 case Direction.Top:
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Top);
                         this.setThingBordering(other, thing, Direction.Bottom);
-                        this.gameStarter.physics.setTop(thing, other.bottom - other.tolBottom);
+                        this.eightBitter.physics.setTop(thing, other.bottom - other.tolBottom);
                     }
                     break;
 
@@ -119,7 +119,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Right);
                         this.setThingBordering(other, thing, Direction.Left);
-                        this.gameStarter.physics.setRight(thing, other.left + other.tolLeft);
+                        this.eightBitter.physics.setRight(thing, other.left + other.tolLeft);
                     }
                     break;
 
@@ -127,7 +127,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
                         this.setThingBordering(thing, other, Direction.Bottom);
                         this.setThingBordering(other, thing, Direction.Top);
-                        this.gameStarter.physics.setBottom(thing, other.top + other.tolTop);
+                        this.eightBitter.physics.setBottom(thing, other.top + other.tolTop);
                     }
                     break;
 
@@ -135,7 +135,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
                         this.setThingBordering(thing, other, Direction.Left);
                         this.setThingBordering(other, thing, Direction.Right);
-                        this.gameStarter.physics.setLeft(thing, other.right - other.tolRight);
+                        this.eightBitter.physics.setLeft(thing, other.right - other.tolRight);
                     }
                     break;
 
@@ -176,7 +176,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         }
 
         if (other.active) {
-            if (!other.requireOverlap || this.gameStarter.physics.isThingWithinOther(thing, other)) {
+            if (!other.requireOverlap || this.eightBitter.physics.isThingWithinOther(thing, other)) {
                 if (
                     typeof other.requireDirection !== "undefined"
                     && !(thing.keys as any)[other.requireDirection]
@@ -194,14 +194,14 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     throw new Error("No activate callback for collision detector.");
                 }
 
-                other.activate.call(this.gameStarter.actions, thing, other);
+                other.activate.call(this.eightBitter.actions, thing, other);
             }
 
             return true;
         }
 
         // If the thing is moving towards the triggerer, it's now active
-        if (thing.direction === this.gameStarter.physics.getDirectionBordering(thing, other)) {
+        if (thing.direction === this.eightBitter.physics.getDirectionBordering(thing, other)) {
             other.active = true;
             return true;
         }
@@ -221,7 +221,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         let direction: Direction | undefined;
 
         if (other.cutscene) {
-            this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
+            this.eightBitter.scenePlayer.startCutscene(other.cutscene, {
                 thing,
                 triggerer: other,
             });
@@ -231,7 +231,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             return;
         }
 
-        direction = this.gameStarter.physics.getDirectionBetween(other, thing);
+        direction = this.eightBitter.physics.getDirectionBetween(other, thing);
 
         if (other.dialogDirections) {
             dialog = (dialog as IMenuDialogRaw[])[direction];
@@ -243,20 +243,20 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
         thing.talking = true;
         other.talking = true;
 
-        if (!this.gameStarter.menuGrapher.getActiveMenu()) {
-            this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        if (!this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: !other.dialogOptions,
             });
-            this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
-            this.gameStarter.menuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 dialog,
-                (): void => this.gameStarter.actions.animateCharacterDialogFinish(thing, other),
+                (): void => this.eightBitter.actions.animateCharacterDialogFinish(thing, other),
             );
         }
 
         if (other.switchDirectionOnDialog) {
-            this.gameStarter.actions.animateCharacterSetDirection(other, direction);
+            this.eightBitter.actions.animateCharacterSetDirection(other, direction);
         }
     }
 
@@ -273,23 +273,23 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     throw new Error("Pokeball must have an item for the item action.");
                 }
 
-                this.gameStarter.menuGrapher.createMenu("GeneralText");
-                this.gameStarter.menuGrapher.addMenuDialog(
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
                         "%%%%%%%PLAYER%%%%%%% found " + other.item + "!",
                     ],
                     (): void => {
-                        this.gameStarter.menuGrapher.deleteActiveMenu();
-                        this.gameStarter.physics.killNormal(other);
-                        this.gameStarter.stateHolder.addChange(
+                        this.eightBitter.menuGrapher.deleteActiveMenu();
+                        this.eightBitter.physics.killNormal(other);
+                        this.eightBitter.stateHolder.addChange(
                             other.id, "alive", false,
                         );
                     },
                 );
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-                this.gameStarter.saves.addItemToBag(other.item, other.amount);
+                this.eightBitter.saves.addItemToBag(other.item, other.amount);
                 break;
 
             case "cutscene":
@@ -297,12 +297,12 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     throw new Error("Pokeball must have a cutscene for the cutscene action.");
                 }
 
-                this.gameStarter.scenePlayer.startCutscene(other.cutscene, {
+                this.eightBitter.scenePlayer.startCutscene(other.cutscene, {
                     player: thing,
                     triggerer: other,
                 });
                 if (other.routine) {
-                    this.gameStarter.scenePlayer.playRoutine(other.routine);
+                    this.eightBitter.scenePlayer.playRoutine(other.routine);
                 }
                 break;
 
@@ -311,7 +311,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     throw new Error("Pokeball must have a Pokemon for the cutscene action.");
                 }
 
-                this.gameStarter.menus.pokedex.openPokedexListing(other.pokemon);
+                this.eightBitter.menus.pokedex.openPokedexListing(other.pokemon);
                 break;
 
             case "dialog":
@@ -319,16 +319,16 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                     throw new Error("Pokeball must have a dialog for the cutscene action.");
                 }
 
-                this.gameStarter.menuGrapher.createMenu("GeneralText");
-                this.gameStarter.menuGrapher.addMenuDialog("GeneralText", other.dialog);
-                this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
                 break;
 
             case "yes/no":
-                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"],
                 });
-                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
@@ -339,7 +339,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
                             callback: (): void => console.log("What do, no?"),
                         }],
                 });
-                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
                 break;
 
             default:
@@ -355,11 +355,11 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
      * @returns true, to allow for passing through.
      */
     public collideCharacterGrass = (thing: ICharacter, other: IGrass): true => {
-        if (thing.grass || !this.gameStarter.physics.isThingWithinGrass(thing, other)) {
+        if (thing.grass || !this.eightBitter.physics.isThingWithinGrass(thing, other)) {
             return true;
         }
 
-        this.gameStarter.actions.grass.enterGrassVisually(thing, other);
+        this.eightBitter.actions.grass.enterGrassVisually(thing, other);
 
         return true;
     }
@@ -399,7 +399,7 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             }
         }
 
-        this.gameStarter.actions.ledges.startLedgeHop(thing, other);
+        this.eightBitter.actions.ledges.startLedgeHop(thing, other);
 
         return true;
     }
@@ -419,12 +419,12 @@ export class Collisions<TGameStartr extends FullScreenPokemon> extends GeneralCo
             return false;
         }
 
-        this.gameStarter.actions.walking.startWalkingOnPath(thing, [{
+        this.eightBitter.actions.walking.startWalkingOnPath(thing, [{
             blocks: 2,
             direction: thing.direction,
         }]);
         thing.surfing = false;
-        this.gameStarter.graphics.removeClass(thing, "surfing");
+        this.eightBitter.graphics.removeClass(thing, "surfing");
         return true;
     }
 }

@@ -7,7 +7,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to allow battling enemy trainers again.
  */
-export class RepeatTrainersMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class RepeatTrainersMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */

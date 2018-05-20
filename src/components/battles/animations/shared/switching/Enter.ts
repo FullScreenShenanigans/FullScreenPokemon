@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
@@ -42,7 +42,7 @@ export interface IEnterSettings {
 /**
  * Shared team entrance animations.
  */
-export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Enter<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Entrance settings for animation positions and sprites.
      */
@@ -51,11 +51,11 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralCompone
     /**
      * Initializes a new instance of the Enter class.
      *
-     * @param gameStarter   FullScreenPokemon instance this is used for.
+     * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Entrance settings for animation positions and sprites.
      */
-    public constructor(gameStarter: TGameStartr, settings: IEnterSettings) {
-        super(gameStarter);
+    public constructor(eightBitter: TEightBittr, settings: IEnterSettings) {
+        super(eightBitter);
 
         this.settings = settings;
     }
@@ -66,7 +66,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.gameStarter.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
         battleInfo.teams[Team[this.settings.team]].leader
             ? this.runWithLeader(battleInfo, onComplete)
@@ -80,7 +80,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param onComplete   Callback for when this is done.
      */
     private runWithoutLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
-        this.gameStarter.battles.decorations.health.addPokemonHealth(
+        this.eightBitter.battles.decorations.health.addPokemonHealth(
             battleInfo.teams[Team[this.settings.team]].selectedActor,
             this.settings.team);
 
@@ -98,21 +98,21 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         const goal: number = this.settings.getLeaderSlideToGoal(battleInfo);
         const timeout = 24;
 
-        this.gameStarter.animations.sliding.slideHorizontallyAndFadeOut(
+        this.eightBitter.animations.sliding.slideHorizontallyAndFadeOut(
             thing,
             goal,
             timeout,
             (): void => this.poofSmoke(battleInfo, onComplete));
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
         });
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.teams[Team[this.settings.team]].sendOut(
                 battleInfo.teams[Team[this.settings.team]],
                 battleInfo.teams[Team[this.settings.team]].selectedActor.title.join("")));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -125,7 +125,7 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         const left: number = this.settings.getSmokeLeft(battleInfo);
         const top: number = this.settings.getSmokeTop(battleInfo);
 
-        this.gameStarter.actions.animateSmokeSmall(
+        this.eightBitter.actions.animateSmokeSmall(
             left,
             top,
             (): void => this.appear(battleInfo, onComplete));
@@ -138,13 +138,13 @@ export class Enter<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param onComplete   Callback for when this is done.
      */
     private appear(battleInfo: IBattleInfo, onComplete: () => void): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
 
-        this.gameStarter.battles.decorations.health.addPokemonHealth(
+        this.eightBitter.battles.decorations.health.addPokemonHealth(
             battleInfo.teams[Team[this.settings.team]].selectedActor,
             this.settings.team);
 
-        this.gameStarter.battles.things.setThing(
+        this.eightBitter.battles.things.setThing(
             this.settings.team,
             this.settings.getSelectedPokemonSprite(battleInfo));
 

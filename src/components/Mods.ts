@@ -1,4 +1,4 @@
-import { Mods as GameStartrMods } from "gamestartr";
+import { Mods as EightBittrMods } from "eightbittr";
 import { IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -26,13 +26,13 @@ export interface IModComponentClass {
      */
     modName: string;
 
-    new<TGameStartr extends FullScreenPokemon>(gameStarter: TGameStartr, eventNames: ModEventNames): ModComponent<TGameStartr>;
+    new<TEightBittr extends FullScreenPokemon>(eightBitter: TEightBittr, eventNames: ModEventNames): ModComponent<TEightBittr>;
 }
 
 /**
  * Creates a ModAttachr from mod classes.
  */
-export class Mods<TGameStartr extends FullScreenPokemon> extends GameStartrMods<TGameStartr> {
+export class Mods<TEightBittr extends FullScreenPokemon> extends EightBittrMods<TEightBittr> {
     /**
      * Classes for known mods.
      */
@@ -65,5 +65,5 @@ export class Mods<TGameStartr extends FullScreenPokemon> extends GameStartrMods<
      * General schemas for known mods, including names and events.
      */
     public readonly mods: IMod[] = Mods.modClasses.map(
-        (modClass) => this.modsByName[modClass.modName] = new modClass(this.gameStarter, this.eventNames));
+        (modClass) => this.modsByName[modClass.modName] = new modClass(this.eightBitter, this.eventNames));
 }

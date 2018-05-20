@@ -1,20 +1,20 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 
 /**
  * Menus for PC Pokemon storage.
  */
-export class ComputerStorage<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class ComputerStorage<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     public readonly open = (): void => {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "Accessed %%%%%%%POKEMON%%%%%%% storage system.",
             ],
             this.listOptions);
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     private readonly listOptions = (): void => {
@@ -41,12 +41,12 @@ export class ComputerStorage<TGameStartr extends FullScreenPokemon> extends Gene
             },
         ];
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog("GeneralText", "What?");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog("GeneralText", "What?");
 
-        this.gameStarter.menuGrapher.createMenu("Computer");
-        this.gameStarter.menuGrapher.addMenuList("Computer", { options });
-        this.gameStarter.menuGrapher.setActiveMenu("Computer");
+        this.eightBitter.menuGrapher.createMenu("Computer");
+        this.eightBitter.menuGrapher.addMenuList("Computer", { options });
+        this.eightBitter.menuGrapher.setActiveMenu("Computer");
     }
 
     /**
@@ -55,7 +55,7 @@ export class ComputerStorage<TGameStartr extends FullScreenPokemon> extends Gene
      * @todo Does this go back to the PC altogether? Should find out.
      */
     private readonly close = (): void => {
-        this.gameStarter.menuGrapher.deleteMenu("Computer");
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
+        this.eightBitter.menuGrapher.deleteMenu("Computer");
+        this.eightBitter.menuGrapher.deleteMenu("GeneralText");
     }
 }

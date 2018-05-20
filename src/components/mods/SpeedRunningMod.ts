@@ -6,7 +6,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to make the player move really quickly.
  */
-export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class SpeedRunningMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Class name for the player's prototype.
      */
@@ -22,13 +22,13 @@ export class SpeedRunningMod<TGameStartr extends FullScreenPokemon> extends ModC
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            const stats: any = this.gameStarter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
-            this.gameStarter.players[0].speed = stats.speed = 10;
+            const stats: any = this.eightBitter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
+            this.eightBitter.players[0].speed = stats.speed = 10;
         },
         [this.eventNames.onModDisable]: (): void => {
-            const stats: any = this.gameStarter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
-            const oldSpeed: number = this.gameStarter.settings.components.objects!.properties![SpeedRunningMod.playerClassName].speed;
-            this.gameStarter.players[0].speed = stats.speed = oldSpeed;
+            const stats: any = this.eightBitter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
+            const oldSpeed: number = this.eightBitter.settings.components.objects!.properties![SpeedRunningMod.playerClassName].speed;
+            this.eightBitter.players[0].speed = stats.speed = oldSpeed;
         },
     };
 }

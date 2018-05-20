@@ -2,9 +2,9 @@ import { AreaSpawnr } from "areaspawnr";
 import { AudioPlayr } from "audioplayr";
 import { component } from "babyioc";
 import { BattleMovr } from "battlemovr";
+import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GamesRunnr } from "gamesrunnr";
-import { GameStartr, IComponentSettings, IGameStartrConstructorSettings, IGameStartrSettings } from "gamestartr";
 import { GroupHoldr } from "groupholdr";
 import { InputWritr } from "inputwritr";
 import { ItemsHoldr } from "itemsholdr";
@@ -81,7 +81,7 @@ export interface IFullScreenPokemonComponentSettings extends IComponentSettings 
 /**
  * Filled-out settings to initialize a new FullScreenPokemon.
  */
-export interface IFullScreenPokemonConstructorSettings extends IGameStartrConstructorSettings {
+export interface IFullScreenPokemonConstructorSettings extends IEightBittrConstructorSettings {
     /**
      * Component settings overrides.
      */
@@ -91,7 +91,7 @@ export interface IFullScreenPokemonConstructorSettings extends IGameStartrConstr
 /**
  * Settings to initialize a new FullScreenPokemon.
  */
-export interface IFullScreenPokemonSettings extends IGameStartrSettings {
+export interface IFullScreenPokemonSettings extends IEightBittrSettings {
     /**
      * Component settings overrides.
      */
@@ -101,14 +101,14 @@ export interface IFullScreenPokemonSettings extends IGameStartrSettings {
 /**
  * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
  */
-export class FullScreenPokemon extends GameStartr {
+export class FullScreenPokemon extends EightBittr {
     /**
      * Screen and component reset settings.
      */
     public readonly settings: IFullScreenPokemonSettings;
 
     /**
-     * Loads GameStartr maps to spawn and unspawn areas on demand.
+     * Loads EightBittr maps to spawn and unspawn areas on demand.
      */
     @component(createAreaSpawner)
     public readonly areaSpawner: AreaSpawnr;
@@ -156,7 +156,7 @@ export class FullScreenPokemon extends GameStartr {
     public readonly itemsHolder: ItemsHoldr<IStorageItems>;
 
     /**
-     * Storage container and lazy loader for GameStartr maps.
+     * Storage container and lazy loader for EightBittr maps.
      */
     @component(createMapsCreator)
     public readonly mapsCreator: MapsCreatr;
@@ -168,7 +168,7 @@ export class FullScreenPokemon extends GameStartr {
     public readonly mapScreener: IMapScreenr;
 
     /**
-     * In-game menu and dialog management system for GameStartr.
+     * In-game menu and dialog management system for EightBittr.
      */
     @component(createMenuGrapher)
     public readonly menuGrapher: MenuGraphr;

@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { IBattleTeam } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings, IPokemon } from "../Battles";
@@ -10,7 +10,7 @@ import { Health } from "./decorations/Health";
 /**
  * Decoration handlers used by FullScreenPokemon instances.
  */
-export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Decorations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Id for the background Thing.
      */
@@ -20,7 +20,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
      * Decorations for health displays.
      */
     @component(Health)
-    public readonly health: Health<TGameStartr>;
+    public readonly health: Health<TEightBittr>;
 
     /**
      * Creates the initial Things displayed in a battle.
@@ -31,13 +31,13 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
         const background: IThing = this.addThingAsText(
             "DirtWhite",
             {
-                height: this.gameStarter.mapScreener.height,
+                height: this.eightBitter.mapScreener.height,
                 id: Decorations.backgroundId,
-                width: this.gameStarter.mapScreener.width,
+                width: this.eightBitter.mapScreener.width,
             });
-        this.gameStarter.utilities.arrayToBeginning(background, this.gameStarter.groupHolder.getGroup("Text") as IThing[]);
+        this.eightBitter.utilities.arrayToBeginning(background, this.eightBitter.groupHolder.getGroup("Text") as IThing[]);
 
-        const menu: IMenu = this.gameStarter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
+        const menu: IMenu = this.eightBitter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
 
         const opponent: IThing = this.addThingAsText(
             this.getInitialTitle(battleInfo.teams.opponent, "Front"),
@@ -50,11 +50,11 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
             {
                 opacity: 0,
             });
-        this.gameStarter.physics.setLeft(player, menu.right + player.width);
-        this.gameStarter.physics.setBottom(player, menu.bottom - player.height);
+        this.eightBitter.physics.setLeft(player, menu.right + player.width);
+        this.eightBitter.physics.setBottom(player, menu.bottom - player.height);
 
-        this.gameStarter.physics.setRight(opponent, menu.left);
-        this.gameStarter.physics.setBottom(opponent, menu.bottom - 80);
+        this.eightBitter.physics.setRight(opponent, menu.left);
+        this.eightBitter.physics.setBottom(opponent, menu.bottom - 80);
 
         return { background, menu, opponent, player };
     }
@@ -87,7 +87,7 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
             text.reverse();
         }
 
-        this.gameStarter.menuGrapher.addMenuDialog(menu, [text]);
+        this.eightBitter.menuGrapher.addMenuDialog(menu, [text]);
     }
 
     /**
@@ -98,9 +98,9 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @returns The newly created Thing.
      */
     public addThingAsText(title: string, attributes: any): IThing {
-        const thing: IThing = this.gameStarter.things.add([title, attributes]);
+        const thing: IThing = this.eightBitter.things.add([title, attributes]);
 
-        this.gameStarter.groupHolder.switchGroup(thing, thing.groupType, "Text");
+        this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, "Text");
 
         return thing;
     }
@@ -111,11 +111,11 @@ export class Decorations<TGameStartr extends FullScreenPokemon> extends GeneralC
      * @param thing   A placed Thing in the Text group.
      */
     public moveToBeforeBackground(thing: IThing): void {
-        const texts: IThing[] = this.gameStarter.groupHolder.getGroup("Text") as IThing[];
-        const background: IThing = this.gameStarter.utilities.getExistingThingById(Decorations.backgroundId);
+        const texts: IThing[] = this.eightBitter.groupHolder.getGroup("Text") as IThing[];
+        const background: IThing = this.eightBitter.utilities.getExistingThingById(Decorations.backgroundId);
         const backgroundIndex: number = texts.indexOf(background);
 
-        this.gameStarter.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);
+        this.eightBitter.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);
     }
 
     /**

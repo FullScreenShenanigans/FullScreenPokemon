@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { BattleOutcome, IOnChoice, ISelector, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleTeam, IPokemon } from "../../Battles";
@@ -9,12 +9,12 @@ import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriority
 /**
  * Selector for an opponent's actions.
  */
-export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
+export class OpponentSelector<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ISelector {
     /**
      * Determines priorities of battle move possibilities.
      */
     @component(MovePriorityGenerator)
-    private readonly movePriorityGenerator: MovePriorityGenerator<TGameStartr>;
+    private readonly movePriorityGenerator: MovePriorityGenerator<TEightBittr>;
 
     /**
      * Reacts to an actor getting knocked out.
@@ -30,10 +30,10 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Gen
             [0] as IPokemon | undefined;
 
         if (newPokemon !== undefined) {
-            this.gameStarter.battleMover.switchSelectedActor(team, newPokemon);
-            this.gameStarter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
+            this.eightBitter.battleMover.switchSelectedActor(team, newPokemon);
+            this.eightBitter.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
         } else {
-            this.gameStarter.battleMover.stopBattle(
+            this.eightBitter.battleMover.stopBattle(
                 team === Team.opponent
                     ? BattleOutcome.playerVictory
                     : BattleOutcome.opponentVictory);
@@ -58,7 +58,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Gen
         // Wild Pokemon just choose randomly
         if (!attackingTeam.leader) {
             onChoice({
-                move: this.gameStarter.numberMaker.randomArrayMember(attackingActor.moves).title,
+                move: this.eightBitter.numberMaker.randomArrayMember(attackingActor.moves).title,
                 type: "move",
             });
 
@@ -82,7 +82,7 @@ export class OpponentSelector<TGameStartr extends FullScreenPokemon> extends Gen
         }
 
         onChoice({
-            move: this.gameStarter.numberMaker.randomArrayMember(possibilities).move,
+            move: this.eightBitter.numberMaker.randomArrayMember(possibilities).move,
             type: "move",
         });
     }

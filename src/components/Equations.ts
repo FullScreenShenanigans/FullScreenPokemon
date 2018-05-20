@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { IMove, IStatistic } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
@@ -22,12 +22,12 @@ const isWildPokemonSchemaForLevel = (schema: IWildPokemonSchema): schema is IWil
 /**
  * Common equations.
  */
-export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Equations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Equations for battle moves.
      */
     @component(Moves)
-    public readonly moves: Moves<TGameStartr>;
+    public readonly moves: Moves<TEightBittr>;
 
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.
@@ -89,7 +89,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @returns One of the potential Pokemon schemas at random.
      */
     public chooseRandomWildPokemon(options: IWildPokemonSchema[]): IWildPokemonSchema {
-        const choice: number = this.gameStarter.numberMaker.random();
+        const choice: number = this.eightBitter.numberMaker.random();
         let sum = 0;
 
         for (const option of options) {
@@ -111,9 +111,9 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
     public createPokemon(schema: IWildPokemonSchema): IPokemon {
         const level: number = isWildPokemonSchemaForLevel(schema)
             ? schema.level
-            : this.gameStarter.numberMaker.randomArrayMember(schema.levels);
+            : this.eightBitter.numberMaker.randomArrayMember(schema.levels);
 
-        return this.gameStarter.equations.newPokemon({
+        return this.eightBitter.equations.newPokemon({
             level,
             title: schema.title,
         });
@@ -136,7 +136,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
         const ev: IValuePoints = this.newPokemonEVs();
         const iv: IValuePoints = this.newPokemonIVs();
 
-        this.gameStarter.modAttacher.fireEvent("onNewPokemonCreation", chosenInfo);
+        this.eightBitter.modAttacher.fireEvent("onNewPokemonCreation", chosenInfo);
 
         return {
             experience: this.experienceStarting(chosenInfo.title, chosenInfo.level || 1),
@@ -148,7 +148,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
             nickname: chosenInfo.title,
             statistics: this.newPokemonStatistics(chosenInfo.title, chosenInfo.level || 1, ev, iv),
             title: chosenInfo.title,
-            types: this.gameStarter.constants.pokemon.byName[chosenInfo.title.join("")].types,
+            types: this.eightBitter.constants.pokemon.byName[chosenInfo.title.join("")].types,
         };
     }
 
@@ -163,7 +163,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @see http://bulbapedia.bulbagarden.net/wiki/Statistic#In_Generations_I_and_II
      */
     public newPokemonStatistics(title: string[], level: number, ev: IValuePoints, iv: IValuePoints): IPokemonStatistics {
-        const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
+        const schema: IPokemonListing = this.eightBitter.constants.pokemon.byName[title.join("")];
 
         const attack: IStatistic = this.pokemonStatistic("attack", schema.attack, level, ev.attack, iv.attack);
         const defense: IStatistic = this.pokemonStatistic("defense", schema.defense, level, ev.defense, iv.defense);
@@ -183,7 +183,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @see http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
      */
     public newPokemonMoves(title: string[], level: number): IMove[] {
-        const possibilities: IPokemonMoveListing[] = this.gameStarter.constants.pokemon.byName[title.join("")].moves.natural;
+        const possibilities: IPokemonMoveListing[] = this.eightBitter.constants.pokemon.byName[title.join("")].moves.natural;
         const output: IMove[] = [];
         let move: IPokemonMoveListing;
         let newMove: IMove;
@@ -199,8 +199,8 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
             move = possibilities[i];
             newMove = {
                 title: move.move,
-                remaining: this.gameStarter.constants.moves.byName[move.move].PP,
-                uses: this.gameStarter.constants.moves.byName[move.move].PP,
+                remaining: this.eightBitter.constants.moves.byName[move.move].PP,
+                uses: this.eightBitter.constants.moves.byName[move.move].PP,
             };
 
             output.push(newMove);
@@ -218,11 +218,11 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      */
     public newPokemonIVs(): IValuePoints {
         return {
-            attack: this.gameStarter.numberMaker.randomIntWithin(0, 15),
-            defense: this.gameStarter.numberMaker.randomIntWithin(0, 15),
+            attack: this.eightBitter.numberMaker.randomIntWithin(0, 15),
+            defense: this.eightBitter.numberMaker.randomIntWithin(0, 15),
             health: 0,
-            speed: this.gameStarter.numberMaker.randomIntWithin(0, 15),
-            special: this.gameStarter.numberMaker.randomIntWithin(0, 15),
+            speed: this.eightBitter.numberMaker.randomIntWithin(0, 15),
+            special: this.eightBitter.numberMaker.randomIntWithin(0, 15),
         };
     }
 
@@ -291,7 +291,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @see http://bulbapedia.bulbagarden.net/wiki/???????
      */
     public doesWalkingEncounterHappen(): boolean {
-        return this.gameStarter.numberMaker.randomBooleanFraction(50, 187.5);
+        return this.eightBitter.numberMaker.randomBooleanFraction(50, 187.5);
     }
 
     /**
@@ -302,7 +302,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      * @see http://bulbapedia.bulbagarden.net/wiki/Tall_grass
      */
     public doesGrassEncounterHappen(grass: IGrass): boolean {
-        return this.gameStarter.numberMaker.randomBooleanFraction(grass.rarity, 187.5);
+        return this.eightBitter.numberMaker.randomBooleanFraction(grass.rarity, 187.5);
     }
 
     /**
@@ -320,32 +320,32 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
         }
 
         // 2. Generate a random number, N, depending on the type of ball used.
-        const n: number = this.gameStarter.numberMaker.randomInt(ball.probabilityMax);
+        const n: number = this.eightBitter.numberMaker.randomInt(ball.probabilityMax);
 
         // 3. The Pokemon is caught if...
         if (pokemon.status) { // ... it is asleep or frozen and N is less than 25.
             if (n < 25) {
-                if (this.gameStarter.constants.statuses.probability25[pokemon.status]) {
+                if (this.eightBitter.constants.statuses.probability25[pokemon.status]) {
                     return true;
                 }
             } else if (n < 12) { // ... it is paralyzed, burned, or poisoned and N is less than 12.
-                if (this.gameStarter.constants.statuses.probability12[pokemon.status]) {
+                if (this.eightBitter.constants.statuses.probability12[pokemon.status]) {
                     return true;
                 }
             }
         }
 
         // 4. Otherwise, if N minus the status value is greater than the Pokemon's catch rate, the Pokemon breaks free.
-        const catchRate: number | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].catchRate;
+        const catchRate: number | undefined = this.eightBitter.constants.pokemon.byName[pokemon.title.join("")].catchRate;
         if (catchRate === undefined) {
             console.warn("Catch rate hasn't yet been added for", pokemon);
         }
-        if (n - this.gameStarter.constants.statuses.levels[pokemon.status || "normal"] > catchRate!) {
+        if (n - this.eightBitter.constants.statuses.levels[pokemon.status || "normal"] > catchRate!) {
             return false;
         }
 
         // 5. If not, generate a random value, M, between 0 and 255.
-        const m: number = this.gameStarter.numberMaker.randomInt(255);
+        const m: number = this.eightBitter.numberMaker.randomInt(255);
 
         // 6. Calculate f.
         const f: number = Math.max(
@@ -368,7 +368,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      */
     public numBallShakes(pokemon: IPokemon, ball: IBattleBall): number {
         // 1. Calculate d.
-        const catchRate: number | undefined = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")].catchRate;
+        const catchRate: number | undefined = this.eightBitter.constants.pokemon.byName[pokemon.title.join("")].catchRate;
         if (catchRate === undefined) {
             console.warn("Catch rate hasn't yet been added for", pokemon);
         }
@@ -387,7 +387,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
                 (pokemon.statistics.health.normal * 255 * 4) | 0 / (pokemon.statistics.health.normal * ball.rate) | 0,
                 255),
             1);
-        const x: number = d * f / 255 + this.gameStarter.constants.statuses.shaking[pokemon.status || "normal"];
+        const x: number = d * f / 255 + this.eightBitter.constants.statuses.shaking[pokemon.status || "normal"];
 
         // 4. If...
         if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
@@ -436,7 +436,7 @@ export class Equations<TGameStartr extends FullScreenPokemon> extends GeneralCom
      *          required to reach that level when caught, as will Pokémon hatched from Eggs.
      */
     public experienceStarting(title: string[], level: number): number {
-        const reference: IPokemonListing = this.gameStarter.constants.pokemon.byName[title.join("")];
+        const reference: IPokemonListing = this.eightBitter.constants.pokemon.byName[title.join("")];
 
         // TODO: remove defaulting to mediumFast
         switch (reference.experienceType) {

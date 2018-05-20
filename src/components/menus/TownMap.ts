@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMenuSchema } from "../Menus";
@@ -6,7 +6,7 @@ import { IMenuSchema } from "../Menus";
 /**
  * Opens and animates displays on the Town Map menu.
  */
-export class TownMap<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class TownMap<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Locations of known cities on town maps.
      */
@@ -24,10 +24,10 @@ export class TownMap<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public readonly open = (settings?: IMenuSchema): void => {
         const playerPosition: number[] = TownMap.townMapLocations["Pallet Town"];
-        const playerSize: any = this.gameStarter.objectMaker.getPrototypeOf("Player");
+        const playerSize: any = this.eightBitter.objectMaker.getPrototypeOf("Player");
 
-        this.gameStarter.menuGrapher.createMenu("Town Map", settings);
-        this.gameStarter.menuGrapher.createMenuThing("Town Map Inside", {
+        this.eightBitter.menuGrapher.createMenu("Town Map", settings);
+        this.eightBitter.menuGrapher.createMenuThing("Town Map Inside", {
             type: "thing",
             thing: "Player",
             args: {
@@ -40,7 +40,7 @@ export class TownMap<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 },
             },
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Town Map");
+        this.eightBitter.menuGrapher.setActiveMenu("Town Map");
     }
 
     /**
@@ -60,7 +60,7 @@ export class TownMap<TGameStartr extends FullScreenPokemon> extends GeneralCompo
 
         dialog.push(..."'s NEST".split(""));
 
-        this.gameStarter.menuGrapher.addMenuDialog("Town Map", [dialog]);
+        this.eightBitter.menuGrapher.addMenuDialog("Town Map", [dialog]);
 
         console.warn("Pokemon map locations not implemented.");
     }

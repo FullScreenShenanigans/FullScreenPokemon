@@ -1,4 +1,4 @@
-import { Utilities as GameStartrUtilities } from "gamestartr";
+import { Utilities as EightBittrUtilities } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IThing } from "./Things";
@@ -6,7 +6,7 @@ import { IThing } from "./Things";
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartrUtilities<TGameStartr> {
+export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittrUtilities<TEightBittr> {
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
@@ -93,6 +93,6 @@ export class Utilities<TGameStartr extends FullScreenPokemon> extends GameStartr
      * @returns Thing under the ID.
      */
     public getExistingThingById<TThing extends IThing = IThing>(id: string): TThing {
-        return this.gameStarter.groupHolder.getThing(id) as TThing;
+        return this.eightBitter.groupHolder.getThing(id) as TThing;
     }
 }

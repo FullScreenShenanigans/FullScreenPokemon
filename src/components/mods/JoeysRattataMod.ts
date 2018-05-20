@@ -7,7 +7,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to make all enemy trainers Joey and all Pokemon his Rattata.
  */
-export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class JoeysRattataMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -18,22 +18,22 @@ export class JoeysRattataMod<TGameStartr extends FullScreenPokemon> extends ModC
      */
     public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
-            (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
+            (this.eightBitter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
                     character.previousTitle = character.title;
                     character.title = (character as any).thing = "BugCatcher";
-                    this.gameStarter.thingHitter.cacheChecksForType(character.title, "Character");
-                    this.gameStarter.graphics.setClass(character, character.className);
+                    this.eightBitter.thingHitter.cacheChecksForType(character.title, "Character");
+                    this.eightBitter.graphics.setClass(character, character.className);
                 });
         },
         [this.eventNames.onModDisable]: (): void => {
-            (this.gameStarter.groupHolder.getGroup("Character") as ICharacter[])
+            (this.eightBitter.groupHolder.getGroup("Character") as ICharacter[])
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
                     character.title = (character as any).thing = character.previousTitle!;
-                    this.gameStarter.thingHitter.cacheChecksForType(character.title, "Character");
-                    this.gameStarter.graphics.setClass(character, character.className);
+                    this.eightBitter.thingHitter.cacheChecksForType(character.title, "Character");
+                    this.eightBitter.graphics.setClass(character, character.className);
                 });
         },
         [this.eventNames.onBattleStart]: (battleInfo: any): void => {

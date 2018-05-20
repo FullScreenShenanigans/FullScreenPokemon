@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -9,7 +9,7 @@ import { ICharacter, IPokeball, IThing } from "../Things";
 /**
  * OakIntroPokemonChoice cutscene routines.
  */
-export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for the player checking a Pokeball.
      *
@@ -17,33 +17,33 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      */
     public PlayerChecksPokeball(settings: any): void {
         // If Oak is hidden, this cutscene shouldn't be starting (too early)
-        if (this.gameStarter.utilities.getExistingThingById("Oak").hidden) {
-            this.gameStarter.scenePlayer.stopCutscene();
+        if (this.eightBitter.utilities.getExistingThingById("Oak").hidden) {
+            this.eightBitter.scenePlayer.stopCutscene();
 
-            this.gameStarter.menuGrapher.createMenu("GeneralText", {
+            this.eightBitter.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: true,
             });
-            this.gameStarter.menuGrapher.addMenuDialog(
+            this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
                     "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!",
                 ]);
-            this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
             return;
         }
 
         // If there's already a starter, ignore this sad last ball...
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.starter)) {
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.starter)) {
             return;
         }
 
         const pokeball: IPokeball = settings.triggerer;
         settings.chosen = pokeball.pokemon;
 
-        this.gameStarter.menus.pokedex.openPokedexListing(
+        this.eightBitter.menus.pokedex.openPokedexListing(
             pokeball.pokemon!,
-            this.gameStarter.scenePlayer.bindRoutine("PlayerDecidesPokemon"),
+            this.eightBitter.scenePlayer.bindRoutine("PlayerDecidesPokemon"),
             {
                 position: {
                     vertical: "center",
@@ -60,8 +60,8 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public PlayerDecidesPokemon(settings: any): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -69,23 +69,23 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                 ],
             ],
             (): void => {
-                this.gameStarter.menuGrapher.createMenu("Yes/No", {
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"],
                 });
-                this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: this.gameStarter.scenePlayer.bindRoutine("PlayerTakesPokemon"),
+                            callback: this.eightBitter.scenePlayer.bindRoutine("PlayerTakesPokemon"),
                         },
                         {
                             text: "NO",
-                            callback: this.gameStarter.menuGrapher.registerB,
+                            callback: this.eightBitter.menuGrapher.registerB,
                         }],
                 });
-                this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -94,28 +94,28 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public PlayerTakesPokemon(settings: any): void {
-        const oak: ICharacter = this.gameStarter.utilities.getExistingThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.eightBitter.utilities.getExistingThingById("Oak") as ICharacter;
+        const rival: ICharacter = this.eightBitter.utilities.getExistingThingById("Rival") as ICharacter;
         const dialogOak = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
         settings.oak = oak;
         oak.dialog = dialogOak;
-        this.gameStarter.stateHolder.addChange(oak.id, "dialog", dialogOak);
+        this.eightBitter.stateHolder.addChange(oak.id, "dialog", dialogOak);
 
         settings.rival = rival;
         rival.dialog = dialogRival;
-        this.gameStarter.stateHolder.addChange(rival.id, "dialog", dialogRival);
+        this.eightBitter.stateHolder.addChange(rival.id, "dialog", dialogRival);
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starter, settings.chosen.join(""));
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.starter, settings.chosen.join(""));
         settings.triggerer.hidden = true;
-        this.gameStarter.stateHolder.addChange(settings.triggerer.id, "hidden", true);
-        this.gameStarter.stateHolder.addChange(settings.triggerer.id, "nocollide", true);
-        this.gameStarter.physics.killNormal(settings.triggerer);
+        this.eightBitter.stateHolder.addChange(settings.triggerer.id, "hidden", true);
+        this.eightBitter.stateHolder.addChange(settings.triggerer.id, "nocollide", true);
+        this.eightBitter.physics.killNormal(settings.triggerer);
 
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
@@ -126,17 +126,17 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                     "Do you want to give a nickname to ", settings.chosen, "?",
                 ],
             ],
-            this.gameStarter.scenePlayer.bindRoutine("PlayerChoosesNickname"));
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+            this.eightBitter.scenePlayer.bindRoutine("PlayerChoosesNickname"));
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starter, settings.chosen);
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.pokemonInParty, [
-            this.gameStarter.equations.newPokemon({
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.starter, settings.chosen);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.pokemonInParty, [
+            this.eightBitter.equations.newPokemon({
                 level: 5,
                 title: settings.chosen,
             }),
         ]);
-        this.gameStarter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
+        this.eightBitter.saves.addPokemonToPokedex(settings.chosen, PokedexListingStatus.Caught);
     }
 
     /**
@@ -145,38 +145,38 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public PlayerChoosesNickname(settings: any): void {
-        this.gameStarter.menuGrapher.createMenu("Yes/No", {
+        this.eightBitter.menuGrapher.createMenu("Yes/No", {
             ignoreB: true,
             killOnB: ["GeneralText"],
         });
-        this.gameStarter.menuGrapher.addMenuList("Yes/No", {
+        this.eightBitter.menuGrapher.addMenuList("Yes/No", {
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.gameStarter.menus.keyboards.openKeyboardMenu({
+                    callback: (): void => this.eightBitter.menus.keyboards.openKeyboardMenu({
                         title: settings.chosen,
-                        callback: this.gameStarter.scenePlayer.bindRoutine("PlayerSetsNickname"),
+                        callback: this.eightBitter.scenePlayer.bindRoutine("PlayerSetsNickname"),
                     }),
                 },
                 {
                     text: "NO",
-                    callback: this.gameStarter.scenePlayer.bindRoutine("RivalWalksToPokemon"),
+                    callback: this.eightBitter.scenePlayer.bindRoutine("RivalWalksToPokemon"),
                 }],
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Yes/No");
+        this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
     }
 
     /**
      * Cutscene for the player finishing the naming process.
      */
     public PlayerSetsNickname(): void {
-        const party: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
-        const menu: IKeyboardResultsMenu = this.gameStarter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const party: IPokemon[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
+        const menu: IKeyboardResultsMenu = this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
         const result: string[] = menu.completeValue;
 
         party[0].nickname = result;
 
-        this.gameStarter.scenePlayer.playRoutine("RivalWalksToPokemon");
+        this.eightBitter.scenePlayer.playRoutine("RivalWalksToPokemon");
     }
 
     /**
@@ -185,14 +185,14 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksToPokemon(settings: any): void {
-        const rival: ICharacter = this.gameStarter.utilities.getExistingThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.eightBitter.utilities.getExistingThingById("Rival") as ICharacter;
         let starterRival: string[];
         let steps: number;
 
-        this.gameStarter.menus.keyboards.closeKeyboardMenu();
-        this.gameStarter.menuGrapher.deleteMenu("GeneralText");
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
-        this.gameStarter.mapScreener.blockInputs = true;
+        this.eightBitter.menus.keyboards.closeKeyboardMenu();
+        this.eightBitter.menuGrapher.deleteMenu("GeneralText");
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.mapScreener.blockInputs = true;
 
         switch (settings.chosen.join("")) {
             case "SQUIRTLE":
@@ -213,13 +213,13 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
 
         settings.rivalPokemon = starterRival;
         settings.rivalSteps = steps;
-        this.gameStarter.itemsHolder.setItem(this.gameStarter.storage.names.starterRival, starterRival);
-        this.gameStarter.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.starterRival, starterRival);
+        this.eightBitter.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        const pokeball: IPokeball = this.gameStarter.utilities.getExistingThingById("Pokeball" + starterRival.join("")) as IPokeball;
+        const pokeball: IPokeball = this.eightBitter.utilities.getExistingThingById("Pokeball" + starterRival.join("")) as IPokeball;
         settings.rivalPokeball = pokeball;
 
-        this.gameStarter.actions.walking.startWalkingOnPath(
+        this.eightBitter.actions.walking.startWalkingOnPath(
             rival,
             [
                 {
@@ -234,7 +234,7 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
                     blocks: 1,
                     direction: Direction.Top,
                 },
-                this.gameStarter.scenePlayer.bindRoutine("RivalTakesPokemon"),
+                this.eightBitter.scenePlayer.bindRoutine("RivalTakesPokemon"),
             ]);
     }
 
@@ -244,19 +244,19 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
      * @param settings   Settings used for the cutscene.
      */
     public RivalTakesPokemon(settings: any): void {
-        const oakblocker: IThing = this.gameStarter.utilities.getExistingThingById("OakBlocker");
-        const rivalblocker: IThing = this.gameStarter.utilities.getExistingThingById("RivalBlocker");
+        const oakblocker: IThing = this.eightBitter.utilities.getExistingThingById("OakBlocker");
+        const rivalblocker: IThing = this.eightBitter.utilities.getExistingThingById("RivalBlocker");
 
-        this.gameStarter.menuGrapher.deleteMenu("Yes/No");
+        this.eightBitter.menuGrapher.deleteMenu("Yes/No");
 
         oakblocker.nocollide = true;
-        this.gameStarter.stateHolder.addChange(oakblocker.id, "nocollide", true);
+        this.eightBitter.stateHolder.addChange(oakblocker.id, "nocollide", true);
 
         rivalblocker.nocollide = false;
-        this.gameStarter.stateHolder.addChange(rivalblocker.id, "nocollide", false);
+        this.eightBitter.stateHolder.addChange(rivalblocker.id, "nocollide", false);
 
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
@@ -266,10 +266,10 @@ export class OakIntroPokemonChoiceCutscene<TGameStartr extends FullScreenPokemon
             ],
             (): void => {
                 settings.rivalPokeball.hidden = true;
-                this.gameStarter.stateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
-                this.gameStarter.menuGrapher.deleteActiveMenu();
-                this.gameStarter.mapScreener.blockInputs = false;
+                this.eightBitter.stateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
+                this.eightBitter.menuGrapher.deleteActiveMenu();
+                this.eightBitter.mapScreener.blockInputs = false;
             });
-        this.gameStarter.menuGrapher.setActiveMenu("GeneralText");
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

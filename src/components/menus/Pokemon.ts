@@ -1,5 +1,5 @@
 import { IMove } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -68,7 +68,7 @@ export interface ILevelUpStatsMenuSettings {
 /**
  * Manipulates Pokemon party and detail menus.
  */
-export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * A map to translate how status is stored in the code into in-game form.
      */
@@ -86,15 +86,15 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     public openPartyMenu(settings: IPartyMenuSettings): void {
         const listings: IPokemon[] = settings.pokemon
-            || this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
+            || this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
 
-        this.gameStarter.menuGrapher.createMenu("Pokemon", settings);
-        this.gameStarter.menuGrapher.addMenuList("Pokemon", {
+        this.eightBitter.menuGrapher.createMenu("Pokemon", settings);
+        this.eightBitter.menuGrapher.addMenuList("Pokemon", {
             options: listings.map((listing: IPokemon): any => {
                 const title: string = listing.title.join("");
-                const sprite: string = this.gameStarter.constants.pokemon.byName[title].sprite + "Pokemon";
+                const sprite: string = this.eightBitter.constants.pokemon.byName[title].sprite + "Pokemon";
                 const barWidth = 100;
-                const health: number = this.gameStarter.equations.widthHealthBar(barWidth, listing.statistics.health);
+                const health: number = this.eightBitter.equations.widthHealthBar(barWidth, listing.statistics.health);
 
                 return {
                     text: listing.title,
@@ -170,7 +170,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                 };
             }),
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Pokemon");
+        this.eightBitter.menuGrapher.setActiveMenu("Pokemon");
     }
 
     /**
@@ -179,17 +179,17 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param settings   Settings for the selected Pokemon, including its HM moves.
      */
     public openPokemonMenuContext(settings: any): void {
-        const badges = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.badges);
+        const badges = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.badges);
         const moves: IMove[] = settings.pokemon.moves;
         const options: any[] = [];
 
         for (const action of moves) {
-            const move: IHMMoveSchema = this.gameStarter.constants.moves.byName[action.title];
+            const move: IHMMoveSchema = this.eightBitter.constants.moves.byName[action.title];
             if (move.partyActivate && move.requiredBadge && badges[move.requiredBadge]) {
                 options.push({
                     text: action.title.toUpperCase(),
                     callback: (): void => {
-                        this.gameStarter.actions.partyActivateCheckThing(this.gameStarter.players[0], settings.pokemon, move);
+                        this.eightBitter.actions.partyActivateCheckThing(this.eightBitter.players[0], settings.pokemon, move);
                     },
                 });
             }
@@ -206,16 +206,16 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             },
             {
                 text: "CANCEL",
-                callback: this.gameStarter.menuGrapher.registerB,
+                callback: this.eightBitter.menuGrapher.registerB,
             });
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuContext", {
+        this.eightBitter.menuGrapher.createMenu("PokemonMenuContext", {
             backMenu: "Pokemon",
         });
-        this.gameStarter.menuGrapher.addMenuList("PokemonMenuContext", {
+        this.eightBitter.menuGrapher.addMenuList("PokemonMenuContext", {
             options,
         });
-        this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuContext");
+        this.eightBitter.menuGrapher.setActiveMenu("PokemonMenuContext");
     }
 
     /**
@@ -236,11 +236,11 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param pokemon   A Pokemon to show statistics of.
      */
     public openPokemonMenuStats(pokemon: IPokemon): void {
-        const schema: IPokemonListing = this.gameStarter.constants.pokemon.byName[pokemon.title.join("")];
+        const schema: IPokemonListing = this.eightBitter.constants.pokemon.byName[pokemon.title.join("")];
         const barWidth = 100;
-        const health: number = this.gameStarter.equations.widthHealthBar(barWidth, pokemon.statistics.health);
+        const health: number = this.eightBitter.equations.widthHealthBar(barWidth, pokemon.statistics.health);
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuStats", {
+        this.eightBitter.menuGrapher.createMenu("PokemonMenuStats", {
             backMenu: "PokemonMenuContext",
             callback: (): void => this.addSecondaryStats(pokemon),
             container: "Pokemon",
@@ -263,27 +263,27 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             textXOffset: 16,
         });
 
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsTitle", [pokemon.nickname]);
+        this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsLevel", pokemon.level.toString());
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsHP",
             pokemon.statistics.health.current + "/ " + pokemon.statistics.health.normal);
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.gameStarter.utilities.makeDigit(schema.number, 3, 0));
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", this.getStatus(pokemon));
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
+        this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsNumber", this.eightBitter.utilities.makeDigit(schema.number, 3, 0));
+        this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsStatus", this.getStatus(pokemon));
+        this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsType1", pokemon.types[0]);
         if (pokemon.types.length >= 2) {
-            this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsType2");
-            this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
+            this.eightBitter.menuGrapher.createMenu("PokemonMenuStatsType2");
+            this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsType2", pokemon.types[1]);
         }
-        this.gameStarter.menuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsOT",
             [
                 "%%%%%%%PLAYER%%%%%%%",
             ],
         );
 
-        this.gameStarter.menuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
+        this.eightBitter.menuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
             type: "thing",
             thing: "LightGraySquare",
             position: {
@@ -299,7 +299,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             },
         });
 
-        this.gameStarter.menuGrapher.createMenuThing("PokemonMenuStats", {
+        this.eightBitter.menuGrapher.createMenuThing("PokemonMenuStats", {
             type: "thing",
             thing: pokemon.title.join("") + "Front",
             args: {
@@ -314,7 +314,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             },
         });
 
-        this.gameStarter.menuGrapher.setActiveMenu("PokemonMenuStats");
+        this.eightBitter.menuGrapher.setActiveMenu("PokemonMenuStats");
     }
 
     /**
@@ -324,11 +324,11 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      */
     private addPrimaryStats(settings: ILevelUpStatsMenuSettings): void {
         const pokemon: IPokemon = settings.pokemon;
-        const statistics: string[] = this.gameStarter.constants.pokemon.statisticNamesDisplayed.slice();
+        const statistics: string[] = this.eightBitter.constants.pokemon.statisticNamesDisplayed.slice();
         const numStatistics: number = statistics.length;
         const textXOffset: number = settings.textXOffset || 32;
         const menuSchema: IMenuSchema = {
-            callback: (): void => this.gameStarter.menuGrapher.deleteMenu("LevelUpStats"),
+            callback: (): void => this.eightBitter.menuGrapher.deleteMenu("LevelUpStats"),
             onMenuDelete: settings.onMenuDelete,
             position: settings.position || {
                 horizontal: "center",
@@ -339,7 +339,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
         let left: number;
 
         for (let i = 0; i < numStatistics; i += 1) {
-            statistics.push(this.gameStarter.utilities.makeDigit(pokemon.statistics[statistics[i]].normal, 7, "\t"));
+            statistics.push(this.eightBitter.utilities.makeDigit(pokemon.statistics[statistics[i]].normal, 7, "\t"));
             statistics[i] = statistics[i].toUpperCase();
         }
 
@@ -372,7 +372,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             menuSchema.size = settings.size;
         }
 
-        this.gameStarter.menuGrapher.createMenu("LevelUpStats", menuSchema);
+        this.eightBitter.menuGrapher.createMenu("LevelUpStats", menuSchema);
     }
 
     /**
@@ -381,7 +381,7 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
      * @param pokemon   The Pokemon to open the menu for.
      */
     private addSecondaryStats(pokemon: IPokemon): void {
-        const experienceRemaining: number = this.gameStarter.equations.experienceStarting(pokemon.title, pokemon.level + 1);
+        const experienceRemaining: number = this.eightBitter.equations.experienceStarting(pokemon.title, pokemon.level + 1);
         const options: any[] = pokemon.moves.map(
             (move: IMove): any => {
                 const text: any[] = [" "];
@@ -402,11 +402,11 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
                     command: true,
                     y: -2,
                 });
-                text.push(...this.gameStarter.utilities.makeDigit(move.remaining, 2, " ").split(""));
+                text.push(...this.eightBitter.utilities.makeDigit(move.remaining, 2, " ").split(""));
                 text.push("/");
                 text.push(
-                    ...this.gameStarter.utilities.makeDigit(
-                        this.gameStarter.constants.moves.byName[move.title].PP, 2, " ")
+                    ...this.eightBitter.utilities.makeDigit(
+                        this.eightBitter.constants.moves.byName[move.title].PP, 2, " ")
                             .split(""));
 
                 text.push({
@@ -437,26 +437,26 @@ export class Pokemon<TGameStartr extends FullScreenPokemon> extends GeneralCompo
             });
         }
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsExperience");
+        this.eightBitter.menuGrapher.createMenu("PokemonMenuStatsExperience");
 
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsExperience",
-            this.gameStarter.utilities.makeDigit(pokemon.experience, 10, "\t"));
+            this.eightBitter.utilities.makeDigit(pokemon.experience, 10, "\t"));
 
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsExperienceFrom",
-            this.gameStarter.utilities.makeDigit(
+            this.eightBitter.utilities.makeDigit(
                 (experienceRemaining - pokemon.experience), 3, "\t"));
 
-        this.gameStarter.menuGrapher.addMenuDialog(
+        this.eightBitter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsExperienceNext",
             pokemon.level === 99 ? "" : (pokemon.level + 1).toString());
 
-        this.gameStarter.menuGrapher.createMenu("PokemonMenuStatsMoves");
-        this.gameStarter.menuGrapher.addMenuList("PokemonMenuStatsMoves", { options });
+        this.eightBitter.menuGrapher.createMenu("PokemonMenuStatsMoves");
+        this.eightBitter.menuGrapher.addMenuList("PokemonMenuStatsMoves", { options });
 
-        this.gameStarter.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
-            this.gameStarter.menuGrapher.deleteMenu("PokemonMenuStats");
+        this.eightBitter.menuGrapher.getMenu("PokemonMenuStats").callback = (): void => {
+            this.eightBitter.menuGrapher.deleteMenu("PokemonMenuStats");
         };
     }
 }

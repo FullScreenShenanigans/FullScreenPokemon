@@ -6,7 +6,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to prevent the player from encountering any wild Pokemon.
  */
-export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class InfiniteRepelMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -17,10 +17,10 @@ export class InfiniteRepelMod<TGameStartr extends FullScreenPokemon> extends Mod
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.gameStarter.actions.walking.encounters.choices.getWildEncounterPokemonOptions = () => undefined;
+            this.eightBitter.actions.walking.encounters.choices.getWildEncounterPokemonOptions = () => undefined;
         },
         [this.eventNames.onModDisable]: (): void => {
-            delete this.gameStarter.actions.walking.encounters.choices.getWildEncounterPokemonOptions;
+            delete this.eightBitter.actions.walking.encounters.choices.getWildEncounterPokemonOptions;
         },
     };
 }

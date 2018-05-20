@@ -10,7 +10,7 @@ import { ModComponent } from "./ModComponent";
 /**
  * Mod to change gameplay to match the Nuzlocke Challenge.
  */
-export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends ModComponent<TGameStartr> implements IMod {
+export class NuzlockeChallengeMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
     /**
      * Name of the mod.
      */
@@ -22,12 +22,12 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
     public readonly events: ICallbackRegister = {
         [this.eventNames.onBattleComplete]: (settings: any /* IBattleInfo */): void => {
             console.log("Should react to battleComplete", settings);
-            // const grass: IGrass | undefined = this.gameStarter.players[0].grass;
+            // const grass: IGrass | undefined = this.eightBitter.players[0].grass;
             // if (!grass) {
             //     return;
             // }
 
-            // const grassMap: IMap | undefined = this.gameStarter.areaSpawner.getMap(grass.mapName) as IMap;
+            // const grassMap: IMap | undefined = this.eightBitter.areaSpawner.getMap(grass.mapName) as IMap;
             // const grassArea: IArea | undefined = grassMap ? grassMap.areas[grass.areaName] as IArea : undefined;
             // const opponent: String = settings.battlers.opponent.category;
 
@@ -40,16 +40,16 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
         [this.eventNames.onOpenItemsMenu]: (items: any[]): void => {
             console.log("Should react to items menu", items);
             // const grassMap: IMap | undefined = (
-            //     this.gameStarter.players[0].grass
-            //     && this.gameStarter.areaSpawner.getMap(this.gameStarter.players[0].grass!.mapName) as IMap);
-            // const grassArea: IArea | undefined = grassMap && grassMap.areas[this.gameStarter.players[0].grass!.areaName] as IArea;
+            //     this.eightBitter.players[0].grass
+            //     && this.eightBitter.areaSpawner.getMap(this.eightBitter.players[0].grass!.mapName) as IMap);
+            // const grassArea: IArea | undefined = grassMap && grassMap.areas[this.eightBitter.players[0].grass!.areaName] as IArea;
 
-            // if (!this.gameStarter.battleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
+            // if (!this.eightBitter.battleMover.getInBattle() || !(grassArea && grassArea.pokemonEncountered)) {
             //     return;
             // }
 
             // for (let i: number = items.length - 1; i > -1; i -= 1) {
-            //     const currentItem: IItemSchema = this.gameStarter.constants.items.byName[items[i].item];
+            //     const currentItem: IItemSchema = this.eightBitter.constants.items.byName[items[i].item];
 
             //     if (currentItem.category === "Pokeball") {
             //         items.splice(i, 1);
@@ -57,8 +57,8 @@ export class NuzlockeChallengeMod<TGameStartr extends FullScreenPokemon> extends
             // }
         },
         [this.eventNames.onFaint]: (thing: IPokemon, actors: IPokemon[]): void => {
-            const partyPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty);
-            const pcPokemon: IPokemon[] = this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInPC);
+            const partyPokemon: IPokemon[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
+            const pcPokemon: IPokemon[] = this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInPC);
 
             actors.splice(actors.indexOf(thing), 1);
             partyPokemon.splice(partyPokemon.indexOf(thing), 1);

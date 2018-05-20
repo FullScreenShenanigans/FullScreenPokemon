@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,18 +7,18 @@ import { ICharacter, IPlayer } from "../Things";
 /**
  * TrainerSpotted cutscene routines.
  */
-export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class TrainerSpottedCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for when a trainer is encountered for battle.
      *
      * @param settings   Settings used for the cutscene.
      */
     public Exclamation(settings: any): void {
-        this.gameStarter.actions.walking.animateCharacterPreventWalking(this.gameStarter.players[0]);
-        this.gameStarter.actions.animateExclamation(
+        this.eightBitter.actions.walking.animateCharacterPreventWalking(this.eightBitter.players[0]);
+        this.eightBitter.actions.animateExclamation(
             settings.triggerer,
             70,
-            this.gameStarter.scenePlayer.bindRoutine("Approach"));
+            this.eightBitter.scenePlayer.bindRoutine("Approach"));
     }
 
     /**
@@ -32,19 +32,19 @@ export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> exten
         const direction: Direction = triggerer.direction;
         const directionName: string = Direction[direction].toLowerCase();
         const locationTriggerer: number = (triggerer as any)[directionName];
-        const locationPlayer: number = (player as any)[this.gameStarter.constants.directionOpposites[directionName]];
+        const locationPlayer: number = (player as any)[this.eightBitter.constants.directionOpposites[directionName]];
         const distance: number = Math.abs(locationTriggerer - locationPlayer);
-        const blocks: number = Math.max(0, distance / this.gameStarter.constants.blockSize);
+        const blocks: number = Math.max(0, distance / this.eightBitter.constants.blockSize);
 
         if (blocks) {
-            this.gameStarter.actions.walking.startWalkingOnPath(
+            this.eightBitter.actions.walking.startWalkingOnPath(
                 triggerer,
                 [
                     { blocks, direction },
-                    this.gameStarter.scenePlayer.bindRoutine("Dialog"),
+                    this.eightBitter.scenePlayer.bindRoutine("Dialog"),
                 ]);
         } else {
-            this.gameStarter.scenePlayer.playRoutine("Dialog");
+            this.eightBitter.scenePlayer.playRoutine("Dialog");
         }
     }
 
@@ -54,7 +54,7 @@ export class TrainerSpottedCutscene<TGameStartr extends FullScreenPokemon> exten
      * @param settings   Settings used for the cutscene.
      */
     public Dialog(settings: any): void {
-        this.gameStarter.collisions.collideCharacterDialog(settings.player, settings.triggerer);
-        this.gameStarter.mapScreener.blockInputs = false;
+        this.eightBitter.collisions.collideCharacterDialog(settings.player, settings.triggerer);
+        this.eightBitter.mapScreener.blockInputs = false;
     }
 }

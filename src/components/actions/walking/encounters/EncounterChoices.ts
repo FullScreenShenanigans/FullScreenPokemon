@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../../../Battles";
@@ -8,7 +8,7 @@ import { ICharacter, IPlayer, IThing } from "../../../Things";
 /**
  * Chooses wild Pokemon to encounter during walking.
  */
-export class EncounterChoices<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class EncounterChoices<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * May randomly starts a wild Pokemon encounter if the player while walking.
      *
@@ -42,11 +42,11 @@ export class EncounterChoices<TGameStartr extends FullScreenPokemon> extends Gen
             return undefined;
         }
 
-        if (!this.gameStarter.equations.doesGrassEncounterHappen(grass)) {
+        if (!this.eightBitter.equations.doesGrassEncounterHappen(grass)) {
             return undefined;
         }
 
-        const areaWildPokemon = this.gameStarter.mapScreener.activeArea.wildPokemon;
+        const areaWildPokemon = this.eightBitter.mapScreener.activeArea.wildPokemon;
         if (areaWildPokemon === undefined) {
             throw new Error("Grass area doesn't have any wild Pokemon options defined.");
         }
@@ -67,10 +67,10 @@ export class EncounterChoices<TGameStartr extends FullScreenPokemon> extends Gen
      * @remarks Uses the doesWalkingEncounterHappen equation internally.
      */
     private getWalkingPokemonOptions(): IWildPokemonSchema[] | undefined {
-        const area = this.gameStarter.mapScreener.activeArea;
+        const area = this.eightBitter.mapScreener.activeArea;
         if (area.wildPokemon === undefined
             || area.wildPokemon.walking === undefined
-            || !this.gameStarter.equations.doesWalkingEncounterHappen()) {
+            || !this.eightBitter.equations.doesWalkingEncounterHappen()) {
             return undefined;
         }
 
@@ -86,11 +86,11 @@ export class EncounterChoices<TGameStartr extends FullScreenPokemon> extends Gen
      */
     private getSurfingPokemonOptions(thing: IPlayer): IWildPokemonSchema[] | undefined {
         const { surfing } = thing;
-        if (surfing === undefined || !this.gameStarter.equations.doesWalkingEncounterHappen()) {
+        if (surfing === undefined || !this.eightBitter.equations.doesWalkingEncounterHappen()) {
             return undefined;
         }
 
-        const areaWildPokemon = this.gameStarter.mapScreener.activeArea.wildPokemon;
+        const areaWildPokemon = this.eightBitter.mapScreener.activeArea.wildPokemon;
         if (areaWildPokemon === undefined) {
             throw new Error("SUrfing area doesn't have any wild Pokemon options defined.");
         }

@@ -1,11 +1,11 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * ElderTraining cutscene routines.
  */
-export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class ElderTrainingCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Cutscene for the old man battling a Weedle.
      *
@@ -13,9 +13,9 @@ export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extend
      */
     public StartBattle(settings: any): void {
         console.log("Should start battle with", settings);
-        // this.gameStarter.mapScreener.blockInputs = true;
-        // this.gameStarter.battles.startBattle({
-        //     keptThings: this.gameStarter.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
+        // this.eightBitter.mapScreener.blockInputs = true;
+        // this.eightBitter.battles.startBattle({
+        //     keptThings: this.eightBitter.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
         //     battlers: {
         //         player: {
         //             name: "OLD MAN".split(""),
@@ -28,7 +28,7 @@ export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extend
         //             sprite: "WeedleFront",
         //             category: "Wild",
         //             actors: [
-        //                 this.gameStarter.equations.newPokemon("WEEDLE".split(""), 5)
+        //                 this.eightBitter.equations.newPokemon("WEEDLE".split(""), 5)
         //             ]
         //         }
         //     },
@@ -40,14 +40,14 @@ export class ElderTrainingCutscene<TGameStartr extends FullScreenPokemon> extend
         //     onShowPlayerMenu: (): void => {
         //         const timeout: number = 70;
 
-        //         this.gameStarter.timeHandler.addEvent(
-        //             (): void => this.gameStarter.menuGrapher.registerDown(),
+        //         this.eightBitter.timeHandler.addEvent(
+        //             (): void => this.eightBitter.menuGrapher.registerDown(),
         //             timeout);
-        //         this.gameStarter.timeHandler.addEvent(
-        //             (): void => this.gameStarter.menuGrapher.registerA(),
+        //         this.eightBitter.timeHandler.addEvent(
+        //             (): void => this.eightBitter.menuGrapher.registerA(),
         //             timeout * 2);
-        //         this.gameStarter.timeHandler.addEvent(
-        //             (): void => this.gameStarter.menuGrapher.registerA(),
+        //         this.eightBitter.timeHandler.addEvent(
+        //             (): void => this.eightBitter.menuGrapher.registerA(),
         //             timeout * 3);
         //     }
         // } as IBattleInfo);

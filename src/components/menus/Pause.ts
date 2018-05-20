@@ -1,4 +1,4 @@
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMenuSchema } from "../Menus";
@@ -6,7 +6,7 @@ import { IMenuSchema } from "../Menus";
 /**
  * Opens and closes the root pause menu.
  */
-export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> {
+export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Opens the Pause menu.
      *
@@ -16,7 +16,7 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
         const options: any[] = [
             {
                 callback: (): void => {
-                    this.gameStarter.menus.items.open({
+                    this.eightBitter.menus.items.open({
                         backMenu: "Pause",
                     });
                 },
@@ -24,14 +24,14 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             },
             {
                 callback: (): void => {
-                    this.gameStarter.menus.player.open({
+                    this.eightBitter.menus.player.open({
                         backMenu: "Pause",
                     });
                 },
                 text: "%%%%%%%PLAYER%%%%%%%",
             },
             {
-                callback: this.gameStarter.menus.save.open,
+                callback: this.eightBitter.menus.save.open,
                 text: "SAVE",
             },
             {
@@ -43,41 +43,41 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
             },
         ];
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.hasPokedex)) {
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.hasPokedex)) {
             options.unshift({
                 text: "%%%%%%%POKEDEX%%%%%%%",
                 callback: this.open,
             });
         }
 
-        if (this.gameStarter.itemsHolder.getItem(this.gameStarter.storage.names.pokemonInParty).length !== 0) {
+        if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty).length !== 0) {
             options.unshift({
                 text: "%%%%%%%POKEMON%%%%%%%",
                 callback: (): void => {
-                    this.gameStarter.menus.pokemon.openPartyMenu({
+                    this.eightBitter.menus.pokemon.openPartyMenu({
                         onSwitch: (): void => console.log("Should switch..."),
                     });
                 },
             });
         }
 
-        this.gameStarter.menuGrapher.createMenu("Pause", {
+        this.eightBitter.menuGrapher.createMenu("Pause", {
             size: {
                 height: (options.length * 32) + 48,
             },
         });
 
-        this.gameStarter.menuGrapher.addMenuList("Pause", {
+        this.eightBitter.menuGrapher.addMenuList("Pause", {
             options,
         });
-        this.gameStarter.menuGrapher.setActiveMenu("Pause");
+        this.eightBitter.menuGrapher.setActiveMenu("Pause");
     }
 
     /**
      * Closes the Pause menu.
      */
     public readonly close = (): void => {
-        this.gameStarter.menuGrapher.deleteMenu("Pause");
+        this.eightBitter.menuGrapher.deleteMenu("Pause");
     }
 
     /**
@@ -87,16 +87,16 @@ export class Pause<TGameStartr extends FullScreenPokemon> extends GeneralCompone
      * @param settings   Custom attributes to apply to the menu.
      */
     public readonly toggle = (settings?: IMenuSchema): void => {
-        if (this.gameStarter.menuGrapher.getActiveMenu()) {
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
             return;
         }
 
-        const cutsceneSettings: any = this.gameStarter.scenePlayer.getCutsceneSettings();
+        const cutsceneSettings: any = this.eightBitter.scenePlayer.getCutsceneSettings();
         if (cutsceneSettings && cutsceneSettings.disablePauseMenu) {
             return;
         }
 
-        this.gameStarter.menuGrapher.getMenu("Pause") === undefined
+        this.eightBitter.menuGrapher.getMenu("Pause") === undefined
             ? this.open(settings)
             : this.close();
     }

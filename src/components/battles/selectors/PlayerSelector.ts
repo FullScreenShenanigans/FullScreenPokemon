@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { BattleOutcome, IMove, IOnChoice, ISelector, Team } from "battlemovr";
-import { GeneralComponent } from "gamestartr";
+import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
@@ -10,12 +10,12 @@ import { Switching } from "./player/Switching";
 /**
  * Selector for a player's battle actions.
  */
-export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends GeneralComponent<TGameStartr> implements ISelector {
+export class PlayerSelector<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ISelector {
     /**
      * Menu interface for the player choosing whether to switch Pokemon.
      */
     @component(Switching)
-    private readonly switching: Switching<TGameStartr>;
+    private readonly switching: Switching<TEightBittr>;
 
     /**
      * Reacts to an actor getting knocked out.
@@ -33,7 +33,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
         if (remaining) {
             this.switching.offerSwitch(team, onComplete);
         } else {
-            this.gameStarter.battleMover.stopBattle(
+            this.eightBitter.battleMover.stopBattle(
                 team === Team.opponent
                     ? BattleOutcome.playerVictory
                     : BattleOutcome.opponentVictory);
@@ -58,9 +58,9 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
      * @param onChoice   Callback for when an action is chosen.
      */
     private resetGui(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
-        this.gameStarter.menuGrapher.createMenu("GeneralText");
-        this.gameStarter.menuGrapher.createMenu("BattleOptions");
-        this.gameStarter.menuGrapher.addMenuList("BattleOptions", {
+        this.eightBitter.menuGrapher.createMenu("GeneralText");
+        this.eightBitter.menuGrapher.createMenu("BattleOptions");
+        this.eightBitter.menuGrapher.addMenuList("BattleOptions", {
             options: [
                 {
                     text: "FIGHT",
@@ -83,7 +83,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
                 },
             ],
         });
-        this.gameStarter.menuGrapher.setActiveMenu("BattleOptions");
+        this.eightBitter.menuGrapher.setActiveMenu("BattleOptions");
     }
 
     /**
@@ -111,9 +111,9 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
             });
         }
 
-        this.gameStarter.menuGrapher.createMenu("BattleFightList");
-        this.gameStarter.menuGrapher.addMenuList("BattleFightList", { options });
-        this.gameStarter.menuGrapher.setActiveMenu("BattleFightList");
+        this.eightBitter.menuGrapher.createMenu("BattleFightList");
+        this.eightBitter.menuGrapher.addMenuList("BattleFightList", { options });
+        this.eightBitter.menuGrapher.setActiveMenu("BattleFightList");
     }
 
     /**
@@ -123,7 +123,7 @@ export class PlayerSelector<TGameStartr extends FullScreenPokemon> extends Gener
      * @param onChoice   Callback for when an action is chosen.
      */
     private openBattleItemsMenu(onChoice: IOnChoice): void {
-        this.gameStarter.menus.items.open({
+        this.eightBitter.menus.items.open({
             backMenu: "BattleOptions",
             container: "Battle",
             disableTossing: true,
