@@ -128,7 +128,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      */
     public animatePlayerDialogFreeze(thing: IPlayer): void {
         this.walking.animateCharacterPreventWalking(thing);
-        this.eightBitter.timeHandler.cancelClassCycle(thing, "walking");
+        this.eightBitter.classCycler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
             this.eightBitter.timeHandler.cancelEvent(thing.walkingFlipping);

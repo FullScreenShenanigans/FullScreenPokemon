@@ -11,5 +11,5 @@ export const createAreaSpawner = (fsp: FullScreenPokemon): AreaSpawnr =>
         screenAttributes: [
             "allowCycling",
         ],
-        ...fsp.settings.components.areas,
+        ...fsp.settings.components.areaSpawner,
     });

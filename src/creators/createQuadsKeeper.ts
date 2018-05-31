@@ -22,6 +22,6 @@ export const createQuadsKeeper = (fsp: FullScreenPokemon) => {
         onRemove: (direction: string, top: number, right: number, bottom: number, left: number): void => {
             fsp.maps.onAreaUnspawn(direction, top, right, bottom, left);
         },
-        ...fsp.settings.components.quadrants,
+        ...fsp.settings.components.quadsKeeper,
     });
 };

@@ -27,7 +27,7 @@ export class SpeedRunningMod<TEightBittr extends FullScreenPokemon> extends ModC
         },
         [this.eventNames.onModDisable]: (): void => {
             const stats: any = this.eightBitter.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
-            const oldSpeed: number = this.eightBitter.settings.components.objects!.properties![SpeedRunningMod.playerClassName].speed;
+            const oldSpeed: number = this.eightBitter.settings.components.objectMaker!.properties![SpeedRunningMod.playerClassName].speed;
             this.eightBitter.players[0].speed = stats.speed = oldSpeed;
         },
     };

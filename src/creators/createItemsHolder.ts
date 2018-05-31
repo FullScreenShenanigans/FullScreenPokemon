@@ -63,7 +63,7 @@ export const createItemsHolder = (fsp: FullScreenPokemon) => {
                 valueDefault: 0,
             },
         },
-        ...fsp.settings.components.items,
+        ...fsp.settings.components.itemsHolder,
     });
 
     itemsHolder.setAutoSave(itemsHolder.getItem(fsp.storage.names.autoSave));

@@ -75,7 +75,7 @@ export interface IFullScreenPokemonComponentSettings extends IComponentSettings 
     /**
      * Settings for feature flags, particularly for a FlagSwappr.
      */
-    flags?: Partial<IFlagSwapprSettings<IFlags>>;
+    flagSwapper?: Partial<IFlagSwapprSettings<IFlags>>;
 }
 
 /**

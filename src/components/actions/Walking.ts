@@ -160,7 +160,7 @@ export class Walking<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         thing.walking = false;
 
         this.eightBitter.graphics.removeClasses(thing, "walking", "standing");
-        this.eightBitter.timeHandler.cancelClassCycle(thing, "walking");
+        this.eightBitter.classCycler.cancelClassCycle(thing, "walking");
 
         if (thing.walkingFlipping) {
             this.eightBitter.timeHandler.cancelEvent(thing.walkingFlipping);
@@ -264,7 +264,7 @@ export class Walking<TEightBittr extends FullScreenPokemon> extends GeneralCompo
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.timeHandler.addClassCycle(
+                this.eightBitter.classCycler.addClassCycle(
                     thing,
                     ["walking", "standing"],
                     "walking",

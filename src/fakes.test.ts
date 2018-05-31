@@ -32,16 +32,16 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
     const fsp = new FullScreenPokemon({
         height: settings.height || 256,
         components: {
-            audio: {
+            audioPlayer: {
                 createSound: () => sinon.createStubInstance(AudioElementSound),
             },
-            drawing: {
-                framerateSkip: 9000001,
-            },
-            items: { prefix },
-            runner: {
+            gamesRunner: {
                 tickCanceller: clock.clearTimeout,
                 tickScheduler: clock.setTimeout,
+            },
+            itemsHolder: { prefix },
+            pixelDrawer: {
+                framerateSkip: 9000001,
             },
         },
         width: settings.width || 256,

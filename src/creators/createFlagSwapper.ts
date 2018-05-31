@@ -30,5 +30,5 @@ export const createFlagSwapper = (fsp: FullScreenPokemon): FlagSwappr<IFlags> =>
                 heldItems: true,
             },
         },
-        ...fsp.settings.components.flags,
+        ...fsp.settings.components.flagSwapper,
     });

@@ -21,5 +21,5 @@ export const createPixelDrawer = (fsp: FullScreenPokemon) =>
             fsp.groupHolder.getGroup("Character"),
             fsp.groupHolder.getGroup("Text"),
         ],
-        ...fsp.settings.components.drawing,
+        ...fsp.settings.components.pixelDrawer,
     });

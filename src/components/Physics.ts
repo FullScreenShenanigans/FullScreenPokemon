@@ -164,7 +164,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
         thing.numquads = 0;
         thing.movement = undefined;
 
-        this.eightBitter.timeHandler.cancelAllCycles(thing);
+        this.eightBitter.classCycler.cancelAllCycles(thing);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKillNormal, thing);
         this.eightBitter.groupHolder.removeFromGroup(thing, thing.groupType);
     }

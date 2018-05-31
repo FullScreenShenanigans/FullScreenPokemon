@@ -1,4 +1,5 @@
 import { component } from "babyioc";
+import { ITimeCycles } from "classcyclr";
 import { IThing as IEightBittrThing, Things as EightBittrThings } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 import * as itimehandlr from "timehandlr";
@@ -56,9 +57,9 @@ export interface IThing extends IEightBittrThing, IStateSaveable {
     collide(thing: ICharacter, other: IThing): boolean;
 
     /**
-     * Animation cycles set by the ITimeHandlr.
+     * Animation cycles set by the IClassCyclr.
      */
-    cycles: itimehandlr.ITimeCycles;
+    cycles: ITimeCycles;
 
     /**
      * Whether this has been killed.
@@ -716,6 +717,17 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
      */
     public process(thing: IThing, title: string): void {
         super.process(thing, title);
+
+        // Sprite cycles
+        /* tslint:disable no-conditional-assignment */
+        let cycle: any;
+        if (cycle = thing.spriteCycle) {
+            this.eightBitter.classCycler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+        }
+        if (cycle = thing.spriteCycleSynched) {
+            this.eightBitter.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+        }
+        /* tslint:enable */
 
         // ThingHittr becomes very non-performant if functions aren't generated for
         // each Thing constructor (optimization does not respect prototypal inheritance, sadly).

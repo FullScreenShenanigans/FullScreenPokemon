@@ -15,5 +15,5 @@ export interface IGroups {
 export const createGroupHolder = (fsp: FullScreenPokemon) =>
     new GroupHoldr<IGroups>({
         groupNames: ["Solid", "Character", "Scenery", "Terrain", "Text"],
-        ...fsp.settings.components.groups,
+        ...fsp.settings.components.groupHolder,
     });

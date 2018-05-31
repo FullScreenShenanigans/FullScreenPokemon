@@ -10,4 +10,5 @@ export const createMapScreener = (fsp: FullScreenPokemon): MapScreenr =>
             scrollability: fsp.scrolling.getScreenScrollability,
         },
         width: fsp.settings.width,
+        ...fsp.settings.components.mapScreener,
     });

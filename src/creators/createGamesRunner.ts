@@ -42,5 +42,5 @@ export const createGamesRunner = (fsp: FullScreenPokemon): GamesRunnr =>
                 fsp.timeHandler.advance();
             },
         ],
-        ...fsp.settings.components.runner,
+        ...fsp.settings.components.gamesRunner,
     });

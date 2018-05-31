@@ -8,4 +8,5 @@ export const createModAttacher = (fsp: FullScreenPokemon): ModAttachr =>
         itemsHolder: fsp.itemsHolder as IItemsHoldr,
         transformModName: (name: string): string => `Mods::${name}`,
         mods: fsp.mods.mods,
+        ...fsp.settings.components.modAttacher,
     });
