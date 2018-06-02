@@ -52,7 +52,7 @@
     "typescript": "^2.8.4",
     "watch": "^1.0.2",
     "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^3.0.0"
   },
   "license": "MIT",
   "name": "fullscreenpokemon",
