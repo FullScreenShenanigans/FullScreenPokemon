@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-    background: black;
+    background: #000;
     color: #fafafa;
     overflow-x: hidden;
 	overflow-y: scroll;
