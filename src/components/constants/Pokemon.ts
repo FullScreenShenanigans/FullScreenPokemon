@@ -2,6 +2,11 @@ import { IMove } from "battlemovr";
 import { IPokemonStatistics } from "../Battles";
 
 /**
+ * Matched only by strings returned by keyof TItems.
+ */
+export type IStringKeysOf<TItems> = keyof TItems & string;
+
+/**
  * Static information about a known Pokemon.
  */
 export interface IPokemonListing {
@@ -331,12 +336,12 @@ export class Pokemon {
     /**
      * Names of all statistics Pokemon have.
      */
-    public readonly statisticNames: (keyof IPokemonStatistics)[] = ["attack", "defense", "health", "special", "speed"];
+    public readonly statisticNames: IStringKeysOf<IPokemonStatistics>[] = ["attack", "defense", "health", "special", "speed"];
 
     /**
      * Names of Pokemon statistics to display in statistics menus.
      */
-    public readonly statisticNamesDisplayed: (keyof IPokemonStatistics)[] = ["attack", "defense", "special", "speed"];
+    public readonly statisticNamesDisplayed: IStringKeysOf<IPokemonStatistics>[] = ["attack", "defense", "special", "speed"];
 
     /**
      * All known Pokemon, keyed by concatenated name.

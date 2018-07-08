@@ -323,10 +323,10 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      * @param settings   Settings to open the menu.
      */
     private addPrimaryStats(settings: ILevelUpStatsMenuSettings): void {
-        const pokemon: IPokemon = settings.pokemon;
-        const statistics: string[] = this.eightBitter.constants.pokemon.statisticNamesDisplayed.slice();
-        const numStatistics: number = statistics.length;
-        const textXOffset: number = settings.textXOffset || 32;
+        const { pokemon } = settings;
+        const statistics = this.eightBitter.constants.pokemon.statisticNamesDisplayed.slice();
+        const numStatistics = statistics.length;
+        const textXOffset = settings.textXOffset || 32;
         const menuSchema: IMenuSchema = {
             callback: (): void => this.eightBitter.menuGrapher.deleteMenu("LevelUpStats"),
             onMenuDelete: settings.onMenuDelete,
