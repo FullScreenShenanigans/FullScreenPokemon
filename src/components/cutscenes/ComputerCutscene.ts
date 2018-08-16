@@ -1,8 +1,6 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
-import { ICharacter, IThing } from "../Things";
 
 /**
  * Computer cutscene routines.

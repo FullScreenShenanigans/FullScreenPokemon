@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../fakes.test";
-import { ICharacter } from "./Things";
 
 describe("Cycling", () => {
     describe("startCycling", () => {
@@ -56,7 +55,7 @@ describe("Cycling", () => {
             player.cycling = false;
 
             // Act
-            const cycling = fsp.cycling.startCycling(player);
+            fsp.cycling.startCycling(player);
 
             // Assert
             expect(fsp.graphics.hasClass(player, "cycling")).to.be.equal(true);
@@ -72,7 +71,7 @@ describe("Cycling", () => {
             player.speed = speed;
 
             // Act
-            const cycling = fsp.cycling.startCycling(player);
+            fsp.cycling.startCycling(player);
 
             // Assert
             expect(player.speed).to.be.equal(speed * 2);
@@ -86,7 +85,7 @@ describe("Cycling", () => {
             player.cycling = false;
 
             // Act
-            const cycling = fsp.cycling.startCycling(player);
+            fsp.cycling.startCycling(player);
 
             // Assert
             expect(fsp.menuGrapher.getActiveMenuName()).to.be.equal("GeneralText");

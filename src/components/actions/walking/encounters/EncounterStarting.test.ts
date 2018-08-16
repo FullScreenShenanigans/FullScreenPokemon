@@ -1,9 +1,7 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../../../../fakes.test";
-import { Direction } from "../../../Constants";
 import { IWildPokemonSchema } from "../../../Maps";
-import { IGrass } from "../../../Things";
 
 describe("EncounterStarting", () => {
     describe("startWildEncounterBattle", () => {

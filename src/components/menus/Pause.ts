@@ -1,7 +1,6 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IMenuSchema } from "../Menus";
 
 /**
  * Opens and closes the root pause menu.
@@ -9,10 +8,8 @@ import { IMenuSchema } from "../Menus";
 export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Opens the Pause menu.
-     *
-     * @param settings   Custom attributes to apply to the menu.
      */
-    public readonly open = (settings?: IMenuSchema): void => {
+    public readonly open = (): void => {
         const options: any[] = [
             {
                 callback: (): void => {
@@ -86,7 +83,7 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      *
      * @param settings   Custom attributes to apply to the menu.
      */
-    public readonly toggle = (settings?: IMenuSchema): void => {
+    public readonly toggle = (): void => {
         if (this.eightBitter.menuGrapher.getActiveMenu()) {
             return;
         }
@@ -97,7 +94,7 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
         }
 
         this.eightBitter.menuGrapher.getMenu("Pause") === undefined
-            ? this.open(settings)
+            ? this.open()
             : this.close();
     }
 }

@@ -2,7 +2,6 @@ import { GeneralComponent } from "eightbittr";
 
 import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IItemSchema } from "../constants/Items";
 import { IMenuSchema } from "../Menus";
 
 /**

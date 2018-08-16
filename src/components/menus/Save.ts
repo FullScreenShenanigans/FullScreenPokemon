@@ -1,7 +1,6 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IMenuSchema } from "../Menus";
 
 /**
  * Opens the Save menu.

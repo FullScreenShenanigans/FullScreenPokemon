@@ -1,13 +1,10 @@
 import { expect } from "chai";
 import { Clock } from "lolex";
 
-import { IListMenuProgress } from "menugraphr";
 import { FullScreenPokemon } from "../..";
 import { stubBlankGame } from "../../fakes.test";
-import { IPokemon, IPokemonStatistics } from "../Battles";
-import { Direction } from "../Constants";
-import { IMenu } from "../Menus";
-import { ICharacter, IPlayer, IThing } from "../Things";
+import { IPokemon } from "../Battles";
+import { ICharacter, IThing } from "../Things";
 
 /**
  * Sets up a game in PokeCenter with the player being asked to heal their Pokemon.
@@ -68,7 +65,7 @@ describe("PokeCenterCutscene", () => {
 
     it("doesn't heal the player's Pokemon when the HEAL dialog has NO chosen", () => {
         // Arrange
-        const { clock, fsp, player, firstPokemonInParty } = stubBlankGameWithNurseAndMachineAfterWelcome();
+        const { fsp, player, firstPokemonInParty } = stubBlankGameWithNurseAndMachineAfterWelcome();
 
         firstPokemonInParty.status = "frozen";
 

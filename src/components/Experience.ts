@@ -2,8 +2,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "./Battles";
-import { Pokemon } from "./constants/Pokemon";
-import { IPokeball } from "./Things";
+
 /**
  * Calculates experience gains and level ups for Pokemon.
  */
@@ -74,9 +73,12 @@ export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralCo
       */
     private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
-        const experienceText: (string | string[])[][] = [[
-            pokemon.nickname,
-            ` grew to level ${pokemon.level}!`]];
+        const experienceText = [
+            [
+                pokemon.nickname,
+                ` grew to level ${pokemon.level}!`,
+            ],
+        ];
         let callBack = onComplete;
         if (this.canLearnMoveAtLevel(pokemon)) {
            callBack = () => this.learnBattleMove(pokemon, onComplete);
@@ -92,7 +94,7 @@ export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralCo
       * @param pokemon   Pokemon who is going to going to learn a move.
       * @returns Whether a Pokemon can learn a move at its current level
       */
-    private canLearnMoveAtLevel(pokemon: IPokemon): boolean {
+    private canLearnMoveAtLevel(_pokemon: IPokemon): boolean {
         // TODO: implement this check
         return false;
     }
@@ -103,7 +105,7 @@ export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralCo
       * @param pokemon   Pokemon who is going to going to learn a move.
       * @param onComplete   Handler for when this is done.
       */
-    private learnBattleMove(pokemon: IPokemon, onComplete: () => void) {
+    private learnBattleMove(_pokemon: IPokemon, onComplete: () => void) {
         // TODO: implement this function
         onComplete();
     }

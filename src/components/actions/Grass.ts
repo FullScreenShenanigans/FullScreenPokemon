@@ -1,9 +1,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IBattleTeam, IPokemon } from "../Battles";
-import { IArea, IMap, IWildPokemonSchema } from "../Maps";
-import { ICharacter, IGrass, IPlayer, IThing } from "../Things";
+import { ICharacter, IGrass, IThing } from "../Things";
 
 /**
  * Visual and battle updates for walking in tall grass.

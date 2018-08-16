@@ -1,8 +1,7 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../../fakes.test";
-import { IDialog, IListMenu } from "../Menus";
-import { IThing } from "../Things";
+import { IListMenu } from "../Menus";
 
 describe("Computer", () => {
     it("creates a list of PC options after the dialog when opened", () => {
@@ -29,7 +28,7 @@ describe("Computer", () => {
     describe("LOG OFF", () => {
         it("logs off when the LOG OFF option is selected", () => {
             // Arrange
-            const { fsp, player } = stubBlankGame({
+            const { fsp } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
 

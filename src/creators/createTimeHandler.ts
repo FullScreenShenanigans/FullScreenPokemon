@@ -1,8 +1,6 @@
 import { TimeHandlr } from "timehandlr";
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
-
-export const createTimeHandler = (fsp: FullScreenPokemon) =>
+export const createTimeHandler = () =>
     new TimeHandlr({
         timingDefault: 9,
     });

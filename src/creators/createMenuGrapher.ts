@@ -1,9 +1,9 @@
 import {
-    IListMenuSchema, IMenuChildSchema, IMenuThingSchema, IMenuWordPadLeftCommand,
+    IListMenuSchema, IMenuChildSchema, IMenuWordPadLeftCommand,
     MenuGraphr,
 } from "menugraphr";
 
-import { IPokedex, IPokedexInformation, IPokedexListing } from "../components/constants/Pokemon";
+import { IPokedex, IPokedexInformation } from "../components/constants/Pokemon";
 import { IDialog, IMenuBase, IMenuSchema } from "../components/Menus";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 

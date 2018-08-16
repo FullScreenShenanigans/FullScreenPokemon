@@ -1,11 +1,9 @@
 import { GeneralComponent } from "eightbittr";
 
-import { component } from "babyioc";
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../../../Battles";
-import { IArea, IMap, IWildPokemonSchema } from "../../../Maps";
-import { ICharacter, IPlayer } from "../../../Things";
-import { EncounterChoices } from "../encounters/EncounterChoices";
+import { IWildPokemonSchema } from "../../../Maps";
+import { IPlayer } from "../../../Things";
 
 /**
  * Starts wild Pokemon encounters during walking.

@@ -26,7 +26,7 @@ export interface IMapScreenr extends IMapScreenr {
     /**
      * Which are the player is currently active in.
      *
-     * @todo Consider moving this into EightBittr core.;
+     * @todo Consider moving this into EightBittr core.
      */
     activeArea: IArea;
 

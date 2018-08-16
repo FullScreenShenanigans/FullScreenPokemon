@@ -2,7 +2,6 @@ import { IMove } from "battlemovr";
 import { expect } from "chai";
 import { stubBlankGame } from "../fakes.test";
 import { IPokemon } from "./Battles";
-import { MoveAdder } from "./MoveAdder";
 
 describe("MoveAdder", () => {
     it("adds a new move to a Pokemon's moveset when the move index is valid", (): void => {
@@ -129,7 +128,7 @@ describe("MoveAdder", () => {
     describe("Dialog Menu", () => {
         it("teaches you a move when you have less than four moves", (): void => {
             // Arrange
-            const { fsp, player, ...extras } = stubBlankGame({
+            const { fsp } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
 
@@ -159,7 +158,7 @@ describe("MoveAdder", () => {
 
         it("does not teach you a move when you have four moves and refuse to learn more", (): void => {
             // Arrange
-            const { fsp, player, ...extras } = stubBlankGame({
+            const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -194,7 +193,7 @@ describe("MoveAdder", () => {
 
         it("teaches you a move in your second slot when you have four moves and select the second to replace", (): void => {
             // Arrange
-            const { fsp, player, ...extras } = stubBlankGame({
+            const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -229,7 +228,7 @@ describe("MoveAdder", () => {
 
         it("teaches you a move in your fourth slot when you have four moves and select the fourth to replace", (): void => {
             // Arrange
-            const { fsp, player, ...extras } = stubBlankGame({
+            const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -266,7 +265,7 @@ describe("MoveAdder", () => {
 
         it("teaches you a move when you respond no to abandoning learning a new move", (): void => {
             // Arrange
-            const { fsp, player, ...extras } = stubBlankGame({
+            const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
             const pokemon: IPokemon = fsp.equations.newPokemon({

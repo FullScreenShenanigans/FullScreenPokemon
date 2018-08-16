@@ -3,7 +3,7 @@ import * as sinon from "sinon";
 
 import { stubBlankGame } from "../fakes.test";
 import { Direction } from "./Constants";
-import { IPlayer, IThing } from "./Things";
+import { IPlayer } from "./Things";
 
 describe("Inputs", () => {
     describe("keyDownA", () => {

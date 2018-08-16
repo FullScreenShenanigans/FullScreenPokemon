@@ -46,9 +46,9 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
                 const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
 
                 if (teamName === "opponent") {
-                    this.processOpponentFainting(partyIsWipedText, onComplete, battleInfo, thing, blank);
+                    this.processOpponentFainting(partyIsWipedText, onComplete, battleInfo);
                 } else {
-                    this.processPlayerFainting(partyIsWipedText, onComplete, battleInfo, thing, blank, playerName);
+                    this.processPlayerFainting(partyIsWipedText, onComplete, playerName);
                 }
                 this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
                 this.eightBitter.death.killNormal(thing);
@@ -64,7 +64,7 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
     private processOpponentFainting(
         partyIsWipedText: (string | string[])[][],
         onComplete: () => void, battleInfo: IBattleInfo,
-        thing: IThing, blank: IThing) {
+    ) {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText", partyIsWipedText,
@@ -76,8 +76,9 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
       */
     private processPlayerFainting(
         partyIsWipedText: (string | string[])[][],
-        onComplete: () => void, battleInfo: IBattleInfo,
-        thing: IThing, blank: IThing, playerName: string[]) {
+        onComplete: () => void,
+        playerName: string[],
+    ) {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         if (this.eightBitter.battles.isPartyWiped()) {
             partyIsWipedText.push(

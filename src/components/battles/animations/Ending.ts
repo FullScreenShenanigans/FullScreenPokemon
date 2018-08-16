@@ -1,4 +1,3 @@
-import { component } from "babyioc";
 import { BattleOutcome, Queue } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
 

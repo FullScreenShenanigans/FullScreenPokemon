@@ -107,9 +107,6 @@ describe("Items", () => {
             fsp.inputs.keyUpA(player);
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
-            const optionTexts = options.map((option) => option.text);
-
             expect(fsp.menuGrapher.getActiveMenuName()).to.be.deep.equal("Item");
         });
     });
@@ -122,7 +119,7 @@ describe("Items", () => {
 
         it("doesn't add a GIVE option when the feature isn't enabled", () => {
             // Arrange
-            const { fsp, player } = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const settings = {
                 onUse: sinon.spy(),
                 onToss: sinon.spy(),
@@ -145,7 +142,7 @@ describe("Items", () => {
 
         it("adds a GIVE option when the feature is enabled", () => {
             // Arrange
-            const { fsp, player } = stubBlankGame();
+            const { fsp } = stubBlankGame();
             const settings = {
                 onUse: sinon.spy(),
                 onToss: sinon.spy(),
@@ -211,11 +208,7 @@ describe("Items", () => {
     describe("tossItem", () => {
         it("throws out an item when its amount reaches above zero", () => {
             // Arrange
-            const { fsp, player } = stubBlankGame();
-            const settings = {
-                onUse: sinon.spy(),
-                onToss: sinon.spy(),
-            };
+            const { fsp } = stubBlankGame();
             fsp.saves.addItemToBag("Potion");
             fsp.saves.addItemToBag("Potion");
 
@@ -228,11 +221,7 @@ describe("Items", () => {
 
         it("throws out an item when its amount reaches below zero", () => {
             // Arrange
-            const { fsp, player } = stubBlankGame();
-            const settings = {
-                onUse: sinon.spy(),
-                onToss: sinon.spy(),
-            };
+            const { fsp } = stubBlankGame();
             fsp.saves.addItemToBag("Potion");
 
             // Act
@@ -244,11 +233,7 @@ describe("Items", () => {
 
         it("does not throw out an item when item doesn't exist", () => {
             // Arrange
-            const { fsp, player } = stubBlankGame();
-            const settings = {
-                onUse: sinon.spy(),
-                onToss: sinon.spy(),
-            };
+            const { fsp } = stubBlankGame();
             fsp.saves.addItemToBag("Potion");
 
             // Act

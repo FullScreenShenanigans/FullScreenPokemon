@@ -1,11 +1,8 @@
-import { BattleOutcome } from "battlemovr";
 import { expect } from "chai";
 import { Clock } from "lolex";
-import { IListMenuProgress, MenuGraphr } from "menugraphr";
-import { Children } from "react";
 import { FullScreenPokemon } from "../";
 import { stubBlankGame } from "../fakes.test";
-import { IBattleInfo, IBattleTeam, IPartialBattleOptions, IPokemon } from "./Battles";
+import { IBattleTeam, IPokemon } from "./Battles";
 import { IPlayer } from "./Things";
 
 const skipBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer): void => {
@@ -101,7 +98,7 @@ describe("Experience", () => {
             });
 
             // Act
-            const result = fsp.experience.gainExperience(pokemon, 50);
+            fsp.experience.gainExperience(pokemon, 50);
 
             // Assert
             expect(pokemon.experience).to.be.equal(175);

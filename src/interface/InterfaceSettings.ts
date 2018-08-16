@@ -1,6 +1,4 @@
-import { GeneralComponent } from "eightbittr";
 import { IPipe } from "inputwritr";
-import { IMod } from "modattachr";
 import {
     IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrappr, IUserWrapprSettings, OptionType,
 } from "userwrappr";

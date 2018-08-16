@@ -88,7 +88,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends EightBittrG
                     const reader: FileReader = new FileReader();
                     reader.onloadend = (loadEvent): void => {
                         const currentTarget = loadEvent.currentTarget as FileReader | null;
-                        if (!currentTarget) {
+                        if (!currentTarget || typeof currentTarget.result !== "string") {
                             return;
                         }
 

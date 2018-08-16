@@ -1,6 +1,6 @@
 import { IMove } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
-import { IMenuSchemaPosition, IMenuSchemaPositionOffset } from "menugraphr";
+import { IMenuSchemaPosition } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";

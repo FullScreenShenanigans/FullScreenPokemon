@@ -1,9 +1,8 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleTeam, IPokemon } from "../../../Battles";
-import { IArea, IAreaWildPokemonOptionGroups, IMap, IWildPokemonSchema } from "../../../Maps";
-import { ICharacter, IPlayer, IThing } from "../../../Things";
+import { IWildPokemonSchema } from "../../../Maps";
+import { IPlayer } from "../../../Things";
 
 /**
  * Chooses wild Pokemon to encounter during walking.

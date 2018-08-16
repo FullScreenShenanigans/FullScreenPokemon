@@ -2,9 +2,7 @@ import { PixelRendr } from "pixelrendr";
 
 /* tslint:disable max-line-length */
 
-import { FullScreenPokemon } from "../FullScreenPokemon";
-
-export const createPixelRender = (fsp: FullScreenPokemon) =>
+export const createPixelRender = () =>
     new PixelRendr({
         scale: 2,
         spriteWidth: "spritewidth",

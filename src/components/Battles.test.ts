@@ -1,10 +1,8 @@
 import { expect } from "chai";
 import { Clock } from "lolex";
-import { MenuGraphr } from "menugraphr";
 import { FullScreenPokemon } from "..";
-import { createBattleMover } from "../creators/createBattleMover";
 import { stubBlankGame } from "../fakes.test";
-import { IBattleTeam, IPartialBattleOptions, IPokemon } from "./Battles";
+import { IBattleTeam, IPokemon } from "./Battles";
 import { IPlayer } from "./Things";
 
 const createGame = () => {

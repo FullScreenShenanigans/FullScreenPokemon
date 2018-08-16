@@ -3,7 +3,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 import { IPokemon } from "./Battles";
-import { IPokedex, IPokedexListing } from "./constants/Pokemon";
+import { IPokedex } from "./constants/Pokemon";
 import { IInventoryListing } from "./menus/Items";
 import { ItemNames } from "./storage/ItemNames";
 

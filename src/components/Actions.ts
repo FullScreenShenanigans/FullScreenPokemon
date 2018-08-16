@@ -18,7 +18,6 @@ import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
     IMenuTriggerer, IPlayer, ISightDetector, IThemeDetector, IThing, ITransporter,
     ITransportSchema,
-    IWaterEdge,
 } from "./Things";
 
 /**
