@@ -15,6 +15,7 @@
         "noUnusedParameters": true,
         "pretty": true,
         "strict": true,
+        "strictFunctionTypes": false,
         "strictPropertyInitialization": false,
         "target": "es5"
     },
