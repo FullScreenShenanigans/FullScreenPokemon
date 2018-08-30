@@ -1,8 +1,7 @@
-after_script: greenkeeper-lockfile-upload
-
-before_install: npm i -g greenkeeper-lockfile npm@latest
-
-before_script: greenkeeper-lockfile-update
+# Disabled for https://github.com/greenkeeperio/greenkeeper-lockfile/issues/194
+# after_script: greenkeeper-lockfile-upload
+# before_install: npm i -g greenkeeper-lockfile npm@latest
+# before_script: greenkeeper-lockfile-update
 
 install: npm install
 
