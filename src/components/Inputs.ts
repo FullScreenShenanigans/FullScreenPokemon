@@ -285,9 +285,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             throw new Error("Currently selected item does not have a .bagActivate.");
         }
 
-        if (!itemSchema.bagActivate.call(this, thing, itemSchema)) {
-            this.eightBitter.menus.displayMessage(itemSchema.error || "");
-        }
+        itemSchema.bagActivate.call(this, thing, itemSchema);
 
         if (event && event.preventDefault) {
             event.preventDefault();

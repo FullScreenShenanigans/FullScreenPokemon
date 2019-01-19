@@ -67,7 +67,7 @@ describe("ItemEffects", () => {
                 title: "CHARMANDER".split(""),
             });
             const itemEffects = new ItemEffects(fsp);
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 6; i += 1) {
                 fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i] = squirtle;
             }
 
@@ -75,7 +75,7 @@ describe("ItemEffects", () => {
             itemEffects.capturePokemon(charmander);
 
             // Assert
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 6; i += 1) {
                 expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i].title).to.be.equal(squirtle.title);
             }
         });
@@ -108,7 +108,7 @@ describe("ItemEffects", () => {
                 title: "CHARMANDER".split(""),
             });
             const itemEffects = new ItemEffects(fsp);
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 6; i += 1) {
                 fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i] = squirtle;
             }
 

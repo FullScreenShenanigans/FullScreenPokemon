@@ -11,13 +11,13 @@
     "babyioc": "^0.7.4",
     "battlemovr": "^0.7.3",
     "changelinr": "^0.7.2",
-    "eightbittr": "^0.7.17",
+    "eightbittr": "^0.7.18",
     "flagswappr": "^0.7.3",
     "itemsholdr": "^0.7.8",
-    "menugraphr": "^0.7.9",
+    "menugraphr": "^0.7.10",
     "stateholdr": "^0.7.3",
     "stringfilr": "^0.7.4",
-    "userwrappr": "^0.7.4"
+    "userwrappr": "^0.7.5"
   },
   "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
   "devDependencies": {

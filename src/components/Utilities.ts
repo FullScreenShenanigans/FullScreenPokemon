@@ -73,7 +73,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @returns Whether the stackable item was removed.
      */
     public removeArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
-        for (let i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i += 1) {
             if (array[i][keyTitle] === title) {
                 array[i][keyCount] -= count;
                 if (array[i][keyCount] <= 0) {
