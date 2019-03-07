@@ -37,7 +37,7 @@
     "mocha": "^5.2.0",
     "mocha-headless-chrome": "^2.0.1",
     "node-sass": "^4.11.0",
-    "npm-check-updates": "^2.15.0",
+    "npm-check-updates": "^3.0.0",
     "requirejs": "^2.3.6",
     "run-for-every-file": "^1.1.0",
     "shenanigans-manager": "^0.2.35",
