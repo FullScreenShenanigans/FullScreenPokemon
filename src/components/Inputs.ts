@@ -152,7 +152,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     protected keyDownDirectionReal(thing: IPlayer, direction: Direction): void {
-        if (!(thing.keys as any)[direction]) {
+        if (!thing.keys[direction]) {
             return;
         }
 
