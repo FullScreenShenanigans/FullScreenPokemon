@@ -74,13 +74,14 @@ export class Keyboards<TEightBittr extends FullScreenPokemon> extends GeneralCom
 
         const completeValue: string[] = settings.value ? settings.value.slice() : [];
         const displayedValue: string[] = completeValue.slice();
-        for (let i = 0; i < 7; i += 1) {
-            displayedValue.push("_");
+        for (let i = settings.selectedChild || 0; i < 7; i += 1) {
+            displayedValue[i] = "_";
         }
 
         const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
         const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
-        const onComplete: () => void = settings.callback || onKeyPress;
+        // tslint:disable-next-line:no-empty
+        const onComplete: () => void = settings.callback || (() => {});
         const lowercase: boolean = !!settings.lowercase;
         const letters: string[] = lowercase
             ? this.eightBitter.constants.keysLowercase
@@ -173,9 +174,10 @@ export class Keyboards<TEightBittr extends FullScreenPokemon> extends GeneralCom
         this.openKeyboardMenu({
             ...menuKeyboard.settings,
             lowercase: !menuKeyboard.settings.lowercase,
-            value: menuResults.displayedValue,
+            value: menuResults.completeValue,
             displayedValue: menuResults.displayedValue,
             completeValue: menuResults.completeValue,
+            selectedChild: menuResults.selectedChild,
             selectedIndex: menuKeys.selectedIndex,
         });
     }
