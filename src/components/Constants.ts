@@ -2,6 +2,7 @@ import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Battles } from "./constants/Battles";
 import { Items } from "./constants/Items";
 import { Moves } from "./constants/Moves";

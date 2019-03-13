@@ -1,10 +1,11 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
-import { component } from "babyioc";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
 import { IWildPokemonSchema } from "../Maps";
 import { ICharacter, IPlayer } from "../Things";
+
 import { Encounters } from "./walking/Encounters";
 
 /**

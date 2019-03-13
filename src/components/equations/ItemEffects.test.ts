@@ -1,6 +1,8 @@
 import { expect } from "chai";
+
 import { stubBlankGame } from "../../fakes.test";
 import { IPokemon } from "../Battles";
+
 import { ItemEffects } from "./ItemEffects";
 
 describe("ItemEffects", () => {

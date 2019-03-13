@@ -2,6 +2,7 @@ import { ISelector, ISelectorFactory } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+
 import { OpponentSelector } from "./selectors/OpponentSelector";
 import { PlayerSelector } from "./selectors/PlayerSelector";
 

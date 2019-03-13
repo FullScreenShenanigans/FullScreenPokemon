@@ -5,6 +5,7 @@ import { GeneralComponent } from "eightbittr";
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { Shrinking } from "../../../animations/Shrinking";
 import { IBattleInfo } from "../../../Battles";
+
 import { Enter, IEnterSettings } from "./switching/Enter";
 
 /**

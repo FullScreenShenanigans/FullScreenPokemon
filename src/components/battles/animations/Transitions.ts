@@ -1,6 +1,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
+
 import { FlashTransition } from "./transitions/FlashTransition";
 import { InstantTransition } from "./transitions/InstantTransition";
 import { Transition } from "./transitions/Transition";

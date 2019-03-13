@@ -3,6 +3,7 @@ import { BattleOutcome, IAnimations, Team } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+
 import { Ending } from "./animations/Ending";
 import { Opponent } from "./animations/Opponent";
 import { Player } from "./animations/Player";

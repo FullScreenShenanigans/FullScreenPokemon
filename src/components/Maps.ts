@@ -13,6 +13,7 @@ import {
 import { IMapScreenr } from "mapscreenr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Direction } from "./Constants";
 import { Entrances } from "./maps/Entrances";
 import { Macros } from "./maps/Macros";

@@ -6,6 +6,7 @@ import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
 import { IMenu } from "../../Menus";
 import { IThing } from "../../Things";
+
 import { Actions } from "./shared/Actions";
 import { Switching } from "./shared/Switching";
 

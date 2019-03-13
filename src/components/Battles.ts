@@ -5,6 +5,7 @@ import {
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { ActionsOrderer } from "./battles/ActionsOrderer";
 import { Animations } from "./battles/Animations";
 import { Decorations } from "./battles/Decorations";

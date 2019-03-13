@@ -5,6 +5,7 @@ import { /* IBattleInfo, */ IPokemon } from "../../components/Battles";
 // import { IArea, IMap } from "../../components/Maps";
 // import { IGrass, } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+
 import { ModComponent } from "./ModComponent";
 
 /**

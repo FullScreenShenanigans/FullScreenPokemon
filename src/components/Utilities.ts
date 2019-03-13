@@ -1,6 +1,7 @@
 import { Utilities as EightBittrUtilities } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IThing } from "./Things";
 
 /**

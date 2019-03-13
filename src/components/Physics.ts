@@ -1,6 +1,7 @@
 import { Physics as EightBittrPhysics } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Direction } from "./Constants";
 import { ICharacter, IGrass, IThing } from "./Things";
 

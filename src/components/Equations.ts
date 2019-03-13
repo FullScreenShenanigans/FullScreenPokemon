@@ -3,6 +3,7 @@ import { IMove, IStatistic } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
 import { IBattleBall } from "./constants/Items";
 import { INewPokemon, IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";

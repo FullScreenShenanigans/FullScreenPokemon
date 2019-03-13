@@ -3,6 +3,7 @@ import * as sinon from "sinon";
 
 import { stubBlankGame } from "../../fakes.test";
 import { IListMenu } from "../Menus";
+
 import { IInventoryListing, IItemMenuSettings } from "./Items";
 
 describe("Items", () => {

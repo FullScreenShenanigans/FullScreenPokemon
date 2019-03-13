@@ -1,6 +1,7 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../fakes.test";
+
 import { ICharacter } from "./Things";
 
 describe("Collisions", () => {

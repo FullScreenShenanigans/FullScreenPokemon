@@ -6,6 +6,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings, IPokemon } from "../Battles";
 import { IMenu } from "../Menus";
 import { IThing } from "../Things";
+
 import { Health } from "./decorations/Health";
 /**
  * Decoration handlers used by FullScreenPokemon instances.

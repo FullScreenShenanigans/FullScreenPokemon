@@ -2,6 +2,7 @@ import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { SoundAliases } from "./audio/SoundAliases";
 import { SoundNames } from "./audio/SoundNames";
 

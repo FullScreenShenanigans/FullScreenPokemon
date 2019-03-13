@@ -1,6 +1,7 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../fakes.test";
+
 import { IPokemon } from "./Battles";
 import { IPokemonEvolution, IPokemonEvolutionByLevel } from "./constants/Pokemon";
 

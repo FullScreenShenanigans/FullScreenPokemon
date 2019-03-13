@@ -2,6 +2,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IPokemon } from "./Battles";
 import { IItemSchema, IRod } from "./constants/Items";
 import { IArea, IMap, IWildPokemonSchema } from "./Maps";

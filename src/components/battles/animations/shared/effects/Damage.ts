@@ -4,6 +4,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IPokemon } from "../../../../Battles";
+
 import { Calculator } from "./damage/Calculator";
 
 /**

@@ -2,6 +2,7 @@ import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Shrinking } from "./animations/Shrinking";
 import { Sliding } from "./animations/Sliding";
 

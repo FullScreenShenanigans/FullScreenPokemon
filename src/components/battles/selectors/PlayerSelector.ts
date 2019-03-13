@@ -5,6 +5,7 @@ import { GeneralComponent } from "eightbittr";
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
 import { IInventoryListing } from "../../menus/Items";
+
 import { Switching } from "./player/Switching";
 
 /**

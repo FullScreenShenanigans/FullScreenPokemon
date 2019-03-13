@@ -2,6 +2,7 @@ import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { ComputerCutscene } from "./cutscenes/ComputerCutscene";
 import { DaisyTownMapCutscene } from "./cutscenes/DaisyTownMapCutscene";
 import { ElderTrainingCutscene } from "./cutscenes/ElderTrainingCutscene";

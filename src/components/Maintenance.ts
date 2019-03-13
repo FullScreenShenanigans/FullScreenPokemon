@@ -1,6 +1,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Scrollability } from "./Scrolling";
 import { ICharacter, IPlayer, IThing } from "./Things";
 

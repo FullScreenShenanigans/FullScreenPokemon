@@ -2,6 +2,7 @@ import { IMod } from "modattachr";
 
 import { IArea } from "../../components/Maps";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+
 import { ModComponent } from "./ModComponent";
 
 /**

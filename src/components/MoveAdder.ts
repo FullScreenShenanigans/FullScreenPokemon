@@ -3,6 +3,7 @@ import { GeneralComponent } from "eightbittr";
 import { IMenuSchemaPosition } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IPokemon } from "./Battles";
 
 export class MoveAdder<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {

@@ -1,6 +1,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Direction } from "./Constants";
 import { IItemSchema } from "./constants/Items";
 import { ICharacter, IPlayer } from "./Things";

@@ -2,6 +2,7 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 
 import { stubBlankGame } from "../fakes.test";
+
 import { Direction } from "./Constants";
 import { IPlayer } from "./Things";
 

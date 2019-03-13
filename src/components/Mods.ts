@@ -2,6 +2,7 @@ import { Mods as EightBittrMods } from "eightbittr";
 import { IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { BlindTrainersMod } from "./mods/BlindTrainersMod";
 import { ModEventNames } from "./mods/EventNames";
 import { InfiniteRepelMod } from "./mods/InfiniteRepelMod";

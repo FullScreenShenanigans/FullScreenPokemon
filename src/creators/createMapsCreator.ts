@@ -1,6 +1,7 @@
 import { MapsCreatr } from "mapscreatr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { PalletTown } from "./mapsLibrary/PalletTown";
 import { PewterCity } from "./mapsLibrary/PewterCity";
 import { Route1 } from "./mapsLibrary/Route1";

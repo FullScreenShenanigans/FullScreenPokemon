@@ -3,6 +3,7 @@ import { GeneralComponent } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Computer } from "./menus/Computer";
 import { Items } from "./menus/Items";
 import { Keyboards } from "./menus/Keyboards";

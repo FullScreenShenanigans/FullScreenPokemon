@@ -1,7 +1,9 @@
 import { expect } from "chai";
 import { Clock } from "lolex";
+
 import { FullScreenPokemon } from "..";
 import { stubBlankGame } from "../fakes.test";
+
 import { IBattleTeam, IPokemon } from "./Battles";
 import { IPlayer } from "./Things";
 

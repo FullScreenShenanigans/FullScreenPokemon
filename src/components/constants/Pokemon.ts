@@ -1,4 +1,5 @@
 import { IMove } from "battlemovr";
+
 import { IPokemonStatistics } from "../Battles";
 
 /**

@@ -4,6 +4,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleTeam, IPokemon } from "../../Battles";
+
 import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriorityGenerator";
 
 /**

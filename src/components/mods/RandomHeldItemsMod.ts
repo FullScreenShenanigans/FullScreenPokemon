@@ -2,6 +2,7 @@ import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { INewPokemon } from "../constants/Pokemon";
+
 import { ModComponent } from "./ModComponent";
 
 /**

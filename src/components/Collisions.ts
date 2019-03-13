@@ -2,6 +2,7 @@ import { GeneralComponent } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Direction } from "./Constants";
 import { ICharacter, IDetector, IGrass, IPlayer, IPokeball, IThing, IWaterEdge } from "./Things";
 

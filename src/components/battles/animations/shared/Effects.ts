@@ -4,6 +4,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
+
 import { Damage } from "./effects/Damage";
 import { Missed } from "./effects/Missed";
 import { Statistics } from "./effects/Statistics";

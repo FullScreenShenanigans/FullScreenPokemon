@@ -1,6 +1,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IPlayer } from "./Things";
 
 /**

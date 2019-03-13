@@ -1,6 +1,7 @@
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { PokedexListingStatus } from "./Constants";
 import { IPokedex, IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
 import { IStorageItems } from "./Storage";

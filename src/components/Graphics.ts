@@ -1,6 +1,7 @@
 import { Graphics as EightBittrGraphics } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IThing } from "./Things";
 
 /**

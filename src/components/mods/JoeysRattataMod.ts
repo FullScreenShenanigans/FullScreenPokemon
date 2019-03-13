@@ -2,6 +2,7 @@ import { IMod } from "modattachr";
 
 import { ICharacter, IEnemy } from "../../components/Things";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+
 import { ModComponent } from "./ModComponent";
 
 /**

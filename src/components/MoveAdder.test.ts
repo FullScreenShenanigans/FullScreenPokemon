@@ -1,6 +1,8 @@
 import { IMove } from "battlemovr";
 import { expect } from "chai";
+
 import { stubBlankGame } from "../fakes.test";
+
 import { IPokemon } from "./Battles";
 
 describe("MoveAdder", () => {

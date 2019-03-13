@@ -3,6 +3,7 @@ import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeam
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
+
 import { FleeAttempt } from "./actions/FleeAttempt";
 import { Effects } from "./Effects";
 import { Moves } from "./Moves";

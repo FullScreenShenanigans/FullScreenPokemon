@@ -5,6 +5,7 @@ import * as imenugraphr from "menugraphr";
 import * as itimehandlr from "timehandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IWalkingInstructions } from "./actions/Walking";
 import { IPokemon } from "./Battles";
 import { Direction } from "./Constants";

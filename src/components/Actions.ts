@@ -4,6 +4,7 @@ import { IMenuDialogRaw } from "menugraphr";
 import { ITimeEvent } from "timehandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { Following } from "./actions/Following";
 import { Grass } from "./actions/Grass";
 import { Ledges } from "./actions/Ledges";

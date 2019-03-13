@@ -2,6 +2,7 @@ import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
 import { IPokemon } from "./Battles";
 import { IPokedex } from "./constants/Pokemon";
 import { IInventoryListing } from "./menus/Items";

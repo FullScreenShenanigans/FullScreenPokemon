@@ -3,6 +3,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
+
 import { Move } from "./moves/Move";
 import { IMovesBag } from "./moves/MovesBag";
 
