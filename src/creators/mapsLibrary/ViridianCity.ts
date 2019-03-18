@@ -174,7 +174,7 @@ export const ViridianCity: IMapRaw = {
                 { macro: "Checkered", things: ["", "Flower"], x: 320, y: 720, xnum: 8, ynum: 2, xwidth: 16, yheight: 16 },
                 { macro: "Checkered", things: ["", "Flower"], x: 576, y: 720, xnum: 4, ynum: 2, xwidth: 16, yheight: 16 },
                 { macro: "Checkered", things: ["", "Flower"], x: 896, y: 720, xnum: 4, ynum: 2, xwidth: 16, yheight: 16 },
-                { thing: "Fatty", x: 192, y: 736, dialog: "Who knows?" },
+                { thing: "FriendlyMan", x: 192, y: 736, dialog: "Who knows?" },
                 { thing: "PlantSmall", x: 256, y: 736, width: 64 },
                 { thing: "DirtMedium", x: 192, y: 768, width: 64, height: 128 },
                 { macro: "Water", x: 256, y: 768, width: 192, height: 128, open: [false, false, true, false] },
