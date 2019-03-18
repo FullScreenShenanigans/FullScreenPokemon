@@ -139,7 +139,7 @@ export const PalletTown: IMapRaw = {
                 { macro: "Water", x: 128, y: 416, width: 128, height: 128, open: [false, false, true, false] },
                 { thing: "DirtLight", x: 256, y: 416, width: 64, height: 128 },
                 { thing: "DirtMedium", x: 320, y: 416, width: 192, height: 64 },
-                { thing: "Fatty", x: 352, y: 416, roaming: true, dialog: ["Technology is incredible!", "You can now store and recall items and %%%%%%%POKEMON%%%%%%% as data via PC!"] },
+                { thing: "FriendlyMan", x: 352, y: 416, roaming: true, dialog: ["Technology is incredible!", "You can now store and recall items and %%%%%%%POKEMON%%%%%%% as data via PC!"] },
                 { macro: "Checkered", things: ["", "Flower"], x: 320, y: 432, xnum: 8, ynum: 2, xwidth: 16, yheight: 16 },
                 { thing: "DirtLight", x: 512, y: 416, width: 64, height: 128 },
                 { thing: "DirtLight", x: 320, y: 480, width: 192, height: 64 },

@@ -24,7 +24,7 @@ export const createObjectMaker = (fsp: FullScreenPokemon): ObjectMakr =>
                     Daisy: {},
                     DeskWoman: {},
                     Elder: {},
-                    Fatty: {},
+                    FriendlyMan: {},
                     Girl: {},
                     Gentleman: {},
                     GlassesOldGuy: {},
