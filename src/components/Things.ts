@@ -253,14 +253,9 @@ export interface ICharacter extends IThing {
     pushSteps?: IWalkingInstructions;
 
     /**
-     * Whether this is sporadically
+     * Whether this is sporadically walking in random directions.
      */
     roaming?: boolean;
-
-    /**
-     * Directions this is allowed to roam.
-     */
-    roamingDirections?: number[];
 
     /**
      * How far this can "see" a Player to walk forward and trigger a dialog.
@@ -331,6 +326,29 @@ export interface ICharacter extends IThing {
      * A direction to turn to when the current walking step is done.
      */
     wantsToWalk?: boolean;
+}
+
+/**
+ * A Character able to roam in random directions.
+ */
+export interface IRoamingCharacter extends ICharacter {
+    /**
+     * Whether this is roaming (always true in this type).
+     */
+    roaming: true;
+
+    /**
+     * Directions this is allowed to roam.
+     */
+    roamingDirections: number[];
+
+    /**
+     * Distances this has roamed horizontally and vertically.
+     */
+    roamingDistances: {
+        horizontal: number;
+        vertical: number;
+    };
 }
 
 /**
