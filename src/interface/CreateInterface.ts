@@ -1,6 +1,6 @@
 import { UserWrappr } from "userwrappr";
 
-import { InterfaceSettingsFactory } from "./InterfaceSettings";
+import { createUserWrapprSettings } from "./InterfaceSettings";
 
 /**
  * Creates a UserWrappr interface around an FSP game.
@@ -9,5 +9,5 @@ import { InterfaceSettingsFactory } from "./InterfaceSettings";
  * @returns A Promise for creating the game interface.
  */
 export const createFspInterface = async (container: HTMLElement): Promise<void> =>
-    new UserWrappr(new InterfaceSettingsFactory().createUserWrapprSettings())
+    new UserWrappr(createUserWrapprSettings())
         .createDisplay(container);
