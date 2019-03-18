@@ -248,9 +248,6 @@ export class Walking<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                 thing.xvel = -thing.speed;
                 thing.yvel = 0;
                 break;
-
-            default:
-                throw new Error("Unknown direction: " + thing.direction + ".");
         }
     }
 

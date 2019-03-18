@@ -96,8 +96,6 @@ export class OakIntroRivalBattleCutscene<TEightBittr extends FullScreenPokemon> 
             case "CHARMANDER":
                 blocks = 1;
                 break;
-            default:
-                throw new Error("Unknown starterRival.");
         }
 
         if (args.further) {

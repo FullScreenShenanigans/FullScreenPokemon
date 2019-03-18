@@ -207,8 +207,6 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
                 starterRival = "CHARMANDER".split("");
                 steps = 2;
                 break;
-            default:
-                throw new Error("Unknown first Pokemon.");
         }
 
         settings.rivalPokemon = starterRival;

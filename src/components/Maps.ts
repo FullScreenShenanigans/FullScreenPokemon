@@ -737,9 +737,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 prething.y = boundaries.top;
                 prething.height = boundaries.bottom - boundaries.top;
                 break;
-
-            default:
-                throw new Error(`Unknown direction: '${direction}'.`);
         }
 
         this.eightBitter.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
@@ -775,9 +772,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
             case Direction.Left:
                 left -= area.width!;
                 break;
-
-            default:
-                throw new Error(`Unknown direction: '${direction}'.`);
         }
 
         const x: number = left + (thing.offsetX || 0);
@@ -858,9 +852,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 left -= this.eightBitter.constants.blockSize;
                 properties.height = area.height;
                 break;
-
-            default:
-                throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
         return this.eightBitter.things.add([this.eightBitter.things.names.areaGate, properties], left, top) as IAreaGate;

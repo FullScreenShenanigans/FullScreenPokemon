@@ -539,8 +539,6 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                 this.eightBitter.physics.setRight(detector, thing.left);
                 this.eightBitter.physics.setMidYObj(detector, thing);
                 break;
-            default:
-                throw new Error("Unknown direction: " + direction + ".");
         }
     }
 
@@ -1042,9 +1040,6 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                 areaOffsetX = area.width! - thing.width;
                 areaOffsetY = thing.top - other.top;
                 break;
-
-            default:
-                throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
         const screenOffsetX: number = areaOffsetX - thing.left;
@@ -1135,9 +1130,6 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             case 3:
                 xvel = -4;
                 break;
-
-            default:
-                throw new Error(`Unknown direction: '${player.direction}'.`);
         }
 
         this.eightBitter.timeHandler.addEventInterval(

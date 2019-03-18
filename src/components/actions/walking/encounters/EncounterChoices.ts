@@ -91,12 +91,12 @@ export class EncounterChoices<TEightBittr extends FullScreenPokemon> extends Gen
 
         const areaWildPokemon = this.eightBitter.mapScreener.activeArea.wildPokemon;
         if (areaWildPokemon === undefined) {
-            throw new Error("SUrfing area doesn't have any wild Pokemon options defined.");
+            throw new Error("Surfing area doesn't have any wild Pokemon options defined.");
         }
 
         const options: IWildPokemonSchema[] | undefined = areaWildPokemon.surfing;
         if (options === undefined) {
-            throw new Error("SUrfing area doesn't have any wild surfing Pokemon options defined.");
+            throw new Error("Surfing area doesn't have any wild surfing Pokemon options defined.");
         }
 
         return options;
