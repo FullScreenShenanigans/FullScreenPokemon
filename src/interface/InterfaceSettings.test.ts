@@ -1,9 +1,11 @@
 import { expect } from "chai";
-import { stubBlankGame } from "../fakes.test";
-import { createUserWrapprSettings } from "./InterfaceSettings";
 import * as sinon from "sinon";
-import { IAbsoluteSizeSchema, ISelectSchema, UserWrappr, IUserWrapprSettings } from "userwrappr";
+import { IAbsoluteSizeSchema, ISelectSchema, IUserWrapprSettings, UserWrappr } from "userwrappr";
+
+import { stubBlankGame } from "../fakes.test";
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
+import { createUserWrapprSettings } from "./InterfaceSettings";
 
 const createStubGameWindow = () => ({
     addEventListener: sinon.spy(),
@@ -21,9 +23,9 @@ const createGame = (size: IAbsoluteSizeSchema) => stubBlankGame({
 
 const saveValueAs = (wrapperSettings: IUserWrapprSettings, value: string) =>
     (wrapperSettings.menus!
-        .find(menu => menu.title === "Options")!
+        .find((menu) => menu.title === "Options")!
         .options
-        .find(options => options.title === "Speed")! as ISelectSchema)
+        .find((options) => options.title === "Speed")! as ISelectSchema)
         .saveValue(value, "1x");
 
 describe("InterfaceSettings", () => {
@@ -45,7 +47,7 @@ describe("InterfaceSettings", () => {
             // Assert
             expect(gameWindow.FSP.gamesRunner.getInterval()).to.be.approximately(3.33, 0.1);
         });
-        
+
         it("sets the gamesRunner to a 66 2/3 game interval when the 0.25x speed is selected", async () => {
             // Arrange
             const gameWindow = createStubGameWindow();

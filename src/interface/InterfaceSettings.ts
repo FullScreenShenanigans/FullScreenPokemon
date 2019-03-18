@@ -44,8 +44,8 @@ export interface IGameSizes {
 }
 
 export interface IInterfaceSettingOverrides {
-    createGame?: (size: IAbsoluteSizeSchema) => FullScreenPokemon,
-    gameWindow?: IGameWindow,
+    createGame?(size: IAbsoluteSizeSchema): FullScreenPokemon;
+    gameWindow?: IGameWindow;
 }
 
 /**
@@ -85,7 +85,7 @@ const keys: string[] = [
  *
  * @param gameWindow   Global scope around the game interface, if not the global window.
  */
-export const createUserWrapprSettings = ({ 
+export const createUserWrapprSettings = ({
     createGame = (size: IAbsoluteSizeSchema) => new FullScreenPokemon(size),
     gameWindow = window,
 }: IInterfaceSettingOverrides = {}): IUserWrapprSettings => {
@@ -97,6 +97,7 @@ export const createUserWrapprSettings = ({
     /**
      * IUserWrappr instance this is creating interfaces for.
      */
+    // tslint:disable-next-line:prefer-const
     let userWrapper: IUserWrappr;
 
     /**
@@ -117,7 +118,7 @@ export const createUserWrapprSettings = ({
             isPageHidden = true;
             game.gamesRunner.pause();
         }
-    }
+    };
 
     /**
      * Reacts to the page becoming visible by unpausing the EightBittr.
@@ -127,7 +128,25 @@ export const createUserWrapprSettings = ({
             isPageHidden = false;
             game.gamesRunner.play();
         }
-    }
+    };
+
+    /**
+     * Handles a visibility change event by pausing or playing if necessary.
+     */
+    const handleVisibilityChange = (): void => {
+        switch (document.visibilityState) {
+            case "hidden":
+                onPageHidden();
+                return;
+
+            case "visible":
+                onPageVisible();
+                return;
+
+            default:
+                return;
+        }
+    };
 
     /**
      * Adds InputWritr pipes as global event listeners.
@@ -151,27 +170,8 @@ export const createUserWrapprSettings = ({
 
         gameWindow.document.addEventListener(
             "visibilitychange",
-            (): void => handleVisibilityChange());
-    }
-
-    /**
-     * Handles a visibility change event by pausing or playing if necessary.
-     */
-    const handleVisibilityChange = (): void => {
-        switch (document.visibilityState) {
-            case "hidden":
-                onPageHidden();
-                return;
-
-            case "visible":
-                onPageVisible();
-                return;
-
-            default:
-                return;
-        }
-    }
-
+            handleVisibilityChange);
+    };
 
     return {
         defaultSize: sizes[defaultSize],
