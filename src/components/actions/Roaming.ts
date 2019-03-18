@@ -2,7 +2,11 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
-import { ICharacter } from "../Things";
+import { IRoamingCharacter } from "../Things";
+
+export const randomRoamingMaximumFrequency = 210;
+
+export const randomRoamingMinimumTicks = 70;
 
 /**
  * Idle characters turning and walking in random directions.
@@ -13,16 +17,30 @@ export class Roaming<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   A Character to start roaming.
      */
-    public startRoaming(thing: ICharacter): void {
+    public startRoaming(thing: IRoamingCharacter): void {
+        thing.roamingDistances = {
+            horizontal: 0,
+            vertical: 0,
+        };
+
+        this.continueRoaming(thing);
+    }
+
+    /**
+     * Continues a step of a Character roaming in random directions.
+     *
+     * @param thing   A Character to start roaming.
+     */
+    private continueRoaming(thing: IRoamingCharacter): void {
         if (!thing.alive) {
             return;
         }
 
         this.eightBitter.timeHandler.addEvent(
-            (): void => this.startRoaming(thing),
-            this.eightBitter.numberMaker.randomInt(210) + 70);
+            (): void => this.continueRoaming(thing),
+            this.eightBitter.numberMaker.randomInt(randomRoamingMaximumFrequency) + randomRoamingMinimumTicks);
 
-        if (!thing.talking && !this.eightBitter.menuGrapher.getActiveMenu()) {
+        if (!thing.walking && !thing.talking && !this.eightBitter.menuGrapher.getActiveMenu()) {
             this.takeRoamingStep(thing);
         }
     }
@@ -33,11 +51,7 @@ export class Roaming<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      *
      * @param thing   A roaming Character.
      */
-    protected takeRoamingStep(thing: ICharacter): void {
-        if (!thing.roamingDirections) {
-            throw new Error("Roaming Thing should define a .roamingDirections.");
-        }
-
+    private takeRoamingStep(thing: IRoamingCharacter): void {
         const direction: Direction | undefined = this.getNextRoamingDirection(thing);
         if (direction === undefined) {
             return;
@@ -45,8 +59,24 @@ export class Roaming<TEightBittr extends FullScreenPokemon> extends GeneralCompo
 
         if (thing.roamingDirections.indexOf(direction) === -1) {
             this.eightBitter.actions.animateCharacterSetDirection(thing, direction);
-        } else {
-            this.eightBitter.actions.walking.startWalking(thing, direction);
+            return;
+        }
+
+        this.eightBitter.actions.walking.startWalking(thing, direction);
+
+        switch (direction) {
+            case Direction.Top:
+                thing.roamingDistances.vertical -= 1;
+                break;
+            case Direction.Right:
+                thing.roamingDistances.horizontal += 1;
+                break;
+            case Direction.Bottom:
+                thing.roamingDistances.vertical += 1;
+                break;
+            case Direction.Left:
+                thing.roamingDistances.horizontal -= 1;
+                break;
         }
     }
 
@@ -56,28 +86,29 @@ export class Roaming<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      * @param thing   A roaming Character.
      * @returns The next direction it should roam, if any.
      */
-    private getNextRoamingDirection(thing: ICharacter): Direction | undefined {
-        let totalAllowed = 0;
-        let direction: Direction;
+    private getNextRoamingDirection(thing: IRoamingCharacter): Direction | undefined {
+        const allowed: Direction[] = [];
 
-        for (const border of thing.bordering) {
-            if (!border) {
-                totalAllowed += 1;
-            }
+        if (thing.bordering[Direction.Top] === undefined && thing.roamingDistances.vertical !== -3) {
+            allowed.push(Direction.Top);
         }
 
-        if (totalAllowed === 0) {
+        if (thing.bordering[Direction.Right] === undefined && thing.roamingDistances.horizontal !== 3) {
+            allowed.push(Direction.Right);
+        }
+
+        if (thing.bordering[Direction.Bottom] === undefined && thing.roamingDistances.vertical !== 3) {
+            allowed.push(Direction.Bottom);
+        }
+
+        if (thing.bordering[Direction.Left] === undefined && thing.roamingDistances.horizontal !== -3) {
+            allowed.push(Direction.Left);
+        }
+
+        if (allowed.length === 0) {
             return undefined;
         }
 
-        direction = this.eightBitter.numberMaker.randomInt(totalAllowed);
-
-        for (let i = 0; i <= direction; i += 1) {
-            if (thing.bordering[i]) {
-                direction += 1;
-            }
-        }
-
-        return direction;
+        return this.eightBitter.numberMaker.randomArrayMember(allowed);
     }
 }

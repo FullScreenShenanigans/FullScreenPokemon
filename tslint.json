@@ -31,6 +31,7 @@
         "restrict-plus-operands": false,
         "strict-boolean-expressions": false,
         "strict-type-predicates": false,
+        "switch-default": false,
         "switch-final-break": false,
         "variable-name": false
     }

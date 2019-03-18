@@ -17,7 +17,8 @@ import { IArea, IMap } from "./Maps";
 import { IDialog, IDialogOptions } from "./Menus";
 import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
-    IMenuTriggerer, IPlayer, ISightDetector, IThemeDetector, IThing, ITransporter,
+    IMenuTriggerer, IPlayer, IRoamingCharacter, ISightDetector, IThemeDetector, IThing,
+    ITransporter,
     ITransportSchema,
 } from "./Things";
 
@@ -101,7 +102,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
 
         if (thing.roaming) {
             this.eightBitter.timeHandler.addEvent(
-                (): void => this.roaming.startRoaming(thing),
+                (): void => this.roaming.startRoaming(thing as IRoamingCharacter),
                 this.eightBitter.numberMaker.randomInt(70));
         }
     }
