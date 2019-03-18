@@ -4,15 +4,18 @@ import { IThing } from "../components/Things";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 export const createQuadsKeeper = (fsp: FullScreenPokemon) => {
-    const quadrantWidth: number = fsp.settings.width / 6;
-    const quadrantHeight: number = fsp.settings.height / 6;
+    const numRows = 5;
+    const numCols = 6;
+
+    const quadrantWidth: number = fsp.settings.width / numCols;
+    const quadrantHeight: number = fsp.settings.height / numRows;
 
     return new QuadsKeepr<any>({
         quadrantFactory: (): IQuadrant<IThing> => fsp.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
         quadrantWidth,
         quadrantHeight,
-        numRows: 5,
-        numCols: 6,
+        numRows,
+        numCols,
         groupNames: ["Solid", "Character", "Scenery", "Terrain", "Text"],
         startLeft: -quadrantWidth,
         startTop: -quadrantHeight,
