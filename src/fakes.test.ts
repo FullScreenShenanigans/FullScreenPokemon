@@ -35,9 +35,17 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
             audioPlayer: {
                 createSound: () => sinon.createStubInstance(AudioElementSound),
             },
-            gamesRunner: {
-                tickCanceller: clock.clearTimeout,
-                tickScheduler: clock.setTimeout,
+            frameTicker: {
+                timing: {
+                    cancelFrame: clock.clearTimeout,
+                    getTimestamp: () => clock.now,
+                    requestFrame: (callback) =>
+                        clock.setTimeout(
+                            () => {
+                                callback(clock.now);
+                            },
+                            1),
+                },
             },
             itemsHolder: { prefix },
             pixelDrawer: {

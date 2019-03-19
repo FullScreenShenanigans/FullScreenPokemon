@@ -114,9 +114,9 @@ export const createUserWrapprSettings = ({
      * Reacts to the page becoming hidden by pausing the EightBittr.
      */
     const onPageHidden = (): void => {
-        if (!game.gamesRunner.getPaused()) {
+        if (!game.frameTicker.getPaused()) {
             isPageHidden = true;
-            game.gamesRunner.pause();
+            game.frameTicker.pause();
         }
     };
 
@@ -126,7 +126,7 @@ export const createUserWrapprSettings = ({
     const onPageVisible = (): void => {
         if (isPageHidden) {
             isPageHidden = false;
-            game.gamesRunner.play();
+            game.frameTicker.play();
         }
     };
 
@@ -223,10 +223,11 @@ export const createUserWrapprSettings = ({
                     },
                     {
                         getInitialValue: (): string => "1x",
-                        options: [".25x", ".5x", "1x", "2x", "5x", "10x"],
+                        options: [".25x", ".5x", "1x", "2x", "5x", "10x", "20x"],
                         saveValue: (value: string): void => {
                             const multiplier = parseFloat(value.replace("x", ""));
-                            game.gamesRunner.setInterval((1000 / 60) / multiplier);
+                            game.frameTicker.setInterval((1000 / 60) / multiplier);
+                            game.pixelDrawer.setFramerateSkip(multiplier);
                         },
                         title: "Speed",
                         type: OptionType.Select,
