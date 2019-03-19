@@ -410,7 +410,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
 
     /**
      * Prevents an event's default, if the event exists.
-     * 
+     *
      * @param event   Event optionally attached to a user key input.
      */
     private preventEventDefault(event?: Event) {
