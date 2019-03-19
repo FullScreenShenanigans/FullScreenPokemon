@@ -4,7 +4,7 @@ import { component } from "babyioc";
 import { BattleMovr } from "battlemovr";
 import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
-import { GamesRunnr } from "gamesrunnr";
+import { FrameTickr } from "frametickr";
 import { GroupHoldr } from "groupholdr";
 import { InputWritr } from "inputwritr";
 import { ItemsHoldr } from "itemsholdr";
@@ -50,7 +50,7 @@ import { createAreaSpawner } from "./creators/createAreaSpawner";
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
 import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
-import { createGamesRunner } from "./creators/createGamesRunner";
+import { createFrameTicker } from "./creators/createFrameTicker";
 import { createGroupHolder, IGroups } from "./creators/createGroupHolder";
 import { createInputWriter } from "./creators/createInputWriter";
 import { createItemsHolder } from "./creators/createItemsHolder";
@@ -131,10 +131,10 @@ export class FullScreenPokemon extends EightBittr {
     public readonly flagSwapper: FlagSwappr<IFlags>;
 
     /**
-     * Runs a series of callbacks on a timed interval.
+     * Runs a callback on a roughly precise interval.
      */
-    @component(createGamesRunner)
-    public readonly gamesRunner: GamesRunnr;
+    @component(createFrameTicker)
+    public readonly frameTicker: FrameTickr;
 
     /**
      * Storage for separate group arrays of members with unique IDs.
@@ -317,7 +317,7 @@ export class FullScreenPokemon extends EightBittr {
     public readonly inputs: Inputs<this>;
 
     /**
-     * Maintains Things during GamesRunnr ticks.
+     * Maintains Things during FrameTickr ticks.
      */
     @component(Maintenance)
     public readonly maintenance: Maintenance<this>;

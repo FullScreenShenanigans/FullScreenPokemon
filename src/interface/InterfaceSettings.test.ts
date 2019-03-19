@@ -30,7 +30,7 @@ const saveValueAs = (wrapperSettings: IUserWrapprSettings, value: string) =>
 
 describe("InterfaceSettings", () => {
     describe("Speed", () => {
-        it("sets the gamesRunner to a 3 1/3 game interval when the 5x speed is selected", async () => {
+        it("sets the frameTicker to a 3 1/3 game interval when the 5x speed is selected", async () => {
             // Arrange
             const gameWindow = createStubGameWindow();
             const wrapperSettings = createUserWrapprSettings({
@@ -45,10 +45,10 @@ describe("InterfaceSettings", () => {
             saveValueAs(wrapperSettings, "5x");
 
             // Assert
-            expect(gameWindow.FSP.gamesRunner.getInterval()).to.be.approximately(3.33, 0.1);
+            expect(gameWindow.FSP.frameTicker.getInterval()).to.be.approximately(3.33, 0.1);
         });
 
-        it("sets the gamesRunner to a 66 2/3 game interval when the 0.25x speed is selected", async () => {
+        it("sets the frameTicker to a 66 2/3 game interval when the 0.25x speed is selected", async () => {
             // Arrange
             const gameWindow = createStubGameWindow();
             const wrapperSettings = createUserWrapprSettings({
@@ -63,7 +63,7 @@ describe("InterfaceSettings", () => {
             saveValueAs(wrapperSettings, "0.25x");
 
             // Assert
-            expect(gameWindow.FSP.gamesRunner.getInterval()).to.be.approximately(66.67, 0.1);
+            expect(gameWindow.FSP.frameTicker.getInterval()).to.be.approximately(66.67, 0.1);
         });
     });
 });

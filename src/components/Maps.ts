@@ -676,7 +676,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onSetLocation, location);
 
-        this.eightBitter.gamesRunner.play();
+        this.eightBitter.frameTicker.play();
 
         this.eightBitter.actions.animateFadeFromColor({
             color: "Black",

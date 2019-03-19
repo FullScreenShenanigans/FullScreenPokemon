@@ -26,7 +26,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             return false;
         }
 
-        if (this.eightBitter.gamesRunner.getPaused()) {
+        if (this.eightBitter.frameTicker.getPaused()) {
             return false;
         }
 
@@ -140,7 +140,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      */
     public keyDownA(thing: ICharacter, event?: Event): void {
         this.preventEventDefault(event);
-        if (this.eightBitter.gamesRunner.getPaused()) {
+        if (this.eightBitter.frameTicker.getPaused()) {
             return;
         }
 
@@ -171,7 +171,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      */
     public keyDownB(thing: ICharacter, event?: Event): void {
         this.preventEventDefault(event);
-        if (this.eightBitter.gamesRunner.getPaused()) {
+        if (this.eightBitter.frameTicker.getPaused()) {
             return;
         }
 

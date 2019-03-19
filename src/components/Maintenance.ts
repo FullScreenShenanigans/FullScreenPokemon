@@ -6,7 +6,7 @@ import { Scrollability } from "./Scrolling";
 import { ICharacter, IPlayer, IThing } from "./Things";
 
 /**
- * Maintains Things during GamesRunnr ticks.
+ * Maintains Things during FrameTickr frames.
  */
 export class Maintenance<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**

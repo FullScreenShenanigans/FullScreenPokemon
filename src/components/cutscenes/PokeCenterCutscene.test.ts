@@ -38,13 +38,13 @@ const stubBlankGameWithNurseAndMachineAfterWelcome = () => {
 
 const skipBallsFlickering = (clock: Clock, fsp: FullScreenPokemon): void => {
     // Balls slowly appearing
-    clock.tick(fsp.cutscenes.pokeCenter.ballAppearanceRate * fsp.gamesRunner.getInterval());
+    clock.tick(fsp.cutscenes.pokeCenter.ballAppearanceRate * fsp.frameTicker.getInterval());
 
     // Balls flickering
-    clock.tick(fsp.cutscenes.pokeCenter.ballFlickerRate * fsp.gamesRunner.getInterval() * 2);
+    clock.tick(fsp.cutscenes.pokeCenter.ballFlickerRate * fsp.frameTicker.getInterval() * 2);
 
     // Balls dissapearing after 8 flashes + a double-long pause
-    clock.tick(fsp.cutscenes.pokeCenter.ballFlickerRate * fsp.gamesRunner.getInterval() * 10);
+    clock.tick(fsp.cutscenes.pokeCenter.ballFlickerRate * fsp.frameTicker.getInterval() * 10);
 
 };
 
