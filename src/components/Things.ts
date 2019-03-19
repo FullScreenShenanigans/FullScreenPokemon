@@ -752,7 +752,10 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         // each Thing constructor (optimization does not respect prototypal inheritance, sadly).
         this.eightBitter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
-        thing.bordering = [undefined, undefined, undefined, undefined];
+        // Terrain and Scenery groups will never have collisions checked
+        if (thing.groupType !== "Terrain" && thing.groupType !== "Scenery") {
+            thing.bordering = [undefined, undefined, undefined, undefined];
+        }
 
         if (typeof thing.id === "undefined") {
             thing.id = [
