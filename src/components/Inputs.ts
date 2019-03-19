@@ -45,6 +45,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownUp(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         if (!this.canDirectionsTrigger(thing)) {
             return;
         }
@@ -58,10 +59,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             this.inputTimeTolerance);
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownUp);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -72,6 +69,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownRight(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         if (!this.canDirectionsTrigger(thing)) {
             return;
         }
@@ -83,10 +81,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         this.eightBitter.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Right),
             this.inputTimeTolerance);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -97,6 +91,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownDown(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         if (!this.canDirectionsTrigger(thing)) {
             return;
         }
@@ -110,10 +105,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             this.inputTimeTolerance);
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownDown);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -124,6 +115,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownLeft(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         if (!this.canDirectionsTrigger(thing)) {
             return;
         }
@@ -137,38 +129,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             this.inputTimeTolerance);
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownLeft);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
-    }
-
-    /**
-     * Driver for a direction key being pressed. The MenuGraphr's active menu reacts
-     * to the movement if it exists, or the triggering Character attempts to walk
-     * if not. The onKeyDownDirectionReal mod event is fired.
-     *
-     * @param thing   The triggering Character.
-     * @param event   The original user-caused Event.
-     */
-    protected keyDownDirectionReal(thing: IPlayer, direction: Direction): void {
-        if (!thing.keys[direction]) {
-            return;
-        }
-
-        if (this.eightBitter.menuGrapher.getActiveMenu()) {
-            this.eightBitter.menuGrapher.registerDirection(direction);
-            return;
-        }
-
-        thing.nextDirection = direction;
-        thing.wantsToWalk = true;
-
-        if (!thing.walking) {
-            this.eightBitter.actions.animateCharacterSetDirection(thing, direction);
-        }
-
-        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownDirectionReal, direction);
     }
 
     /**
@@ -179,6 +139,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownA(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         if (this.eightBitter.gamesRunner.getPaused()) {
             return;
         }
@@ -199,10 +160,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         }
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownA);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -213,6 +170,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownB(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         if (this.eightBitter.gamesRunner.getPaused()) {
             return;
         }
@@ -224,10 +182,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         }
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownB);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -238,12 +192,9 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyDownPause(_thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.menus.pause.toggle();
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownPause);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -254,12 +205,9 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public async keyDownMute(_thing: ICharacter, event?: Event): Promise<void> {
+        this.preventEventDefault(event);
         await this.eightBitter.audioPlayer.setMuted(this.eightBitter.audioPlayer.getMuted());
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownMute);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -270,6 +218,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @todo Extend the use for any registered item, not just the bicycle.
      */
     public keyDownSelect(thing: IPlayer, event?: Event): void {
+        this.preventEventDefault(event);
         if (this.eightBitter.menuGrapher.getActiveMenu() || thing.walking) {
             return;
         }
@@ -287,10 +236,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         }
 
         itemSchema.bagActivate.call(this, thing, itemSchema);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -300,6 +245,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpLeft(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpLeft);
 
         if (thing.player) {
@@ -312,10 +258,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         } else if (thing.nextDirection === undefined) {
             thing.wantsToWalk = false;
         }
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -325,6 +267,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpRight(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpRight);
 
         if (thing.player) {
@@ -337,10 +280,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         } else if (thing.nextDirection === undefined) {
             thing.wantsToWalk = false;
         }
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -350,6 +289,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpUp(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpUp);
 
         if (thing.player) {
@@ -362,10 +302,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         } else if (thing.nextDirection === undefined) {
             thing.wantsToWalk = false;
         }
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -375,6 +311,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpDown(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpDown);
 
         if (thing.player) {
@@ -387,10 +324,6 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         } else if (thing.nextDirection === undefined) {
             thing.wantsToWalk = false;
         }
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -400,14 +333,11 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpA(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpA);
 
         if (thing.player) {
             (thing as IPlayer).keys.a = false;
-        }
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
         }
     }
 
@@ -418,14 +348,11 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpB(thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpB);
 
         if (thing.player) {
             (thing as IPlayer).keys.b = false;
-        }
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
         }
     }
 
@@ -436,11 +363,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public keyUpPause(_thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyUpPause);
-
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
     }
 
     /**
@@ -451,9 +375,45 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param event   The original user-caused Event.
      */
     public mouseDownRight(_thing: ICharacter, event?: Event): void {
+        this.preventEventDefault(event);
         this.eightBitter.menus.pause.toggle();
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onMouseDownRight);
+    }
 
+    /**
+     * Driver for a direction key being pressed. The MenuGraphr's active menu reacts
+     * to the movement if it exists, or the triggering Character attempts to walk
+     * if not. The onKeyDownDirectionReal mod event is fired.
+     *
+     * @param thing   The triggering Character.
+     * @param event   The original user-caused Event.
+     */
+    private keyDownDirectionReal(thing: IPlayer, direction: Direction): void {
+        if (!thing.keys[direction]) {
+            return;
+        }
+
+        if (this.eightBitter.menuGrapher.getActiveMenu()) {
+            this.eightBitter.menuGrapher.registerDirection(direction);
+            return;
+        }
+
+        thing.nextDirection = direction;
+        thing.wantsToWalk = true;
+
+        if (!thing.walking) {
+            this.eightBitter.actions.animateCharacterSetDirection(thing, direction);
+        }
+
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onKeyDownDirectionReal, direction);
+    }
+
+    /**
+     * Prevents an event's default, if the event exists.
+     *
+     * @param event   Event optionally attached to a user key input.
+     */
+    private preventEventDefault(event?: Event) {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
