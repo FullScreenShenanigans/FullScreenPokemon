@@ -2,3 +2,5 @@ node_modules/
 test/
 *.test.*
 npm-debug.log
+*.ts
+!*.d.ts
