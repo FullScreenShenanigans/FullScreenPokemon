@@ -187,9 +187,9 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         if (this.eightBitter.players[0].xvel > 0) {
             return this.eightBitter.players[0].bordering[1] ? 0 : this.eightBitter.players[0].xvel;
-        } else {
-            return this.eightBitter.players[0].bordering[3] ? 0 : this.eightBitter.players[0].xvel;
         }
+
+        return this.eightBitter.players[0].bordering[3] ? 0 : this.eightBitter.players[0].xvel;
     }
 
     /**
@@ -205,9 +205,9 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
 
         if (this.eightBitter.players[0].yvel > 0) {
             return this.eightBitter.players[0].bordering[2] ? 0 : this.eightBitter.players[0].yvel;
-        } else {
-            return this.eightBitter.players[0].bordering[0] ? 0 : this.eightBitter.players[0].yvel;
         }
+
+        return this.eightBitter.players[0].bordering[0] ? 0 : this.eightBitter.players[0].yvel;
     }
 
     /**
