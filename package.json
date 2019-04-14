@@ -16,7 +16,7 @@
     "itemsholdr": "^0.7.8",
     "menugraphr": "^0.7.10",
     "stateholdr": "^0.7.4",
-    "stringfilr": "^0.7.4",
+    "stringfilr": "0.7.4",
     "userwrappr": "^0.7.6"
   },
   "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
