@@ -48,7 +48,7 @@
     "stylelint-config-recommended-scss": "^3.2.0",
     "stylelint-scss": "^3.5.4",
     "tslint": "5.15.0",
-    "tsutils": "^3.10.0",
+    "tsutils": "^3.14.1",
     "typedoc": "^0.14.2",
     "typescript": "^3.4.3",
     "watch": "^1.0.2",
