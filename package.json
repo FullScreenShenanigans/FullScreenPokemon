@@ -10,7 +10,7 @@
   "dependencies": {
     "babyioc": "^0.7.5",
     "battlemovr": "^0.7.4",
-    "changelinr": "^0.7.3",
+    "changelinr": "^0.7.4",
     "eightbittr": "^0.7.22",
     "flagswappr": "^0.7.4",
     "itemsholdr": "^0.7.9",
