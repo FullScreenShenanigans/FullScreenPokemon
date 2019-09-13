@@ -6,6 +6,7 @@
         ]
     },
     "rules": {
+        "no-async-without-await": false,
         "ban-types": false,
         "comment-format": false,
         "completed-docs": false,
@@ -33,6 +34,7 @@
         "strict-type-predicates": false,
         "switch-default": false,
         "switch-final-break": false,
+        "strict-string-expressions": false,
         "variable-name": false
     }
 }
