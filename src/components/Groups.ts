@@ -2,6 +2,17 @@ import { Groups as EightBittrGroups } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
+import { ICharacter, IThing } from "./Things";
+
+export interface IGroups {
+    Character: ICharacter;
+    Scenery: IThing;
+    Solid: IThing;
+    Terrain: IThing;
+    Text: IThing;
+    [i: string]: IThing;
+}
+
 /**
  * Collection settings for IThing group names.
  */
