@@ -36,7 +36,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.actions.animateFadeAttribute(
+                this.eightBitter.animations.fading.animateFadeAttribute(
                     oak,
                     "opacity",
                     0.15,
@@ -77,7 +77,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.actions.animateFadeAttribute(
+                this.eightBitter.animations.fading.animateFadeAttribute(
                 blank,
                 "opacity",
                 0.15,
@@ -107,7 +107,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             0);
 
         this.eightBitter.physics.setMidY(pokemon, this.eightBitter.mapScreener.middleY);
-        this.eightBitter.actions.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
+        this.eightBitter.animations.fading.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
 
         this.eightBitter.animations.sliding.slideHorizontally(
             pokemon,
@@ -155,7 +155,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
 
         this.eightBitter.things.add(player, this.eightBitter.mapScreener.middleX + 96, 0);
         this.eightBitter.physics.setMidY(player, this.eightBitter.mapScreener.middleY);
-        this.eightBitter.actions.animateFadeAttribute(player, "opacity", 0.15, 1, 3);
+        this.eightBitter.animations.fading.animateFadeAttribute(player, "opacity", 0.15, 1, 3);
 
         this.eightBitter.animations.sliding.slideHorizontally(
             player,
@@ -300,7 +300,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.actions.animateFadeAttribute(
+                this.eightBitter.animations.fading.animateFadeAttribute(
                     blank,
                     "opacity",
                     0.2,
@@ -330,7 +330,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.things.add(rival, 0, 0);
         this.eightBitter.physics.setMidX(rival, this.eightBitter.mapScreener.middleX | 0);
         this.eightBitter.physics.setMidY(rival, this.eightBitter.mapScreener.middleY | 0);
-        this.eightBitter.actions.animateFadeAttribute(
+        this.eightBitter.animations.fading.animateFadeAttribute(
             rival,
             "opacity",
             0.1,
@@ -473,7 +473,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.actions.animateFadeAttribute(
+                this.eightBitter.animations.fading.animateFadeAttribute(
                     blank,
                     "opacity",
                     0.2,
@@ -505,7 +505,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.physics.setMidX(portrait, this.eightBitter.mapScreener.middleX | 0);
         this.eightBitter.physics.setMidY(portrait, this.eightBitter.mapScreener.middleY | 0);
 
-        this.eightBitter.actions.animateFadeAttribute(
+        this.eightBitter.animations.fading.animateFadeAttribute(
             portrait,
             "opacity",
             0.1,
@@ -584,7 +584,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.actions.animateFadeAttribute(
+                this.eightBitter.animations.fading.animateFadeAttribute(
                     blank,
                     "opacity",
                     0.2,

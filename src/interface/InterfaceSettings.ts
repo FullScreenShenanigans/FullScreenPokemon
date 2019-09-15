@@ -281,7 +281,6 @@ export const createUserWrapprSettings = ({
                                 .map((text: string): string => text.toLowerCase()),
                         options: keys,
                         saveValue: (newValue: string[], oldValue: string[]): void => {
-                            console.log({ newValue, oldValue });
                             game.inputWriter.switchAliasValues(control, oldValue, newValue);
                         },
                         selections: 2,

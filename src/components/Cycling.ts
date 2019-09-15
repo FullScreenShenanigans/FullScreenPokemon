@@ -28,7 +28,7 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.saves.addStateHistory(thing, "speed", thing.speed);
         thing.speed = thing.speed * 2;
 
-        this.eightBitter.graphics.addClass(thing, "cycling");
+        this.eightBitter.graphics.classes.addClass(thing, "cycling");
         this.eightBitter.menus.displayMessage("%%%%%%%PLAYER%%%%%%% got on the bicycle!");
 
         return true;
@@ -42,7 +42,7 @@ export class Cycling<TEightBittr extends FullScreenPokemon> extends GeneralCompo
     public stopCycling(thing: IPlayer): void {
         thing.cycling = false;
 
-        this.eightBitter.graphics.removeClass(thing, "cycling");
+        this.eightBitter.graphics.classes.removeClass(thing, "cycling");
         this.eightBitter.saves.popStateHistory(thing, "speed");
         this.eightBitter.classCycler.cancelClassCycle(thing, "cycling");
 

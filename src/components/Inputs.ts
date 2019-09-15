@@ -1,4 +1,5 @@
-import { GeneralComponent } from "eightbittr";
+import { Inputs as EightBittrInputs } from "eightbittr";
+import { IAliases, ITriggerContainer } from "inputwritr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -7,9 +8,60 @@ import { IItemSchema } from "./constants/Items";
 import { ICharacter, IPlayer } from "./Things";
 
 /**
- * Routes user input.
+ * User input filtering and handling.
  */
-export class Inputs<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInputs<TEightBittr> {
+    /**
+     * Known, allowed aliases for input event triggers.
+     */
+    public readonly aliases: IAliases = {
+        // tslint:disable object-literal-sort-keys
+        // Keyboard aliases
+        left:   [65, 37],     // a, left
+        right:  [68, 39],     // d, right
+        up:     [87, 38],     // w, up
+        down:   [83, 40],     // s, down
+        a:      [90, 13],     // z, enter
+        b:      [88, 8],      // x, backspace
+        pause:  [80, 27],     // p, escape
+        select: [17, 16],     // ctrl, shift
+        // Mouse aliases
+        rightclick: [3],
+        // tslint:enable object-literal-sort-keys
+    };
+
+    /**
+     * Mapping of events to their key codes, to their callbacks.
+     */
+    public readonly triggers: ITriggerContainer = {
+        onkeydown: {
+            left: (event: Event): void => this.keyDownLeft(this.eightBitter.players[0], event),
+            right: (event: Event): void => this.keyDownRight(this.eightBitter.players[0], event),
+            up: (event: Event): void => this.keyDownUp(this.eightBitter.players[0], event),
+            down: (event: Event): void => this.keyDownDown(this.eightBitter.players[0], event),
+            a: (event: Event): void => this.keyDownA(this.eightBitter.players[0], event),
+            b: (event: Event): void => this.keyDownB(this.eightBitter.players[0], event),
+            pause: (event: Event): void => this.keyDownPause(this.eightBitter.players[0], event),
+            mute: (event: Event): void => {
+                this.keyDownMute(this.eightBitter.players[0], event);
+            },
+            select: (event: Event): void => this.keyDownSelect(this.eightBitter.players[0], event),
+        },
+        onkeyup: {
+            left: (event: Event): void => this.keyUpLeft(this.eightBitter.players[0], event),
+            right: (event: Event): void => this.keyUpRight(this.eightBitter.players[0], event),
+            up: (event: Event): void => this.keyUpUp(this.eightBitter.players[0], event),
+            down: (event: Event): void => this.keyUpDown(this.eightBitter.players[0], event),
+            a: (event: Event): void => this.keyUpA(this.eightBitter.players[0], event),
+            b: (event: Event): void => this.keyUpB(this.eightBitter.players[0], event),
+            pause: (event: Event): void => this.keyUpPause(this.eightBitter.players[0], event),
+        },
+        onmousedown: {
+            rightclick: (event: Event): void => this.mouseDownRight(this.eightBitter.players[0], event),
+        },
+        oncontextmenu: {},
+    };
+
     /**
      * Quickly tapping direction keys means to look in a direction, not walk.
      */

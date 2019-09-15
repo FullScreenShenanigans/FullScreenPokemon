@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { stubBlankGame } from "../../fakes.test";
 
-describe("Entrances", () => {
+describe("EntranceAnimations", () => {
     describe("resume", () => {
         it("defaults player position to (0, 0) when not previously saved", () => {
             // Arrange
@@ -10,7 +10,7 @@ describe("Entrances", () => {
             const zeroCorner = fsp.things.add(fsp.things.names.grass, 0, 0);
 
             // Act
-            fsp.maps.entrances.resume();
+            fsp.maps.entranceAnimations.resume();
 
             // Assert
             expect(fsp.groupHolder.getThing("player")).to.deep.include({
@@ -31,7 +31,7 @@ describe("Entrances", () => {
 
             // Act
             document.body.appendChild(fsp.canvas);
-            fsp.maps.entrances.resume();
+            fsp.maps.entranceAnimations.resume();
 
             // Assert
             expect(fsp.groupHolder.getThing("player")).to.deep.include({

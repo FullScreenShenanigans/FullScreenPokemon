@@ -1,73 +1,76 @@
+import { component } from "babyioc";
 import { Graphics as EightBittrGraphics } from "eightbittr";
+import { IPalette } from "pixelrendr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IThing } from "./Things";
+import { Collections } from "./graphics/Collections";
+import { graphicsLibrary } from "./graphics/GraphicsLibrary";
 
 /**
  * Changes the visual appearance of Things.
  */
 export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrGraphics<TEightBittr> {
     /**
-     * Collects all unique Things that should be kept on top of battle intro animations.
-     *
-     * @param thingsRaw   Titles of and/or references to Things that should be kept.
-     * @returns The unique Things that will be kept.
+     * What class name should indicate a Thing is to be flipped verticallu.
      */
-    public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        const things: IThing[] = [this.eightBitter.players[0]];
-        const used: { [i: string]: IThing } = {
-            [this.eightBitter.players[0].title]: this.eightBitter.players[0],
-        };
-
-        for (const thingRaw of thingsRaw) {
-            const thing: IThing = thingRaw.constructor === String
-                ? this.eightBitter.utilities.getExistingThingById(thingRaw as string)
-                : thingRaw as IThing;
-
-            if (!used[thing.title]) {
-                used[thing.title] = thing;
-                things.push(thing);
-            }
-        }
-
-        return things;
-    }
+    public readonly flipHoriz = "flipped";
 
     /**
-     * Moves all kept Things in a battle to the Text group for animations.
-     *
-     * @param keptThings    Things that should be visible above text animations.
+     * What class name should indicate a Thing is to be flipped horizontally.
      */
-    public moveThingsToText(things: IThing[]): void {
-        for (const thing of things) {
-            this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, "Text");
-        }
-    }
+    public readonly flipVert = "flip-vert";
 
     /**
-     * Moves kept Things
-     *
-     * @remarks This is necessary because animations may put backgrounds
-     *          as the first Text Thing after keptThings were added.
+     * A nested library of sprites to process.
      */
-    public moveThingsBeforeBackgrounds(things: IThing[]): void {
-        const texts: IThing[] = this.eightBitter.groupHolder.getGroup("Text") as IThing[];
-
-        for (const thing of things) {
-            texts.splice(texts.indexOf(thing), 1);
-            texts.splice(0, 0, thing);
-        }
-    }
+    public readonly library = graphicsLibrary;
 
     /**
-     * Moves all kept Things in a battle back to their original groups.
-     *
-     * @param keptThings    Things that should be visible above text animations.
+     * The default palette of colors to use for sprites.
      */
-    public moveThingsFromText(things: IThing[]): void {
-        for (const keptThing of things) {
-            this.eightBitter.groupHolder.switchGroup(keptThing, "Text", keptThing.groupType);
-        }
-    }
+    public readonly paletteDefault: IPalette = [
+        [0, 0, 0, 0],
+        [255, 255, 255, 255],
+        [0, 0, 0, 255],
+        [199, 199, 192, 255],
+        [128, 128, 128, 255],
+    ];
+
+    /**
+     * Amount to expand sprites by when processing.
+     */
+    public readonly scale = 2;
+
+    /**
+     * What key in attributions should contain sprite heights.
+     */
+    public readonly spriteHeight = "spriteheight";
+
+    /**
+     * What key in attributions should contain sprite widths.
+     */
+    public readonly spriteWidth = "spritewidth";
+
+    /**
+     * Maximum size of a SpriteMultiple to pre-render.
+     */
+    public readonly spriteCacheCutoff = 2048;
+
+    /**
+     * Arrays of Thing[]s that are to be drawn in each refill.
+     */
+    public readonly thingArrays = [
+        this.eightBitter.groupHolder.getGroup("Terrain"),
+        this.eightBitter.groupHolder.getGroup("Solid"),
+        this.eightBitter.groupHolder.getGroup("Scenery"),
+        this.eightBitter.groupHolder.getGroup("Character"),
+        this.eightBitter.groupHolder.getGroup("Text"),
+    ];
+
+    /**
+     * Collects Things to change visuals en masse.
+     */
+    @component(Collections)
+    public readonly collections: Collections<TEightBittr>;
 }

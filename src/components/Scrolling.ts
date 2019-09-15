@@ -222,4 +222,13 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
     public expandMapBoundariesForArea(_area: IArea, _dx: number, _dy: number): void {
         this.eightBitter.mapScreener.variables.scrollability = Scrollability.Both;
     }
+
+    /**
+     * A mapping of functions to generate member variables that should be
+     * recomputed on screen change, keyed by variable name.
+     */
+    public readonly variableFunctions = {
+        boundaries: this.getAreaBoundariesReal,
+        scrollability: this.getScreenScrollability,
+    };
 }

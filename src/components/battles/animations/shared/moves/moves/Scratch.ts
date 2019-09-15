@@ -53,7 +53,7 @@ export class Scratch<TEightBittr extends FullScreenPokemon> extends Move<TEightB
 
                     const line: IThing = this.eightBitter.things.add(this.eightBitter.things.names.scratchLine, left, top);
                     if (this.direction === 1) {
-                        this.eightBitter.graphics.flipHoriz(line);
+                        this.eightBitter.graphics.flipping.flipHoriz(line);
                     }
 
                     lineArray.push(line);

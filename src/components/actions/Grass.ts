@@ -24,7 +24,7 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
         });
 
         if (thing.shadow.className !== thing.className) {
-            this.eightBitter.graphics.setClass(thing.shadow, thing.className);
+            this.eightBitter.graphics.classes.setClass(thing.shadow, thing.className);
         }
 
         this.eightBitter.things.add(thing.shadow, thing.left, thing.top);
@@ -49,7 +49,7 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
         this.eightBitter.physics.setTop(thing.shadow!, thing.top);
 
         if (thing.shadow!.className !== thing.className) {
-            this.eightBitter.graphics.setClass(thing.shadow!, thing.className);
+            this.eightBitter.graphics.classes.setClass(thing.shadow!, thing.className);
         }
     }
 

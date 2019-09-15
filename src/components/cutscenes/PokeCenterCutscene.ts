@@ -127,8 +127,8 @@ export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends G
         this.eightBitter.timeHandler.addEventInterval(
             (): void => {
                 const changer = i % 2 === 0
-                    ? (thing: IThing, className: string): void => this.eightBitter.graphics.addClass(thing, className)
-                    : (thing: IThing, className: string): void => this.eightBitter.graphics.removeClass(thing, className);
+                    ? (thing: IThing, className: string): void => this.eightBitter.graphics.classes.addClass(thing, className)
+                    : (thing: IThing, className: string): void => this.eightBitter.graphics.classes.removeClass(thing, className);
 
                 for (const ball of balls) {
                     changer(ball, "lit");
