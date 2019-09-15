@@ -8,7 +8,7 @@
     "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
   },
   "dependencies": {
-    "babyioc": "^0.7.6",
+    "babyioc": "^0.7.7",
     "battlemovr": "^0.7.5",
     "changelinr": "^0.7.4",
     "flagswappr": "^0.7.5",
