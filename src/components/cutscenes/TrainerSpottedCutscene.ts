@@ -54,7 +54,7 @@ export class TrainerSpottedCutscene<TEightBittr extends FullScreenPokemon> exten
      * @param settings   Settings used for the cutscene.
      */
     public Dialog(settings: any): void {
-        this.eightBitter.collisions.collideCharacterDialog(settings.player, settings.triggerer);
+        this.eightBitter.collisions.detectors.collideCharacterDialog(settings.player, settings.triggerer);
         this.eightBitter.mapScreener.blockInputs = false;
     }
 }

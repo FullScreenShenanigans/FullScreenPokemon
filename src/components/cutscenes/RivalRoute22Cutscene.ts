@@ -44,7 +44,7 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
 
         walkingInstructions.push(this.eightBitter.scenePlayer.bindRoutine("RivalTalks"));
 
-        this.eightBitter.actions.animateFadeAttribute(rival, "opacity", 0.2, 1, 3);
+        this.eightBitter.animations.fading.animateFadeAttribute(rival, "opacity", 0.2, 1, 3);
         this.eightBitter.things.add(rival, triggerer.left - 112, triggerer.top + 96);
         this.eightBitter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
     }
@@ -112,7 +112,7 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
                     [BattleOutcome.playerVictory]: (): string => "Aww! You just lucked out!",
                 },
             },
-            keptThings: this.eightBitter.graphics.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.eightBitter.graphics.collections.collectBattleKeptThings(["player", "Rival"]),
         };
 
         this.eightBitter.battles.startBattle(battleInfo);

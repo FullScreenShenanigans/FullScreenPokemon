@@ -26,7 +26,7 @@ export class Starting<TEightBittr extends FullScreenPokemon> extends GeneralComp
         const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
 
         if (battleInfo.keptThings) {
-            this.eightBitter.graphics.moveThingsToText(battleInfo.keptThings);
+            this.eightBitter.graphics.collections.moveThingsToText(battleInfo.keptThings);
         }
 
         // tslint:disable-next-line no-floating-promises
@@ -54,7 +54,7 @@ export class Starting<TEightBittr extends FullScreenPokemon> extends GeneralComp
         battleInfo.things = this.eightBitter.battles.decorations.createInitialThings(battleInfo);
 
         if (battleInfo.keptThings) {
-            this.eightBitter.graphics.moveThingsBeforeBackgrounds(battleInfo.keptThings);
+            this.eightBitter.graphics.collections.moveThingsBeforeBackgrounds(battleInfo.keptThings);
         }
     }
 
@@ -74,8 +74,8 @@ export class Starting<TEightBittr extends FullScreenPokemon> extends GeneralComp
         let opponentGoal: number;
 
         // They should be visible halfway through (2 * (1 / timeout))
-        this.eightBitter.actions.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
-        this.eightBitter.actions.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
+        this.eightBitter.animations.fading.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
+        this.eightBitter.animations.fading.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
 
         playerX = this.eightBitter.physics.getMidX(player);
         opponentX = this.eightBitter.physics.getMidX(opponent);

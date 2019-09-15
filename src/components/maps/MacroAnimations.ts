@@ -5,7 +5,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 /**
  * Map creation macros.
  */
-export class Macros<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class MacroAnimations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *

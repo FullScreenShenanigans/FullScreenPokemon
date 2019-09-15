@@ -82,7 +82,7 @@ export class OakIntroRivalBattleCutscene<TEightBittr extends FullScreenPokemon> 
                 },
             },
             // noBlackout: true,
-            keptThings: this.eightBitter.graphics.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.eightBitter.graphics.collections.collectBattleKeptThings(["player", "Rival"]),
         };
         let blocks: number;
 

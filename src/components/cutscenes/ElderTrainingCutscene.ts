@@ -15,7 +15,7 @@ export class ElderTrainingCutscene<TEightBittr extends FullScreenPokemon> extend
         console.log("Should start battle with", settings);
         // this.eightBitter.mapScreener.blockInputs = true;
         // this.eightBitter.battles.startBattle({
-        //     keptThings: this.eightBitter.graphics.collectBattleKeptThings([settings.player, settings.triggerer]),
+        //     keptThings: this.eightBitter.graphics.collections.collectBattleKeptThings([settings.player, settings.triggerer]),
         //     battlers: {
         //         player: {
         //             name: "OLD MAN".split(""),

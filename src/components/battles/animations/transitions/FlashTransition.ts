@@ -50,12 +50,12 @@ export class FlashTransition<TEightBittr extends FullScreenPokemon> extends Tran
         const color: string = this.flashColors[this.completed % this.flashColors.length];
         this.completed += 1;
 
-        this.eightBitter.actions.animateFadeToColor({
+        this.eightBitter.animations.fading.animateFadeToColor({
             color,
             change: this.change,
             speed: this.speed,
             callback: (): void => {
-                this.eightBitter.actions.animateFadeFromColor({
+                this.eightBitter.animations.fading.animateFadeFromColor({
                     color,
                     change: this.change,
                     speed: this.speed,

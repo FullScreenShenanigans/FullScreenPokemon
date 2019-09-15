@@ -112,7 +112,7 @@ export class Sliding<TEightBittr extends FullScreenPokemon> extends GeneralCompo
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
-                this.eightBitter.actions.animateFadeAttribute(
+                this.eightBitter.animations.fading.animateFadeAttribute(
                     thing,
                     "opacity",
                     -2 / timeout,

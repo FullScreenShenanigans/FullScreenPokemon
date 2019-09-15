@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../../../../fakes.test";
-import { IWildPokemonSchema } from "../../../Maps";
 
 describe("EncounterStarting", () => {
     describe("startWildEncounterBattle", () => {
@@ -14,14 +13,28 @@ describe("EncounterStarting", () => {
                 },
             ];
 
-            return { ...stubBlankGame(), wildPokemonOptions };
+            const { fsp, ...rest } = stubBlankGame();
+
+            const charmander = fsp.equations.newPokemon({
+                level: 99,
+                title: "CHARMANDER".split(""),
+                moves: [
+                    {
+                        remaining: 10,
+                        title: "Scratch",
+                        uses: 10,
+                    },
+                ],
+            });
+
+            fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [charmander]);
+
+            return { fsp, wildPokemonOptions, ...rest };
         };
 
         it("starts a battle with a chosen Pokemon schema", () => {
             // Arrange
             const { fsp, player, wildPokemonOptions } = stubBlankGameForEncounter();
-
-            fsp.equations.chooseRandomWildPokemon = (options: IWildPokemonSchema[]) => options[0];
 
             // Act
             fsp.actions.walking.encounters.starting.startWildEncounterBattle(player, wildPokemonOptions);
@@ -34,8 +47,6 @@ describe("EncounterStarting", () => {
         it("blocks inputs when a battle has started", () => {
             // Arrange
             const { fsp, player, wildPokemonOptions } = stubBlankGameForEncounter();
-
-            fsp.equations.chooseRandomWildPokemon = (options: IWildPokemonSchema[]) => options[0];
 
             // Act
             fsp.actions.walking.encounters.starting.startWildEncounterBattle(player, wildPokemonOptions);

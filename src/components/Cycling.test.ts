@@ -58,7 +58,7 @@ describe("Cycling", () => {
             fsp.cycling.startCycling(player);
 
             // Assert
-            expect(fsp.graphics.hasClass(player, "cycling")).to.be.equal(true);
+            expect(fsp.graphics.classes.hasClass(player, "cycling")).to.be.equal(true);
         });
 
         it("doubles the player's speed when the player starts cycling", () => {
@@ -120,7 +120,7 @@ describe("Cycling", () => {
             fsp.cycling.stopCycling(player);
 
             // Assert
-            expect(fsp.graphics.hasClass(player, "cycling")).to.be.equal(false);
+            expect(fsp.graphics.classes.hasClass(player, "cycling")).to.be.equal(false);
         });
 
         it("activates a GeneralText menu when the player starts cycling", () => {

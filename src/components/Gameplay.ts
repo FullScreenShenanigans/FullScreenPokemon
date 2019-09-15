@@ -50,7 +50,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends EightBittrG
             this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.map) || "Blank",
             this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.location),
             true);
-        this.eightBitter.maps.entrances.resume();
+        this.eightBitter.maps.entranceAnimations.resume();
 
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGameStartPlay);
     }

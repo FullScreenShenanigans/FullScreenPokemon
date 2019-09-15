@@ -1,5 +1,6 @@
 import { AudioElementSound } from "audioplayr";
 import { IEightBittrConstructorSettings } from "eightbittr";
+import { createStorage } from "itemsholdr";
 import * as lolex from "lolex";
 import * as sinon from "sinon";
 
@@ -29,6 +30,7 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
 
     const clock = lolex.createClock();
     const prefix = `${new Date().getTime()}`;
+    const storage = createStorage();
     const fsp = new FullScreenPokemon({
         height: settings.height || 256,
         components: {
@@ -47,7 +49,7 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
                             1),
                 },
             },
-            itemsHolder: { prefix },
+            itemsHolder: { prefix, storage },
             pixelDrawer: {
                 framerateSkip: 9000001,
             },
@@ -64,7 +66,7 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
         menuPrototype.finishLinesAutomatically = true;
     }
 
-    return { clock, fsp, prefix };
+    return { clock, fsp, prefix, storage };
 };
 
 /**

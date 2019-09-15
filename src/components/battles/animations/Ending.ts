@@ -33,7 +33,7 @@ export class Ending<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         }
 
         queue.add((onComplete: () => void): void => {
-            this.eightBitter.actions.animateFadeToColor({
+            this.eightBitter.animations.fading.animateFadeToColor({
                 callback: onComplete,
                 color: "Black",
             });
@@ -78,7 +78,7 @@ export class Ending<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         }
 
         if (battleInfo.keptThings) {
-            this.eightBitter.graphics.moveThingsFromText(battleInfo.keptThings);
+            this.eightBitter.graphics.collections.moveThingsFromText(battleInfo.keptThings);
         }
 
         if (battleInfo.onComplete) {

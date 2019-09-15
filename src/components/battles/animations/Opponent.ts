@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { component, factory } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
 
@@ -23,7 +23,7 @@ export class Opponent<TEightBittr extends FullScreenPokemon> extends GeneralComp
     /**
      * Shared animations for teams switching Pokemon.
      */
-    @component((container: Opponent<TEightBittr>) =>
+    @factory((container: Opponent<TEightBittr>) =>
         new Switching(container, {
             enter: {
                 team: Team.opponent,

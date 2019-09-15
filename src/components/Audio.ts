@@ -1,5 +1,5 @@
 import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { Audio as EightBittrAudio } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -9,7 +9,7 @@ import { SoundNames } from "./audio/SoundNames";
 /**
  * Friendly sound aliases and names for audio.
  */
-export class Audio<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Audio<TEightBittr extends FullScreenPokemon> extends EightBittrAudio<TEightBittr> {
     /**
      * Aliases for playable sounds.
      */
@@ -21,4 +21,10 @@ export class Audio<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      */
     @component(SoundNames)
     public readonly names: SoundNames;
+
+    /**
+     * Transforms provided names into file names.
+     */
+    public readonly nameTransform = (name: string): string =>
+        `sounds/${name}.mp3`
 }

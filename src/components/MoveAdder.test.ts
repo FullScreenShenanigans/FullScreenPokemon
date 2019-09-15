@@ -5,7 +5,7 @@ import { stubBlankGame } from "../fakes.test";
 
 import { IPokemon } from "./Battles";
 
-describe("MoveAdder", () => {
+describe("moveAdder", () => {
     it("adds a new move to a Pokemon's moveset when the move index is valid", (): void => {
         // Arrange
         const { fsp } = stubBlankGame();
@@ -27,7 +27,7 @@ describe("MoveAdder", () => {
         };
 
         // Act
-        fsp.moveadder.addMove(pokemon, peck, 1);
+        fsp.moveAdder.addMove(pokemon, peck, 1);
 
         // Assert
         expect(pokemon.moves[1].title).to.be.equal(peck.title);
@@ -54,7 +54,7 @@ describe("MoveAdder", () => {
         };
 
         // Act
-        fsp.moveadder.addMove(pokemon, peck, 0);
+        fsp.moveAdder.addMove(pokemon, peck, 0);
 
         // Assert
         expect(pokemon.moves[0].title).to.be.equal(peck.title);
@@ -74,7 +74,7 @@ describe("MoveAdder", () => {
         };
 
         // Act
-        const action = () => fsp.moveadder.addMove(pokemon, peck, -1);
+        const action = () => fsp.moveAdder.addMove(pokemon, peck, -1);
 
         // Assert
         expect(action).to.throw("Invalid move parameters.");
@@ -94,7 +94,7 @@ describe("MoveAdder", () => {
         };
 
         // Act
-        const action = () => fsp.moveadder.addMove(pokemon, peck, 4);
+        const action = () => fsp.moveAdder.addMove(pokemon, peck, 4);
 
         // Assert
         expect(action).to.throw("Invalid move parameters.");
@@ -117,11 +117,11 @@ describe("MoveAdder", () => {
             remaining: 10,
             uses: 10,
         };
-        fsp.moveadder.addMove(pokemon, peck, 1);
-        fsp.moveadder.addMove(pokemon, bite, 2);
+        fsp.moveAdder.addMove(pokemon, peck, 1);
+        fsp.moveAdder.addMove(pokemon, bite, 2);
 
         // Act
-        const action = () => fsp.moveadder.addMove(pokemon, peck, 2);
+        const action = () => fsp.moveAdder.addMove(pokemon, peck, 2);
 
         // Assert
         expect(action).to.throw("This Pokemon already knows this move.");
@@ -152,7 +152,7 @@ describe("MoveAdder", () => {
             };
 
             // Act
-            fsp.moveadder.startDialog(pokemon, peck);
+            fsp.moveAdder.startDialog(pokemon, peck);
 
             // Assert
             expect(pokemon.moves[1].title).to.be.equal("Peck");
@@ -179,7 +179,7 @@ describe("MoveAdder", () => {
             };
 
             // Act
-            fsp.moveadder.startDialog(pokemon, peck);
+            fsp.moveAdder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.menuGrapher.registerDirection(2);
             fsp.inputs.keyDownA(player);
@@ -214,7 +214,7 @@ describe("MoveAdder", () => {
             };
 
             // Act
-            fsp.moveadder.startDialog(pokemon, peck);
+            fsp.moveAdder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
@@ -249,7 +249,7 @@ describe("MoveAdder", () => {
             };
 
             // Act
-            fsp.moveadder.startDialog(pokemon, peck);
+            fsp.moveAdder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
             fsp.inputs.keyDownA(player);
@@ -286,7 +286,7 @@ describe("MoveAdder", () => {
             };
 
             // Act
-            fsp.moveadder.startDialog(pokemon, peck);
+            fsp.moveAdder.startDialog(pokemon, peck);
             fsp.inputs.keyDownA(player);
             fsp.menuGrapher.registerDirection(2);
             fsp.inputs.keyDownA(player);
