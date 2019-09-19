@@ -25,7 +25,7 @@ export class JoeysRattataMod<TEightBittr extends FullScreenPokemon> extends ModC
                     character.previousTitle = character.title;
                     character.title = (character as any).thing = "BugCatcher";
                     this.eightBitter.thingHitter.cacheChecksForType(character.title, "Character");
-                    this.eightBitter.graphics.setClass(character, character.className);
+                    this.eightBitter.graphics.classes.setClass(character, character.className);
                 });
         },
         [this.eventNames.onModDisable]: (): void => {
@@ -34,7 +34,7 @@ export class JoeysRattataMod<TEightBittr extends FullScreenPokemon> extends ModC
                 .forEach((character: IEnemy): void => {
                     character.title = (character as any).thing = character.previousTitle!;
                     this.eightBitter.thingHitter.cacheChecksForType(character.title, "Character");
-                    this.eightBitter.graphics.setClass(character, character.className);
+                    this.eightBitter.graphics.classes.setClass(character, character.className);
                 });
         },
         [this.eventNames.onBattleStart]: (battleInfo: any): void => {

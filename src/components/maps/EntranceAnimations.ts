@@ -7,7 +7,7 @@ import { ILocation } from "../Maps";
 /**
  * Map entrance animations.
  */
-export class Entrances<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class EntranceAnimations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
      * A blank Map entrance Function where no Character is placed.
      */

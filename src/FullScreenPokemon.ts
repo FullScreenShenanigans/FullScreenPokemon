@@ -1,24 +1,12 @@
-import { AreaSpawnr } from "areaspawnr";
-import { AudioPlayr } from "audioplayr";
-import { component } from "babyioc";
+import { component, factory } from "babyioc";
 import { BattleMovr } from "battlemovr";
 import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
-import { FrameTickr } from "frametickr";
 import { GroupHoldr } from "groupholdr";
-import { InputWritr } from "inputwritr";
 import { ItemsHoldr } from "itemsholdr";
-import { MapsCreatr } from "mapscreatr";
 import { MenuGraphr } from "menugraphr";
-import { ModAttachr } from "modattachr";
-import { ObjectMakr } from "objectmakr";
-import { PixelDrawr } from "pixeldrawr";
-import { PixelRendr } from "pixelrendr";
-import { QuadsKeepr } from "quadskeepr";
 import { ScenePlayr } from "sceneplayr";
 import { StateHoldr } from "stateholdr";
-import { ThingHittr } from "thinghittr";
-import { TimeHandlr } from "timehandlr";
 
 import { Actions } from "./components/Actions";
 import { Animations } from "./components/Animations";
@@ -32,40 +20,30 @@ import { Equations } from "./components/Equations";
 import { Evolution } from "./components/Evolution";
 import { Experience } from "./components/Experience";
 import { Fishing } from "./components/Fishing";
+import { Frames } from "./components/Frames";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
+import { Groups, IGroups } from "./components/Groups";
 import { Inputs } from "./components/Inputs";
+import { Items } from "./components/Items";
 import { Maintenance } from "./components/Maintenance";
 import { IMapScreenr, Maps } from "./components/Maps";
 import { Menus } from "./components/Menus";
 import { Mods } from "./components/Mods";
 import { MoveAdder } from "./components/MoveAdder";
+import { Objects } from "./components/Objects";
 import { Physics } from "./components/Physics";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IStorageItems, Storage } from "./components/Storage";
-import { IPlayer, IThing, Things } from "./components/Things";
+import { IPlayer, Things } from "./components/Things";
+import { Timing } from "./components/Timing";
 import { Utilities } from "./components/Utilities";
-import { createAreaSpawner } from "./creators/createAreaSpawner";
-import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
 import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
-import { createFrameTicker } from "./creators/createFrameTicker";
-import { createGroupHolder, IGroups } from "./creators/createGroupHolder";
-import { createInputWriter } from "./creators/createInputWriter";
-import { createItemsHolder } from "./creators/createItemsHolder";
-import { createMapsCreator } from "./creators/createMapsCreator";
-import { createMapScreener } from "./creators/createMapScreener";
 import { createMenuGrapher } from "./creators/createMenuGrapher";
-import { createModAttacher } from "./creators/createModAttacher";
-import { createObjectMaker } from "./creators/createObjectMaker";
-import { createPixelDrawer } from "./creators/createPixelDrawer";
-import { createPixelRender } from "./creators/createPixelRender";
-import { createQuadsKeeper } from "./creators/createQuadsKeeper";
 import { createScenePlayer } from "./creators/createScenePlayer";
 import { createStateHolder } from "./creators/createStateHolder";
-import { createThingHitter } from "./creators/createThingHitter";
-import { createTimeHandler } from "./creators/createTimeHandler";
 
 /**
  * Settings to initialize a new FullScreenPokemon.
@@ -107,124 +85,39 @@ export class FullScreenPokemon extends EightBittr {
     public readonly settings: IFullScreenPokemonSettings;
 
     /**
-     * Loads EightBittr maps to spawn and unspawn areas on demand.
-     */
-    @component(createAreaSpawner)
-    public readonly areaSpawner: AreaSpawnr;
-
-    /**
-     * Playback for persistent and on-demand sounds and themes.
-     */
-    @component(createAudioPlayer)
-    public readonly audioPlayer: AudioPlayr;
-
-    /**
      * An in-game battle management system for RPG-like battles between actors.
      */
-    @component(createBattleMover)
+    @factory(createBattleMover)
     public readonly battleMover: BattleMovr;
 
     /**
      * Gates flags behind generational gaps.
      */
-    @component(createFlagSwapper)
+    @factory(createFlagSwapper)
     public readonly flagSwapper: FlagSwappr<IFlags>;
-
-    /**
-     * Runs a callback on a roughly precise interval.
-     */
-    @component(createFrameTicker)
-    public readonly frameTicker: FrameTickr;
-
-    /**
-     * Storage for separate group arrays of members with unique IDs.
-     */
-    @component(createGroupHolder)
-    public readonly groupHolder: GroupHoldr<IGroups>;
-
-    /**
-     * Bridges input events to known actions.
-     */
-    @component(createInputWriter)
-    public readonly inputWriter: InputWritr;
 
     /**
      * Cache-based wrapper around localStorage.
      */
-    @component(createItemsHolder)
     public readonly itemsHolder: ItemsHoldr<IStorageItems>;
-
-    /**
-     * Storage container and lazy loader for EightBittr maps.
-     */
-    @component(createMapsCreator)
-    public readonly mapsCreator: MapsCreatr;
-
-    /**
-     * A simple container for Map attributes given by switching to an Area within that map.
-     */
-    @component(createMapScreener)
-    public readonly mapScreener: IMapScreenr;
 
     /**
      * In-game menu and dialog management system for EightBittr.
      */
-    @component(createMenuGrapher)
+    @factory(createMenuGrapher)
     public readonly menuGrapher: MenuGraphr;
-
-    /**
-     * Hookups for extensible triggered mod events.
-     */
-    @component(createModAttacher)
-    public readonly modAttacher: ModAttachr;
-
-    /**
-     * An abstract factory for dynamic attribute-based classes.
-     */
-    @component(createObjectMaker)
-    public readonly objectMaker: ObjectMakr;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    @component(createPixelDrawer)
-    public readonly pixelDrawer: PixelDrawr;
-
-    /**
-     * Compresses images into text blobs in real time with fast cached lookups.
-     */
-    @component(createPixelRender)
-    public readonly pixelRender: PixelRendr;
-
-    /**
-     * Adjustable quadrant-based collision detection.
-     */
-    @component(createQuadsKeeper)
-    public readonly quadsKeeper: QuadsKeepr<IThing>;
 
     /**
      * A stateful cutscene runner for jumping between scenes and their routines.
      */
-    @component(createScenePlayer)
+    @factory(createScenePlayer)
     public readonly scenePlayer: ScenePlayr;
 
     /**
      * General localStorage saving for collections of state.
      */
-    @component(createStateHolder)
+    @factory(createStateHolder)
     public readonly stateHolder: StateHoldr;
-
-    /**
-     * A flexible, pausable alternative to setTimeout.
-     */
-    @component(createTimeHandler)
-    public readonly timeHandler: TimeHandlr;
-
-    /**
-     * Automation for physics collisions and reactions.
-     */
-    @component(createThingHitter)
-    public readonly thingHitter: ThingHittr;
 
     /**
      * Actions characters may perform walking around.
@@ -311,16 +204,44 @@ export class FullScreenPokemon extends EightBittr {
     public readonly graphics: Graphics<this>;
 
     /**
-     * Routes user input.
+     * Collection settings for IThing group names.
+     */
+    @component(Groups)
+    public readonly groups: Groups<this>;
+
+    /**
+     * How to advance each frame of the game.
+     */
+    @component(Frames)
+    public readonly frames: Frames<this>;
+
+    /**
+     * Stores arrays of Things by their group name.
+     */
+    public readonly groupHolder: GroupHoldr<IGroups>;
+
+    /**
+     * User input filtering and handling.
      */
     @component(Inputs)
     public readonly inputs: Inputs<this>;
+
+    /**
+     * Storage keys and value settings.
+     */
+    @component(Items)
+    public readonly items: Items<this>;
 
     /**
      * Maintains Things during FrameTickr ticks.
      */
     @component(Maintenance)
     public readonly maintenance: Maintenance<this>;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    public readonly mapScreener: IMapScreenr;
 
     /**
      * Enters and spawns map areas.
@@ -344,7 +265,13 @@ export class FullScreenPokemon extends EightBittr {
      * Creates MoveAdder to teach Pokemon new moves.
      */
     @component(MoveAdder)
-    public readonly moveadder: MoveAdder<this>;
+    public readonly moveAdder: MoveAdder<this>;
+
+    /**
+     * Raw ObjectMakr factory settings.
+     */
+    @component(Objects)
+    public readonly objects: Objects<this>;
 
     /**
      * Physics functions to move Things around.
@@ -377,6 +304,12 @@ export class FullScreenPokemon extends EightBittr {
     public readonly things: Things<this>;
 
     /**
+     * Timing constants for delayed events.
+     */
+    @component(Timing)
+    public readonly timing: Timing<this>;
+
+    /**
      * Miscellaneous utility functions.
      */
     @component(Utilities)
@@ -401,5 +334,7 @@ export class FullScreenPokemon extends EightBittr {
      */
     public constructor(settings: IFullScreenPokemonConstructorSettings) {
         super(settings);
+
+        this.itemsHolder.setAutoSave(this.itemsHolder.getItem(this.storage.names.autoSave));
     }
 }

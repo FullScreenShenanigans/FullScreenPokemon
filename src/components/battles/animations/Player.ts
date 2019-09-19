@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { component, factory } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
 
@@ -23,7 +23,7 @@ export class Player<TEightBittr extends FullScreenPokemon> extends GeneralCompon
     /**
      * Shared animations for teams switching Pokemon.
      */
-    @component((container: Player<TEightBittr>) => new Switching<TEightBittr>(container.eightBitter, {
+    @factory((container: Player<TEightBittr>) => new Switching<TEightBittr>(container.eightBitter, {
         enter: {
             team: Team.player,
             getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {

@@ -8,10 +8,9 @@
     "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
   },
   "dependencies": {
-    "babyioc": "^0.7.6",
+    "babyioc": "^0.7.7",
     "battlemovr": "^0.7.5",
     "changelinr": "^0.7.4",
-    "eightbittr": "^0.7.25",
     "flagswappr": "^0.7.5",
     "itemsholdr": "^0.7.10",
     "menugraphr": "^0.7.13",
@@ -30,6 +29,7 @@
     "@types/sinon-chai": "^3.2.3",
     "chai": "^4.2.0",
     "concurrently": "^4.1.2",
+    "eightbittr": "^0.7.28",
     "glob": "^7.1.4",
     "istanbul": "^0.4.5",
     "lolex": "^4.2.0",
@@ -40,7 +40,7 @@
     "npm-check-updates": "^3.1.23",
     "requirejs": "^2.3.6",
     "run-for-every-file": "^1.1.0",
-    "shenanigans-manager": "^0.2.43",
+    "shenanigans-manager": "^0.2.44",
     "sinon": "^7.4.2",
     "sinon-chai": "^3.3.0",
     "stylelint": "^10.1.0",
@@ -96,8 +96,8 @@
     "test:setup:dir": "mkdirp test",
     "test:setup:html": "shenanigans-manager generate-test-html",
     "test:setup:tsc": "tsc -p test",
-    "verify": "npm run src && npm run test && npm run dist && npm run docs",
-    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist && npm run docs",
+    "verify": "npm run src && npm run test && npm run dist",
+    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist",
     "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "shenanigans": {

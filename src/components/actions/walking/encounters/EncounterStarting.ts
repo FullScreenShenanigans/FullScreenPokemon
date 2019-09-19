@@ -19,9 +19,9 @@ export class EncounterStarting<TEightBittr extends FullScreenPokemon> extends Ge
     public startWildEncounterBattle(thing: IPlayer, options: IWildPokemonSchema[]): void {
         const wildPokemon: IPokemon = this.chooseWildPokemonForBattle(options);
 
-        this.eightBitter.graphics.removeClass(thing, "walking");
+        this.eightBitter.graphics.classes.removeClass(thing, "walking");
         if (thing.shadow) {
-            this.eightBitter.graphics.removeClass(thing.shadow, "walking");
+            this.eightBitter.graphics.classes.removeClass(thing.shadow, "walking");
         }
 
         this.eightBitter.actions.walking.animateCharacterPreventWalking(thing);

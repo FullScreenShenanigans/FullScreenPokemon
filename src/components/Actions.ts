@@ -1,7 +1,6 @@
 import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
-import { ITimeEvent } from "timehandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -17,35 +16,9 @@ import { IArea, IMap } from "./Maps";
 import { IDialog, IDialogOptions } from "./Menus";
 import {
     IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
-    IMenuTriggerer, IPlayer, IRoamingCharacter, ISightDetector, IThemeDetector, IThing,
-    ITransporter,
-    ITransportSchema,
+    IMenuTriggerer, IPlayer, IPokeball, IRoamingCharacter, ISightDetector, IThemeDetector,
+    IThing, ITransporter, ITransportSchema,
 } from "./Things";
-
-/**
- * Settings for a color fade animation.
- */
-export interface IColorFadeSettings {
-    /**
-     * What color to fade to/from (by default, "White").
-     */
-    color?: string;
-
-    /**
-     * How much to change the color's opacity each tick (by default, .33).
-     */
-    change?: number;
-
-    /**
-     * How many game upkeeps are between each tick (by default, 4).
-     */
-    speed?: number;
-
-    /**
-     * A callback for when the animation completes.
-     */
-    callback?(): void;
-}
 
 /**
  * Actions characters may perform walking around.
@@ -108,6 +81,93 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
     }
 
     /**
+     * Collision callback for a Player and a Pokeball it's interacting with.
+     *
+     * @param thing   A Player interacting with other.
+     * @param other   A Pokeball being interacted with by thing.
+     */
+    public activatePokeball = (thing: IPlayer, other: IPokeball): void => {
+        switch (other.action) {
+            case "item":
+                if (!other.item) {
+                    throw new Error("Pokeball must have an item for the item action.");
+                }
+
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.addMenuDialog(
+                    "GeneralText",
+                    [
+                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!",
+                    ],
+                    (): void => {
+                        this.eightBitter.menuGrapher.deleteActiveMenu();
+                        this.eightBitter.death.killNormal(other);
+                        this.eightBitter.stateHolder.addChange(
+                            other.id, "alive", false,
+                        );
+                    },
+                );
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+
+                this.eightBitter.saves.addItemToBag(other.item, other.amount);
+                break;
+
+            case "cutscene":
+                if (!other.cutscene) {
+                    throw new Error("Pokeball must have a cutscene for the cutscene action.");
+                }
+
+                this.eightBitter.scenePlayer.startCutscene(other.cutscene, {
+                    player: thing,
+                    triggerer: other,
+                });
+                if (other.routine) {
+                    this.eightBitter.scenePlayer.playRoutine(other.routine);
+                }
+                break;
+
+            case "pokedex":
+                if (!other.pokemon) {
+                    throw new Error("Pokeball must have a Pokemon for the cutscene action.");
+                }
+
+                this.eightBitter.menus.pokedex.openPokedexListing(other.pokemon);
+                break;
+
+            case "dialog":
+                if (!other.dialog) {
+                    throw new Error("Pokeball must have a dialog for the cutscene action.");
+                }
+
+                this.eightBitter.menuGrapher.createMenu("GeneralText");
+                this.eightBitter.menuGrapher.addMenuDialog("GeneralText", other.dialog);
+                this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
+                break;
+
+            case "yes/no":
+                this.eightBitter.menuGrapher.createMenu("Yes/No", {
+                    killOnB: ["GeneralText"],
+                });
+                this.eightBitter.menuGrapher.addMenuList("Yes/No", {
+                    options: [
+                        {
+                            text: "YES",
+                            callback: (): void => console.log("What do, yes?"),
+                        },
+                        {
+                            text: "NO",
+                            callback: (): void => console.log("What do, no?"),
+                        }],
+                });
+                this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
+                break;
+
+            default:
+                throw new Error("Unknown Pokeball action: " + other.action + ".");
+        }
+    }
+
+    /**
      * Activates a WindowDetector by immediately starting its cycle of
      * checking whether it's in-frame to activate.
      *
@@ -135,57 +195,6 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             this.eightBitter.timeHandler.cancelEvent(thing.walkingFlipping);
             thing.walkingFlipping = undefined;
         }
-    }
-
-    /**
-     * Gradually changes a numeric attribute over time.
-     *
-     * @param thing   A Thing whose attribute is to change.
-     * @param attribute   The name of the attribute to change.
-     * @param change   How much to change the attribute each tick.
-     * @param goal   A final value for the attribute to stop at.
-     * @param speed   How many ticks between changes.
-     * @param onCompletion   A callback for when the attribute reaches the goal.
-     * @returns The in-progress TimeEvent, if started.
-     */
-    public animateFadeAttribute(
-        thing: IThing,
-        attribute: string,
-        change: number,
-        goal: number,
-        speed: number,
-        onCompletion?: (thing: IThing) => void): ITimeEvent | undefined {
-        (thing as any)[attribute] += change;
-
-        if (change > 0) {
-            if ((thing as any)[attribute] >= goal) {
-                (thing as any)[attribute] = goal;
-                if (typeof onCompletion === "function") {
-                    onCompletion(thing);
-                }
-                return undefined;
-            }
-        } else {
-            if ((thing as any)[attribute] <= goal) {
-                (thing as any)[attribute] = goal;
-                if (typeof onCompletion === "function") {
-                    onCompletion(thing);
-                }
-                return undefined;
-            }
-        }
-
-        return this.eightBitter.timeHandler.addEvent(
-            (): void => {
-                this.animateFadeAttribute(
-                    thing,
-                    attribute,
-                    change,
-                    goal,
-                    speed,
-                    onCompletion);
-            },
-            speed);
     }
 
     /**
@@ -263,11 +272,11 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.physics.setTop(things[1], y);
         this.eightBitter.physics.setTop(things[2], y);
 
-        this.eightBitter.graphics.flipHoriz(things[0]);
-        this.eightBitter.graphics.flipHoriz(things[1]);
+        this.eightBitter.graphics.flipping.flipHoriz(things[0]);
+        this.eightBitter.graphics.flipping.flipHoriz(things[1]);
 
-        this.eightBitter.graphics.flipVert(things[1]);
-        this.eightBitter.graphics.flipVert(things[2]);
+        this.eightBitter.graphics.flipping.flipVert(things[1]);
+        this.eightBitter.graphics.flipping.flipVert(things[2]);
 
         return things as [IThing, IThing, IThing, IThing];
     }
@@ -395,76 +404,6 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
     }
 
     /**
-     * Fades the screen out to a solid color.
-     *
-     * @param settings   Settings for the animation.
-     * @returns The solid color Thing.
-     */
-    public animateFadeToColor(settings: IColorFadeSettings = {}): IThing {
-        const color: string = settings.color || "White";
-        const callback: ((...args: any[]) => void) | undefined = settings.callback;
-        const change: number = settings.change || 0.33;
-        const speed: number = settings.speed || 4;
-        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(color + this.eightBitter.things.names.square, {
-            width: this.eightBitter.mapScreener.width,
-            height: this.eightBitter.mapScreener.height,
-            opacity: 0,
-        });
-
-        this.eightBitter.things.add(blank);
-
-        this.animateFadeAttribute(
-            blank,
-            "opacity",
-            change,
-            1,
-            speed,
-            (): void => {
-                this.eightBitter.death.killNormal(blank);
-                if (callback) {
-                    callback();
-                }
-            });
-
-        return blank;
-    }
-
-    /**
-     * Places a solid color over the screen and fades it out.
-     *
-     * @param settings   Settings for the animation.
-     * @returns The solid color Thing.
-     */
-    public animateFadeFromColor(settings: IColorFadeSettings = {}, ...args: any[]): IThing {
-        const color: string = settings.color || "White";
-        const callback: ((...args: any[]) => void) | undefined = settings.callback;
-        const change: number = settings.change || 0.33;
-        const speed: number = settings.speed || 4;
-        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(color + this.eightBitter.things.names.square, {
-            width: this.eightBitter.mapScreener.width,
-            height: this.eightBitter.mapScreener.height,
-            opacity: 1,
-        });
-
-        this.eightBitter.things.add(blank);
-
-        this.animateFadeAttribute(
-            blank,
-            "opacity",
-            -change,
-            0,
-            speed,
-            (): void => {
-                this.eightBitter.death.killNormal(blank);
-                if (callback) {
-                    callback(settings, ...args);
-                }
-            });
-
-        return blank;
-    }
-
-    /**
      * Sets a Thing facing a particular direction.
      *
      * @param thing   An in-game Thing.
@@ -475,21 +414,21 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         thing.direction = direction;
 
         if (direction % 2 === 1) {
-            this.eightBitter.graphics.unflipHoriz(thing);
+            this.eightBitter.graphics.flipping.unflipHoriz(thing);
         }
 
-        this.eightBitter.graphics.removeClasses(
+        this.eightBitter.graphics.classes.removeClasses(
             thing,
             this.eightBitter.constants.directionClasses[Direction.Top],
             this.eightBitter.constants.directionClasses[Direction.Right],
             this.eightBitter.constants.directionClasses[Direction.Bottom],
             this.eightBitter.constants.directionClasses[Direction.Left]);
 
-        this.eightBitter.graphics.addClass(thing, this.eightBitter.constants.directionClasses[direction]);
+        this.eightBitter.graphics.classes.addClass(thing, this.eightBitter.constants.directionClasses[direction]);
 
         if (direction === Direction.Right) {
-            this.eightBitter.graphics.flipHoriz(thing);
-            this.eightBitter.graphics.addClass(thing, this.eightBitter.constants.directionClasses[Direction.Left]);
+            this.eightBitter.graphics.flipping.flipHoriz(thing);
+            this.eightBitter.graphics.classes.addClass(thing, this.eightBitter.constants.directionClasses[Direction.Left]);
         }
     }
 
@@ -887,7 +826,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
 
         other.active = false;
 
-        this.animateFadeToColor({
+        this.eightBitter.animations.fading.animateFadeToColor({
             callback,
             color: "Black",
         });
@@ -1165,7 +1104,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         }
 
         player.bordering[player.direction] = undefined;
-        this.eightBitter.graphics.addClass(player, "surfing");
+        this.eightBitter.graphics.classes.addClass(player, "surfing");
         console.log("Should start walking");
         // this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;

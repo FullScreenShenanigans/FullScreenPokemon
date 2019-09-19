@@ -40,7 +40,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
         this.eightBitter.physics.setWidth(player, 7, true);
-        this.eightBitter.graphics.addClass(player, "fishing");
+        this.eightBitter.graphics.classes.addClass(player, "fishing");
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
@@ -93,7 +93,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                         // });
                     });
                 this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
-                this.eightBitter.graphics.removeClass(player, "fishing");
+                this.eightBitter.graphics.classes.removeClass(player, "fishing");
                 this.eightBitter.physics.setWidth(player, 8, true);
             },
             140,
@@ -108,7 +108,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends GeneralCompo
     public playerFailedLandingFish(player: IPlayer): void {
         this.eightBitter.menuGrapher.deleteActiveMenu();
         this.eightBitter.menus.displayMessage("rekt");
-        this.eightBitter.graphics.removeClass(player, "fishing");
+        this.eightBitter.graphics.classes.removeClass(player, "fishing");
         this.eightBitter.physics.setWidth(player, 8, true);
     }
 

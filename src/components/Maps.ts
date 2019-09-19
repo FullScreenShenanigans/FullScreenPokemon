@@ -12,11 +12,19 @@ import {
 } from "mapscreatr";
 import { IMapScreenr } from "mapscreenr";
 
+import { PalletTown } from "../creators/mapsLibrary/PalletTown";
+import { PewterCity } from "../creators/mapsLibrary/PewterCity";
+import { Route1 } from "../creators/mapsLibrary/Route1";
+import { Route2 } from "../creators/mapsLibrary/Route2";
+import { Route21 } from "../creators/mapsLibrary/Route21";
+import { Route22 } from "../creators/mapsLibrary/Route22";
+import { ViridianCity } from "../creators/mapsLibrary/ViridianCity";
+import { ViridianForest } from "../creators/mapsLibrary/ViridianForest";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { Direction } from "./Constants";
-import { Entrances } from "./maps/Entrances";
-import { Macros } from "./maps/Macros";
+import { EntranceAnimations } from "./maps/EntranceAnimations";
+import { MapMacros } from "./maps/MapMacros";
 import { IStateSaveable } from "./Saves";
 import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
 
@@ -497,14 +505,76 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
     /**
      * Map entrance animations.
      */
-    @component(Entrances)
-    public readonly entrances: Entrances<TEightBittr>;
+    @component(EntranceAnimations)
+    public readonly entranceAnimations: EntranceAnimations<TEightBittr>;
 
     /**
      * Map creation macros.
      */
-    @component(Macros)
-    public readonly macros: Macros<TEightBittr>;
+    @component(MapMacros)
+    public readonly mapMacros: MapMacros<TEightBittr>;
+
+    /**
+     * Entrance Functions that may be used as the openings for Locations.
+     */
+    public readonly entrances = {
+        Blank: this.entranceAnimations.blank,
+        Normal: this.entranceAnimations.normal,
+    };
+
+    /**
+     * Macros that can be used to automate common operations.
+     */
+    public readonly macros = {
+        Checkered: this.mapMacros.macroCheckered,
+        Water: this.mapMacros.macroWater,
+        House: this.mapMacros.macroHouse,
+        HouseLarge: this.mapMacros.macroHouseLarge,
+        Building: this.mapMacros.macroBuilding,
+        Gym: this.mapMacros.macroGym,
+        Mountain: this.mapMacros.macroMountain,
+        PokeCenter: this.mapMacros.macroPokeCenter,
+        PokeMart: this.mapMacros.macroPokeMart,
+    };
+
+    public readonly maps = {
+        "Blank": {
+            name: "Blank",
+            locationDefault: "Black",
+            locations: {
+                Black: {
+                    area: "Black",
+                    entry: "Blank",
+                },
+                White: {
+                    area: "White",
+                    entry: "Blank",
+                },
+            },
+            areas: {
+                Black: {
+                    creation: [],
+                },
+                White: {
+                    background: "white",
+                    creation: [],
+                },
+            },
+        },
+        "Pallet Town": PalletTown,
+        "Pewter City": PewterCity,
+        "Route 1": Route1,
+        "Route 2": Route2,
+        "Route 21": Route21,
+        "Route 22": Route22,
+        "Viridian City": ViridianCity,
+        "Viridian Forest": ViridianForest,
+    };
+
+    /**
+     * Property names to copy from Areas to the MapScreenr during setLocation.
+     */
+    public readonly screenAttributes = ["allowCycling"];
 
     /**
      * Processes additional Thing attributes. For each attribute the Area's
@@ -678,7 +748,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
 
         this.eightBitter.frameTicker.play();
 
-        this.eightBitter.actions.animateFadeFromColor({
+        this.eightBitter.animations.fading.animateFadeFromColor({
             color: "Black",
         });
 

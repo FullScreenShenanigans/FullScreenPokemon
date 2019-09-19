@@ -6,13 +6,14 @@
         ]
     },
     "rules": {
-        "no-async-without-await": false,
+        "arrow-return-shorthand": false,
         "ban-types": false,
         "comment-format": false,
         "completed-docs": false,
         "cyclomatic-complexity": false,
         "max-file-line-count": false,
         "no-any": false,
+        "no-async-without-await": false,
         "no-bitwise": false,
         "no-console": false,
         "no-floating-promises": false,
@@ -31,10 +32,10 @@
         "prefer-template": false,
         "restrict-plus-operands": false,
         "strict-boolean-expressions": false,
+        "strict-string-expressions": false,
         "strict-type-predicates": false,
         "switch-default": false,
         "switch-final-break": false,
-        "strict-string-expressions": false,
         "variable-name": false
     }
 }
