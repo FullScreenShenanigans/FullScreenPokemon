@@ -774,10 +774,10 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.eightBitter.classCycler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.eightBitter.classCycler.addClassCycle(thing, [...cycle[0]], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.eightBitter.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.eightBitter.classCycler.addClassCycleSynched(thing, [...cycle[0]], cycle[1] || undefined, cycle[2] || undefined);
         }
         /* tslint:enable */
 

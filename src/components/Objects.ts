@@ -1130,7 +1130,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             width: 16,
             height: 16,
             spriteCycle: [
-                ["one", "one", "two", "three"], "waving", 56,
+                ["one", "one", "two", "three"], "waving", 18,
             ],
         },
         FlowerVase: [24, 24],
@@ -1193,8 +1193,8 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             spriteheight: 8,
         },
         Water: {
-            spriteCycle: [
-                ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 56,
+            spriteCycleSynched: [
+                ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 18,
             ],
         },
         Text: {
