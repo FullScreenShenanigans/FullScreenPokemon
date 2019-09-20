@@ -107,6 +107,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
                 FenceVertical: {},
                 FloorDiamondsDark: {},
                 Grass: {},
+                GrassOverlay: {},
                 GymStatue: {},
                 HealingMachine: {},
                 HealingMachineBall: {},
@@ -926,6 +927,9 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         Grass: {
             rarity: 40,
             collide: this.eightBitter.collisions.obstacles.collideCharacterGrass,
+        },
+        GrassOverlay: {
+            nocollide: true,
         },
         GymStatue: {
             height: 64,

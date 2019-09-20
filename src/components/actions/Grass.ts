@@ -16,19 +16,13 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
     public enterGrassVisually(thing: ICharacter, other: IGrass): void {
         thing.grass = other;
 
-        this.eightBitter.saves.addStateHistory(thing, "height", thing.height);
-
-        thing.shadow = this.eightBitter.objectMaker.make<IThing>(thing.title, {
-            nocollide: true,
-            id: thing.id + " shadow",
-        });
-
-        if (thing.shadow.className !== thing.className) {
-            this.eightBitter.graphics.classes.setClass(thing.shadow, thing.className);
-        }
+        thing.shadow = this.eightBitter.objectMaker.make<IThing>(
+            this.eightBitter.things.names.grassOverlay,
+        );
 
         this.eightBitter.things.add(thing.shadow, thing.left, thing.top);
-        this.eightBitter.groupHolder.switchGroup(thing.shadow, thing.shadow.groupType, "Terrain");
+        this.eightBitter.groupHolder.switchGroup(thing.shadow, thing.shadow.groupType, "Character");
+        this.positionGrassShadow(thing.shadow, thing, other);
     }
 
     /**
@@ -43,14 +37,8 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
             this.exitGrassVisually(thing);
             return;
         }
-
-        // Keep the shadow in sync with thing in position and visuals.
-        this.eightBitter.physics.setLeft(thing.shadow!, thing.left);
-        this.eightBitter.physics.setTop(thing.shadow!, thing.top);
-
-        if (thing.shadow!.className !== thing.className) {
-            this.eightBitter.graphics.classes.setClass(thing.shadow!, thing.className);
-        }
+ 
+        this.positionGrassShadow(thing.shadow!, thing, other);
     }
 
     /**
@@ -60,9 +48,17 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      */
     public exitGrassVisually(thing: ICharacter): void {
         this.eightBitter.death.killNormal(thing.shadow!);
-        this.eightBitter.saves.popStateHistory(thing, "height");
 
         thing.shadow = undefined;
         thing.grass = undefined;
+    } 
+
+    private positionGrassShadow(shadow: IThing, thing: ICharacter, other: IGrass): void {
+        const midpoint = this.eightBitter.physics.getMidY(thing) - 8;
+        const adjustedDifference = midpoint - other.top;
+        const roundedDifference = ((adjustedDifference / 16) | 0) * 16;
+
+        this.eightBitter.physics.setLeft(shadow, thing.left);
+        this.eightBitter.physics.setTop(shadow, other.top + roundedDifference);
     }
 }
