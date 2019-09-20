@@ -37,7 +37,7 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
             this.exitGrassVisually(thing);
             return;
         }
- 
+
         this.positionGrassShadow(thing.shadow!, thing, other);
     }
 
@@ -51,7 +51,7 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
 
         thing.shadow = undefined;
         thing.grass = undefined;
-    } 
+    }
 
     private positionGrassShadow(shadow: IThing, thing: ICharacter, other: IGrass): void {
         const midpoint = this.eightBitter.physics.getMidY(thing) - 8;

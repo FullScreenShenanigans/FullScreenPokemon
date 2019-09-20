@@ -74,7 +74,9 @@ export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralCom
                     onClose();
                 }
             },
-            onSwitch: (pokemon: IPokemon): void => {
+            onSwitch: (listings: IPokemon[], newSelectedIndex: number): void => {
+                const pokemon = listings[newSelectedIndex];
+
                 this.attemptSwitch(
                     team,
                     pokemon,

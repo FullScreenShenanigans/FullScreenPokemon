@@ -543,6 +543,19 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 plain: true,
             } as IListMenuSchema,
+            "PokemonBlank": {
+                size: {
+                    height: 320,
+                    width: 320,
+                },
+                plain: true,
+                position: {
+                    horizontal: "center",
+                    offset: {
+                        left: -16,
+                    },
+                },
+            } as IListMenuSchema,
             "PokemonDialog": {
                 size: {
                     height: 96,

@@ -87,6 +87,19 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
+     * Swaps two members of an existing array.
+     *
+     * @param array   Array of items.
+     * @param i   Index of an item to switch.
+     * @param j   Index of another item to switch.
+     */
+    public swapArrayMembers<T>(array: T[], i: number, j: number): void {
+        const temp = array[j];
+        array[j] = array[i];
+        array[i] = temp;
+    }
+
+    /**
      * Gets a Thing known to exist by its ID.
      *
      * @template TThing   Type of Thing to retrieve.

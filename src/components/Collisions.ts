@@ -168,7 +168,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitr
         Character: {
             Character: this.generateIsCharacterTouchingCharacter,
             Solid: this.generateIsCharacterTouchingSolid,
-        }, 
+        },
         Solid: {
             Character: () => () => false,
         },

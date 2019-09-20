@@ -1,6 +1,7 @@
+import { component } from "babyioc";
 import { IMove } from "battlemovr";
 import { GeneralComponent } from "eightbittr";
-import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr";
+import { IListMenuSchema, IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -8,21 +9,26 @@ import { IHMMoveSchema } from "../constants/Moves";
 import { IPokemonListing } from "../constants/Pokemon";
 import { IMenuSchema } from "../Menus";
 
-/**
- * Callback for switching a Pokemon.
- *
- * @param pokemon   A selected Pokemon.
- */
-export type IOnPokemonSwitch = (pokemon: IPokemon) => void;
+import { Switch } from "./pokemon/Switch";
 
 /**
  * Settings to open the items menu.
  */
 export interface IPartyMenuSettings extends IMenuSchema {
     /**
-     * Callback for when a Pokemon should be switched.
+     * Callback for when a Pokemon is selected, if not the default menu.
      */
-    onSwitch: IOnPokemonSwitch;
+    onSelect?(newIndex: number): void;
+
+    /**
+     * Callback for when a Pokemon should be switched, if onSelect is provided.
+     */
+    onSwitch?(listings: IPokemon[], selectedIndex: number): void;
+
+    /**
+     * Initial selected Pokemon index for the menu, if not 0.
+     */
+    selectedIndex?: number;
 
     /**
      * Pokemon to display, if not the player's party.
@@ -70,6 +76,12 @@ export interface ILevelUpStatsMenuSettings {
  */
 export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
+     * Opens and closes the switch dialog in the Pokemon menu.
+     */
+    @component(Switch)
+    public readonly switch: Switch<TEightBittr>;
+
+    /**
      * A map to translate how status is stored in the code into in-game form.
      */
     private static readonly statusTranslate: { [i: string]: string} = {
@@ -88,27 +100,35 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         const listings: IPokemon[] = settings.pokemon
             || this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty);
 
-        this.eightBitter.menuGrapher.createMenu("Pokemon", settings);
+        this.eightBitter.menuGrapher.createMenu("Pokemon", {
+            ...settings,
+            selectedIndex: [0, settings.selectedIndex || 0],
+        } as IListMenuSchema);
         this.eightBitter.menuGrapher.addMenuList("Pokemon", {
-            options: listings.map((listing: IPokemon): any => {
-                const title: string = listing.title.join("");
+            options: listings.map((pokemon: IPokemon, index: number) => {
+                const title: string = pokemon.title.join("");
                 const sprite: string = this.eightBitter.constants.pokemon.byName[title].sprite + "Pokemon";
                 const barWidth = 100;
-                const health: number = this.eightBitter.equations.widthHealthBar(barWidth, listing.statistics.health);
+                const health: number = this.eightBitter.equations.widthHealthBar(barWidth, pokemon.statistics.health);
+                const yTop = index * 32;
+
+                const callback = settings.onSelect
+                    ? () => settings.onSelect!(index)
+                    : ((): void => this.openPokemonMenuContext({
+                        onSwitch: (): void => settings.onSwitch!(listings, index),
+                        pokemon,
+                    }));
 
                 return {
-                    text: listing.title,
-                    callback: (): void => this.openPokemonMenuContext({
-                        pokemon: listing,
-                        onSwitch: (): void => settings.onSwitch(listing),
-                    }),
+                    callback,
+                    text: pokemon.title,
                     things: [
                         {
                             thing: sprite,
                             position: {
                                 offset: {
                                     left: 16,
-                                    top: 8,
+                                    top: yTop + 8,
                                 },
                             },
                         },
@@ -117,7 +137,7 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                             position: {
                                 offset: {
                                     left: 194,
-                                    top: 6,
+                                    top: yTop + 6,
                                 },
                             },
                         },
@@ -126,7 +146,7 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                             position: {
                                 offset: {
                                     left: 66,
-                                    top: 22,
+                                    top: yTop + 22,
                                 },
                             },
                         },
@@ -138,7 +158,7 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                             position: {
                                 offset: {
                                     left: 94,
-                                    top: 22,
+                                    top: yTop + 22,
                                 },
                             },
                         },
@@ -152,18 +172,18 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                             position: {
                                 offset: {
                                     left: 96,
-                                    top: 24,
+                                    top: yTop + 24,
                                 },
                             },
                         }],
                     textsFloating: [
                         {
-                            text: listing.level.toString(),
+                            text: pokemon.level.toString(),
                             x: 160,
                             y: 0,
                         },
                         {
-                            text: listing.statistics.health.current + "/ " + listing.statistics.health.normal,
+                            text: pokemon.statistics.health.current + "/ " + pokemon.statistics.health.normal,
                             x: 160,
                             y: 16,
                         }],

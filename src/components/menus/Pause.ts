@@ -1,11 +1,20 @@
+import { component } from "babyioc";
 import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
+
+import { PausedParty } from "./pokemon/PausedParty";
 
 /**
  * Opens and closes the root pause menu.
  */
 export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+    /**
+     * Opens and runs the Pause menu of Pokemon.
+     */
+    @component(PausedParty)
+    private readonly pausedParty: PausedParty<TEightBittr>;
+
     /**
      * Opens the Pause menu.
      */
@@ -50,11 +59,7 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
         if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty).length !== 0) {
             options.unshift({
                 text: "%%%%%%%POKEMON%%%%%%%",
-                callback: (): void => {
-                    this.eightBitter.menus.pokemon.openPartyMenu({
-                        onSwitch: (): void => console.log("Should switch..."),
-                    });
-                },
+                callback: this.pausedParty.open,
             });
         }
 
