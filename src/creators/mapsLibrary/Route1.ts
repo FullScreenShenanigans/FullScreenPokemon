@@ -90,7 +90,7 @@ export const Route1: IMapRaw = {
                 { thing: "Grass", x: 384, y: 704, width: 128, height: 128 },
                 { thing: "DirtLight", x: 512, y: 704, width: 64, height: 128 },
                 { thing: "PlantSmall", x: 128, y: 736, width: 256 },
-                { thing: "BugCatcher", x: 160, y: 768, direction: 2, roaming: true, roamingDirections: [0, 8], name: "ShopAdvertiser", dialog: ["Hi! I work at a %%%%%%%POKEMON%%%%%%% MART.", "It's a convenient shop, so please visit us in VIRIDIAN CITY.", "I know, I'll give you a sample! Here you go!"], dialogNext: "We also carry %%%%%%%POKE%%%%%%% BALLs for catching %%%%%%%POKEMON%%%%%%%!", gift: "Potion" },
+                { thing: "BugCatcher", x: 160, y: 768, direction: 2, roaming: true, roamingDirections: [0, 8], name: "ShopAdvertiser", dialog: ["Hi! I work at a %POKEMON% MART.", "It's a convenient shop, so please visit us in VIRIDIAN CITY.", "I know, I'll give you a sample! Here you go!"], dialogNext: "We also carry %POKE% BALLs for catching %POKEMON%!", gift: "Potion" },
                 { thing: "Ledge", x: 512, y: 736, width: 64, jagged: true },
                 { macro: "Checkered", things: ["", "Flower"], x: 256, y: 784, xnum: 8, ynum: 2, xwidth: 16, yheight: 16 },
                 { thing: "DirtLight", x: 128, y: 832, width: 448, height: 64 },

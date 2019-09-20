@@ -97,7 +97,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                 this.eightBitter.menuGrapher.addMenuDialog(
                     "GeneralText",
                     [
-                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!",
+                        "%PLAYER% found " + other.item + "!",
                     ],
                     (): void => {
                         this.eightBitter.menuGrapher.deleteActiveMenu();
@@ -516,7 +516,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             });
             this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
-                "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
+                "%PLAYER% got " + other.gift.toUpperCase() + "!",
                 (): void => this.animateCharacterDialogFinish(thing, other));
             this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
@@ -847,12 +847,12 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         const gym: string = other.gym;
         const leader: string = other.leader;
         const dialog: string[] = [
-            `${gym.toUpperCase()}\n %%%%%%%POKEMON%%%%%%% GYM \n LEADER: ${leader.toUpperCase()}`,
-            "WINNING TRAINERS: %%%%%%%RIVAL%%%%%%%",
+            `${gym.toUpperCase()}\n %POKEMON% GYM \n LEADER: ${leader.toUpperCase()}`,
+            "WINNING TRAINERS: %RIVAL%",
         ];
 
         if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.badges)[leader]) {
-            dialog[1] += " \n %%%%%%%PLAYER%%%%%%%";
+            dialog[1] += " \n %PLAYER%";
         }
 
         this.eightBitter.menuGrapher.createMenu("GeneralText");

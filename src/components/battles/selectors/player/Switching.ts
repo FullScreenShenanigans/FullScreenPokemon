@@ -36,7 +36,7 @@ export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralCom
         });
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
-            "Use next %%%%%%%POKEMON%%%%%%%?",
+            "Use next %POKEMON%?",
             (): void => {
                 this.eightBitter.menuGrapher.createMenu("Yes/No");
                 this.eightBitter.menuGrapher.addMenuList("Yes/No", {

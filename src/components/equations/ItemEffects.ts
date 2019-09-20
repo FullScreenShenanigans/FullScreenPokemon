@@ -47,7 +47,7 @@ export class ItemEffects<TEightBittr extends FullScreenPokemon> extends GeneralC
             "GeneralText",
             [
                 [
-                    "%%%%%%%PLAYER%%%%%%% used X " + type.toUpperCase() + "!",
+                    "%PLAYER% used X " + type.toUpperCase() + "!",
                 ],
                 pokemon.title.join("") + "'s " + type.toUpperCase() + " rose!",
             ],

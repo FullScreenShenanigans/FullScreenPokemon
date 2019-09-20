@@ -57,7 +57,7 @@ export class OakParcelPickupCutscene<TEightBittr extends FullScreenPokemon> exte
             [
                 "You know PROF. Oak, right?",
                 "His order came in. Will you take it to him?",
-                "%%%%%%%PLAYER%%%%%%% got OAK's PARCEL!",
+                "%PLAYER% got OAK's PARCEL!",
             ],
             (): void => {
                 this.eightBitter.menuGrapher.deleteMenu("GeneralText");

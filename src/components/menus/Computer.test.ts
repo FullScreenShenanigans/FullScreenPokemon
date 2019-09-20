@@ -19,7 +19,7 @@ describe("Computer", () => {
         const options = menu.grid[0].map((option) => option.text);
         expect(options).to.be.deep.equal([
             "BILL's PC",
-            "%%%%%%%PLAYER%%%%%%%'s PC",
+            "%PLAYER%'s PC",
             "PROF. OAK's PC",
             "LOG OFF",
         ]);

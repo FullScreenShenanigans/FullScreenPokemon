@@ -102,6 +102,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
             "MONEY": (): string[] =>
                 fsp.itemsHolder.getItem(fsp.storage.names.money).toString().split(""),
         },
+        replacerKey: "%",
         sounds: {
             onInteraction: "Menu Bleep",
         },
@@ -237,11 +238,11 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 childrenSchemas: [
                     {
                         type: "text",
-                        words: ["SEEN \r\n %%%%%%%POKEDEX.SEEN%%%%%%%"],
+                        words: ["SEEN \r\n %POKEDEX.SEEN%"],
                     } as IMenuChildSchema,
                     {
                         type: "text",
-                        words: ["OWN \r\n %%%%%%%POKEDEX.OWN%%%%%%%"],
+                        words: ["OWN \r\n %POKEDEX.OWN%"],
                         position: {
                             offset: {
                                 top: 48,
@@ -567,7 +568,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 childrenSchemas: [{
                     type: "text",
                     words: [
-                        "Choose a %%%%%%%POKEMON%%%%%%%.",
+                        "Choose a %POKEMON%.",
                     ],
                     position: {
                         offset: {
@@ -1157,11 +1158,11 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "text",
                         words: [
-                            "NAME/%%%%%%%PLAYER%%%%%%%",
+                            "NAME/%PLAYER%",
                             "\n",
-                            "MONEY/%%%%%%%MONEY%%%%%%%",
+                            "MONEY/%MONEY%",
                             "\n",
-                            "TIME/%%%%%%%TIME%%%%%%%",
+                            "TIME/%TIME%",
                         ],
                         position: {
                             offset: {
@@ -1330,7 +1331,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     } as IMenuChildSchema,
                     {
                         type: "text",
-                        words: ["%%%%%%%POKEDEX%%%%%%%"],
+                        words: ["%POKEDEX%"],
                         position: {
                             offset: {
                                 left: 16,
@@ -1354,24 +1355,24 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                             {
                                 command: "padLeft",
                                 length: 8,
-                                word: "%%%%%%%PLAYER%%%%%%%",
+                                word: "%PLAYER%",
                             } as IMenuWordPadLeftCommand,
                             {
                                 command: "padLeft",
                                 length: 14,
-                                word: "%%%%%%%BADGES.LENGTH%%%%%%%",
+                                word: "%BADGES.LENGTH%",
                                 alignRight: true,
                             } as IMenuWordPadLeftCommand,
                             {
                                 command: "padLeft",
                                 length: 14,
-                                word: "%%%%%%%POKEDEX.LENGTH%%%%%%%",
+                                word: "%POKEDEX.LENGTH%",
                                 alignRight: true,
                             } as IMenuWordPadLeftCommand,
                             {
                                 command: "padLeft",
                                 length: 14,
-                                word: "%%%%%%%TIME%%%%%%%",
+                                word: "%TIME%",
                                 alignRight: true,
                             } as IMenuWordPadLeftCommand],
                         position: {
@@ -1473,7 +1474,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         type: "text",
                         words: [{
                             command: "padLeft",
-                            length: "%%%%%%%MONEY%%%%%%%",
+                            length: "%MONEY%",
                             word: "$",
                         }],
                         position: {
@@ -1487,7 +1488,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         words: [{
                             command: "padLeft",
                             length: 32,
-                            word: "%%%%%%%MONEY%%%%%%%",
+                            word: "%MONEY%",
                         }],
                         position: {
                             offset: {

@@ -26,7 +26,7 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
             this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!",
+                    "Those are %POKE% Balls. They contain %POKEMON%!",
                 ]);
             this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 
@@ -65,7 +65,7 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
             "GeneralText",
             [
                 [
-                    "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, ", settings.chosen, "?",
+                    "So! You want the " + settings.triggerer.description + " %POKEMON%, ", settings.chosen, "?",
                 ],
             ],
             (): void => {
@@ -96,8 +96,8 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
     public PlayerTakesPokemon(settings: any): void {
         const oak: ICharacter = this.eightBitter.utilities.getExistingThingById("Oak") as ICharacter;
         const rival: ICharacter = this.eightBitter.utilities.getExistingThingById("Rival") as ICharacter;
-        const dialogOak = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
-        const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
+        const dialogOak = "Oak: If a wild %POKEMON% appears, your %POKEMON% can fight against it!";
+        const dialogRival = "%RIVAL%: My %POKEMON% looks a lot stronger.";
 
         settings.oak = oak;
         oak.dialog = dialogOak;
@@ -119,9 +119,9 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
             "GeneralText",
             [
                 [
-                    "%%%%%%%PLAYER%%%%%%% received a ", settings.chosen, "!",
+                    "%PLAYER% received a ", settings.chosen, "!",
                 ],
-                "This %%%%%%%POKEMON%%%%%%% is really energetic!",
+                "This %POKEMON% is really energetic!",
                 [
                     "Do you want to give a nickname to ", settings.chosen, "?",
                 ],
@@ -259,9 +259,9 @@ export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
+                "%RIVAL%: I'll take this one, then!",
                 [
-                    "%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!",
+                    "%RIVAL% received a ", settings.rivalPokemon, "!",
                 ],
             ],
             (): void => {

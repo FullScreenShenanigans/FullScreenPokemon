@@ -45,7 +45,7 @@ export class DaisyTownMapCutscene<TEightBittr extends FullScreenPokemon> extends
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%% got a TOWN MAP!",
+                "%PLAYER% got a TOWN MAP!",
             ],
             (): void => {
                 this.eightBitter.scenePlayer.stopCutscene();

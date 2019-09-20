@@ -11,7 +11,7 @@ export class ComputerStorage<TEightBittr extends FullScreenPokemon> extends Gene
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Accessed %%%%%%%POKEMON%%%%%%% storage system.",
+                "Accessed %POKEMON% storage system.",
             ],
             this.listOptions);
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");

@@ -25,7 +25,7 @@ export class Computer<TEightBittr extends FullScreenPokemon> extends GeneralComp
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%% turned on the PC.",
+                "%PLAYER% turned on the PC.",
             ],
             this.listOptions);
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
@@ -42,7 +42,7 @@ export class Computer<TEightBittr extends FullScreenPokemon> extends GeneralComp
             },
             {
                 callback: (): void => {/* ... */},
-                text: "%%%%%%%PLAYER%%%%%%%'s PC",
+                text: "%PLAYER%'s PC",
             },
             {
                 callback: (): void => {/* ... */},

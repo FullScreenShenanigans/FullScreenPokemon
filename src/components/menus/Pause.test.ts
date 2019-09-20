@@ -43,7 +43,7 @@ describe("Pause", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.not.include("%%%%%%%POKEMON%%%%%%%");
+            expect(optionTexts).to.not.include("%POKEMON%");
         });
 
         it("includes the POKEMON option when there are Pokemon in the player's party", () => {
@@ -64,7 +64,7 @@ describe("Pause", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.include("%%%%%%%POKEMON%%%%%%%");
+            expect(optionTexts).to.include("%POKEMON%");
         });
 
         it("doesn't include the POKEDEX option when the player doesn't have a Pokedex", () => {
@@ -80,7 +80,7 @@ describe("Pause", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.not.include("%%%%%%%POKEDEX%%%%%%%");
+            expect(optionTexts).to.not.include("%POKEDEX%");
         });
 
         it("includes the POKEDEX option when the player has a Pokedex", () => {
@@ -96,7 +96,7 @@ describe("Pause", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.include("%%%%%%%POKEDEX%%%%%%%");
+            expect(optionTexts).to.include("%POKEDEX%");
         });
     });
 });

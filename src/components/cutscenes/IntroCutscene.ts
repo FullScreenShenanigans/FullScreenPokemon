@@ -55,8 +55,8 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Hello there! \n Welcome to the world of %%%%%%%POKEMON%%%%%%%!",
-                "My name is OAK! People call me the %%%%%%%POKEMON%%%%%%% PROF!",
+                "Hello there! \n Welcome to the world of %POKEMON%!",
+                "My name is OAK! People call me the %POKEMON% PROF!",
             ],
             this.eightBitter.scenePlayer.bindRoutine("FirstDialogFade"),
         );
@@ -125,10 +125,10 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "This world is inhabited by creatures called %%%%%%%POKEMON%%%%%%%!",
-                "For some people, %%%%%%%POKEMON%%%%%%% are pets. Others use them for fights.",
+                "This world is inhabited by creatures called %POKEMON%!",
+                "For some people, %POKEMON% are pets. Others use them for fights.",
                 "Myself...",
-                "I study %%%%%%%POKEMON%%%%%%% as a profession.",
+                "I study %POKEMON% as a profession.",
             ],
             this.eightBitter.scenePlayer.bindRoutine("PlayerAppear"),
         );
@@ -522,9 +522,9 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%%!",
-                "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
-                "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!",
+                "%PLAYER%!",
+                "Your very own %POKEMON% legend is about to unfold!",
+                "A world of dreams and adventures with %POKEMON% awaits! Let's go!",
             ],
             this.eightBitter.scenePlayer.bindRoutine("ShrinkPlayer"));
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");

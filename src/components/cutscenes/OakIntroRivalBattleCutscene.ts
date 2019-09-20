@@ -35,7 +35,7 @@ export class OakIntroRivalBattleCutscene<TEightBittr extends FullScreenPokemon> 
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
+                "%RIVAL%: Wait, %PLAYER%! Let's check out our %POKEMON%!",
                 "Come on, I'll take you on!",
             ],
             this.eightBitter.scenePlayer.bindRoutine("Challenge", { further }));
@@ -71,13 +71,13 @@ export class OakIntroRivalBattleCutscene<TEightBittr extends FullScreenPokemon> 
                 },
             },
             texts: {
-                start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
+                start: (): string => "%RIVAL% wants to fight!",
                 outcomes: {
-                    [BattleOutcome.opponentVictory]: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
+                    [BattleOutcome.opponentVictory]: (): string => "%RIVAL%: Yeah! Am I great or what?",
                     [BattleOutcome.playerVictory]: (): string => [
-                        "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                        "%RIVAL%: WHAT?",
                         "Unbelievable!",
-                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!",
+                        "I picked the wrong %POKEMON%!",
                     ].join(" "),
                 },
             },

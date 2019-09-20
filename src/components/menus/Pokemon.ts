@@ -299,7 +299,7 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.menuGrapher.addMenuDialog(
             "PokemonMenuStatsOT",
             [
-                "%%%%%%%PLAYER%%%%%%%",
+                "%PLAYER%",
             ],
         );
 

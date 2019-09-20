@@ -23,13 +23,13 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "OAK: Oh, %%%%%%%PLAYER%%%%%%%!",
-                "How is my old %%%%%%%POKEMON%%%%%%%?",
+                "OAK: Oh, %PLAYER%!",
+                "How is my old %POKEMON%?",
                 "Well, it seems to like you a lot.",
-                "You must be talented as a %%%%%%%POKEMON%%%%%%% trainer!",
+                "You must be talented as a %POKEMON% trainer!",
                 "What? You have something for me?",
-                "%%%%%%%PLAYER%%%%%%% delivered OAK's PARCEL.",
-                "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!",
+                "%PLAYER% delivered OAK's PARCEL.",
+                "Ah! This is the custom %POKE% BALL I ordered! Thank you!",
             ],
             (): void => {
                 this.eightBitter.timeHandler.addEvent(
@@ -63,7 +63,7 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Gramps!",
+                "%RIVAL%: Gramps!",
             ],
             this.eightBitter.scenePlayer.bindRoutine("RivalWalksUp"),
         );
@@ -103,7 +103,7 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: What did you call me for?",
+                "%RIVAL%: What did you call me for?",
             ],
             (): void => {
                 this.eightBitter.timeHandler.addEvent(
@@ -140,8 +140,8 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "On the desk there is my invention, %%%%%%%POKEDEX%%%%%%%!",
-                "It automatically records data on %%%%%%%POKEMON%%%%%%% you've seen or caught!",
+                "On the desk there is my invention, %POKEDEX%!",
+                "It automatically records data on %POKEMON% you've seen or caught!",
                 "It's a hi-tech encyclopedia!",
             ],
             (): void => {
@@ -163,8 +163,8 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "OAK: %%%%%%%PLAYER%%%%%%% and %%%%%%%RIVAL%%%%%%%! Take these with you!",
-                "%%%%%%%PLAYER%%%%%%% got %%%%%%%POKEDEX%%%%%%% from OAK!",
+                "OAK: %PLAYER% and %RIVAL%! Take these with you!",
+                "%PLAYER% got %POKEDEX% from OAK!",
             ],
             (): void => {
                 this.eightBitter.timeHandler.addEvent(
@@ -191,12 +191,12 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "To make a complete guide on all the %%%%%%%POKEMON%%%%%%% in the world...",
+                "To make a complete guide on all the %POKEMON% in the world...",
                 "That was my dream!",
                 "But, I'm too old! I can't do it!",
                 "So, I want you two to fulfill my dream for me!",
                 "Get moving, you two!",
-                "This is a great undertaking in %%%%%%%POKEMON%%%%%%% history!",
+                "This is a great undertaking in %POKEMON% history!",
             ],
             (): void => {
                 this.eightBitter.timeHandler.addEvent(
@@ -219,10 +219,10 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Alright Gramps! Leave it all to me!",
-                "%%%%%%%PLAYER%%%%%%%, I hate to say it, but I don't need you!",
+                "%RIVAL%: Alright Gramps! Leave it all to me!",
+                "%PLAYER%, I hate to say it, but I don't need you!",
                 "I know! I'll borrow a TOWN MAP from my sis!",
-                "I'll tell her not to lend you one, %%%%%%%PLAYER%%%%%%%! Hahaha!",
+                "I'll tell her not to lend you one, %PLAYER%! Hahaha!",
             ],
             (): void => {
                 this.eightBitter.scenePlayer.stopCutscene();
@@ -246,7 +246,7 @@ export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> ex
 
                 delete settings.oak.cutscene;
                 settings.oak.dialog = [
-                    "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!",
+                    "%POKEMON% around the world wait for you, %PLAYER%!",
                 ];
 
                 this.eightBitter.stateHolder.addChange(

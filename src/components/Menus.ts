@@ -187,7 +187,7 @@ export class Menus<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * Displays message when a Player tries to use an item that cannot be used.
      */
     public cannotDoThat(): void {
-        this.displayMessage("OAK: %%%%%%%PLAYER%%%%%%%! \n This isn't the \n time to use that!");
+        this.displayMessage("OAK: %PLAYER%! \n This isn't the \n time to use that!");
     }
 
     /**

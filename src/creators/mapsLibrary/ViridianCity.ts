@@ -93,7 +93,7 @@ export const ViridianCity: IMapRaw = {
                 { thing: "PlantSmall", x: 768, width: 384, height: 64 },
                 { thing: "DirtMedium", x: 1152, width: 128, height: 1024 },
                 { thing: "PlantSmall", x: 1152, width: 128, height: 1024 },
-                { thing: "Sign", x: 608, y: 32, dialog: ["TRAINER TIPS", "Catch %%%%%%%POKEMON%%%%%%% and expand your collection!", "The more you have, the easier it is to fight!"] },
+                { thing: "Sign", x: 608, y: 32, dialog: ["TRAINER TIPS", "Catch %POKEMON% and expand your collection!", "The more you have, the easier it is to fight!"] },
                 { macro: "Checkered", things: ["DirtClean", "DirtWhite"], x: 576, y: 64, xnum: 2, ynum: 2 },
                 { thing: "DirtMedium", x: 640, y: 64, width: 128, height: 64 },
                 { thing: "DirtLight", x: 768, y: 64, width: 384, height: 64 },
@@ -112,9 +112,9 @@ export const ViridianCity: IMapRaw = {
                 { macro: "Checkered", things: ["DirtClean", "DirtWhite"], x: 576, y: 192, xnum: 2, ynum: 12 },
                 { thing: "DirtWhite", x: 640, y: 192, width: 64, height: 128 },
                 { thing: "FenceVertical", x: 640, y: 192, width: 32, height: 64 },
-                { thing: "Sign", x: 864, y: 224, dialog: "VIRIDIAN CITY \n %%%%%%%POKEMON%%%%%%% GYM" },
+                { thing: "Sign", x: 864, y: 224, dialog: "VIRIDIAN CITY \n %POKEMON% GYM" },
                 { macro: "House", x: 640, y: 256, door: true, entrance: "Nicknamer House Front Door", transport: "Nicknamer House Floor 1 Door" },
-                { thing: "Elder", x: 960, y: 256, name: "GymWatcher", direction: 0, roaming: true, roamingDirections: [], dialog: ["This %%%%%%%POKEMON%%%%%%% gym is always closed.", "I wonder who the LEADER is?"] },
+                { thing: "Elder", x: 960, y: 256, name: "GymWatcher", direction: 0, roaming: true, roamingDirections: [], dialog: ["This %POKEMON% gym is always closed.", "I wonder who the LEADER is?"] },
                 { thing: "MenuTriggerer", x: 992, y: 256, dialog: "The GYM's doors are locked...", pushSteps: [{ direction: 2, blocks: 1 }] },
                 { thing: "DirtMedium", x: 896, y: 256, width: 192, height: 64 },
                 { thing: "Lady", x: 544, y: 288, id: "CrankyGranddaughter", direction: 1, directionPreferred: 1, dialog: "Oh Grandpa! Don't be so mean! \n He hasn't had his coffee yet." },
@@ -127,7 +127,7 @@ export const ViridianCity: IMapRaw = {
                         options: {
                             Yes: "Time is money... Go along then.",
                             No: {
-                                words: ["I see you're using a %%%%%%%POKEDEX%%%%%%%.", "When you catch a %%%%%%%POKEMON%%%%%%%, %%%%%%%POKEDEX%%%%%%% is automatically updated.", "What? Don't you know how to catch %%%%%%%POKEMON%%%%%%%?", "I'll show you how to then."],
+                                words: ["I see you're using a %POKEDEX%.", "When you catch a %POKEMON%, %POKEDEX% is automatically updated.", "What? Don't you know how to catch %POKEMON%?", "I'll show you how to then."],
                                 cutscene: "ElderTraining",
                             },
                         },
@@ -162,7 +162,7 @@ export const ViridianCity: IMapRaw = {
                 { macro: "Checkered", things: ["", "Flower"], x: 640, y: 592, xnum: 8, ynum: 2, xwidth: 16, yheight: 16 },
                 { thing: "DirtMedium", x: 192, y: 640, width: 320, height: 128 },
                 { macro: "Checkered", things: ["DirtClean", "DirtWhite"], x: 512, y: 640, xnum: 20, ynum: 2 },
-                { thing: "BugCatcher", x: 416, y: 640, name: "WaistHappy", direction: 1, roaming: true, dialog: ["Those %%%%%%%POKE%%%%%%% BALLs at your waist! You have %%%%%%%POKEMON%%%%%%%!", "It's great that you can carry and use %%%%%%%POKEMON%%%%%%% any time, anywhere!"] },
+                { thing: "BugCatcher", x: 416, y: 640, name: "WaistHappy", direction: 1, roaming: true, dialog: ["Those %POKE% BALLs at your waist! You have %POKEMON%!", "It's great that you can carry and use %POKEMON% any time, anywhere!"] },
                 { thing: "PlantSmall", x: 128, y: 672, width: 128 },
                 { thing: "Tree", x: 256, y: 704 },
                 { macro: "Checkered", things: ["DirtClean", "DirtWhite"], x: 512, y: 704, xnum: 2, ynum: 4 },
@@ -179,7 +179,7 @@ export const ViridianCity: IMapRaw = {
                 { thing: "DirtMedium", x: 192, y: 768, width: 64, height: 128 },
                 { macro: "Water", x: 256, y: 768, width: 192, height: 128, open: [false, false, true, false] },
                 { thing: "DirtMedium", x: 448, y: 768, width: 64, height: 128 },
-                { thing: "BugCatcher", x: 960, y: 800, name: "CaterpillerGuy", roaming: true, dialog: "You want to know about the 8 kinds of caterpillar %%%%%%%POKEMON%%%%%%%?", dialogOptions: { type: "Yes/No", options: { Yes: ["CATERPIE has no poison, but WEEDLE does.", "Watch out for its POISON STING!"], No: "Oh, OK then!" } } },
+                { thing: "BugCatcher", x: 960, y: 800, name: "CaterpillerGuy", roaming: true, dialog: "You want to know about the 8 kinds of caterpillar %POKEMON%?", dialogOptions: { type: "Yes/No", options: { Yes: ["CATERPIE has no poison, but WEEDLE does.", "Watch out for its POISON STING!"], No: "Oh, OK then!" } } },
                 { macro: "Checkered", things: ["", "Flower"], x: 1024, y: 784, xnum: 4, ynum: 2, xwidth: 16, yheight: 16 },
                 { thing: "DirtLight", x: 128, y: 832, width: 64, height: 64 },
                 { thing: "DirtLight", x: 512, y: 832, width: 64, height: 64 },
@@ -239,7 +239,7 @@ export const ViridianCity: IMapRaw = {
                 { thing: "Stool", x: 160, y: 96 },
                 { thing: "Stool", x: 64, y: 128 },
                 { thing: "Stool", x: 160, y: 128 },
-                { thing: "LittleGirl", x: 32, y: 128, roaming: true, roamingDirections: [0, 2], dialog: "My daddy loves %%%%%%%POKEMON%%%%%%% too." },
+                { thing: "LittleGirl", x: 32, y: 128, roaming: true, roamingDirections: [0, 2], dialog: "My daddy loves %POKEMON% too." },
                 { thing: "BirdPokemon", x: 192, y: 160, direction: 3, roaming: true, roamingDirections: [1, 3], dialog: "SPEARY: Tetweet!" },
                 { thing: "PottedPalmTree", y: 192 },
                 { thing: "PottedPalmTree", x: 224, y: 192 },
@@ -263,17 +263,17 @@ export const ViridianCity: IMapRaw = {
                 { thing: "Table2x3", x: 96, y: 96 },
                 { thing: "Notepad", x: 96, y: 112 },
                 {
-                    thing: "DialogResponder", x: 96, y: 112, dialog: ["Looked at the notebook!", "First page...", "%%%%%%%POKE%%%%%%% BALLs are used to catch %%%%%%%POKEMON%%%%%%%.", "Up to 24 %%%%%%%POKEMON%%%%%%% can be carried.", "People who raise and make %%%%%%%POKEMON%%%%%%% fight are called %%%%%%%POKEMON%%%%%%% trainers.", "Turn the page?"], dialogOptions:
+                    thing: "DialogResponder", x: 96, y: 112, dialog: ["Looked at the notebook!", "First page...", "%POKE% BALLs are used to catch %POKEMON%.", "Up to 24 %POKEMON% can be carried.", "People who raise and make %POKEMON% fight are called %POKEMON% trainers.", "Turn the page?"], dialogOptions:
                     {
                         options: {
                             Yes: {
-                                words: ["Second page...", "A healty %%%%%%%POKEMON%%%%%%% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
+                                words: ["Second page...", "A healty %POKEMON% may be hard to catch, so weaken it first!", "Poison, burns, and other damage are effective!", "Turn the page?"],
                                 options: {
                                     Yes: {
-                                        words: ["Third page...", "%%%%%%%POKEMON%%%%%%% trainers seek others to engage in %%%%%%%POKEMON%%%%%%% fights.", "Battles are constantly fought at %%%%%%%POKEMON%%%%%%% GYMs.", "Turn the page?"],
+                                        words: ["Third page...", "%POKEMON% trainers seek others to engage in %POKEMON% fights.", "Battles are constantly fought at %POKEMON% GYMs.", "Turn the page?"],
                                         options: {
                                             Yes: {
-                                                words: ["Fourth page...", "The goal for %%%%%%%POKEMON%%%%%%% trainers is to beat the top 32 %%%%%%%POKEMON%%%%%%% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %%%%%%%POKEMON%%%%%%% LEAGUE!", "GIRL: Hey! Don't look at my notes!"],
+                                                words: ["Fourth page...", "The goal for %POKEMON% trainers is to beat the top 32 %POKEMON% GYM LEADERs.", "Do so to earn the right to face...", "The ELITE FOUR of %POKEMON% LEAGUE!", "GIRL: Hey! Don't look at my notes!"],
                                             },
                                         },
                                     },
@@ -297,7 +297,7 @@ export const ViridianCity: IMapRaw = {
             invisibleWallBorders: true,
             creation: [
                 { macro: "PokeCenter", entrance: "PokeCenter Inside Door", transport: "PokeCenter Outside Door" },
-                { thing: "CoolTrainerM", x: 128, y: 96, roaming: true, roamingDirections: [], dialog: ["There's a %%%%%%%POKEMON%%%%%%% CENTER in every town ahead.", "They don't charge any money either!"] },
+                { thing: "CoolTrainerM", x: 128, y: 96, roaming: true, roamingDirections: [], dialog: ["There's a %POKEMON% CENTER in every town ahead.", "They don't charge any money either!"] },
                 { thing: "Gentleman", x: 320, y: 160, direction: 0, roaming: true, roamingDirections: [0, 2], dialog: ["You can use that PC in the corner.", "The receptionist told me. So kind!"] },
             ],
         },

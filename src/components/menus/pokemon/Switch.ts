@@ -31,7 +31,7 @@ export class Switch<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             childrenSchemas: [{
                 type: "text",
                 words: [
-                    "Move %%%%%%%POKEMON%%%%%%%\nwhere?",
+                    "Move %POKEMON%\nwhere?",
                 ],
             }],
         });

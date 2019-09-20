@@ -924,7 +924,7 @@ export class MapMacros<TEightBittr extends FullScreenPokemon> extends GeneralCom
                 dialogDirections: true,
                 dialog: reference.coolTrainerDialog || [
                     "",
-                    "%%%%%%%POKEMON%%%%%%% CENTERs heal your tired, hurt, or fainted %%%%%%%POKEMON%%%%%%%!",
+                    "%POKEMON% CENTERs heal your tired, hurt, or fainted %POKEMON%!",
                     "",
                     "",
                 ],

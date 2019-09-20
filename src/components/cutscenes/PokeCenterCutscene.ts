@@ -30,9 +30,9 @@ export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends G
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Welcome to our %%%%%%%POKEMON%%%%%%% CENTER!",
-                "We heal your %%%%%%%POKEMON%%%%%%% back to perfect health!",
-                "Shall we heal your %%%%%%%POKEMON%%%%%%%?",
+                "Welcome to our %POKEMON% CENTER!",
+                "We heal your %POKEMON% back to perfect health!",
+                "Shall we heal your %POKEMON%?",
             ],
             (): void => this.choose(machine, nurse),
         );
@@ -77,7 +77,7 @@ export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends G
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Ok. We'll need your %%%%%%%POKEMON%%%%%%%.",
+                "Ok. We'll need your %POKEMON%.",
             ],
             (): void => this.healing(machine, nurse),
         );
@@ -169,7 +169,7 @@ export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends G
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "Thank you! \n Your %%%%%%%POKEMON%%%%%%% are fighting fit!",
+                "Thank you! \n Your %POKEMON% are fighting fit!",
                 "We hope to see you again!",
             ],
             (): void => {

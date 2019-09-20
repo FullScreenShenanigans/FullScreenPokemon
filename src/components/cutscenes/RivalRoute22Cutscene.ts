@@ -64,11 +64,11 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Hey! %%%%%%%PLAYER%%%%%%%!",
-                "You're going to %%%%%%%POKEMON%%%%%%% LEAGUE?",
+                "%RIVAL%: Hey! %PLAYER%!",
+                "You're going to %POKEMON% LEAGUE?",
                 "Forget it! You probably don't have any BADGES!",
                 "The guard won't let you through!",
-                "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?",
+                "By the way did your %POKEMON% get any stronger?",
             ],
             this.eightBitter.scenePlayer.bindRoutine("Challenge"));
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
@@ -106,9 +106,9 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
                 },
             },
             texts: {
-                start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
+                start: (): string => "%RIVAL% wants to fight!",
                 outcomes: {
-                    [BattleOutcome.opponentVictory]: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
+                    [BattleOutcome.opponentVictory]: (): string => "%RIVAL%: Yeah! Am I great or what?",
                     [BattleOutcome.playerVictory]: (): string => "Aww! You just lucked out!",
                 },
             },

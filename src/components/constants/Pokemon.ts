@@ -482,7 +482,7 @@ export class Pokemon {
             label: "Fossil",
             sprite: "Water",
             info: [
-                "A ferocious, prehistoric %%%%%%%POKEMON%%%%%%% that goes for the enemy's throat with its serrated saw-like fangs.",
+                "A ferocious, prehistoric %POKEMON% that goes for the enemy's throat with its serrated saw-like fangs.",
             ],
             number: 142,
             height: ["5", "11"],
@@ -885,7 +885,7 @@ export class Pokemon {
             label: "Legendary",
             sprite: "Water",
             info: [
-                "A %%%%%%%POKEMON%%%%%%% that has been admired since the past for its beauty. It runs agilely as if on wings.",
+                "A %POKEMON% that has been admired since the past for its beauty. It runs agilely as if on wings.",
             ],
             number: 59,
             height: ["6", "3"],
@@ -1067,7 +1067,7 @@ export class Pokemon {
             label: "Freeze",
             sprite: "Water",
             info: [
-                "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear to doomed people who are lost in icy mountains.",
+                "A legendary bird %POKEMON% that is said to appear to doomed people who are lost in icy mountains.",
             ],
             number: 144,
             height: ["5", "7"],
@@ -1244,7 +1244,7 @@ export class Pokemon {
             label: "Flower",
             sprite: "Water",
             info: [
-                "A carnivorous %%%%%%%POKEMON%%%%%%% that traps and eats bugs. It uses its root feet to soak up needed moisture.",
+                "A carnivorous %POKEMON% that traps and eats bugs. It uses its root feet to soak up needed moisture.",
             ],
             evolutions: [{
                 evolvedForm: ["W", "E", "E", "P", "I", "N", "B", "E", "L", "L"],
@@ -1366,7 +1366,7 @@ export class Pokemon {
             label: "Shellfish",
             sprite: "Water",
             info: [
-                "A brutal %%%%%%%POKEMON%%%%%%% with pressurized water jets on its shell. They are used for high speed tackles.",
+                "A brutal %POKEMON% with pressurized water jets on its shell. They are used for high speed tackles.",
             ],
             number: 9,
             height: ["5", "3"],
@@ -1537,7 +1537,7 @@ export class Pokemon {
             sprite: "Water",
             info: [
                 "A strange seed was planted on its back at birth.",
-                "The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%.",
+                "The plant sprouts and grows with this %POKEMON%.",
             ],
             evolutions: [{
                 evolvedForm: ["I", "V", "Y", "S", "A", "U", "R"],
@@ -1833,7 +1833,7 @@ export class Pokemon {
             label: "Egg",
             sprite: "Water",
             info: [
-                "A rare and elusive %%%%%%%POKEMON%%%%%%% that is said to bring happiness to those who manage to get it.",
+                "A rare and elusive %POKEMON% that is said to bring happiness to those who manage to get it.",
             ],
             number: 113,
             height: ["3", "7"],
@@ -2516,7 +2516,7 @@ export class Pokemon {
             label: "Fairy",
             sprite: "Water",
             info: [
-                "A timid fairy %%%%%%%POKEMON%%%%%%% that is rarely seen. It will run and hide the moment it senses people.",
+                "A timid fairy %POKEMON% that is rarely seen. It will run and hide the moment it senses people.",
             ],
             number: 36,
             height: ["4", "3"],
@@ -2810,7 +2810,7 @@ export class Pokemon {
             label: "Lonely",
             sprite: "Water",
             info: [
-                "Because it never removes its skull helmet, no one has ever seen this %%%%%%%POKEMON%%%%%%%'s real face.",
+                "Because it never removes its skull helmet, no one has ever seen this %POKEMON%'s real face.",
             ],
             evolutions: [{
                 evolvedForm: ["M", "A", "R", "O", "W", "A", "K"],
@@ -3498,7 +3498,7 @@ export class Pokemon {
             label: "Dragon",
             sprite: "Water",
             info: [
-                "A mystical %%%%%%%POKEMON%%%%%%% that exudes a gentle aura. Has the ability to change climate conditions.",
+                "A mystical %POKEMON% that exudes a gentle aura. Has the ability to change climate conditions.",
             ],
             evolutions: [{
                 evolvedForm: ["D", "R", "A", "G", "O", "N", "I", "T", "E"],
@@ -3653,7 +3653,7 @@ export class Pokemon {
             label: "Dragon",
             sprite: "Water",
             info: [
-                "An extremely rarely seen marine %%%%%%%POKEMON%%%%%%%. Its intelligence is said to match that of humans.",
+                "An extremely rarely seen marine %POKEMON%. Its intelligence is said to match that of humans.",
             ],
             number: 149,
             height: ["7", "3"],
@@ -3819,7 +3819,7 @@ export class Pokemon {
             label: "Dragon",
             sprite: "Water",
             info: [
-                "Long considered a mythical %%%%%%%POKEMON%%%%%%% until recently when a small colony was found living underwater.",
+                "Long considered a mythical %POKEMON% until recently when a small colony was found living underwater.",
             ],
             evolutions: [{
                 evolvedForm: ["D", "R", "A", "G", "O", "N", "A", "I", "R"],
@@ -5339,7 +5339,7 @@ export class Pokemon {
             label: "Gas",
             sprite: "Water",
             info: [
-                "Almost invisible, this gaseous %%%%%%%POKEMON%%%%%%% cloaks the target and puts it to sleep without notice.",
+                "Almost invisible, this gaseous %POKEMON% cloaks the target and puts it to sleep without notice.",
             ],
             evolutions: [{
                 evolvedForm: ["H", "A", "U", "N", "T", "E", "R"],
@@ -5410,7 +5410,7 @@ export class Pokemon {
             label: "Shadow",
             sprite: "Water",
             info: [
-                "Under a full moon, this %%%%%%%POKEMON%%%%%%% likes to mimic the shadows of people and laugh at their fright.",
+                "Under a full moon, this %POKEMON% likes to mimic the shadows of people and laugh at their fright.",
             ],
             number: 94,
             height: ["4", "11"],
@@ -8043,7 +8043,7 @@ export class Pokemon {
             label: "Shellfish",
             sprite: "Water",
             info: [
-                "A %%%%%%%POKEMON%%%%%%% that was resurrected from a fossil found in what was once the ocean floor eons ago.",
+                "A %POKEMON% that was resurrected from a fossil found in what was once the ocean floor eons ago.",
             ],
             evolutions: [{
                 evolvedForm: ["K", "A", "B", "U", "T", "O", "P", "S"],
@@ -8464,7 +8464,7 @@ export class Pokemon {
             label: "Cocoon",
             sprite: "Water",
             info: [
-                "Almost incapable of moving, this %%%%%%%POKEMON%%%%%%% can only harden its shell to protect itself from predators.",
+                "Almost incapable of moving, this %POKEMON% can only harden its shell to protect itself from predators.",
             ],
             evolutions: [{
                 evolvedForm: ["B", "E", "E", "D", "R", "I", "L", "L"],
@@ -9043,7 +9043,7 @@ export class Pokemon {
             label: "Transport",
             sprite: "Water",
             info: [
-                "A %%%%%%%POKEMON%%%%%%% that has been overhunted almost to extinction. It can ferry people across the water.",
+                "A %POKEMON% that has been overhunted almost to extinction. It can ferry people across the water.",
             ],
             number: 131,
             height: ["8", "2"],
@@ -10627,7 +10627,7 @@ export class Pokemon {
             label: "Cocoon",
             sprite: "Water",
             info: [
-                "this %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body.",
+                "this %POKEMON% is vulnerable to attack while its shell is soft, exposing its weak and tender body.",
             ],
             evolutions: [{
                 evolvedForm: ["B", "U", "T", "T", "E", "R", "F", "R", "E", "E"],
@@ -11622,7 +11622,7 @@ export class Pokemon {
             label: "Poison Pin",
             sprite: "Water",
             info: [
-                "Although small, its venomous barbs render this %%%%%%%POKEMON%%%%%%% dangerous. The female has smaller horns.",
+                "Although small, its venomous barbs render this %POKEMON% dangerous. The female has smaller horns.",
             ],
             evolutions: [{
                 evolvedForm: ["N", "I", "D", "O", "R", "I", "N", "A"],
@@ -12132,7 +12132,7 @@ export class Pokemon {
             label: "Poison Pin",
             sprite: "Water",
             info: [
-                "An aggressive %%%%%%%POKEMON%%%%%%% that is quick to attack. The horn on its head secretes a powerful venom.",
+                "An aggressive %POKEMON% that is quick to attack. The horn on its head secretes a powerful venom.",
             ],
             evolutions: [{
                 evolvedForm: ["N", "I", "D", "O", "K", "I", "N", "G"],
@@ -12627,7 +12627,7 @@ export class Pokemon {
             label: "Spiral",
             sprite: "Water",
             info: [
-                "A prehistoric %%%%%%%POKEMON%%%%%%% that died out when its heavy shell made it impossible to catch prey.",
+                "A prehistoric %POKEMON% that died out when its heavy shell made it impossible to catch prey.",
             ],
             number: 139,
             height: ["3", "3"],
@@ -13406,7 +13406,7 @@ export class Pokemon {
             label: "Bird",
             sprite: "Water",
             info: [
-                "Very protective of its sprawling territorial area, this %%%%%%%POKEMON%%%%%%% will fiercely peck at any intruder.",
+                "Very protective of its sprawling territorial area, this %POKEMON% will fiercely peck at any intruder.",
             ],
             evolutions: [{
                 evolvedForm: ["P", "I", "D", "G", "E", "O", "T"],
@@ -13646,7 +13646,7 @@ export class Pokemon {
             label: "Mouse",
             sprite: "Water",
             info: [
-                "When several of these %%%%%%%POKEMON%%%%%%% gather, their electricity could build and cause lightning storms.",
+                "When several of these %POKEMON% gather, their electricity could build and cause lightning storms.",
             ],
             evolutions: [{
                 evolvedForm: ["R", "A", "I", "C", "H", "U"],
@@ -14406,7 +14406,7 @@ export class Pokemon {
             label: "Virtual",
             sprite: "Water",
             info: [
-                "A %%%%%%%POKEMON%%%%%%% that consists entirely of programming code. Capable of moving freely in cyberspace.",
+                "A %POKEMON% that consists entirely of programming code. Capable of moving freely in cyberspace.",
             ],
             number: 137,
             height: ["2", "7"],
@@ -14701,7 +14701,7 @@ export class Pokemon {
             label: "Duck",
             sprite: "Water",
             info: [
-                "While lulling its enemies with its vacant look, this wily %%%%%%%POKEMON%%%%%%% will use psychokinetic powers.",
+                "While lulling its enemies with its vacant look, this wily %POKEMON% will use psychokinetic powers.",
             ],
             evolutions: [{
                 evolvedForm: ["G", "O", "L", "D", "U", "C", "K"],
@@ -14888,7 +14888,7 @@ export class Pokemon {
             label: "Fire Horse",
             sprite: "Water",
             info: [
-                "Very competitive, this %%%%%%%POKEMON%%%%%%% will chase anything that moves fast in the hopes of racing it.",
+                "Very competitive, this %POKEMON% will chase anything that moves fast in the hopes of racing it.",
             ],
             number: 78,
             height: ["5", "7"],
@@ -17318,7 +17318,7 @@ export class Pokemon {
             label: "Star Shape",
             sprite: "Water",
             info: [
-                "An enigmatic %%%%%%%POKEMON%%%%%%% that can effortlessly regenerate any appendage it loses in battle.",
+                "An enigmatic %POKEMON% that can effortlessly regenerate any appendage it loses in battle.",
             ],
             evolutions: [{
                 evolvedForm: ["S", "T", "A", "R", "M", "I", "E"],
@@ -19348,7 +19348,7 @@ export class Pokemon {
             label: "Electric",
             sprite: "Water",
             info: [
-                "A legendary bird %%%%%%%POKEMON%%%%%%% that is said to appear from clouds while dropping enormous lightning bolts.",
+                "A legendary bird %POKEMON% that is said to appear from clouds while dropping enormous lightning bolts.",
             ],
             number: 145,
             height: ["5", "3"],

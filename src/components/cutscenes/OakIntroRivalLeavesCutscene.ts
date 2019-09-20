@@ -30,7 +30,7 @@ export class OakIntroRivalLeavesCutscene<TEightBittr extends FullScreenPokemon> 
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: Okay! I'll make my %%%%%%%POKEMON%%%%%%% fight to toughen it up!",
+                "%RIVAL%: Okay! I'll make my %POKEMON% fight to toughen it up!",
             ],
             (): void => {
                 this.eightBitter.menuGrapher.deleteActiveMenu();
@@ -48,7 +48,7 @@ export class OakIntroRivalLeavesCutscene<TEightBittr extends FullScreenPokemon> 
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!",
+                "%PLAYER%! Gramps! Smell ya later!",
             ],
             this.eightBitter.scenePlayer.bindRoutine("Walking"));
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
@@ -78,7 +78,7 @@ export class OakIntroRivalLeavesCutscene<TEightBittr extends FullScreenPokemon> 
                 this.eightBitter.timeHandler.addEvent(
                     (): void => {
                         this.eightBitter.menus.displayMessage(
-                            "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!");
+                            "OAK: %PLAYER%, raise your young %POKEMON% by making it fight!");
                         this.eightBitter.mapScreener.blockInputs = false;
                     },
                     10);

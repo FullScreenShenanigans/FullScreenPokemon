@@ -35,7 +35,7 @@ export class Fishing<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!",
+                "%PLAYER% used " + rod.title + "!",
             ]);
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
 

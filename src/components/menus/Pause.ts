@@ -34,7 +34,7 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
                         backMenu: "Pause",
                     });
                 },
-                text: "%%%%%%%PLAYER%%%%%%%",
+                text: "%PLAYER%",
             },
             {
                 callback: this.eightBitter.menus.save.open,
@@ -51,14 +51,14 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
 
         if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.hasPokedex)) {
             options.unshift({
-                text: "%%%%%%%POKEDEX%%%%%%%",
+                text: "%POKEDEX%",
                 callback: this.open,
             });
         }
 
         if (this.eightBitter.itemsHolder.getItem(this.eightBitter.storage.names.pokemonInParty).length !== 0) {
             options.unshift({
-                text: "%%%%%%%POKEMON%%%%%%%",
+                text: "%POKEMON%",
                 callback: this.pausedParty.open,
             });
         }

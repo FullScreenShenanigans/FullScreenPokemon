@@ -852,7 +852,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             width: 32,
             height: 64,
             dialogDirections: true,
-            dialog: ["", "", "Crammed full of %%%%%%%POKEMON%%%%%%% books!", ""],
+            dialog: ["", "", "Crammed full of %POKEMON% books!", ""],
         },
         BuildingBase: [16, 16],
         BuildingTopBase: {

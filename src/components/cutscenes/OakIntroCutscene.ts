@@ -142,8 +142,8 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "It's unsafe! Wild %%%%%%%POKEMON%%%%%%% live in tall grass!",
-                "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know!",
+                "It's unsafe! Wild %POKEMON% live in tall grass!",
+                "You need your own %POKEMON% for your protection. \n I know!",
                 "Here, come with me.",
             ],
             this.eightBitter.scenePlayer.bindRoutine("FollowToLab"));
@@ -238,7 +238,7 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
         settings.oak = oak;
         settings.player = this.eightBitter.players[0];
 
-        oak.dialog = "OAK: Now, %%%%%%%PLAYER%%%%%%%, which %%%%%%%POKEMON%%%%%%% do you want?";
+        oak.dialog = "OAK: Now, %PLAYER%, which %POKEMON% do you want?";
         oak.hidden = false;
         oak.nocollide = true;
         this.eightBitter.physics.setMidXObj(oak, settings.player);
@@ -249,8 +249,8 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
         this.eightBitter.stateHolder.addChange(oak.id, "dialog", oak.dialog);
 
         rival.dialog = [
-            "%%%%%%%RIVAL%%%%%%%: Heh, I don't need to be greedy like you!",
-            "Go ahead and choose, %%%%%%%PLAYER%%%%%%%!",
+            "%RIVAL%: Heh, I don't need to be greedy like you!",
+            "Go ahead and choose, %PLAYER%!",
         ];
         this.eightBitter.stateHolder.addChange(rival.id, "dialog", rival.dialog);
 
@@ -299,7 +299,7 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
-            "%%%%%%%RIVAL%%%%%%%: Gramps! I'm fed up with waiting!",
+            "%RIVAL%: Gramps! I'm fed up with waiting!",
             this.eightBitter.scenePlayer.bindRoutine("OakThinksToRival"));
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -312,13 +312,13 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "OAK: %%%%%%%RIVAL%%%%%%%? Let me think...",
+                "OAK: %RIVAL%? Let me think...",
                 "Oh, that's right, I told you to come! Just wait!",
-                "Here, %%%%%%%PLAYER%%%%%%%!",
-                "There are 3 %%%%%%%POKEMON%%%%%%% here!",
+                "Here, %PLAYER%!",
+                "There are 3 %POKEMON% here!",
                 "Haha!",
-                "They are inside the %%%%%%%POKE%%%%%%% BALLs.",
-                "When I was young, I was a serious %%%%%%%POKEMON%%%%%%% trainer!",
+                "They are inside the %POKE% BALLs.",
+                "When I was young, I was a serious %POKEMON% trainer!",
                 "In my old age, I have only 3 left, but you can have one! Choose!",
             ],
             this.eightBitter.scenePlayer.bindRoutine("RivalProtests"));
@@ -343,7 +343,7 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
             (): void => this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
                 [
-                    "%%%%%%%RIVAL%%%%%%%: Hey! Gramps! What about me?",
+                    "%RIVAL%: Hey! Gramps! What about me?",
                 ],
                 this.eightBitter.scenePlayer.bindRoutine("OakRespondsToProtest")),
             timeout);
@@ -385,7 +385,7 @@ export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends Gen
         this.eightBitter.timeHandler.addEvent(
             (): void => this.eightBitter.menuGrapher.addMenuDialog(
                 "GeneralText",
-                "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!"),
+                "Oak: Be patient! %RIVAL%, you can have one too!"),
             timeout);
 
         this.eightBitter.timeHandler.addEvent(
