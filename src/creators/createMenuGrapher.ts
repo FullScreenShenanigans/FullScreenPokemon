@@ -540,7 +540,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 saveIndex: true,
                 textSpeed: 0,
                 textXOffset: 48,
-                textYOffset: 16,
+                textYOffset: 0,
                 plain: true,
             } as IListMenuSchema,
             "PokemonDialog": {
