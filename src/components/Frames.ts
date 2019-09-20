@@ -21,16 +21,38 @@ export class Frames<TEightBittr extends FullScreenPokemon> extends EightBittrFra
 
         this.eightBitter.pixelDrawer.refillGlobalCanvas();
 
-        this.eightBitter.quadsKeeper.determineAllQuadrants("Terrain", this.eightBitter.groupHolder.getGroup("Terrain"));
-        this.eightBitter.quadsKeeper.determineAllQuadrants("Scenery", this.eightBitter.groupHolder.getGroup("Scenery"));
-        this.eightBitter.quadsKeeper.determineAllQuadrants("Solid", this.eightBitter.groupHolder.getGroup("Solid"));
+        this.eightBitter.quadsKeeper.determineAllQuadrants(
+            this.eightBitter.groups.names.terrain,
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.terrain),
+        );
+        this.eightBitter.quadsKeeper.determineAllQuadrants(
+            this.eightBitter.groups.names.scenery,
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.scenery),
+        );
+        this.eightBitter.quadsKeeper.determineAllQuadrants(
+            this.eightBitter.groups.names.solid,
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.solid),
+        );
 
-        this.eightBitter.maintenance.maintainGeneric(this.eightBitter.groupHolder.getGroup("Text"));
-        this.eightBitter.maintenance.maintainGeneric(this.eightBitter.groupHolder.getGroup("Terrain"));
-        this.eightBitter.maintenance.maintainGeneric(this.eightBitter.groupHolder.getGroup("Scenery"));
-        this.eightBitter.maintenance.maintainGeneric(this.eightBitter.groupHolder.getGroup("Solid"));
-        this.eightBitter.maintenance.maintainCharacters(this.eightBitter.groupHolder.getGroup("Character"));
-        this.eightBitter.maintenance.maintainPlayer(this.eightBitter.players[0]);
+        this.eightBitter.maintenance.maintainGeneric(
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.text),
+        );
+        this.eightBitter.maintenance.maintainGeneric(
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.terrain),
+        );
+        this.eightBitter.maintenance.maintainGeneric(
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.scenery),
+        );
+        this.eightBitter.maintenance.maintainGeneric(
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.solid),
+        );
+    
+        this.eightBitter.maintenance.maintainCharacters(
+            this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.character),
+        );
+        this.eightBitter.maintenance.maintainPlayer(
+            this.eightBitter.players[0],
+        );
 
         this.eightBitter.timeHandler.advance();
     }

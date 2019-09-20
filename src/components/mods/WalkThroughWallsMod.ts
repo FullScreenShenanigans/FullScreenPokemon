@@ -19,10 +19,10 @@ export class WalkThroughWallsMod<TEightBittr extends FullScreenPokemon> extends 
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.eightBitter.objectMaker.getPrototypeOf<IThing>("Solid").collide = (): boolean => true;
+            this.eightBitter.objectMaker.getPrototypeOf<IThing>(this.eightBitter.groups.names.solid).collide = (): boolean => true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            this.eightBitter.objectMaker.getPrototypeOf<IThing>("Solid").collide = (): boolean => false;
+            this.eightBitter.objectMaker.getPrototypeOf<IThing>(this.eightBitter.groups.names.solid).collide = (): boolean => false;
         },
     };
 }

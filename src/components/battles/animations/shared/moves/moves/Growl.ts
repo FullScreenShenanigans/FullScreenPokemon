@@ -42,7 +42,7 @@ export class Growl<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
      * @param onComplete   Callback for when the animation is done.
      */
     public runAnimation(onComplete: () => void): void {
-        const notes: [IThing, IThing] = [
+        const notes = [
             this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.note),
             this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.note),
         ];

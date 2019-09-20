@@ -786,7 +786,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         this.eightBitter.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         // Terrain and Scenery groups will never have collisions checked
-        if (thing.groupType !== "Terrain" && thing.groupType !== "Scenery") {
+        if (thing.groupType !== this.eightBitter.groups.names.terrain && thing.groupType !== this.eightBitter.groups.names.scenery) {
             thing.bordering = [undefined, undefined, undefined, undefined];
         }
 

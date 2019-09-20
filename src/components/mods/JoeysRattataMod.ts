@@ -19,21 +19,21 @@ export class JoeysRattataMod<TEightBittr extends FullScreenPokemon> extends ModC
      */
     public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
-            (this.eightBitter.groupHolder.getGroup("Character") as ICharacter[])
+            (this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.character))
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
                     character.previousTitle = character.title;
                     character.title = (character as any).thing = "BugCatcher";
-                    this.eightBitter.thingHitter.cacheChecksForType(character.title, "Character");
+                    this.eightBitter.thingHitter.cacheChecksForType(character.title, this.eightBitter.groups.names.character);
                     this.eightBitter.graphics.classes.setClass(character, character.className);
                 });
         },
         [this.eventNames.onModDisable]: (): void => {
-            (this.eightBitter.groupHolder.getGroup("Character") as ICharacter[])
+            (this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.character))
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
                     character.title = (character as any).thing = character.previousTitle!;
-                    this.eightBitter.thingHitter.cacheChecksForType(character.title, "Character");
+                    this.eightBitter.thingHitter.cacheChecksForType(character.title, this.eightBitter.groups.names.character);
                     this.eightBitter.graphics.classes.setClass(character, character.className);
                 });
         },

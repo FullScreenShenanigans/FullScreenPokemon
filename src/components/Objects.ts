@@ -794,7 +794,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             onMake: this.eightBitter.things.process.bind(this.eightBitter.things),
         },
         Character: {
-            groupType: "Character",
+            groupType: this.eightBitter.groups.names.character,
             speed: 2,
             walking: false,
             shouldWalk: false,
@@ -844,7 +844,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         },
         Solid: {
             repeat: true,
-            groupType: "Solid",
+            groupType: this.eightBitter.groups.names.solid,
             activate: this.eightBitter.collisions.detectors.collideCharacterDialog,
         },
         BedSingle: [32, 64],
@@ -1106,7 +1106,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             spriteheight: 8,
         },
         Scenery: {
-            groupType: "Scenery",
+            groupType: this.eightBitter.groups.names.scenery,
             repeat: true,
         },
         Blackboard: [64, 32],
@@ -1169,7 +1169,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         ElderBack: [56, 56],
         PlayerBack: [56, 56],
         Terrain: {
-            groupType: "Terrain",
+            groupType: this.eightBitter.groups.names.terrain,
             repeat: true,
         },
         TerrainSmall: [8, 8],
@@ -1198,7 +1198,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             ],
         },
         Text: {
-            groupType: "Text",
+            groupType: this.eightBitter.groups.names.text,
             width: 16,
             height: 16,
             paddingX: 0,
@@ -1295,7 +1295,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         MapGreyDiagonal: [16, 16],
         TownMapNoWater: [304, 512],
         Menu: {
-            groupType: "Text",
+            groupType: this.eightBitter.groups.names.text,
             spritewidth: 16,
             spriteheight: 16,
             width: 32,

@@ -40,7 +40,7 @@ export class Collections<TEightBittr extends FullScreenPokemon> extends GeneralC
      */
     public moveThingsToText(things: IThing[]): void {
         for (const thing of things) {
-            this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, "Text");
+            this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, this.eightBitter.groups.names.text);
         }
     }
 
@@ -51,7 +51,7 @@ export class Collections<TEightBittr extends FullScreenPokemon> extends GeneralC
      *          as the first Text Thing after keptThings were added.
      */
     public moveThingsBeforeBackgrounds(things: IThing[]): void {
-        const texts: IThing[] = this.eightBitter.groupHolder.getGroup("Text") as IThing[];
+        const texts: IThing[] = this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.text);
 
         for (const thing of things) {
             texts.splice(texts.indexOf(thing), 1);
@@ -66,7 +66,7 @@ export class Collections<TEightBittr extends FullScreenPokemon> extends GeneralC
      */
     public moveThingsFromText(things: IThing[]): void {
         for (const keptThing of things) {
-            this.eightBitter.groupHolder.switchGroup(keptThing, "Text", keptThing.groupType);
+            this.eightBitter.groupHolder.switchGroup(keptThing, this.eightBitter.groups.names.text, keptThing.groupType);
         }
     }
 }

@@ -307,7 +307,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
+        const things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, this.eightBitter.groups.names.text);
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
@@ -330,7 +330,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
+        const things = this.animateThingCorners(x, y, "SmokeMedium", undefined, this.eightBitter.groups.names.text);
 
         this.eightBitter.timeHandler.addEvent(
             (): void => this.animateExpandCorners(things, 4),
@@ -357,7 +357,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeLarge", undefined, "Text");
+        const things = this.animateThingCorners(x, y, "SmokeLarge", undefined, this.eightBitter.groups.names.text);
 
         this.animateExpandCorners(things, 10);
 

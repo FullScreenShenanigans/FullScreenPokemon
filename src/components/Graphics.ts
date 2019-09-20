@@ -61,11 +61,11 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrG
      * Arrays of Thing[]s that are to be drawn in each refill.
      */
     public readonly thingArrays = [
-        this.eightBitter.groupHolder.getGroup("Terrain"),
-        this.eightBitter.groupHolder.getGroup("Solid"),
-        this.eightBitter.groupHolder.getGroup("Scenery"),
-        this.eightBitter.groupHolder.getGroup("Character"),
-        this.eightBitter.groupHolder.getGroup("Text"),
+        this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.terrain),
+        this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.solid),
+        this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.scenery),
+        this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.character),
+        this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.text),
     ];
 
     /**

@@ -189,7 +189,7 @@ export class Saves<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * Saves the positions of all Characters in the game.
      */
     public saveCharacterPositions(): void {
-        for (const character of this.eightBitter.groupHolder.getGroup("Character") as ICharacter[]) {
+        for (const character of this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.character)) {
             this.saveCharacterPosition(character, character.id);
         }
     }

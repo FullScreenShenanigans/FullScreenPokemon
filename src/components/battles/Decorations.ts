@@ -36,7 +36,7 @@ export class Decorations<TEightBittr extends FullScreenPokemon> extends GeneralC
                 id: Decorations.backgroundId,
                 width: this.eightBitter.mapScreener.width,
             });
-        this.eightBitter.utilities.arrayToBeginning(background, this.eightBitter.groupHolder.getGroup("Text") as IThing[]);
+        this.eightBitter.utilities.arrayToBeginning(background, this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.text));
 
         const menu: IMenu = this.eightBitter.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
 
@@ -101,7 +101,7 @@ export class Decorations<TEightBittr extends FullScreenPokemon> extends GeneralC
     public addThingAsText(title: string, attributes: any): IThing {
         const thing: IThing = this.eightBitter.things.add([title, attributes]);
 
-        this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, "Text");
+        this.eightBitter.groupHolder.switchGroup(thing, thing.groupType, this.eightBitter.groups.names.text);
 
         return thing;
     }
@@ -112,7 +112,7 @@ export class Decorations<TEightBittr extends FullScreenPokemon> extends GeneralC
      * @param thing   A placed Thing in the Text group.
      */
     public moveToBeforeBackground(thing: IThing): void {
-        const texts: IThing[] = this.eightBitter.groupHolder.getGroup("Text") as IThing[];
+        const texts: IThing[] = this.eightBitter.groupHolder.getGroup(this.eightBitter.groups.names.text);
         const background: IThing = this.eightBitter.utilities.getExistingThingById(Decorations.backgroundId);
         const backgroundIndex: number = texts.indexOf(background);
 

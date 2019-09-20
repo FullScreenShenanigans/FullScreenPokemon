@@ -21,7 +21,11 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
         );
 
         this.eightBitter.things.add(thing.shadow, thing.left, thing.top);
-        this.eightBitter.groupHolder.switchGroup(thing.shadow, thing.shadow.groupType, "Character");
+        this.eightBitter.groupHolder.switchGroup(
+            thing.shadow,
+            thing.shadow.groupType,
+            this.eightBitter.groups.names.character,
+        );
         this.positionGrassShadow(thing.shadow, thing, other);
     }
 

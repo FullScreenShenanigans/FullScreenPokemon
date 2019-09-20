@@ -37,7 +37,11 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GeneralCompon
         this.eightBitter.physics.setBottom(battleInfo.things.opponent, battleInfo.things.menu.top + 108);
         this.eightBitter.physics.setRight(battleInfo.things.opponent, battleInfo.things.menu.right - 16);
 
-        this.eightBitter.groupHolder.switchGroup(battleInfo.things.opponent, battleInfo.things.opponent.groupType, "Text");
+        this.eightBitter.groupHolder.switchGroup(
+            battleInfo.things.opponent,
+            battleInfo.things.opponent.groupType,
+            this.eightBitter.groups.names.text,
+        );
     }
 
     /**
@@ -57,6 +61,10 @@ export class Things<TEightBittr extends FullScreenPokemon> extends GeneralCompon
             battleInfo.things.menu.left,
             battleInfo.things.menu.bottom - battleInfo.things.player.height * 2);
 
-        this.eightBitter.groupHolder.switchGroup(battleInfo.things.player, battleInfo.things.player.groupType, "Text");
+        this.eightBitter.groupHolder.switchGroup(
+            battleInfo.things.player,
+            battleInfo.things.player.groupType,
+            this.eightBitter.groups.names.text,
+        );
     }
 }

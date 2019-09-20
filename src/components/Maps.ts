@@ -627,11 +627,11 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 switch (position) {
                     case "beginning":
                         this.eightBitter.utilities.arrayToBeginning(
-                            thing, this.eightBitter.groupHolder.getGroup(thing.groupType) as IThing[]);
+                            thing, this.eightBitter.groupHolder.getGroup(thing.groupType));
                         break;
                     case "end":
                         this.eightBitter.utilities.arrayToEnd(
-                            thing, this.eightBitter.groupHolder.getGroup(thing.groupType) as IThing[]);
+                            thing, this.eightBitter.groupHolder.getGroup(thing.groupType));
                         break;
                     default:
                         throw new Error("Unknown position: " + position + ".");
