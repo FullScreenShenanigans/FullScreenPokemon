@@ -25,6 +25,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
         b:      [88, 8],      // x, backspace
         pause:  [80, 27],     // p, escape
         select: [17, 16],     // ctrl, shift
+        space:  [32],         // space
         // Mouse aliases
         rightclick: [3],
         // tslint:enable object-literal-sort-keys
@@ -46,6 +47,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
                 this.keyDownMute(this.eightBitter.players[0], event);
             },
             select: (event: Event): void => this.keyDownSelect(this.eightBitter.players[0], event),
+            space: (event: Event): void => this.preventEventDefault(event),
         },
         onkeyup: {
             left: (event: Event): void => this.keyUpLeft(this.eightBitter.players[0], event),
@@ -55,6 +57,7 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
             a: (event: Event): void => this.keyUpA(this.eightBitter.players[0], event),
             b: (event: Event): void => this.keyUpB(this.eightBitter.players[0], event),
             pause: (event: Event): void => this.keyUpPause(this.eightBitter.players[0], event),
+            space: (event: Event): void => this.preventEventDefault(event),
         },
         onmousedown: {
             rightclick: (event: Event): void => this.mouseDownRight(this.eightBitter.players[0], event),
@@ -288,6 +291,14 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
         }
 
         itemSchema.bagActivate.call(this, thing, itemSchema);
+    }
+
+    public keyDownSpace(event?: Event) {
+        this.preventEventDefault(event);
+    }
+
+    public keyUpSpace(event?: Event) {
+        this.preventEventDefault(event);
     }
 
     /**
