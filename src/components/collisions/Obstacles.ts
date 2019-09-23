@@ -15,11 +15,9 @@ export class Obstacles<TEightBittr extends FullScreenPokemon> extends GeneralCom
      * @returns true, to allow for passing through.
      */
     public collideCharacterGrass = (thing: ICharacter, other: IGrass): true => {
-        if (thing.grass || !this.eightBitter.physics.isThingWithinGrass(thing, other)) {
-            return true;
+        if (this.eightBitter.physics.isThingMidpointWithinOther(thing, other)) {
+            this.eightBitter.actions.grass.enterGrassVisually(thing, other);
         }
-
-        this.eightBitter.actions.grass.enterGrassVisually(thing, other);
 
         return true;
     }

@@ -217,11 +217,6 @@ export interface ICharacter extends IThing {
     grass?: IGrass;
 
     /**
-     * A scratch variable for height, such as when behind grass.
-     */
-    heightOld?: number;
-
-    /**
      * Whether this is currently moving, generally from walking.
      */
     isMoving: boolean;

@@ -14,19 +14,29 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * @param other   Grass that thing is in.
      */
     public enterGrassVisually(thing: ICharacter, other: IGrass): void {
+        if (thing.grass) {
+            if (thing.grass === other) {
+                return;
+            }
+
+            this.exitGrassVisually(thing);
+        }
+
         thing.grass = other;
+        thing.drawHeight = 16;
 
-        thing.shadow = this.eightBitter.objectMaker.make<IThing>(
-            this.eightBitter.things.names.grassOverlay,
-        );
+        this.eightBitter.pixelRender.resetRender(this.eightBitter.graphics.generateThingKey(thing));
 
-        this.eightBitter.things.add(thing.shadow, thing.left, thing.top);
+        thing.shadow = this.eightBitter.things.add([thing.title, {
+            id: thing.id + " shadow",
+            nocollide: true,
+        }]);
         this.eightBitter.groupHolder.switchGroup(
             thing.shadow,
             thing.shadow.groupType,
-            this.eightBitter.groups.names.character,
+            this.eightBitter.groups.names.terrain,
         );
-        this.positionGrassShadow(thing.shadow, thing, other);
+        this.positionGrassShadow(thing.shadow, thing);
     }
 
     /**
@@ -37,12 +47,12 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      */
     public maintainGrassVisuals(thing: ICharacter, other: IGrass): void {
         // If thing is no longer in grass, delete the shadow and stop
-        if (!this.eightBitter.physics.isThingWithinGrass(thing, other)) {
+        if (!this.eightBitter.physics.isThingMidpointWithinOther(thing, other)) {
             this.exitGrassVisually(thing);
             return;
         }
 
-        this.positionGrassShadow(thing.shadow!, thing, other);
+        this.positionGrassShadow(thing.shadow!, thing);
     }
 
     /**
@@ -53,16 +63,14 @@ export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralCompone
     public exitGrassVisually(thing: ICharacter): void {
         this.eightBitter.death.killNormal(thing.shadow!);
 
-        thing.shadow = undefined;
+        thing.drawHeight = undefined;
         thing.grass = undefined;
+        thing.shadow = undefined;
     }
 
-    private positionGrassShadow(shadow: IThing, thing: ICharacter, other: IGrass): void {
-        const midpoint = this.eightBitter.physics.getMidY(thing) - 8;
-        const adjustedDifference = midpoint - other.top;
-        const roundedDifference = ((adjustedDifference / 16) | 0) * 16;
-
+    private positionGrassShadow(shadow: IThing, thing: ICharacter): void {
+        this.eightBitter.graphics.classes.setClass(shadow, thing.className);
         this.eightBitter.physics.setLeft(shadow, thing.left);
-        this.eightBitter.physics.setTop(shadow, other.top + roundedDifference);
+        this.eightBitter.physics.setTop(shadow, thing.top);
     }
 }

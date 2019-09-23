@@ -76,30 +76,17 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
     }
 
     /**
-     * Determines whether a Character is visually within grass.
+     * Determines whether a Thing's midpoint is visually within grass.
      *
-     * @param thing   An in-game Character.
-     * @param other   Grass that thing might be in.
-     * @returns Whether thing is visually within other.
+     * @param thing   An in-game Thing.
+     * @param other   An in-game Thing.
+     * @returns Whether thing's midpoint is visually within other.
      */
-    public isThingWithinGrass(thing: ICharacter, other: IGrass): boolean {
-        if (thing.right <= other.left) {
-            return false;
-        }
+    public isThingMidpointWithinOther(thing: ICharacter, other: IThing): boolean {
+        const x = this.getMidX(thing);
+        const y = this.getMidY(thing);
 
-        if (thing.left >= other.right) {
-            return false;
-        }
-
-        if (other.top > (thing.top + thing.height / 2)) {
-            return false;
-        }
-
-        if (other.bottom < (thing.top + thing.height / 2)) {
-            return false;
-        }
-
-        return true;
+        return x >= other.left && x <= other.right && y >= other.top && y <= other.bottom;
     }
 
     /**

@@ -4,7 +4,7 @@ import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IStorageItems } from "../../Storage";
 
 interface IOptionMenuList {
-    itemName: keyof IStorageItems;;
+    itemName: keyof IStorageItems;
     menuName: string;
     options: string[];
 }
