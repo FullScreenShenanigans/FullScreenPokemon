@@ -128,7 +128,7 @@ export class Walking<TEightBittr extends FullScreenPokemon> extends GeneralCompo
             onContinueWalking();
         }
 
-        if (!thing.wantsToWalk || (thing.player && this.tryStartWildPokemonEncounter(thing as IPlayer))) {
+        if ((!thing.wantsToWalk && !thing.ledge) || (thing.player && this.tryStartWildPokemonEncounter(thing as IPlayer))) {
             this.stopWalking(thing);
             return;
         }
