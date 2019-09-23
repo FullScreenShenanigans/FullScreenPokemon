@@ -3,6 +3,7 @@ import { GeneralComponent } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
+import { Option } from "./pause/Option";
 import { PausedParty } from "./pokemon/PausedParty";
 
 /**
@@ -14,6 +15,12 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      */
     @component(PausedParty)
     private readonly pausedParty: PausedParty<TEightBittr>;
+
+    /**
+     * Opens and runs the personal options menu.
+     */
+    @component(Option)
+    private readonly option: Option<TEightBittr>;
 
     /**
      * Opens the Pause menu.
@@ -41,6 +48,7 @@ export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralCompone
                 text: "SAVE",
             },
             {
+                callback: this.option.open,
                 text: "OPTION",
             },
             {

@@ -51,6 +51,15 @@ export class Items<TEightBittr extends FullScreenPokemon> extends EightBittrItem
         [this.eightBitter.storage.names.location]: {
             valueDefault: "",
         },
+        [this.eightBitter.storage.names.optionBattleAnimations]: {
+            valueDefault: "ON",
+        },
+        [this.eightBitter.storage.names.optionBattleStyle]: {
+            valueDefault: "SHIFT",
+        },
+        [this.eightBitter.storage.names.optionTextSpeed]: {
+            valueDefault: "FAST",
+        },
         [this.eightBitter.storage.names.map]: {
             valueDefault: "",
         },

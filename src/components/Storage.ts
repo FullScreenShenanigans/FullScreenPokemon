@@ -32,6 +32,9 @@ export interface IStorageItems {
     name: string[];
     nameRival: string[];
     oldLocalStorage?: IStorageItems;
+    optionBattleAnimations: "ON" | "OFF";
+    optionBattleStyle: "SHIFT" | "SET";
+    optionTextSpeed: "FAST" | "MEDIUM" | "SLOW";
     pokedex: IPokedex;
     pokemonInParty: IPokemon[];
     pokemonInPC: IPokemon[];

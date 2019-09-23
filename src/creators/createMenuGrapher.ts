@@ -1,11 +1,13 @@
 import {
-    IListMenuSchema, IMenuChildSchema, IMenuWordPadLeftCommand,
+    IListMenuSchema, IMenuChildSchema, IMenuWordPadLeftCommand, IMenuWordSchema,
     MenuGraphr,
 } from "menugraphr";
 
 import { IPokedex, IPokedexInformation } from "../components/constants/Pokemon";
 import { IDialog, IMenuBase, IMenuSchema } from "../components/Menus";
 import { FullScreenPokemon } from "../FullScreenPokemon";
+
+import { optionSubMenuBase, optionPreserveArrow } from "./menusLibrary/OptionMenus";
 
 export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
     new MenuGraphr({
@@ -146,6 +148,120 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 ignoreB: true,
                 textPaddingRight: 12,
             },
+            "Option": {
+                childrenSchemas: [
+                    {
+                        name: "OptionBattleAnimation",
+                        type: "menu",
+                    } as IMenuChildSchema,
+                    {
+                        name: "OptionBattleStyle",
+                        type: "menu",
+                    } as IMenuChildSchema,
+                    {
+                        name: "OptionTextSpeed",
+                        textColumnWidth: 32,
+                        type: "menu",
+                    } as IMenuChildSchema,
+                    {
+                        name: "OptionCancel",
+                        type: "menu",
+                    } as IMenuChildSchema,
+                ],
+                plain: true,
+                position: {
+                    horizontal: "center",
+                },
+                size: {
+                    height: 288,
+                    width: 320,
+                },
+                textSpeed: 0,
+            } as IListMenuSchema,
+            "OptionBattleAnimation": {
+                ...optionSubMenuBase,
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["BATTLE ANIMATION"],
+                        position: {
+                            offset: {
+                                left: 16,
+                                top: 16,
+                            },
+                        },
+                    } as IMenuWordSchema
+                ],
+                container: "Option",
+                onDown: () => fsp.menuGrapher.setActiveMenu("OptionBattleStyle"),
+                onUp: () => fsp.menuGrapher.setActiveMenu("OptionTextSpeed"),
+                position: {
+                    horizontal: "stretch",
+                    offset: {
+                        top: 80,
+                    },
+                },
+                textColumnWidth: 144,
+            },
+            "OptionBattleStyle": {
+                ...optionSubMenuBase,
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["BATTLE STYLE"],
+                        position: {
+                            offset: {
+                                left: 16,
+                                top: 16,
+                            },
+                        },
+                    } as IMenuWordSchema
+                ],
+                onDown: () => fsp.menuGrapher.setActiveMenu("OptionCancel"),
+                onUp: () => fsp.menuGrapher.setActiveMenu("OptionBattleAnimation"),
+                position: {
+                    horizontal: "stretch",
+                    offset: {
+                        top: 160,
+                    },
+                },
+                textColumnWidth: 144,
+            } as IListMenuSchema,
+            "OptionCancel": {
+                container: "Option",
+                keepOnBack: true,
+                onUp: () => fsp.menuGrapher.setActiveMenu("OptionBattleStyle"),
+                plain: true,
+                position: {
+                    offset: {
+                        left: 0,
+                        top: 248,
+                    },
+                },
+                preserveArrow: optionPreserveArrow,
+                textXOffset: 32,
+                textYOffset: 0,
+            },
+            "OptionTextSpeed": {
+                ...optionSubMenuBase,
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["TEXT SPEED"],
+                        position: {
+                            offset: {
+                                left: 16,
+                                top: 16,
+                            },
+                        },
+                    } as IMenuWordSchema
+                ],
+                position: {
+                    horizontal: "stretch",
+                },
+                onDown: () => fsp.menuGrapher.setActiveMenu("OptionBattleAnimation"),
+                textColumnWidth: [96, 114],
+            } as IListMenuSchema,
             "Pause": {
                 size: {
                     width: 160,

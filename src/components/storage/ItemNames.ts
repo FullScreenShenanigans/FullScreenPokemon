@@ -72,6 +72,21 @@ export class ItemNames<TEightBittr extends FullScreenPokemon> extends GeneralCom
     public readonly oldLocalStorage = "oldLocalStorage";
 
     /**
+     * Option for how to visualize battle animations.
+     */
+    public readonly optionBattleAnimations = "optionBattleAnimations";
+
+    /**
+     * Option for how battle moves behave.
+     */
+    public readonly optionBattleStyle = "optionBattleStyle";
+
+    /**
+     * Option for how quickly text moves.
+     */
+    public readonly optionTextSpeed = "optionTextSpeed";
+
+    /**
      * Pokemon info stored in the player's Pokedex.
      */
     public readonly pokedex = "pokedex";
