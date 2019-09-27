@@ -56,6 +56,7 @@ export class PlayerSelector<TEightBittr extends FullScreenPokemon> extends Gener
      * Resets the battle options menus.
      *
      * @param battleInfo   State for an ongoing battle.
+     * @param team   The player's battle team.
      * @param onChoice   Callback for when an action is chosen.
      */
     private resetGui(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
@@ -80,7 +81,7 @@ export class PlayerSelector<TEightBittr extends FullScreenPokemon> extends Gener
                 },
                 {
                     text: "RUN",
-                    callback: (): void => this.attemptToFlee(onChoice),
+                    callback: (): void => this.attemptToFlee(battleInfo, team, onChoice),
                 },
             ],
         });
@@ -139,10 +140,29 @@ export class PlayerSelector<TEightBittr extends FullScreenPokemon> extends Gener
 
     /**
      * Chooses to attempt to flee the battle.
+     *
+     * @param battleInfo   State for an ongoing battle.
+     * @param team   The player's battle team.
+     * @param onChoice   Callback for when an action is chosen.
      */
-    private attemptToFlee(onChoice: IOnChoice): void {
-        onChoice({
-            type: "flee",
+    private attemptToFlee(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
+        // This is only allowed if the opposing team is "wild" (doesn't have a trainer)
+        if (!battleInfo.teams.opponent.leader) {
+            onChoice({
+                type: "flee",
+            });
+            return;
+        }
+
+        this.eightBitter.menuGrapher.createMenu("GeneralText", {
+            backMenu: "BattleOptions",
+            deleteOnFinish: true,
         });
+        this.eightBitter.menuGrapher.addMenuDialog(
+            "GeneralText",
+            "No! There's no running from a trainer battle!",
+            () => this.resetGui(battleInfo, team, onChoice),
+        );
+        this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 }

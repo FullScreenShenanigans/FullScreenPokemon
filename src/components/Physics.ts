@@ -3,7 +3,7 @@ import { Physics as EightBittrPhysics } from "eightbittr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { Direction } from "./Constants";
-import { ICharacter, IGrass, IThing } from "./Things";
+import { ICharacter, IThing } from "./Things";
 
 /**
  * Physics functions to move Things around.

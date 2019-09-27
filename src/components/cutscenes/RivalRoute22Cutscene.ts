@@ -37,7 +37,7 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
         ];
 
         if (playerUpper) {
-                walkingInstructions.push(() => this.eightBitter.actions.animateCharacterSetDirection(rival, 0));
+            walkingInstructions.push(() => this.eightBitter.actions.animateCharacterSetDirection(rival, 0));
         }
 
         settings.rival = rival;
@@ -45,7 +45,7 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
         walkingInstructions.push(this.eightBitter.scenePlayer.bindRoutine("RivalTalks"));
 
         this.eightBitter.animations.fading.animateFadeAttribute(rival, "opacity", 0.2, 1, 3);
-        this.eightBitter.things.add(rival, triggerer.left - 112, triggerer.top + 96);
+        this.eightBitter.things.add(rival, triggerer.left - 128, triggerer.top + 96);
         this.eightBitter.actions.walking.startWalkingOnPath(rival, walkingInstructions);
     }
 

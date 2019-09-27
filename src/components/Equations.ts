@@ -426,6 +426,18 @@ export class Equations<TEightBittr extends FullScreenPokemon> extends GeneralCom
         return false;
     }
 
+    public canFleeBattle(playerSpeed: number, opponentSpeed: number, fleeAttempts: number) {
+        const a = playerSpeed;
+        const b = (opponentSpeed / 4) % 256;
+        const f = (a * 32) / b + fleeAttempts * 30;
+
+        if (f > 255 || b === 0) {
+            return true;
+        }
+
+        return this.eightBitter.numberMaker.randomInt(256) < f;
+    }
+
     /**
      * Computes how much experience a new Pokemon should start with.
      *

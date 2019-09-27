@@ -57,17 +57,14 @@ export class FleeAttempt<TEightBittr extends FullScreenPokemon> extends GeneralC
     private canEscape(): boolean {
         const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
         const playerPokemon: IPokemon = battleInfo.teams.player.selectedActor;
-        const opponentPokemon: IPokemon = battleInfo.teams.player.selectedActor;
-        const a: number = playerPokemon.statistics.speed.current;
-        const b: number = (opponentPokemon.statistics.speed.normal / 4) % 256;
-        const f: number = (a * 32) / b + battleInfo.fleeAttempts * 30;
+        const opponentPokemon: IPokemon = battleInfo.teams.opponent.selectedActor;
 
         battleInfo.fleeAttempts += 1;
 
-        if (f > 255 || b === 0) {
-            return true;
-        }
-
-        return this.eightBitter.numberMaker.randomInt(256) < f;
+        return this.eightBitter.equations.canFleeBattle(
+            playerPokemon.statistics.speed.current,
+            opponentPokemon.statistics.speed.normal,
+            battleInfo.fleeAttempts,
+        );
     }
 }
