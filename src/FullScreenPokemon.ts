@@ -33,6 +33,7 @@ import { Mods } from "./components/Mods";
 import { MoveAdder } from "./components/MoveAdder";
 import { Objects } from "./components/Objects";
 import { Physics } from "./components/Physics";
+import { Quadrants } from "./components/Quadrants";
 import { Saves } from "./components/Saves";
 import { Scrolling } from "./components/Scrolling";
 import { IStorageItems, Storage } from "./components/Storage";
@@ -278,6 +279,12 @@ export class FullScreenPokemon extends EightBittr {
      */
     @component(Physics)
     public readonly physics: Physics<this>;
+
+    /**
+     * Arranges game physics quadrants.
+     */
+    @component(Quadrants)
+    public readonly quadrants: Quadrants<this>;
 
     /**
      * Saves and load game data.
