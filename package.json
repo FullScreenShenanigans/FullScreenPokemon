@@ -28,7 +28,7 @@
     "@types/sinon": "^7.0.13",
     "@types/sinon-chai": "^3.2.3",
     "chai": "^4.2.0",
-    "concurrently": "^4.1.2",
+    "concurrently": "^5.0.1",
     "eightbittr": "^0.7.28",
     "glob": "^7.1.4",
     "istanbul": "^0.4.5",
