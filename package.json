@@ -33,7 +33,7 @@
     "glob": "^7.1.4",
     "istanbul": "^0.4.5",
     "lolex": "^4.2.0",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.2",
     "mocha": "^6.2.0",
     "mocha-headless-chrome": "^2.0.3",
     "node-sass": "^4.12.0",
