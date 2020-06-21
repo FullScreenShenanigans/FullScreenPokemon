@@ -30,6 +30,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
             "'": "Apostrophe",
             "�": "eFancy",
         },
+        dialogScrollDistance: 8,
         eightBitter: fsp,
         replacements: {
             "PLAYER": (): string[] =>
@@ -147,7 +148,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 },
                 ignoreB: true,
                 textPaddingRight: 12,
-            },
+            } as IMenuSchema,
             "Option": {
                 childrenSchemas: [
                     {
@@ -202,7 +203,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     },
                 },
                 textColumnWidth: 144,
-            },
+            } as IMenuSchema,
             "OptionBattleStyle": {
                 ...optionSubMenuBase,
                 childrenSchemas: [
@@ -241,7 +242,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 preserveArrow: optionPreserveArrow,
                 textXOffset: 32,
                 textYOffset: 0,
-            },
+            } as IMenuSchema,
             "OptionTextSpeed": {
                 ...optionSubMenuBase,
                 childrenSchemas: [
@@ -2158,7 +2159,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 top: 36,
                             },
                         },
-                }],
+                    }],
                 container: "Battle",
                 hidden: true,
             } as IMenuSchema,

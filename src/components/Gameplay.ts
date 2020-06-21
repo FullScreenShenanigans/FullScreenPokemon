@@ -60,10 +60,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends EightBittrG
      */
     public startIntro(): void {
         this.eightBitter.saves.clearSavedData();
-        this.eightBitter.scenePlayer.startCutscene("Intro", {
-            disablePauseMenu: true,
-        });
-
+        this.eightBitter.scenePlayer.startCutscene("Intro");
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGameStartIntro);
     }
 

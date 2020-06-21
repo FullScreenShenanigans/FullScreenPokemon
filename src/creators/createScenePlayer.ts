@@ -22,7 +22,7 @@ export const createScenePlayer = (fsp: FullScreenPokemon): ScenePlayr =>
                 routines: fsp.cutscenes.elderTraining,
             },
             Intro: {
-                firstRoutine: "FadeIn",
+                firstRoutine: "start",
                 routines: fsp.cutscenes.intro,
             },
             OakIntro: {

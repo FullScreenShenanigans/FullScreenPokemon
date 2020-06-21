@@ -5,52 +5,82 @@ import { IKeyboardResultsMenu } from "../menus/Keyboards";
 import { IPlayer, IThing } from "../Things";
 
 /**
- * Intro cutscene routines.
+ * Cutscene for the beginning of the game introduction.
  */
 export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
     /**
-     * Cutscene for the beginning of the game introduction.
-     *
-     * @param settings   Settings used for the cutscene.
+     * Starts the beginning of the game introduction.
      */
-    public async FadeIn(settings: any): Promise<void> {
-        const oak: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.oakPortrait, {
-            opacity: 0,
-        });
-
-        settings.oak = oak;
+    public readonly start = () => {
+        this.eightBitter.maps.setMap("Blank", "White");
+        this.eightBitter.menuGrapher.deleteActiveMenu();
 
         this.eightBitter.audioPlayer.play(this.eightBitter.audio.names.introduction, {
             alias: this.eightBitter.audio.aliases.theme,
             loop: true,
         });
 
-        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onIntroFadeIn, oak);
+        const oakShady = this.eightBitter.objectMaker.make<IThing>(
+            this.eightBitter.things.names.oakPortrait,
+            { opacity: 0, },
+        );
 
-        this.eightBitter.maps.setMap("Blank", "White");
-        this.eightBitter.menuGrapher.deleteActiveMenu();
+        this.eightBitter.graphics.classes.addClass(oakShady, "shady");
+        this.eightBitter.things.add(oakShady);
+        this.eightBitter.physics.setMidX(oakShady, this.eightBitter.mapScreener.middleX | 0);
+        this.eightBitter.physics.setMidY(oakShady, this.eightBitter.mapScreener.middleY | 0);
 
-        this.eightBitter.things.add(oak);
-        this.eightBitter.physics.setMidX(oak, this.eightBitter.mapScreener.middleX | 0);
-        this.eightBitter.physics.setMidY(oak, this.eightBitter.mapScreener.middleY | 0);
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onIntroFadeIn, oakShady);
 
         this.eightBitter.timeHandler.addEvent(
-            (): void => {
+            () => {
                 this.eightBitter.animations.fading.animateFadeAttribute(
-                    oak,
+                    oakShady,
                     "opacity",
-                    0.15,
+                    0.25,
                     1,
                     14,
-                    this.eightBitter.scenePlayer.bindRoutine("FirstDialog"));
+                    () => this.fadeInNonShady(oakShady),
+                );
             },
-            70);
+            32);
     }
 
     /**
-     * Cutscene for Oak's introduction.
+     * Fades the grayscale Oak on top of the black-and-white ("shady") Oak.
+     *
+     * @param oakShady Black-and-white Oak visualized on the screen.
      */
-    public FirstDialog(): void {
+    private fadeInNonShady(oakShady: IThing) {
+        const oak = this.eightBitter.objectMaker.make<IThing>(
+            this.eightBitter.things.names.oakPortrait,
+            { opacity: 0, },
+        );
+
+        this.eightBitter.things.add(oak, oakShady.left, oakShady.top);
+
+        this.eightBitter.animations.fading.animateFadeAttribute(
+            oak,
+            "opacity",
+            0.25,
+            1,
+            14,
+            () => {
+                this.eightBitter.death.killNormal(oakShady);
+
+                this.eightBitter.timeHandler.addEvent(
+                    () => {
+                        this.firstDialog();
+                    },
+                    32);
+            },
+        );
+    }
+
+    /**
+     * Adds Oak's first bit of dialog to the screen.
+     */
+    private firstDialog(): void {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -58,16 +88,16 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                 "Hello there! \n Welcome to the world of %POKEMON%!",
                 "My name is OAK! People call me the %POKEMON% PROF!",
             ],
-            this.eightBitter.scenePlayer.bindRoutine("FirstDialogFade"),
+            () => this.firstDialogFade(),
         );
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Cutscene for Oak's introduction exit.
+     * Fades Oak out after his first dialog.
      */
-    public FirstDialogFade(): void {
-        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
+    private firstDialogFade(): void {
+        const blank = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
             width: this.eightBitter.mapScreener.width,
             height: this.eightBitter.mapScreener.height,
             opacity: 0,
@@ -78,28 +108,27 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.eightBitter.animations.fading.animateFadeAttribute(
-                blank,
-                "opacity",
-                0.15,
-                1,
-                7,
-                this.eightBitter.scenePlayer.bindRoutine("PokemonExpo"));
+                    blank,
+                    "opacity",
+                    0.15,
+                    1,
+                    7,
+                    () => this.pokemonExpo(),
+                );
             },
             35);
     }
 
     /**
-     * Cutscene for transitioning Nidorino onto the screen.
+     * Fades in the Nidorino Pokemon onto the screen.
      */
-    public PokemonExpo(): void {
-        const pokemon: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.nidorinoFront, {
+    private pokemonExpo(): void {
+        const pokemon = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.nidorinoFront, {
             flipHoriz: true,
             opacity: 0.01,
         });
 
-        this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.death.killNormal(thing);
-        });
+        this.eightBitter.death.killAll();
 
         this.eightBitter.things.add(
             pokemon,
@@ -114,13 +143,14 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             -8,
             this.eightBitter.mapScreener.middleX | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("PokemonExplanation"));
+            () => this.pokemonExplanation(),
+        );
     }
 
     /**
-     * Cutscene for showing an explanation of the Pokemon world.
+     * Adds a dialog explaining how Pokemon work.
      */
-    public PokemonExplanation(): void {
+    private pokemonExplanation(): void {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -130,28 +160,22 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                 "Myself...",
                 "I study %POKEMON% as a profession.",
             ],
-            this.eightBitter.scenePlayer.bindRoutine("PlayerAppear"),
+            () => this.playerAppear(),
         );
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Cutscene showing the player.
-     *
-     * @param settings   Settings used for the cutscene.
+     * Fades in the first Player visualization onto the screen.
      */
-    public PlayerAppear(settings: any): void {
+    private playerAppear(): void {
         const middleX: number = this.eightBitter.mapScreener.middleX | 0;
-        const player: IPlayer = this.eightBitter.objectMaker.make<IPlayer>(this.eightBitter.things.names.playerPortrait, {
+        const player = this.eightBitter.objectMaker.make<IPlayer>(this.eightBitter.things.names.playerPortrait, {
             flipHoriz: true,
             opacity: 0.01,
         });
 
-        settings.player = player;
-
-        this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.death.killNormal(thing);
-        });
+        this.eightBitter.death.killAll();
 
         this.eightBitter.things.add(player, this.eightBitter.mapScreener.middleX + 96, 0);
         this.eightBitter.physics.setMidY(player, this.eightBitter.mapScreener.middleY);
@@ -162,43 +186,45 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             -8,
             middleX - player.width / 2,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("PlayerName"));
+            () => this.playerName(),
+        );
     }
 
     /**
-     * Cutscene asking the player to enter his/her name.
+     * Asks the player to enter their name.
      */
-    public PlayerName(): void {
+    private playerName(): void {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 "First, what is your name?",
             ],
-            this.eightBitter.scenePlayer.bindRoutine("PlayerSlide"));
+            () => this.playerSlide(),
+        );
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
-     * Cutscene for sliding the player over to show the naming options.
-     *
-     * @param settings   Settings used for the cutscene.
+     * Slides the player over to show name options.
      */
-    public PlayerSlide(settings: any): void {
+    private playerSlide(): void {
+        const player = this.eightBitter.groupHolder.getThing<IThing>("player")!;
         this.eightBitter.animations.sliding.slideHorizontally(
-            settings.player,
+            player,
             4,
             (this.eightBitter.mapScreener.middleX + 56) | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("PlayerNameOptions"));
+            () => this.playerNameOptions(),
+        );
     }
 
     /**
-     * Cutscene for showing the player naming option menu.
+     * Creates the player name options menu.
      */
-    public PlayerNameOptions(): void {
-        const fromMenu: () => void = this.eightBitter.scenePlayer.bindRoutine("PlayerNameFromMenu");
-        const fromKeyboard: () => void = this.eightBitter.scenePlayer.bindRoutine("PlayerNameFromKeyboard");
+    private playerNameOptions(): void {
+        const fromMenu = () => this.playerNameFromMenu();
+        const fromKeyboard = () => this.playerNameFromKeyboard();
 
         this.eightBitter.menuGrapher.createMenu("NameOptions");
         this.eightBitter.menuGrapher.addMenuList("NameOptions", {
@@ -227,49 +253,49 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
     }
 
     /**
-     * Cutscene for the player selecting Blue, Gary, or John.
-     *
-     * @param settings   Settings used for the cutscene.
+     * Handles the player selecting a prefabricated menu option.
      */
-    public PlayerNameFromMenu(settings: any): void {
-        settings.name = this.eightBitter.menuGrapher.getMenuSelectedOption("NameOptions").text;
+    private playerNameFromMenu(): void {
+        const name = this.eightBitter.menuGrapher.getMenuSelectedOption("NameOptions").text as string[];
+        const player = this.eightBitter.groupHolder.getThing<IThing>("player")!;
 
         this.eightBitter.menuGrapher.deleteMenu("NameOptions");
 
         this.eightBitter.animations.sliding.slideHorizontally(
-            settings.player,
+            player,
             -4,
             this.eightBitter.mapScreener.middleX | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("PlayerNameConfirm"));
+            () => this.playerNameConfirm(name),
+        );
     }
 
     /**
-     * Cutscene for the player choosing to customize a new name.
-     *
-     * @param settings   Settings used for the cutscene.
+     * Handles the player having entered their own name from the keyboard.
      */
-    public PlayerNameFromKeyboard(settings: any): void {
-        settings.name = (this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+    private playerNameFromKeyboard(): void {
+        const name = (this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+        const player = this.eightBitter.groupHolder.getThing<IThing>("player")!;
 
         this.eightBitter.menuGrapher.deleteMenu("Keyboard");
         this.eightBitter.menuGrapher.deleteMenu("NameOptions");
 
         this.eightBitter.animations.sliding.slideHorizontally(
-            settings.player,
+            player,
             -4,
             this.eightBitter.mapScreener.middleX | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("PlayerNameConfirm"));
+            () => this.playerNameConfirm(name),
+        );
     }
 
     /**
-     * Cutscene confirming the player's name.
+     * Confirms the name chosen for the player.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param name   Name chosen for the player.
      */
-    public PlayerNameConfirm(settings: any): void {
-        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.name, settings.name);
+    private playerNameConfirm(name: string[]): void {
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.name, name);
 
         this.eightBitter.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
@@ -279,18 +305,19 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             [
                 [
                     "Right! So your name is ".split(""),
-                    settings.name,
+                    name,
                     "!".split(""),
                 ],
             ],
-            this.eightBitter.scenePlayer.bindRoutine("PlayerNameComplete"));
+            () => this.playerNameComplete(),
+        );
     }
 
     /**
-     * Cutscene fading the player out.
+     * Fades the player out from the screen after choosing a name.
      */
-    public PlayerNameComplete(): void {
-        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
+    private playerNameComplete(): void {
+        const blank = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
             width: this.eightBitter.mapScreener.width,
             height: this.eightBitter.mapScreener.height,
             opacity: 0,
@@ -306,7 +333,8 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                     0.2,
                     1,
                     7,
-                    this.eightBitter.scenePlayer.bindRoutine("RivalAppear"));
+                    () => this.rivalAppear(),
+                );
             },
             35);
     }
@@ -316,16 +344,12 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
      *
      * @param settings   Settings used for the cutscene.
      */
-    public RivalAppear(settings: any): void {
-        const rival: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.rivalPortrait, {
+    private rivalAppear(): void {
+        const rival = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.rivalPortrait, {
             opacity: 0,
         });
 
-        settings.rival = rival;
-
-        this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.death.killNormal(thing);
-        });
+        this.eightBitter.death.killAll();
 
         this.eightBitter.things.add(rival, 0, 0);
         this.eightBitter.physics.setMidX(rival, this.eightBitter.mapScreener.middleX | 0);
@@ -336,13 +360,16 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             0.1,
             1,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("RivalName"));
+            () => this.rivalName(rival),
+        );
     }
 
     /**
      * Cutscene introducing the rival.
+     *
+     * @param rival   Rival Thing visualized on the screen.
      */
-    public RivalName(): void {
+    private rivalName(rival: IThing): void {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -350,7 +377,7 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                 "This is my grand-son. He's been your rival since you were a baby.",
                 "...Erm, what is his name again?",
             ],
-            this.eightBitter.scenePlayer.bindRoutine("RivalSlide"),
+            () => this.rivalSlide(rival),
         );
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -358,23 +385,26 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
     /**
      * Cutscene for sliding the rival over to show the rival naming options.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param rival   Rival Thing visualized on the screen.
      */
-    public RivalSlide(settings: any): void {
+    private rivalSlide(rival: IThing): void {
         this.eightBitter.animations.sliding.slideHorizontally(
-            settings.rival,
+            rival,
             4,
             (this.eightBitter.mapScreener.middleX + 56) | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("RivalNameOptions"));
+            () => this.rivalNameOptions(rival),
+        );
     }
 
     /**
      * Cutscene for showing the rival naming option menu.
+     *
+     * @param rival   Rival Thing visualized on the screen.
      */
-    public RivalNameOptions(): void {
-        const fromMenu: () => void = this.eightBitter.scenePlayer.bindRoutine("RivalNameFromMenu");
-        const fromKeyboard: () => void = this.eightBitter.scenePlayer.bindRoutine("RivalNameFromKeyboard");
+    private rivalNameOptions(rival: IThing): void {
+        const fromMenu = () => this.rivalNameFromMenu(rival);
+        const fromKeyboard = () => this.rivalNameFromKeyboard(rival);
 
         this.eightBitter.menuGrapher.createMenu("NameOptions");
         this.eightBitter.menuGrapher.addMenuList("NameOptions", {
@@ -405,65 +435,68 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
     /**
      * Cutscene for choosing to name the rival Red, Ash, or Jack.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param rival   Rival Thing visualized on the screen.
      */
-    public RivalNameFromMenu(settings: any): void {
-        settings.name = this.eightBitter.menuGrapher.getMenuSelectedOption("NameOptions").text;
+    private rivalNameFromMenu(rival: IThing): void {
+        const name = this.eightBitter.menuGrapher.getMenuSelectedOption("NameOptions").text as string[];
 
         this.eightBitter.menuGrapher.deleteMenu("NameOptions");
 
         this.eightBitter.animations.sliding.slideHorizontally(
-            settings.rival,
+            rival,
             -4,
             this.eightBitter.mapScreener.middleX | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("RivalNameConfirm"));
+            () => this.rivalNameConfirm(name),
+        );
     }
 
     /**
      * Cutscene for choosing to customize the rival's name.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param rival   Rival Thing visualized on the screen.
      */
-    public RivalNameFromKeyboard(settings: any): void {
-        settings.name = (this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+    private rivalNameFromKeyboard(rival: IThing): void {
+        const name = (this.eightBitter.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
 
         this.eightBitter.menuGrapher.deleteMenu("Keyboard");
         this.eightBitter.menuGrapher.deleteMenu("NameOptions");
 
         this.eightBitter.animations.sliding.slideHorizontally(
-            settings.rival,
+            rival,
             -4,
             this.eightBitter.mapScreener.middleX | 0,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("RivalNameConfirm"));
+            () => this.rivalNameConfirm(name),
+        );
     }
 
     /**
-     * Cutscene for confirming the rival's name.
+     * Confirms the name chosen for the rival.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param name   Name chosen for the rival.
      */
-    public RivalNameConfirm(settings: any): void {
-        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.nameRival, settings.name);
+    private rivalNameConfirm(name: string[]): void {
+        this.eightBitter.itemsHolder.setItem(this.eightBitter.storage.names.nameRival, name);
 
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
             [
                 [
-                    "That's right! I remember now! His name is ", settings.name, "!",
+                    "That's right! I remember now! His name is ", name, "!",
                 ],
             ],
-            this.eightBitter.scenePlayer.bindRoutine("RivalNameComplete"));
+            () => this.rivalNameComplete(),
+        );
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene fading the rival out.
      */
-    public RivalNameComplete(): void {
-        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
+    private rivalNameComplete(): void {
+        const blank = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
             width: this.eightBitter.mapScreener.width,
             height: this.eightBitter.mapScreener.height,
             opacity: 0,
@@ -479,27 +512,22 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                     0.2,
                     1,
                     7,
-                    this.eightBitter.scenePlayer.bindRoutine("LastDialogAppear"));
+                    () => this.lastDialogAppear(),
+                );
             },
             35);
     }
 
     /**
      * Cutscene for fading the player in.
-     *
-     * @param settings   Settings used for the cutscene.
      */
-    public LastDialogAppear(settings: any): void {
-        const portrait: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.playerPortrait, {
+    private lastDialogAppear(): void {
+        const portrait = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.playerPortrait, {
             flipHoriz: true,
             opacity: 0,
         });
 
-        settings.portrait = portrait;
-
-        this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
-            this.eightBitter.death.killNormal(thing);
-        });
+        this.eightBitter.death.killAll();
 
         this.eightBitter.things.add(portrait, 0, 0);
         this.eightBitter.physics.setMidX(portrait, this.eightBitter.mapScreener.middleX | 0);
@@ -511,13 +539,16 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             0.1,
             1,
             1,
-            this.eightBitter.scenePlayer.bindRoutine("LastDialog"));
+            () => this.lastDialog(portrait),
+        );
     }
 
     /**
      * Cutscene for the last part of the introduction.
+     *
+     * @param portrait   Portrait of the player visualized on the screen.
      */
-    public LastDialog(): void {
+    private lastDialog(portrait: IThing): void {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -526,26 +557,27 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                 "Your very own %POKEMON% legend is about to unfold!",
                 "A world of dreams and adventures with %POKEMON% awaits! Let's go!",
             ],
-            this.eightBitter.scenePlayer.bindRoutine("ShrinkPlayer"));
+            () => this.shrinkPlayer(portrait),
+        );
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
      * Cutscene for shrinking the player.
      *
-     * @param settings   Settings used for the cutscene.
+     * @param portrait   Portrait of the player visualized on the screen.
      */
-    public ShrinkPlayer(settings: any): void {
-        const silhouetteLarge: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.playerSilhouetteLarge);
-        const silhouetteSmall: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.playerSilhouetteSmall);
-        const player: IPlayer = this.eightBitter.objectMaker.make<IPlayer>(this.eightBitter.things.names.player);
+    private shrinkPlayer(portrait: IThing): void {
+        const silhouetteLarge = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.playerSilhouetteLarge);
+        const silhouetteSmall = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.playerSilhouetteSmall);
+        const player = this.eightBitter.objectMaker.make<IPlayer>(this.eightBitter.things.names.player);
         const timeDelay = 49;
 
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.eightBitter.things.add(silhouetteLarge);
-                this.eightBitter.physics.setMidObj(silhouetteLarge, settings.portrait);
-                this.eightBitter.death.killNormal(settings.portrait);
+                this.eightBitter.physics.setMidObj(silhouetteLarge, portrait);
+                this.eightBitter.death.killNormal(portrait);
             },
             timeDelay);
 
@@ -566,15 +598,15 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
             timeDelay * 3);
 
         this.eightBitter.timeHandler.addEvent(
-            this.eightBitter.scenePlayer.bindRoutine("FadeOut"),
+            () => this.fadeOut(),
             timeDelay);
     }
 
     /**
      * Cutscene for completing the introduction and fading it out.
      */
-    public FadeOut(): void {
-        const blank: IThing = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
+    private fadeOut(): void {
+        const blank = this.eightBitter.objectMaker.make<IThing>(this.eightBitter.things.names.whiteSquare, {
             width: this.eightBitter.mapScreener.width,
             height: this.eightBitter.mapScreener.height,
             opacity: 0,
@@ -590,15 +622,16 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
                     0.2,
                     1,
                     7,
-                    this.eightBitter.scenePlayer.bindRoutine("Finish"));
+                    () => this.finish(),
+                );
             },
             35);
     }
 
     /**
-     * Cutscene showing the player in his bedroom.
+     * Cutscene showing the player in theirbedroom.
      */
-    public Finish(): void {
+    private finish(): void {
         delete this.eightBitter.mapScreener.cutscene;
 
         this.eightBitter.menuGrapher.deleteActiveMenu();

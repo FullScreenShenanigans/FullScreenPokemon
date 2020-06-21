@@ -44,26 +44,26 @@ export class Fading<TEightBittr extends FullScreenPokemon> extends GeneralCompon
      * @param onCompletion   A callback for when the attribute reaches the goal.
      * @returns The in-progress TimeEvent, if started.
      */
-    public animateFadeAttribute(
-        thing: IThing,
-        attribute: string,
+    public animateFadeAttribute<TThing extends IThing>(
+        thing: TThing,
+        attribute: keyof TThing,
         change: number,
         goal: number,
         speed: number,
         onCompletion?: (thing: IThing) => void): ITimeEvent | undefined {
-        (thing as any)[attribute] += change;
+        (thing[attribute] as number) += change;
 
         if (change > 0) {
-            if ((thing as any)[attribute] >= goal) {
-                (thing as any)[attribute] = goal;
+            if (thing[attribute] >= goal) {
+                (thing[attribute] as number) = goal;
                 if (typeof onCompletion === "function") {
                     onCompletion(thing);
                 }
                 return undefined;
             }
         } else {
-            if ((thing as any)[attribute] <= goal) {
-                (thing as any)[attribute] = goal;
+            if (thing[attribute] <= goal) {
+                (thing[attribute] as number) = goal;
                 if (typeof onCompletion === "function") {
                     onCompletion(thing);
                 }

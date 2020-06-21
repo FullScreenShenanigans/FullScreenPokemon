@@ -16,6 +16,7 @@ import { Collisions } from "./components/Collisions";
 import { Constants } from "./components/Constants";
 import { Cutscenes } from "./components/Cutscenes";
 import { Cycling } from "./components/Cycling";
+import { Death } from "./components/Death";
 import { Equations } from "./components/Equations";
 import { Evolution } from "./components/Evolution";
 import { Experience } from "./components/Experience";
@@ -167,6 +168,12 @@ export class FullScreenPokemon extends EightBittr {
      */
     @component(Cycling)
     public readonly cycling: Cycling<this>;
+
+    /**
+     * Removes Things from the game.
+     */
+    @component(Death)
+    public readonly death: Death<this>;
 
     /**
      * Common equations.

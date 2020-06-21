@@ -1,6 +1,6 @@
 import { component } from "babyioc";
 import { Graphics as EightBittrGraphics } from "eightbittr";
-import { IPalette } from "pixelrendr";
+import { IPalette, IFilterContainer } from "pixelrendr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -11,6 +11,19 @@ import { graphicsLibrary } from "./graphics/GraphicsLibrary";
  * Changes the visual appearance of Things.
  */
 export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrGraphics<TEightBittr> {
+    /**
+     * Filters that may be used by sprites in the library.
+     */
+    public readonly filters: IFilterContainer = {
+        BlackAndWhite: [
+            "palette",
+            {
+                "3": "2",
+                "4": "2",
+            },
+        ],
+    };
+
     /**
      * What class name should indicate a Thing is to be flipped verticallu.
      */
