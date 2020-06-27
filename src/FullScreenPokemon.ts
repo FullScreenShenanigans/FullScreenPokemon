@@ -1,4 +1,4 @@
-import { component, factory } from "babyioc";
+import { factory, member } from "babyioc";
 import { BattleMovr } from "battlemovr";
 import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
@@ -122,97 +122,97 @@ export class FullScreenPokemon extends EightBittr {
     /**
      * Actions characters may perform walking around.
      */
-    @component(Actions)
-    public readonly actions: Actions<this>;
+    @member(Actions)
+    public readonly actions: Actions;
 
     /**
      * Generic animations for Things.
      */
-    @component(Animations)
-    public readonly animations: Animations<this>;
+    @member(Animations)
+    public readonly animations: Animations;
 
     /**
      * Friendly sound aliases and names for audio.
      */
-    @component(Audio)
+    @member(Audio)
     public readonly audio: Audio<this>;
 
     /**
      * BattleMovr hooks to run trainer battles.
      */
-    @component(Battles)
-    public readonly battles: Battles<this>;
+    @member(Battles)
+    public readonly battles: Battles;
 
     /**
      * ThingHittr collision function generators.
      */
-    @component(Collisions)
+    @member(Collisions)
     public readonly collisions: Collisions<this>;
 
     /**
      * Universal game constants.
      */
-    @component(Constants)
-    public readonly constants: Constants<this>;
+    @member(Constants)
+    public readonly constants: Constants;
 
     /**
      * ScenePlayr cutscenes, keyed by name.
      */
-    @component(Cutscenes)
-    public readonly cutscenes: Cutscenes<this>;
+    @member(Cutscenes)
+    public readonly cutscenes: Cutscenes;
 
     /**
      * Starts and stop characters cycling.
      */
-    @component(Cycling)
-    public readonly cycling: Cycling<this>;
+    @member(Cycling)
+    public readonly cycling: Cycling;
 
     /**
      * Common equations.
      */
-    @component(Equations)
-    public readonly equations: Equations<this>;
+    @member(Equations)
+    public readonly equations: Equations;
 
     /**
      * Logic for what Pokemon are able to evolve into.
      */
-    @component(Evolution)
-    public readonly evolution: Evolution<this>;
+    @member(Evolution)
+    public readonly evolution: Evolution;
 
     /**
      * Calculates experience gains and level ups for Pokemon.
      */
-    @component(Experience)
-    public readonly experience: Experience<this>;
+    @member(Experience)
+    public readonly experience: Experience;
 
     /**
      * Runs the player trying to fish for Pokemon.
      */
-    @component(Fishing)
-    public readonly fishing: Fishing<this>;
+    @member(Fishing)
+    public readonly fishing: Fishing;
 
     /**
      * Event hooks for major gameplay state changes.
      */
-    @component(Gameplay)
+    @member(Gameplay)
     public readonly gameplay: Gameplay<this>;
 
     /**
      * Changes the visual appearance of Things.
      */
-    @component(Graphics)
+    @member(Graphics)
     public readonly graphics: Graphics<this>;
 
     /**
      * Collection settings for IThing group names.
      */
-    @component(Groups)
+    @member(Groups)
     public readonly groups: Groups<this>;
 
     /**
      * How to advance each frame of the game.
      */
-    @component(Frames)
+    @member(Frames)
     public readonly frames: Frames<this>;
 
     /**
@@ -223,20 +223,20 @@ export class FullScreenPokemon extends EightBittr {
     /**
      * User input filtering and handling.
      */
-    @component(Inputs)
+    @member(Inputs)
     public readonly inputs: Inputs<this>;
 
     /**
      * Storage keys and value settings.
      */
-    @component(Items)
+    @member(Items)
     public readonly items: Items<this>;
 
     /**
      * Maintains Things during FrameTickr ticks.
      */
-    @component(Maintenance)
-    public readonly maintenance: Maintenance<this>;
+    @member(Maintenance)
+    public readonly maintenance: Maintenance;
 
     /**
      * A flexible container for map attributes and viewport.
@@ -246,73 +246,73 @@ export class FullScreenPokemon extends EightBittr {
     /**
      * Enters and spawns map areas.
      */
-    @component(Maps)
+    @member(Maps)
     public readonly maps: Maps<this>;
 
     /**
      * Manipulates MenuGraphr menus.
      */
-    @component(Menus)
-    public readonly menus: Menus<this>;
+    @member(Menus)
+    public readonly menus: Menus;
 
     /**
      * Creates ModAttachr from mod classes.
      */
-    @component(Mods)
+    @member(Mods)
     public readonly mods: Mods<this>;
 
     /**
      * Creates MoveAdder to teach Pokemon new moves.
      */
-    @component(MoveAdder)
-    public readonly moveAdder: MoveAdder<this>;
+    @member(MoveAdder)
+    public readonly moveAdder: MoveAdder;
 
     /**
      * Raw ObjectMakr factory settings.
      */
-    @component(Objects)
+    @member(Objects)
     public readonly objects: Objects<this>;
 
     /**
      * Physics functions to move Things around.
      */
-    @component(Physics)
+    @member(Physics)
     public readonly physics: Physics<this>;
 
     /**
      * Saves and load game data.
      */
-    @component(Saves)
-    public readonly saves: Saves<this>;
+    @member(Saves)
+    public readonly saves: Saves;
 
     /**
      * Moves the screen and Things in it.
      */
-    @component(Scrolling)
+    @member(Scrolling)
     public readonly scrolling: Scrolling<this>;
 
     /**
      * Settings for storing items in ItemsHoldrs.
      */
-    @component(Storage)
-    public readonly storage: Storage<this>;
+    @member(Storage)
+    public readonly storage: Storage;
 
     /**
      * Adds and processes new Things into the game.
      */
-    @component(Things)
+    @member(Things)
     public readonly things: Things<this>;
 
     /**
      * Timing constants for delayed events.
      */
-    @component(Timing)
+    @member(Timing)
     public readonly timing: Timing<this>;
 
     /**
      * Miscellaneous utility functions.
      */
-    @component(Utilities)
+    @member(Utilities)
     public readonly utilities: Utilities<this>;
 
     /**

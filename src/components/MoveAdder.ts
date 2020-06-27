@@ -1,12 +1,12 @@
 import { IMove } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import { IMenuSchemaPosition } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { IPokemon } from "./Battles";
 
-export class MoveAdder<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class MoveAdder extends Section<FullScreenPokemon> {
     /**
      * Adds a new move to a Pokemon's set of moves.
      *
@@ -133,7 +133,7 @@ export class MoveAdder<TEightBittr extends FullScreenPokemon> extends GeneralCom
                         }],
                 });
                 this.eightBitter.menuGrapher.setActiveMenu("Yes/No");
-        });
+            });
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -157,10 +157,10 @@ export class MoveAdder<TEightBittr extends FullScreenPokemon> extends GeneralCom
                 const moves: IMove[] = pokemon.moves;
 
                 const options: any[] = moves.map((temp: IMove): any =>
-                ({
-                    text: temp.title.toUpperCase(),
-                    callback: () => this.teachMove(pokemon, move, pokemon.moves.indexOf(temp)),
-                }));
+                    ({
+                        text: temp.title.toUpperCase(),
+                        callback: () => this.teachMove(pokemon, move, pokemon.moves.indexOf(temp)),
+                    }));
 
                 const newPos: IMenuSchemaPosition = {
                     offset: {
@@ -203,7 +203,7 @@ export class MoveAdder<TEightBittr extends FullScreenPokemon> extends GeneralCom
             ],
             (): void => {
                 this.addMove(pokemon, move, index);
-        });
+            });
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 

@@ -1,5 +1,5 @@
 import { IStatistic, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
@@ -8,7 +8,7 @@ import { IThing } from "../../Things";
 /**
  * Decorations for health displays.
  */
-export class Health<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Health extends Section<FullScreenPokemon> {
     /**
      * Adds a Pokemon's health display to its appropriate menu.
      *

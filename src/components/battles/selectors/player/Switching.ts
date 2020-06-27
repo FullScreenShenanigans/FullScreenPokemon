@@ -1,5 +1,5 @@
 import { IOnChoice, ISwitchAction, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../Battles";
@@ -8,7 +8,7 @@ import { FleeAttempt } from "../../animations/shared/actions/FleeAttempt";
 /**
  * Menu interface for the player choosing whether to switch Pokemon.
  */
-export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Switching extends Section<FullScreenPokemon> {
     /**
      * Offers to switch Pokemon after one is knocked out.
      *

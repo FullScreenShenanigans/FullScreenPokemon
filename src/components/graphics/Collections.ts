@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
@@ -6,7 +6,7 @@ import { IThing } from "../Things";
 /**
  * Collects Things to change visuals en masse.
  */
-export class Collections<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Collections extends Section<FullScreenPokemon> {
     /**
      * Collects all unique Things that should be kept on top of battle intro animations.
      *

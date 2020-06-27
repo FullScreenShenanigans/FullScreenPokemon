@@ -1,5 +1,5 @@
 import { IAction, ITeamAndAction, IUnderEachTeam, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../Battles";
@@ -22,7 +22,7 @@ type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
 /**
  * Orders chosen actions by priority and/or speed.
  */
-export class ActionsOrderer<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class ActionsOrderer extends Section<FullScreenPokemon> {
     /**
      * Orders teams' chosen actions.
      *

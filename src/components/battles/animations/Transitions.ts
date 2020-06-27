@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 
@@ -31,7 +31,7 @@ interface ITransitions {
 /**
  * Flashy animation transitions to start battles.
  */
-export class Transitions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Transitions extends Section<FullScreenPokemon> {
     /**
      * Transitions, keyed by name.
      */

@@ -1,14 +1,12 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
 import { IEnemy } from "../../components/Things";
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow battling enemy trainers again.
  */
-export class RepeatTrainersMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class RepeatTrainersMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

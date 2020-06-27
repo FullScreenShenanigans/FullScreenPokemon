@@ -1,10 +1,9 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Move } from "../Move";
 
 /**
  * Animates a TailWhip battle move.
  */
-export class TailWhip<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class TailWhip extends Move {
     /**
      * Runs the move's animation.
      *

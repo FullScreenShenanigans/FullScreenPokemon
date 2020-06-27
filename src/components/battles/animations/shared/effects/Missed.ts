@@ -1,12 +1,12 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 
 /**
  * Runs missed effect animations for FullScreenPokemon instances.
  */
-export class Missed<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Missed extends Section<FullScreenPokemon> {
     /**
      * Runs the missed effect animation for a battle move effect.
      *

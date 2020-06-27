@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -23,36 +23,36 @@ import {
 /**
  * Actions characters may perform walking around.
  */
-export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Actions extends Section<FullScreenPokemon> {
     /**
      * Sets characters following each other.
      */
-    @component(Following)
-    public readonly following: Following<TEightBittr>;
+    @member(Following)
+    public readonly following: Following;
 
     /**
      * Visual and battle updates for walking in tall grass.
      */
-    @component(Grass)
-    public readonly grass: Grass<TEightBittr>;
+    @member(Grass)
+    public readonly grass: Grass;
 
     /**
      * Hops characters down ledges.
      */
-    @component(Ledges)
-    public readonly ledges: Ledges<TEightBittr>;
+    @member(Ledges)
+    public readonly ledges: Ledges;
 
     /**
      * Idle characters turning and walking in random directions.
      */
-    @component(Roaming)
-    public readonly roaming: Roaming<TEightBittr>;
+    @member(Roaming)
+    public readonly roaming: Roaming;
 
     /**
      * Starts, continues, and stops characters walking.
      */
-    @component(Walking)
-    public readonly walking: Walking<TEightBittr>;
+    @member(Walking)
+    public readonly walking: Walking;
 
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.

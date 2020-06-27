@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { IBattleTeam } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings, IPokemon } from "../Battles";
@@ -11,7 +11,7 @@ import { Health } from "./decorations/Health";
 /**
  * Decoration handlers used by FullScreenPokemon instances.
  */
-export class Decorations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Decorations extends Section<FullScreenPokemon> {
     /**
      * Id for the background Thing.
      */
@@ -20,8 +20,8 @@ export class Decorations<TEightBittr extends FullScreenPokemon> extends GeneralC
     /**
      * Decorations for health displays.
      */
-    @component(Health)
-    public readonly health: Health<TEightBittr>;
+    @member(Health)
+    public readonly health: Health;
 
     /**
      * Creates the initial Things displayed in a battle.

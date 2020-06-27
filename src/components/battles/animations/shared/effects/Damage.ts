@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { IDamageEffect, IMoveAction, IStatistic, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IPokemon } from "../../../../Battles";
@@ -10,12 +10,12 @@ import { Calculator } from "./damage/Calculator";
 /**
  * Runs damage effect animations for FullScreenPokemon instances.
  */
-export class Damage<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Damage extends Section<FullScreenPokemon> {
     /**
      * Calculates damage dealt from battle moves.
      */
-    @component(Calculator)
-    private readonly calculator: Calculator<TEightBittr>;
+    @member(Calculator)
+    private readonly calculator: Calculator;
 
     /**
      * Runs the damage animation for a battle move effect.

@@ -1,5 +1,5 @@
 import { IMove } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -68,11 +68,11 @@ export interface ILevelUpStatsMenuSettings {
 /**
  * Manipulates Pokemon party and detail menus.
  */
-export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Pokemon extends Section<FullScreenPokemon> {
     /**
      * A map to translate how status is stored in the code into in-game form.
      */
-    private static readonly statusTranslate: { [i: string]: string} = {
+    private static readonly statusTranslate: { [i: string]: string } = {
         frozen: "FRZ",
         paralyzed: "PAR",
         poison: "PSN",
@@ -407,7 +407,7 @@ export class Pokemon<TEightBittr extends FullScreenPokemon> extends GeneralCompo
                 text.push(
                     ...this.eightBitter.utilities.makeDigit(
                         this.eightBitter.constants.moves.byName[move.title].PP, 2, " ")
-                            .split(""));
+                        .split(""));
 
                 text.push({
                     command: true,

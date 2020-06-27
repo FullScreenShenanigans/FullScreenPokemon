@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
@@ -6,7 +6,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * Hops characters down ledges.
  */
-export class Ledges<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Ledges extends Section<FullScreenPokemon> {
     /**
      * Starts a Character hopping over a ledge.
      *

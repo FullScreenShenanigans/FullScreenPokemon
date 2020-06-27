@@ -1,4 +1,3 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Direction } from "../../../../../Constants";
 import { IMenu } from "../../../../../Menus";
 import { IThing } from "../../../../../Things";
@@ -7,7 +6,7 @@ import { Move } from "../Move";
 /**
  * Animates a Scratch battle move.
  */
-export class Scratch<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class Scratch extends Move {
     /**
      * Runs the move's animation.
      *
@@ -42,7 +41,7 @@ export class Scratch<TEightBittr extends FullScreenPokemon> extends Move<TEightB
             (): void => {
                 for (const scratch of scratches) {
                     const left: number = this.direction === -1 ? scratch.left : scratch.right - 3;
-                    const top: number =  scratch.bottom - 3;
+                    const top: number = scratch.bottom - 3;
 
                     this.eightBitter.timeHandler.addEvent(
                         (): void => this.eightBitter.physics.shiftHoriz(scratch, differenceX * this.direction / 16),

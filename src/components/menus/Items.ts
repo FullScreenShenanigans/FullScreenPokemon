@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { IPokemon } from "../../components/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -61,7 +61,7 @@ export interface IItemsMenuSettings extends IItemMenuSettings {
 /**
  * Manipulates item menus.
  */
-export class Items<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Items extends Section<FullScreenPokemon> {
     /**
      * Opens the Items menu for the items in the player's inventory.
      *

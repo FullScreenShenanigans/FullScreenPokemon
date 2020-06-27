@@ -1,11 +1,11 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * Opens the Save menu.
  */
-export class Save<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Save extends Section<FullScreenPokemon> {
     /**
      * Opens the Save menu.
      */

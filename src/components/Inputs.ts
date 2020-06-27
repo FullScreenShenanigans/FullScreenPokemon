@@ -17,13 +17,13 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
     public readonly aliases: IAliases = {
         // tslint:disable object-literal-sort-keys
         // Keyboard aliases
-        left:   [65, 37],     // a, left
-        right:  [68, 39],     // d, right
-        up:     [87, 38],     // w, up
-        down:   [83, 40],     // s, down
-        a:      [90, 13],     // z, enter
-        b:      [88, 8],      // x, backspace
-        pause:  [80, 27],     // p, escape
+        left: [65, 37],     // a, left
+        right: [68, 39],     // d, right
+        up: [87, 38],     // w, up
+        down: [83, 40],     // s, down
+        a: [90, 13],     // z, enter
+        b: [88, 8],      // x, backspace
+        pause: [80, 27],     // p, escape
         select: [17, 16],     // ctrl, shift
         // Mouse aliases
         rightclick: [3],

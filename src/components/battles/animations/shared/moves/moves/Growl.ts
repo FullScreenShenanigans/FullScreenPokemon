@@ -1,13 +1,12 @@
 import { Team } from "battlemovr";
 
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
 
 /**
  * Animates a Growl battle move.
  */
-export class Growl<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class Growl extends Move {
     /**
      * Starting x-position for notes.
      */

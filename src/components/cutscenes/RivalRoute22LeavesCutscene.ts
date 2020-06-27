@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -8,7 +8,7 @@ import { ICharacter } from "../Things";
 /**
  * RivalRoute22Leaves cutscene routines.
  */
-export class RivalRoute22LeavesCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class RivalRoute22LeavesCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for setting up rival walking away cutscene.
      */

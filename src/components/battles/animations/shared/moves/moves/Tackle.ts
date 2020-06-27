@@ -1,12 +1,11 @@
 import { Team } from "battlemovr";
 
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Move } from "../Move";
 
 /**
  * Animates a Tackle battle move.
  */
-export class Tackle<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class Tackle extends Move {
     /**
      * Runs the move's animation.
      *

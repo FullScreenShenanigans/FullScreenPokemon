@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IGrass, IThing } from "../Things";
@@ -6,7 +6,7 @@ import { ICharacter, IGrass, IThing } from "../Things";
 /**
  * Visual and battle updates for walking in tall grass.
  */
-export class Grass<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Grass extends Section<FullScreenPokemon> {
     /**
      * Marks a Character as being visually within grass.
      *

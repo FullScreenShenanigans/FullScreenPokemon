@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { BattleOutcome, IMove, IOnChoice, ISelector, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../Battles";
@@ -11,12 +11,12 @@ import { Switching } from "./player/Switching";
 /**
  * Selector for a player's battle actions.
  */
-export class PlayerSelector<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ISelector {
+export class PlayerSelector extends Section<FullScreenPokemon> implements ISelector {
     /**
      * Menu interface for the player choosing whether to switch Pokemon.
      */
-    @component(Switching)
-    private readonly switching: Switching<TEightBittr>;
+    @member(Switching)
+    private readonly switching: Switching;
 
     /**
      * Reacts to an actor getting knocked out.

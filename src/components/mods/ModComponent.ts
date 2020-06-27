@@ -1,15 +1,14 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import { ICallbackRegister, IMod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IModComponentClass } from "../Mods";
-
 import { ModEventNames } from "./EventNames";
 
 /**
  * EightBittr component for a mod.
  */
-export abstract class ModComponent<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements IMod {
+export abstract class ModComponent extends Section<FullScreenPokemon> implements IMod {
     /**
      * Name of the mod.
      */
@@ -32,7 +31,7 @@ export abstract class ModComponent<TEightBittr extends FullScreenPokemon> extend
      *
      * @param source   EightBittr instance to wrap around, or one of its components.
      */
-    public constructor(source: TEightBittr | GeneralComponent<TEightBittr>, eventNames: ModEventNames) {
+    public constructor(source: FullScreenPokemon | Section<FullScreenPokemon>, eventNames: ModEventNames) {
         super(source);
 
         this.eventNames = eventNames;

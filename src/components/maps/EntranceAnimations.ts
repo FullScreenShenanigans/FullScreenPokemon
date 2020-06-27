@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,7 +7,7 @@ import { ILocation } from "../Maps";
 /**
  * Map entrance animations.
  */
-export class EntranceAnimations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class EntranceAnimations extends Section<FullScreenPokemon> {
     /**
      * A blank Map entrance Function where no Character is placed.
      */

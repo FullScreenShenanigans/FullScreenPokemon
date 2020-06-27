@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -10,22 +10,22 @@ import { Sliding } from "./animations/Sliding";
 /**
  * Generic animations for Things.
  */
-export class Animations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Animations extends Section<FullScreenPokemon> {
     /**
      * Fades Things in and out.
      */
-    @component(Fading)
-    public readonly fading: Fading<TEightBittr>;
+    @member(Fading)
+    public readonly fading: Fading;
 
     /**
      * Shrinks (and expands) Things.
      */
-    @component(Shrinking)
-    public readonly shrinking: Shrinking<TEightBittr>;
+    @member(Shrinking)
+    public readonly shrinking: Shrinking;
 
     /**
      * Slides Things across the screen.
      */
-    @component(Sliding)
-    public readonly sliding: Sliding<TEightBittr>;
+    @member(Sliding)
+    public readonly sliding: Sliding;
 }

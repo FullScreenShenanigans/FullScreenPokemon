@@ -1,14 +1,12 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWildPokemonSchema } from "../Maps";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod that randomizes Pokemon encounters based on the original wild Pokemon's type(s).
  */
-export class RandomizeWildPokemonMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class RandomizeWildPokemonMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

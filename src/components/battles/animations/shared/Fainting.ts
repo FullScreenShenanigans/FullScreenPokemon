@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../Battles";
@@ -8,7 +8,7 @@ import { IThing } from "../../../Things";
 /**
  * Animations for a Pokemon fainting.
  */
-export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Fainting extends Section<FullScreenPokemon> {
     /**
      * Runs a fainting animation.
      *
@@ -58,9 +58,9 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
         this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
     }
 
-     /**
-      * Helper function to start the process of gaining experience
-      */
+    /**
+     * Helper function to start the process of gaining experience
+     */
     private processOpponentFainting(
         partyIsWipedText: (string | string[])[][],
         onComplete: () => void, battleInfo: IBattleInfo,
@@ -71,9 +71,9 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
             () => this.eightBitter.experience.processBattleExperience(battleInfo, onComplete));
     }
 
-     /**
-      * Helper function to start the process of a player's pokemon fainitng
-      */
+    /**
+     * Helper function to start the process of a player's pokemon fainitng
+     */
     private processPlayerFainting(
         partyIsWipedText: (string | string[])[][],
         onComplete: () => void,
@@ -82,8 +82,8 @@ export class Fainting<TEightBittr extends FullScreenPokemon> extends GeneralComp
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         if (this.eightBitter.battles.isPartyWiped()) {
             partyIsWipedText.push(
-            [playerName, " is out of useable Pokemon!"],
-            [playerName, " blacked out!"]);
+                [playerName, " is out of useable Pokemon!"],
+                [playerName, " blacked out!"]);
         }
 
         this.eightBitter.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);

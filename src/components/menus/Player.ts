@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMenuSchema } from "../Menus";
@@ -6,7 +6,7 @@ import { IMenuSchema } from "../Menus";
 /**
  * Opens the Player menu.
  */
-export class Player<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Player extends Section<FullScreenPokemon> {
     /**
      * Opens the Player menu.
      *

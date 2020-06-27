@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
@@ -6,7 +6,7 @@ import { IThing } from "../Things";
 /**
  * Slides Things across the screen.
  */
-export class Sliding<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Sliding extends Section<FullScreenPokemon> {
     /**
      * Slides a Thing across the screen horizontally over time.
      *

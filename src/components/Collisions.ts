@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { Collisions as EightBitrCollisions } from "eightbittr";
+import { member } from "babyioc";
+import { Collisions as EightBittrCollisions } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -11,7 +11,7 @@ import { ICharacter, IThing } from "./Things";
 /**
  * ThingHittr collision function generators.
  */
-export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitrCollisions<TEightBittr> {
+export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBittrCollisions<TEightBittr> {
     /**
      * Function generator for the generic canThingCollide checker. This is used
      * repeatedly by ThingHittr to generate separately optimized Functions for
@@ -199,12 +199,12 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitr
     /**
      * Handlers for collisions with Detector Things.
      */
-    @component(Detectors)
-    public readonly detectors: Detectors<TEightBittr>;
+    @member(Detectors)
+    public readonly detectors: Detectors;
 
     /**
      * Handlers for collisions with obstacle-like Things.
      */
-    @component(Obstacles)
-    public readonly obstacles: Obstacles<TEightBittr>;
+    @member(Obstacles)
+    public readonly obstacles: Obstacles;
 }

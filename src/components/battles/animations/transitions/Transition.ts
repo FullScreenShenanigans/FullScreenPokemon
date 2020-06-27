@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { ITransitionSettings } from "../Transitions";
@@ -6,7 +6,7 @@ import { ITransitionSettings } from "../Transitions";
 /**
  * Base transition class for battle start transition animations.
  */
-export class Transition<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Transition extends Section<FullScreenPokemon> {
     /**
      * Settings for the transition.
      */
@@ -18,7 +18,7 @@ export class Transition<TEightBittr extends FullScreenPokemon> extends GeneralCo
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Settings for the transition.
      */
-    public constructor(eightBitter: TEightBittr, settings: ITransitionSettings) {
+    public constructor(eightBitter: FullScreenPokemon, settings: ITransitionSettings) {
         super(eightBitter);
 
         this.settings = settings;

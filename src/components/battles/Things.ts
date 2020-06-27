@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IBattleInfo } from "../Battles";
@@ -8,7 +8,7 @@ import { IThing } from "../Things";
 /**
  * Sets Things visually representing each team.
  */
-export class Things<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Things extends Section<FullScreenPokemon> {
     /**
      * Sets a team's visual Pokemon Thing.
      *

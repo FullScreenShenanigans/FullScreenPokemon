@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMenuSchema } from "../Menus";
@@ -6,11 +6,11 @@ import { IMenuSchema } from "../Menus";
 /**
  * Opens and animates displays on the Town Map menu.
  */
-export class TownMap<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class TownMap extends Section<FullScreenPokemon> {
     /**
      * Locations of known cities on town maps.
      */
-    private static readonly townMapLocations: { [i: string]: [number, number ] } = {
+    private static readonly townMapLocations: { [i: string]: [number, number] } = {
         "Pallet Town": [18, 48],
         "Pewter City": [18, 16],
         "Serebii Islands": [18, 64],

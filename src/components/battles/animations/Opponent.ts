@@ -1,6 +1,6 @@
-import { component, factory } from "babyioc";
+import { factory, member } from "babyioc";
 import { ITeamAnimations, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
@@ -13,17 +13,17 @@ import { Switching } from "./shared/Switching";
 /**
  * Animations for opponent battle events.
  */
-export class Opponent<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ITeamAnimations {
+export class Opponent extends Section<FullScreenPokemon> implements ITeamAnimations {
     /**
      * Shared animations for team actions.
      */
-    @component(Actions)
-    public readonly actions: Actions<TEightBittr>;
+    @member(Actions)
+    public readonly actions: Actions;
 
     /**
      * Shared animations for teams switching Pokemon.
      */
-    @factory((container: Opponent<TEightBittr>) =>
+    @factory((container: Opponent) =>
         new Switching(container, {
             enter: {
                 team: Team.opponent,
@@ -41,7 +41,7 @@ export class Opponent<TEightBittr extends FullScreenPokemon> extends GeneralComp
                     battleInfo.things.menu.top + 32,
             },
         }))
-    public readonly switching: Switching<TEightBittr>;
+    public readonly switching: Switching;
 
     /**
      * Animation for when the opponent's actor's health changes.

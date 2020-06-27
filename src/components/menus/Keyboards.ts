@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -63,7 +63,7 @@ export interface IKeyboardMenuSettings {
 /**
  * Manipulates the on-screen keyboard menus.
  */
-export class Keyboards<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Keyboards extends Section<FullScreenPokemon> {
     /**
      * Opens the Keyboard menu and binds it to some required callbacks.
      *
@@ -81,7 +81,7 @@ export class Keyboards<TEightBittr extends FullScreenPokemon> extends GeneralCom
         const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
         const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
         // tslint:disable-next-line:no-empty
-        const onComplete: () => void = settings.callback || (() => {});
+        const onComplete: () => void = settings.callback || (() => { });
         const lowercase: boolean = !!settings.lowercase;
         const letters: string[] = lowercase
             ? this.eightBitter.constants.keysLowercase

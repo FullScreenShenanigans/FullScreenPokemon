@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPartialBattleOptions } from "../Battles";
@@ -9,7 +9,7 @@ import { ICharacter } from "../Things";
 /**
  * OakIntroRivalBattle cutscene routines.
  */
-export class OakIntroRivalBattleCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for the rival challenging the player to a Pokemon battle.
      *

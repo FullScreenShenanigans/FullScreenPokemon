@@ -1,10 +1,10 @@
 import { IMove, IStatistic } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
 
-export class ItemEffects<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class ItemEffects extends Section<FullScreenPokemon> {
     /**
      * Restores a certain amount of PP to a move.
      *

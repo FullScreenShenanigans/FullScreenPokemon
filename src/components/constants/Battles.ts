@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 
 import { Modifications } from "./battles/Modifications";
 import { Texts } from "./battles/Texts";
@@ -10,12 +10,12 @@ export class Battles {
     /**
      * Battle modifications for the second turn.
      */
-    @component(Modifications)
+    @member(Modifications)
     public readonly modifications: Modifications;
 
     /**
      * Battle text generators.
      */
-    @component(Texts)
+    @member(Texts)
     public readonly texts: Texts;
 }

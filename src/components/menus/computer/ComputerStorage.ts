@@ -1,11 +1,11 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 
 /**
  * Menus for PC Pokemon storage.
  */
-export class ComputerStorage<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class ComputerStorage extends Section<FullScreenPokemon> {
     public readonly open = (): void => {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(
@@ -20,19 +20,19 @@ export class ComputerStorage<TEightBittr extends FullScreenPokemon> extends Gene
     private readonly listOptions = (): void => {
         const options = [
             {
-                callback: (): void => {/* ... */},
+                callback: (): void => {/* ... */ },
                 text: "WITHDRAW PKMN",
             },
             {
-                callback: (): void => {/* ... */},
+                callback: (): void => {/* ... */ },
                 text: "DEPOSIT PKMN",
             },
             {
-                callback: (): void => {/* ... */},
+                callback: (): void => {/* ... */ },
                 text: "RELEASE PKMN",
             },
             {
-                callback: (): void => {/* ... */},
+                callback: (): void => {/* ... */ },
                 text: "CHANGE PKMN",
             },
             {

@@ -1,13 +1,11 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make the trainer's Pokemon all level 100.
  */
-export class Level100Mod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class Level100Mod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

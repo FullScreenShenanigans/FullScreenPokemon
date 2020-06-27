@@ -1,5 +1,5 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../../Battles";
@@ -9,7 +9,7 @@ import { IThing } from "../../../../Things";
 /**
  * Runs a battle move.
  */
-export class Move<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Move extends Section<FullScreenPokemon> {
     /**
      * Team and move being performed.
      */
@@ -51,7 +51,7 @@ export class Move<TEightBittr extends FullScreenPokemon> extends GeneralComponen
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param teamAndAction   Team and move being performed.
      */
-    public constructor(eightBitter: TEightBittr, teamAndAction: ITeamAndAction<IMoveAction>) {
+    public constructor(eightBitter: FullScreenPokemon, teamAndAction: ITeamAndAction<IMoveAction>) {
         super(eightBitter);
 
         this.teamAndAction = teamAndAction;

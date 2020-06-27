@@ -1,4 +1,3 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Direction } from "../../../../../Constants";
 import { IMenu } from "../../../../../Menus";
 import { IThing } from "../../../../../Things";
@@ -7,7 +6,7 @@ import { Move } from "../Move";
 /**
  * Animates a PayDay battle move.
  */
-export class PayDay<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class PayDay extends Move {
     /**
      * Runs the move's animation.
      *
@@ -79,5 +78,5 @@ export class PayDay<TEightBittr extends FullScreenPokemon> extends Move<TEightBi
                 });
             },
             26);
-        }
+    }
 }

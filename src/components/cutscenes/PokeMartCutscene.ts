@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import { IMenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -6,7 +6,7 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
 /**
  * PokeMart cutscene routines.
  */
-export class PokeMartCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class PokeMartCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for speaking to a PokeMart cashier.
      */

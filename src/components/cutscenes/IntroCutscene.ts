@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IKeyboardResultsMenu } from "../menus/Keyboards";
@@ -7,7 +7,7 @@ import { IPlayer, IThing } from "../Things";
 /**
  * Intro cutscene routines.
  */
-export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class IntroCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for the beginning of the game introduction.
      *
@@ -78,12 +78,12 @@ export class IntroCutscene<TEightBittr extends FullScreenPokemon> extends Genera
         this.eightBitter.timeHandler.addEvent(
             (): void => {
                 this.eightBitter.animations.fading.animateFadeAttribute(
-                blank,
-                "opacity",
-                0.15,
-                1,
-                7,
-                this.eightBitter.scenePlayer.bindRoutine("PokemonExpo"));
+                    blank,
+                    "opacity",
+                    0.15,
+                    1,
+                    7,
+                    this.eightBitter.scenePlayer.bindRoutine("PokemonExpo"));
             },
             35);
     }

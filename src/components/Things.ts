@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { ITimeCycles } from "classcyclr";
 import { IThing as IEightBittrThing, Things as EightBittrThings } from "eightbittr";
 import * as imenugraphr from "menugraphr";
@@ -722,7 +722,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
     /**
      * Stores known names of Things.
      */
-    @component(ThingNames)
+    @member(ThingNames)
     public readonly names: ThingNames;
 
     /**

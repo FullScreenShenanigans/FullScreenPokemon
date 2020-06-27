@@ -1,11 +1,11 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * ElderTraining cutscene routines.
  */
-export class ElderTrainingCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class ElderTrainingCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for the old man battling a Weedle.
      *

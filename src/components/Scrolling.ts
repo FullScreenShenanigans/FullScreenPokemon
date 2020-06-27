@@ -1,7 +1,6 @@
 import { Scrolling as EightBittrScrolling } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-
 import { IArea, IAreaBoundaries } from "./Maps";
 
 /**

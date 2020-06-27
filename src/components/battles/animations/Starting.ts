@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleThings } from "../../Battles";
@@ -10,12 +10,12 @@ import { Transitions } from "./Transitions";
 /**
  * Animations for the starts of battles.
  */
-export class Starting<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Starting extends Section<FullScreenPokemon> {
     /**
      * Flashy animation transitions to start battles.
      */
-    @component(Transitions)
-    public readonly transitions: Transitions<TEightBittr>;
+    @member(Transitions)
+    public readonly transitions: Transitions;
 
     /**
      * Runs starting battle animations.

@@ -1,5 +1,5 @@
 import { Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../../Battles";
@@ -42,7 +42,7 @@ export interface IEnterSettings {
 /**
  * Shared team entrance animations.
  */
-export class Enter<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Enter extends Section<FullScreenPokemon> {
     /**
      * Entrance settings for animation positions and sprites.
      */
@@ -54,7 +54,7 @@ export class Enter<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Entrance settings for animation positions and sprites.
      */
-    public constructor(eightBitter: TEightBittr, settings: IEnterSettings) {
+    public constructor(eightBitter: FullScreenPokemon, settings: IEnterSettings) {
         super(eightBitter);
 
         this.settings = settings;

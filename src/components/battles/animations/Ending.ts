@@ -1,5 +1,5 @@
 import { BattleOutcome, Queue } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo } from "../../Battles";
@@ -8,7 +8,7 @@ import { IBattleOutcomeTextGenerator } from "../../constants/battles/Texts";
 /**
  * Animations for the ends of battles.
  */
-export class Ending<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Ending extends Section<FullScreenPokemon> {
     /**
      * Runs ending battle animations.
      *

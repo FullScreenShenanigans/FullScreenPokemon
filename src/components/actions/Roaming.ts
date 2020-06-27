@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -11,7 +11,7 @@ export const randomRoamingMinimumTicks = 70;
 /**
  * Idle characters turning and walking in random directions.
  */
-export class Roaming<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Roaming extends Section<FullScreenPokemon> {
     /**
      * Starts a Character roaming in random directions.
      *

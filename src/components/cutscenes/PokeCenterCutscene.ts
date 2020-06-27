@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -8,7 +8,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * PokeCenter cutscene routines.
  */
-export class PokeCenterCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class PokeCenterCutscene extends Section<FullScreenPokemon> {
     /**
      * Rate at which balls appear.
      */

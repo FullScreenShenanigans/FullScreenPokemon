@@ -1,11 +1,11 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * Opens and closes the root pause menu.
  */
-export class Pause<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Pause extends Section<FullScreenPokemon> {
     /**
      * Opens the Pause menu.
      */

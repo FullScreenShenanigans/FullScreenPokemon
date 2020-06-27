@@ -1,14 +1,12 @@
 import { IMod } from "modattachr";
 
 import { ICharacter, IEnemy } from "../../components/Things";
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make all enemy trainers Joey and all Pokemon his Rattata.
  */
-export class JoeysRattataMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class JoeysRattataMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

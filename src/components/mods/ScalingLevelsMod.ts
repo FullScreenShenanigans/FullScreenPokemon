@@ -1,13 +1,11 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to scale enemy Pokemon to be around the same level as the trainer's party.
  */
-export class ScalingLevelsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class ScalingLevelsMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

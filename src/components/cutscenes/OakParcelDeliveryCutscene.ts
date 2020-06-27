@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,7 +7,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * OakParcelDelivery cutscene routines.
  */
-export class OakParcelDeliveryCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for when the player delivers the parcel to Oak.
      *

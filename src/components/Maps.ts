@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { Maps as EightBittrMaps } from "eightbittr";
 import {
     IArea as IMapsCreatrIArea,
@@ -10,7 +10,7 @@ import {
     IPreThing as IMapsCreatrPreThing,
     IPreThingsContainers,
 } from "mapscreatr";
-import { IMapScreenr } from "mapscreenr";
+import { IMapScreenr as IEightBittrMapScreenr } from "mapscreenr";
 
 import { PalletTown } from "../creators/mapsLibrary/PalletTown";
 import { PewterCity } from "../creators/mapsLibrary/PewterCity";
@@ -31,7 +31,7 @@ import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
 /**
  * A flexible container for map attributes and viewport.
  */
-export interface IMapScreenr extends IMapScreenr {
+export interface IMapScreenr extends IEightBittrMapScreenr {
     /**
      * Which are the player is currently active in.
      *
@@ -505,14 +505,14 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
     /**
      * Map entrance animations.
      */
-    @component(EntranceAnimations)
-    public readonly entranceAnimations: EntranceAnimations<TEightBittr>;
+    @member(EntranceAnimations)
+    public readonly entranceAnimations: EntranceAnimations;
 
     /**
      * Map creation macros.
      */
-    @component(MapMacros)
-    public readonly mapMacros: MapMacros<TEightBittr>;
+    @member(MapMacros)
+    public readonly mapMacros: MapMacros;
 
     /**
      * Entrance Functions that may be used as the openings for Locations.

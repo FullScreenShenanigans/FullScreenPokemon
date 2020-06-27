@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokemon } from "../Battles";
@@ -9,7 +9,7 @@ import { ICharacter, IPokeball, IThing } from "../Things";
 /**
  * OakIntroPokemonChoice cutscene routines.
  */
-export class OakIntroPokemonChoiceCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for the player checking a Pokeball.
      *

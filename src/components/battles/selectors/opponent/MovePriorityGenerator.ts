@@ -1,5 +1,5 @@
 import { IMove } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleTeam, IPokemon } from "../../../Battles";
@@ -24,7 +24,7 @@ export interface IMovePossibility {
 /**
  * Determines priorities of battle move possibilities.
  */
-export class MovePriorityGenerator<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class MovePriorityGenerator extends Section<FullScreenPokemon> {
     /**
      * Generates priorities for potential moves.
      *

@@ -1,11 +1,10 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
 
 /**
  * Animates a Bubble battle move.
  */
-export class Bubble<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class Bubble extends Move {
     /**
      * Runs the move's animation.
      *

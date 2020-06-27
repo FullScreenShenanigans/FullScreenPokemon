@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { BattleOutcome, IOnChoice, ISelector, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IBattleInfo, IBattleTeam, IPokemon } from "../../Battles";
@@ -10,12 +10,12 @@ import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriority
 /**
  * Selector for an opponent's actions.
  */
-export class OpponentSelector<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ISelector {
+export class OpponentSelector extends Section<FullScreenPokemon> implements ISelector {
     /**
      * Determines priorities of battle move possibilities.
      */
-    @component(MovePriorityGenerator)
-    private readonly movePriorityGenerator: MovePriorityGenerator<TEightBittr>;
+    @member(MovePriorityGenerator)
+    private readonly movePriorityGenerator: MovePriorityGenerator;
 
     /**
      * Reacts to an actor getting knocked out.
@@ -28,7 +28,7 @@ export class OpponentSelector<TEightBittr extends FullScreenPokemon> extends Gen
         const newPokemon: IPokemon | undefined = battleInfo.teams[Team[team]].actors
             .filter((actor: IPokemon): boolean =>
                 actor.statistics.health.current !== 0)
-            [0] as IPokemon | undefined;
+        [0] as IPokemon | undefined;
 
         if (newPokemon !== undefined) {
             this.eightBitter.battleMover.switchSelectedActor(team, newPokemon);

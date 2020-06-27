@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import { ITimeEvent } from "timehandlr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -32,7 +32,7 @@ export interface IColorFadeSettings {
 /**
  * Fades Things in and out.
  */
-export class Fading<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Fading extends Section<FullScreenPokemon> {
     /**
      * Gradually changes a numeric attribute over time.
      *

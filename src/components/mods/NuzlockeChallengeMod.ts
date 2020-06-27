@@ -4,14 +4,12 @@ import { /* IBattleInfo, */ IPokemon } from "../../components/Battles";
 // import { IItemSchema } from "../../components/constants/Items";
 // import { IArea, IMap } from "../../components/Maps";
 // import { IGrass, } from "../../components/Things";
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to change gameplay to match the Nuzlocke Challenge.
  */
-export class NuzlockeChallengeMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class NuzlockeChallengeMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

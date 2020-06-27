@@ -1,8 +1,6 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { INewPokemon } from "../constants/Pokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
@@ -20,13 +18,13 @@ export interface IItemProbabilities {
     probability: number;
 }
 
- /**
-  * Mod that randomizes items found on wild Pokemon.
-  */
-export class RandomHeldItemsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
-     /**
-      * Name of the mod.
-      */
+/**
+ * Mod that randomizes items found on wild Pokemon.
+ */
+export class RandomHeldItemsMod extends ModComponent implements IMod {
+    /**
+     * Name of the mod.
+     */
     public static readonly modName: string = "Random Held Items";
 
     /**
@@ -158,40 +156,40 @@ export class RandomHeldItemsMod<TEightBittr extends FullScreenPokemon> extends M
                 probability: 0.0025,
             },
         ],
-     };
+    };
 
-     /**
-      * Mod events, keyed by name.
-      */
+    /**
+     * Mod events, keyed by name.
+     */
     public readonly events: ICallbackRegister = {
-         [this.eventNames.onNewPokemonCreation]: (chosenInfo: INewPokemon) => {
-             const pokemonName: string = chosenInfo.title.join("");
-             const pokemonType: string = this.eightBitter.constants.pokemon.byName[pokemonName].types[0];
-             const chosenItem: string[] | undefined = this.randomHeldItemGenerator(pokemonType);
+        [this.eventNames.onNewPokemonCreation]: (chosenInfo: INewPokemon) => {
+            const pokemonName: string = chosenInfo.title.join("");
+            const pokemonType: string = this.eightBitter.constants.pokemon.byName[pokemonName].types[0];
+            const chosenItem: string[] | undefined = this.randomHeldItemGenerator(pokemonType);
 
-             if (chosenItem !== undefined) {
-                 chosenInfo.item = chosenItem;
-             }
-         },
-     };
-
-     /**
-      * Chooses which item is chosen for onNewPokemonCreation.
-      *
-      * @param pokemonType   Type of the wild encountered Pokemon.
-      * @returns The name of an item or undefined if no item generated.
-      */
-    private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
-            const probabilityOfHeldItem: number = this.eightBitter.numberMaker.randomReal1();
-            let counter = 0;
-
-            for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
-                counter += chosenObject.probability;
-                if (counter >= probabilityOfHeldItem) {
-                    return this.eightBitter.constants.items.byName[chosenObject.name].name;
-                }
+            if (chosenItem !== undefined) {
+                chosenInfo.item = chosenItem;
             }
+        },
+    };
 
-            return undefined;
-      }
+    /**
+     * Chooses which item is chosen for onNewPokemonCreation.
+     *
+     * @param pokemonType   Type of the wild encountered Pokemon.
+     * @returns The name of an item or undefined if no item generated.
+     */
+    private randomHeldItemGenerator(pokemonType: string): string[] | undefined {
+        const probabilityOfHeldItem: number = this.eightBitter.numberMaker.randomReal1();
+        let counter = 0;
+
+        for (const chosenObject of RandomHeldItemsMod.typeItems[pokemonType]) {
+            counter += chosenObject.probability;
+            if (counter >= probabilityOfHeldItem) {
+                return this.eightBitter.constants.items.byName[chosenObject.name].name;
+            }
+        }
+
+        return undefined;
+    }
 }

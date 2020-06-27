@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { ISwitchAction, ISwitchingAnimations, ITeamAndAction, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { Shrinking } from "../../../animations/Shrinking";
@@ -21,12 +21,12 @@ export interface ISwitchingSettings {
 /**
  * Shared animations for teams switching Pokemon.
  */
-export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements ISwitchingAnimations {
+export class Switching extends Section<FullScreenPokemon> implements ISwitchingAnimations {
     /**
      * Shrinks (and expands) Things.
      */
-    @component(Shrinking)
-    public readonly shrinking: Shrinking<TEightBittr>;
+    @member(Shrinking)
+    public readonly shrinking: Shrinking;
 
     /**
      * Switching settings for animation positions and sprites.
@@ -39,7 +39,7 @@ export class Switching<TEightBittr extends FullScreenPokemon> extends GeneralCom
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Switching settings for animation positions and sprites.
      */
-    public constructor(eightBitter: TEightBittr | GeneralComponent<TEightBittr>, settings: ISwitchingSettings) {
+    public constructor(eightBitter: FullScreenPokemon | Section<FullScreenPokemon>, settings: ISwitchingSettings) {
         super(eightBitter);
 
         this.settings = settings;

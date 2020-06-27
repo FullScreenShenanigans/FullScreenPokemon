@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
@@ -8,12 +8,12 @@ import { ComputerStorage } from "./computer/ComputerStorage";
 /**
  * Menus for PokeCenter computers.
  */
-export class Computer<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Computer extends Section<FullScreenPokemon> {
     /**
      * Menus for PC Pokemon storage.
      */
-    @component(ComputerStorage)
-    private readonly computerStorage: ComputerStorage<TEightBittr>;
+    @member(ComputerStorage)
+    private readonly computerStorage: ComputerStorage;
 
     /**
      * Starts a dialog to turn on a PC.
@@ -41,11 +41,11 @@ export class Computer<TEightBittr extends FullScreenPokemon> extends GeneralComp
                 text: "BILL's PC",
             },
             {
-                callback: (): void => {/* ... */},
+                callback: (): void => {/* ... */ },
                 text: "%%%%%%%PLAYER%%%%%%%'s PC",
             },
             {
-                callback: (): void => {/* ... */},
+                callback: (): void => {/* ... */ },
                 text: "PROF. OAK's PC",
             },
             {

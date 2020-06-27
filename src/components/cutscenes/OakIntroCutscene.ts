@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -8,7 +8,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * OakIntro cutscene routines.
  */
-export class OakIntroCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class OakIntroCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for walking into the grass before receiving a Pokemon.
      *

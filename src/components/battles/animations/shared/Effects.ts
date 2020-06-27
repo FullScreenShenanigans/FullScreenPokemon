@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { IMoveAction, IMoveEffect, ITeamAndAction, Queue, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
@@ -15,42 +15,42 @@ import { Fainting } from "./Fainting";
 /**
  * Battle animations for move effects.
  */
-export class Effects<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Effects extends Section<FullScreenPokemon> {
     /**
      * Runs animations for fainting.
      */
-    @component(Fainting)
-    public readonly fainting: Fainting<TEightBittr>;
+    @member(Fainting)
+    public readonly fainting: Fainting;
 
     /**
      * Runs animations for effect damages.
      */
-    @component(Damage)
-    private readonly damage: Damage<TEightBittr>;
+    @member(Damage)
+    private readonly damage: Damage;
 
     /**
      * Runs animations for missed effects.
      */
-    @component(Missed)
-    private readonly missed: Missed<TEightBittr>;
+    @member(Missed)
+    private readonly missed: Missed;
 
     /**
      * Runs animations for statistic effects.
      */
-    @component(Statistics)
-    private readonly statistics: Statistics<TEightBittr>;
+    @member(Statistics)
+    private readonly statistics: Statistics;
 
     /**
      * Runs animations for status effects.
      */
-    @component(Statuses)
-    private readonly statuses: Statuses<TEightBittr>;
+    @member(Statuses)
+    private readonly statuses: Statuses;
 
     /**
      * Runs animations for switching effects.
      */
-    @component(Switching)
-    private readonly switching: Switching<TEightBittr>;
+    @member(Switching)
+    private readonly switching: Switching;
 
     /**
      * Runs a move action's effects consecutively.

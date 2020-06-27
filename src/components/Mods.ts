@@ -27,11 +27,11 @@ export interface IModComponentClass {
      */
     modName: string;
 
-    new<TEightBittr extends FullScreenPokemon>(eightBitter: TEightBittr, eventNames: ModEventNames): ModComponent<TEightBittr>;
+    new(eightBitter: FullScreenPokemon, eventNames: ModEventNames): ModComponent;
 }
 
 /**
- * Creates a ModAttachr from mod classes.
+ * Stores mod classes to create a ModAttachr.
  */
 export class Mods<TEightBittr extends FullScreenPokemon> extends EightBittrMods<TEightBittr> {
     /**
@@ -60,7 +60,7 @@ export class Mods<TEightBittr extends FullScreenPokemon> extends EightBittrMods<
     /**
      * Known mods, keyed by mod name.
      */
-    public readonly modsByName: { [i: string]: IMod } = {};
+    public readonly modsByName: Record<string, IMod> = {};
 
     /**
      * General schemas for known mods, including names and events.

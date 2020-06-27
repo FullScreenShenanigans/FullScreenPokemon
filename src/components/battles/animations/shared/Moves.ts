@@ -1,16 +1,14 @@
 import { IMoveAction, ITeamAndAction, Team } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IBattleInfo } from "../../../Battles";
-
-import { Move } from "./moves/Move";
 import { IMovesBag } from "./moves/MovesBag";
 
 /**
  * Announces and launches battle move animations.
  */
-export class Moves<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Moves extends Section<FullScreenPokemon> {
     /**
      * Battle move runners, keyed by move name.
      */
@@ -22,7 +20,7 @@ export class Moves<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param movesBag   Battle move runners, keyed by move name.
      */
-    public constructor(eightBitter: TEightBittr, movesBag: IMovesBag) {
+    public constructor(eightBitter: FullScreenPokemon, movesBag: IMovesBag) {
         super(eightBitter);
 
         this.movesBag = movesBag;
@@ -37,9 +35,9 @@ export class Moves<TEightBittr extends FullScreenPokemon> extends GeneralCompone
      * @param callback   Callback for when the move is done.
      */
     public playMove(teamAndAction: ITeamAndAction<IMoveAction>, callback: () => void): void {
-        const battleInfo: IBattleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
-        const animatorType: typeof Move = this.movesBag[teamAndAction.action.move.toUpperCase()] || this.movesBag.default;
-        const animator: Move<TEightBittr> = new animatorType(this.eightBitter, teamAndAction);
+        const battleInfo = this.eightBitter.battleMover.getBattleInfo() as IBattleInfo;
+        const animatorType = this.movesBag[teamAndAction.action.move.toUpperCase()] || this.movesBag.default;
+        const animator = new animatorType(this.eightBitter, teamAndAction);
 
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         this.eightBitter.menuGrapher.addMenuDialog(

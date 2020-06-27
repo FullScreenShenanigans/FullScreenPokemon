@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,7 +7,7 @@ import { ICharacter, IPlayer } from "../Things";
 /**
  * TrainerSpotted cutscene routines.
  */
-export class TrainerSpottedCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class TrainerSpottedCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for when a trainer is encountered for battle.
      *

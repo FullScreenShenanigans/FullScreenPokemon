@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 import { IThing } from "../../Things";
@@ -62,7 +62,7 @@ export interface IShakeSettings {
 /**
  * Thing animations for battles.
  */
-export class Things<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Things extends Section<FullScreenPokemon> {
     /**
      * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
      * flag for a little while.

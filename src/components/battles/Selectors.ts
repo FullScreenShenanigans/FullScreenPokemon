@@ -1,5 +1,5 @@
 import { ISelector, ISelectorFactory } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
@@ -9,7 +9,7 @@ import { PlayerSelector } from "./selectors/PlayerSelector";
 /**
  * Selects actions for each team.
  */
-export class Selectors<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Selectors extends Section<FullScreenPokemon> {
     /**
      * Generates selectors for an opponent's actions.
      */

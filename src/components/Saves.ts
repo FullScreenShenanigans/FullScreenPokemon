@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -34,7 +34,7 @@ export interface ISaveFile {
 /**
  * Saves and load game data.
  */
-export class Saves<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Saves extends Section<FullScreenPokemon> {
     /**
      * Clears the data saved in localStorage and saves it in a new object in localStorage
      * upon a new game being started.

@@ -1,12 +1,12 @@
 import { IMoveAction, IMoveEffect, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 
 /**
  * Runs statistics animations for FullScreenPokemon instances.
  */
-export class Statistics<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Statistics extends Section<FullScreenPokemon> {
     /**
      * Runs the statistic effect animation for a battle move effect.
      *

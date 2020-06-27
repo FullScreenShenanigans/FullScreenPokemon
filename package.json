@@ -8,52 +8,50 @@
     "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
   },
   "dependencies": {
-    "babyioc": "^0.7.7",
-    "battlemovr": "^0.7.5",
-    "changelinr": "^0.7.4",
-    "flagswappr": "^0.7.5",
-    "itemsholdr": "^0.7.10",
-    "menugraphr": "^0.7.13",
-    "stateholdr": "^0.7.5",
-    "stringfilr": "^0.7.6",
-    "userwrappr": "^0.7.7"
+    "babyioc": "^0.8.0",
+    "battlemovr": "^0.8.0",
+    "changelinr": "^0.8.0",
+    "flagswappr": "^0.8.0",
+    "itemsholdr": "^0.8.0",
+    "menugraphr": "^0.8.0",
+    "stateholdr": "^0.8.0",
+    "stringfilr": "^0.8.0",
+    "userwrappr": "^0.8.0"
   },
   "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
   "devDependencies": {
-    "@types/chai": "^4.2.2",
-    "@types/lolex": "^3.1.1",
-    "@types/mocha": "^5.2.7",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
-    "@types/sinon": "^7.0.13",
-    "@types/sinon-chai": "^3.2.3",
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-decorators": "^7.10.1",
+    "@babel/preset-react": "^7.10.1",
+    "@babel/preset-typescript": "^7.10.1",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/sinon-chai": "^3.2.4",
+    "@types/sinon": "^9.0.4",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
+    "babel-loader": "8.1.0",
     "chai": "^4.2.0",
-    "concurrently": "^4.1.2",
-    "eightbittr": "^0.7.28",
-    "glob": "^7.1.4",
-    "istanbul": "^0.4.5",
-    "lolex": "^4.2.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^6.2.0",
-    "mocha-headless-chrome": "^2.0.3",
-    "node-sass": "^4.12.0",
-    "npm-check-updates": "^3.1.23",
+    "concurrently": "^5.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint": "^7.3.0",
+    "glob": "^7.1.6",
+    "husky": "^4.2.5",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.2.11",
+    "mocha-headless-chrome": "^3.1.0",
+    "mocha": "^8.0.1",
+    "npm-check-updates": "^7.0.1",
+    "prettier": "^2.0.5",
     "requirejs": "^2.3.6",
-    "run-for-every-file": "^1.1.0",
-    "shenanigans-manager": "^0.2.44",
-    "sinon": "^7.4.2",
-    "sinon-chai": "^3.3.0",
-    "stylelint": "^10.1.0",
-    "stylelint-config-recommended": "^v2.2.0",
-    "stylelint-config-recommended-scss": "^3.3.0",
-    "stylelint-scss": "^3.10.1",
-    "tslint": "5.20.0",
-    "tsutils": "^3.17.1",
-    "typedoc": "^0.15.0",
-    "typescript": "^3.6.3",
+    "shenanigans-manager": "^0.3.0",
+    "sinon-chai": "^3.5.0",
+    "sinon": "^9.0.2",
+    "typescript": "^3.9.5",
     "watch": "^1.0.2",
-    "webpack": "^4.40.0",
-    "webpack-cli": "^3.3.8"
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "license": "MIT",
   "name": "fullscreenpokemon",
@@ -62,98 +60,19 @@
     "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
   },
   "scripts": {
-    "dist": "npm run dist:webpack",
-    "dist:webpack": "webpack",
-    "docs": "npm run docs:typedoc",
-    "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
-    "gulp": "gulp",
-    "init": "npm install && npm run setup && npm run verify",
-    "ncu": "ncu -u",
-    "setup": "npm run setup:dirs && npm run setup:copy && npm run setup:package && npm run setup:readme",
-    "setup:copy": "npm run setup:copy:default && npm run setup:copy:maps && npm run setup:copy:web",
-    "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
-    "setup:copy:maps": "run-for-every-file --src \"node_modules/shenanigans-manager/setup/maps/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./src/{{file}}\" --dest \".\"",
-    "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"shenanigans-manager mustache --input {{src-file}} --output {{file}}\" --dest \".\" --only-files",
-    "setup:dirs": "shenanigans-manager ensure-dirs-exist",
-    "setup:package": "shenanigans-manager hydrate-package-json",
-    "setup:readme": "shenanigans-manager hydrate-readme",
-    "src": "npm run src:tsc && npm run src:tslint && npm run src:stylelint",
-    "src:scss": "node-sass --recursive src --output src",
-    "src:stylelint": "stylelint src/**/*.css",
-    "src:tsc": "tsc -p .",
-    "src:tslint": "tslint -c tslint.json -p tsconfig.json -t stylish",
-    "src:tslint:fix": "tslint -c tslint.json --fix -p tsconfig.json -t stylish",
-    "test": "npm run test:setup && npm run test:run",
-    "test:coverage": "npm run test:coverage:generate-html && npm run test:coverage:instrument && npm run test:coverage:run && npm run test:coverage:report",
-    "test:coverage:generate-html": "shenanigans-manager generate-test-html --source instrumented",
-    "test:coverage:instrument": "istanbul instrument src -o instrumented",
-    "test:coverage:report": "istanbul report html",
-    "test:coverage:run": "mocha-headless-chrome --coverage coverage.json --file test/index.instrumented.html",
+    "compile": "tsc",
+    "dist": "webpack",
+    "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate",
+    "link": "yarn link",
+    "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
+    "test": "yarn run test:setup && yarn run test:run",
     "test:run": "mocha-headless-chrome --file test/index.html",
-    "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
-    "test:setup:copy": "npm run test:setup:copy:default",
-    "test:setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/test/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./test/{{file}}\" --dest \".\" --only-files",
-    "test:setup:dir": "mkdirp test",
-    "test:setup:html": "shenanigans-manager generate-test-html",
-    "test:setup:tsc": "tsc -p test",
-    "verify": "npm run src && npm run test && npm run dist",
-    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist",
-    "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
+    "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"
   },
   "shenanigans": {
-    "externals": [
-      {
-        "js": {
-          "dev": "../node_modules/mobx/lib/mobx.umd",
-          "prod": "../node_modules/mobx/lib/mobx.umd.min"
-        },
-        "name": "mobx"
-      },
-      {
-        "js": {
-          "dev": "../node_modules/mobx-react/index",
-          "prod": "../node_modules/mobx-react/index.min"
-        },
-        "name": "mobx-react"
-      },
-      {
-        "js": {
-          "dev": "../node_modules/react/umd/react.development",
-          "prod": "../node_modules/react/lib/react.production"
-        },
-        "name": "react"
-      },
-      {
-        "js": {
-          "dev": "../node_modules/react-dom/umd/react-dom.development",
-          "prod": "../node_modules/react-dom/lib/react-dom.production"
-        },
-        "name": "react-dom"
-      },
-      {
-        "js": {
-          "dev": "../node_modules/userwrappr/dist/UserWrappr-Delayed"
-        },
-        "name": "UserWrappr-Delayed"
-      }
-    ],
-    "maps": true,
-    "name": "FullScreenPokemon",
-    "web": {
-      "drivingObject": "FSP",
-      "sections": {
-        "credits": [
-          "Full Screen Pokemon was made possible first and foremost by Nintendo, who originally created Pokemon and has since maintained the series.",
-          "It would also not have been possible without the dedicated efforts of the Pokemon fan community over the past two decades, in particular <a href=\"http://bulbapedia.bulbagarden.net/\">Bulbapedia</a>."
-        ],
-        "explanation": [
-          "Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.",
-          "It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods."
-        ],
-        "legal": "Pokemon and all associated games and media are property of Nintendo and/or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws."
-      },
-      "url": "fullscreenpokemon.com"
-    }
+    "dist": true,
+    "external": true,
+    "name": "FullScreenPokemon"
   },
   "types": "./src/index.d.ts",
   "version": "0.7.4"

@@ -1,14 +1,12 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IThing } from "../Things";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow the trainer to walk through walls.
  */
-export class WalkThroughWallsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class WalkThroughWallsMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

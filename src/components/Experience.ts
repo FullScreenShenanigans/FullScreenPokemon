@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -7,7 +7,7 @@ import { IBattleInfo, IPokemon } from "./Battles";
 /**
  * Calculates experience gains and level ups for Pokemon.
  */
-export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Experience extends Section<FullScreenPokemon> {
     /**
      * Levels up a specified pokemon.
      *
@@ -42,14 +42,14 @@ export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralCo
         return false;
     }
 
-     /**
-      * Processes experience gain for one or more pokemon
-      *
-      * @param battleInfo   Information about the current battle.
-      * @param onComplete   Handler for when this is done.
-      */
+    /**
+     * Processes experience gain for one or more pokemon
+     *
+     * @param battleInfo   Information about the current battle.
+     * @param onComplete   Handler for when this is done.
+     */
     public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const experienceToGain =  this.eightBitter.equations.experienceGained(
+        const experienceToGain = this.eightBitter.equations.experienceGained(
             battleInfo.teams.player, battleInfo.teams.opponent);
 
         const experienceText: (string | string[])[][] = [[
@@ -66,12 +66,12 @@ export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralCo
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
-     /**
-      * Processes level up for a given pokemon
-      *
-      * @param pokemon   Pokemon who is going to level up.
-      * @param onComplete   Handler for when this is done.
-      */
+    /**
+     * Processes level up for a given pokemon
+     *
+     * @param pokemon   Pokemon who is going to level up.
+     * @param onComplete   Handler for when this is done.
+     */
     private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
         this.eightBitter.menuGrapher.createMenu("GeneralText");
         const experienceText = [
@@ -82,30 +82,30 @@ export class Experience<TEightBittr extends FullScreenPokemon> extends GeneralCo
         ];
         let callBack = onComplete;
         if (this.canLearnMoveAtLevel(pokemon)) {
-           callBack = () => this.learnBattleMove(pokemon, onComplete);
+            callBack = () => this.learnBattleMove(pokemon, onComplete);
         }
 
         this.eightBitter.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
         this.eightBitter.menuGrapher.setActiveMenu("GeneralText");
     }
 
-     /**
-      * Determines whether a Pokemon should learn a move
-      *
-      * @param pokemon   Pokemon who is going to going to learn a move.
-      * @returns Whether a Pokemon can learn a move at its current level
-      */
+    /**
+     * Determines whether a Pokemon should learn a move
+     *
+     * @param pokemon   Pokemon who is going to going to learn a move.
+     * @returns Whether a Pokemon can learn a move at its current level
+     */
     private canLearnMoveAtLevel(_pokemon: IPokemon): boolean {
         // TODO: implement this check
         return false;
     }
 
-     /**
-      * Processes learning a move during a battle for a given pokemon
-      *
-      * @param pokemon   Pokemon who is going to going to learn a move.
-      * @param onComplete   Handler for when this is done.
-      */
+    /**
+     * Processes learning a move during a battle for a given pokemon
+     *
+     * @param pokemon   Pokemon who is going to going to learn a move.
+     * @param onComplete   Handler for when this is done.
+     */
     private learnBattleMove(_pokemon: IPokemon, onComplete: () => void) {
         // TODO: implement this function
         onComplete();

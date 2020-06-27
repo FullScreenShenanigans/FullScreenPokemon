@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeamAndAction } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 
@@ -12,12 +12,12 @@ import { DefaultMovesBag } from "./moves/MovesBag";
 /**
  * Shared animations for team actions.
  */
-export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> implements IOnActions {
+export class Actions extends Section<FullScreenPokemon> implements IOnActions {
     /**
      * Battle animations for move effects.
      */
-    @component(Effects)
-    public readonly effects: Effects<TEightBittr>;
+    @member(Effects)
+    public readonly effects: Effects;
 
     /**
      * Callback for when a team attempts to leave the battle.
@@ -26,7 +26,7 @@ export class Actions<TEightBittr extends FullScreenPokemon> extends GeneralCompo
      * @param onComplete   Callback for when the action is done.
      */
     public flee(_action: ITeamAndAction<IFleeAction>, onComplete: () => void): void {
-        new FleeAttempt<TEightBittr>(this.eightBitter).attempt(onComplete);
+        new FleeAttempt(this.eightBitter).attempt(onComplete);
     }
 
     /**

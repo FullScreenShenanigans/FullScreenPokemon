@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IWalkingInstructions } from "../actions/Walking";
@@ -10,7 +10,7 @@ import { ICharacter, IPlayer } from "../Things";
 /**
  * RivalRoute22 cutscene routines.
  */
-export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for encountering the rival on Route 22.
      *
@@ -37,7 +37,7 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
         ];
 
         if (playerUpper) {
-                walkingInstructions.push(() => this.eightBitter.actions.animateCharacterSetDirection(rival, 0));
+            walkingInstructions.push(() => this.eightBitter.actions.animateCharacterSetDirection(rival, 0));
         }
 
         settings.rival = rival;
@@ -116,5 +116,5 @@ export class RivalRoute22Cutscene<TEightBittr extends FullScreenPokemon> extends
         };
 
         this.eightBitter.battles.startBattle(battleInfo);
-      }
+    }
 }

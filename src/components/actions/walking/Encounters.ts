@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
 
@@ -9,16 +9,16 @@ import { EncounterStarting } from "./encounters/EncounterStarting";
 /**
  * Checks for and starts wild Pokemon encounters during walking.
  */
-export class Encounters<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Encounters extends Section<FullScreenPokemon> {
     /**
      * Chooses wild Pokemon to encounter during walking.
      */
-    @component(EncounterChoices)
-    public readonly choices: EncounterChoices<TEightBittr>;
+    @member(EncounterChoices)
+    public readonly choices: EncounterChoices;
 
     /**
      * Starts wild Pokemon encounters during walking.
      */
-    @component(EncounterStarting)
-    public readonly starting: EncounterStarting<TEightBittr>;
+    @member(EncounterStarting)
+    public readonly starting: EncounterStarting;
 }

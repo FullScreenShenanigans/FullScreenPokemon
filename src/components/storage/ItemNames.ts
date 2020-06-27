@@ -1,11 +1,11 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * Keys for ItemsHoldr items.
  */
-export class ItemNames<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class ItemNames extends Section<FullScreenPokemon> {
     /**
      * Whether game data should be saved on frequent important events.
      */

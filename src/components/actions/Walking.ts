@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -38,12 +38,12 @@ export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGen
 /**
  * Starts, continues, and stops characters walking.
  */
-export class Walking<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Walking extends Section<FullScreenPokemon> {
     /**
      * Checks for and starts wild Pokemon encounters during walking.
      */
-    @component(Encounters)
-    public readonly encounters: Encounters<TEightBittr>;
+    @member(Encounters)
+    public readonly encounters: Encounters;
 
     /**
      * Starts a Character walking on a predetermined path.

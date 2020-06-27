@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -53,7 +53,7 @@ export enum PokedexListingStatus {
 /**
  * Universal game constants.
  */
-export class Constants<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Constants extends Section<FullScreenPokemon> {
     /**
      * Static scale of 2, to expand to two pixels per one game pixel.
      */
@@ -67,37 +67,37 @@ export class Constants<TEightBittr extends FullScreenPokemon> extends GeneralCom
     /**
      * Universal battle constants.
      */
-    @component(Battles)
+    @member(Battles)
     public readonly battles: Battles;
 
     /**
      * All known items, keyed by English name.
      */
-    @component(Items)
+    @member(Items)
     public readonly items: Items;
 
     /**
      * All known Pokemon moves, keyed by concatenated name.
      */
-    @component(Moves)
+    @member(Moves)
     public readonly moves: Moves;
 
     /**
      * All known Pokemon, keyed by concatenated name.
      */
-    @component(Pokemon)
+    @member(Pokemon)
     public readonly pokemon: Pokemon;
 
     /**
      * Information on Pokemon status effects.
      */
-    @component(Statuses)
+    @member(Statuses)
     public readonly statuses: Statuses;
 
     /**
      * Information on move types.
      */
-    @component(Types)
+    @member(Types)
     public readonly types: Types;
 
     /**

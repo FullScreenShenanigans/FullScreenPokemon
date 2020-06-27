@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -45,10 +45,10 @@ export interface IStorageItems {
 /**
  * Settings for storing items in ItemsHoldrs.
  */
-export class Storage<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Storage extends Section<FullScreenPokemon> {
     /**
      * Keys for ItemsHoldr items.
      */
-    @component(ItemNames)
-    public readonly names: ItemNames<TEightBittr>;
+    @member(ItemNames)
+    public readonly names: ItemNames;
 }

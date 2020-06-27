@@ -1,5 +1,5 @@
 
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -11,7 +11,7 @@ import { IPlayer } from "./Things";
 /**
  * Runs the player trying to fish for Pokemon.
  */
-export class Fishing<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Fishing extends Section<FullScreenPokemon> {
     /**
      * Starts the Player fishing.
      *

@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -8,7 +8,7 @@ import { ICharacter, IDetector, IPlayer } from "../Things";
 /**
  * Handlers for collisions with Detector Things.
  */
-export class Detectors<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Detectors extends Section<FullScreenPokemon> {
     /**
      * Collision callback for a Player and a dialog-containing Character. The
      * dialog is started if it exists, as with a cutscene from other.

@@ -1,5 +1,5 @@
+import { Clock } from "@sinonjs/fake-timers";
 import { expect } from "chai";
-import { Clock } from "lolex";
 
 import { FullScreenPokemon } from "..";
 import { stubBlankGame } from "../fakes.test";
@@ -58,7 +58,7 @@ const processBattle = (fsp: FullScreenPokemon, enemyPokemon: IPokemon, player: I
 describe("Battles", () => {
     it("displays a status condition Pokeball sprite when a Pokemon is affected by a status condition", (): void => {
         // Arrange
-        const { clock, fsp, player, charmander, enemyPokemon} = createGame();
+        const { clock, fsp, player, charmander, enemyPokemon } = createGame();
         charmander.status = "paralyzed";
         fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
             charmander,
@@ -74,7 +74,7 @@ describe("Battles", () => {
 
     it("displays a normal Pokeball sprite when a Pokemon is not affected by any status conditions", (): void => {
         // Arrange
-        const { clock, fsp, player, charmander, enemyPokemon} = createGame();
+        const { clock, fsp, player, charmander, enemyPokemon } = createGame();
         fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
             charmander,
         ]);
@@ -89,7 +89,7 @@ describe("Battles", () => {
 
     it("displays a fainted Pokeball sprite when a Pokemon is fainted", (): void => {
         // Arrange
-        const { clock, fsp, player, charmander, enemyPokemon} = createGame();
+        const { clock, fsp, player, charmander, enemyPokemon } = createGame();
         const charmanderfainted = fsp.equations.newPokemon({
             level: 99,
             title: "CHARMANDER".split(""),

@@ -1,11 +1,9 @@
-import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-
 import { Transition } from "./Transition";
 
 /**
  * Flashing battle transition animation.
  */
-export class FlashTransition<TEightBittr extends FullScreenPokemon> extends Transition<TEightBittr> {
+export class FlashTransition extends Transition {
     /**
      * How much to change the visible opacity each change.
      */

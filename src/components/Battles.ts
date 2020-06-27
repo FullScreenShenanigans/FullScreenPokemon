@@ -1,8 +1,8 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import {
     IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
 } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -282,36 +282,36 @@ export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptio
 /**
  * BattleMovr hooks to run trainer battles.
  */
-export class Battles<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Battles extends Section<FullScreenPokemon> {
     /**
      * Orders chosen actions by priority and/or speed.
      */
-    @component(ActionsOrderer)
-    public readonly actionsOrderer: ActionsOrderer<TEightBittr>;
+    @member(ActionsOrderer)
+    public readonly actionsOrderer: ActionsOrderer;
 
     /**
      * Animations for battle events.
      */
-    @component(Animations)
-    public readonly animations: Animations<TEightBittr>;
+    @member(Animations)
+    public readonly animations: Animations;
 
     /**
      * Places decorative in-battle Things.
      */
-    @component(Decorations)
-    public readonly decorations: Decorations<TEightBittr>;
+    @member(Decorations)
+    public readonly decorations: Decorations;
 
     /**
      * Selects actions for each team.
      */
-    @component(Selectors)
-    public readonly selectors: Selectors<TEightBittr>;
+    @member(Selectors)
+    public readonly selectors: Selectors;
 
     /**
      * Sets Things visually representing each team.
      */
-    @component(Things)
-    public readonly things: Things<TEightBittr>;
+    @member(Things)
+    public readonly things: Things;
 
     /**
      * Starts a new battle.
@@ -422,7 +422,7 @@ export class Battles<TEightBittr extends FullScreenPokemon> extends GeneralCompo
         }
 
         if (partialBattleOptions.endingtheme === undefined) {
-             partialBattleOptions.endingtheme = this.eightBitter.mapScreener.theme;
+            partialBattleOptions.endingtheme = this.eightBitter.mapScreener.theme;
         }
 
         return {

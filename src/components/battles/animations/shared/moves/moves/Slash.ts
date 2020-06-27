@@ -1,4 +1,3 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Direction } from "../../../../../Constants";
 import { IMenu } from "../../../../../Menus";
 import { IThing } from "../../../../../Things";
@@ -7,7 +6,7 @@ import { Move } from "../Move";
 /**
  * Animates a Slash battle move.
  */
-export class Slash<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class Slash extends Move {
     /**
      * Runs the move's animation.
      *
@@ -35,7 +34,7 @@ export class Slash<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
 
         const offset: number = slashes[0].width / 2;
         this.eightBitter.things.add(slashes[0], startX, startY);
-        this.eightBitter.things.add(slashes[1], startX +  offset * this.direction * -5, startY);
+        this.eightBitter.things.add(slashes[1], startX + offset * this.direction * -5, startY);
         this.eightBitter.things.add(slashes[2], startX + offset * this.direction * -10, startY);
         let time = 0;
         const explosionArray: IThing[] = [];
@@ -60,7 +59,7 @@ export class Slash<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
                     if (time === 14) {
                         const explosion = this.eightBitter.things.add
                             (this.eightBitter.things.names.explosionSmall,
-                             left - 18, top);
+                                left - 18, top);
                         explosionArray.push(explosion);
                     }
                 }

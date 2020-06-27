@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IPokedexInformation, IPokemonListing } from "../constants/Pokemon";
@@ -6,7 +6,7 @@ import { IPokedexInformation, IPokemonListing } from "../constants/Pokemon";
 /**
  * Opens the Pokedex and its individual listings.
  */
-export class Pokedex<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Pokedex extends Section<FullScreenPokemon> {
     /**
      * Opens the Pokedex menu.
      */

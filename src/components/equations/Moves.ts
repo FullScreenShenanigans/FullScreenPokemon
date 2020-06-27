@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { IMoveSchema } from "../constants/Moves";
@@ -6,7 +6,7 @@ import { IMoveSchema } from "../constants/Moves";
 /**
  * Equations for battle moves.
  */
-export class Moves<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Moves extends Section<FullScreenPokemon> {
     /**
      * Checks whether a move only has a status effect (does no damage, or nothing).
      *

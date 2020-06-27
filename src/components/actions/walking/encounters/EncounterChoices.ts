@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { IWildPokemonSchema } from "../../../Maps";
@@ -7,7 +7,7 @@ import { IPlayer } from "../../../Things";
 /**
  * Chooses wild Pokemon to encounter during walking.
  */
-export class EncounterChoices<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class EncounterChoices extends Section<FullScreenPokemon> {
     /**
      * May randomly starts a wild Pokemon encounter if the player while walking.
      *

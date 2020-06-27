@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -76,7 +76,7 @@ export type IRequirementHandler = (args: IRequirementHandlerArgs<IEvolutionModif
 /**
  * Logic for what Pokemon are able to evolve into.
  */
-export class Evolution<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Evolution extends Section<FullScreenPokemon> {
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */

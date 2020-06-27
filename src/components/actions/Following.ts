@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
@@ -7,7 +7,7 @@ import { ICharacter } from "../Things";
 /**
  * Sets characters following each other.
  */
-export class Following<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Following extends Section<FullScreenPokemon> {
     /**
      * Starts a Character following another Character.
      *

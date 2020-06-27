@@ -1,7 +1,7 @@
+import { createClock } from "@sinonjs/fake-timers";
 import { AudioElementSound } from "audioplayr";
 import { IEightBittrConstructorSettings } from "eightbittr";
 import { createStorage } from "itemsholdr";
-import * as lolex from "lolex";
 import * as sinon from "sinon";
 
 import { IMenu } from "./components/Menus";
@@ -28,7 +28,7 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
         ...settings,
     };
 
-    const clock = lolex.createClock();
+    const clock = createClock();
     const prefix = `${new Date().getTime()}`;
     const storage = createStorage();
     const fsp = new FullScreenPokemon({

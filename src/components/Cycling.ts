@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -7,7 +7,7 @@ import { IPlayer } from "./Things";
 /**
  * Starts and stop characters cycling.
  */
-export class Cycling<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Cycling extends Section<FullScreenPokemon> {
     /**
      * Starts the Player cycling if the current Area allows it.
      *

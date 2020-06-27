@@ -1,5 +1,5 @@
+import { Clock } from "@sinonjs/fake-timers";
 import { expect } from "chai";
-import { Clock } from "lolex";
 
 import { FullScreenPokemon } from "../";
 import { stubBlankGame } from "../fakes.test";

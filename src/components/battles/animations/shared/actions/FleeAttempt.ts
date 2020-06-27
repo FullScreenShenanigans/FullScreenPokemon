@@ -1,5 +1,5 @@
 import { BattleOutcome } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
 import { IBattleInfo, IPokemon } from "../../../../Battles";
@@ -7,7 +7,7 @@ import { IBattleInfo, IPokemon } from "../../../../Battles";
 /**
  * Logic for whether the player may flee a battle.
  */
-export class FleeAttempt<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class FleeAttempt extends Section<FullScreenPokemon> {
     /**
      * Animates the player attempting to flee.
      *

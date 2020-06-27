@@ -1,5 +1,5 @@
-import { component } from "babyioc";
-import { GeneralComponent } from "eightbittr";
+import { member } from "babyioc";
+import { Section } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -128,60 +128,60 @@ export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
 /**
  * Manipulates MenuGraphr menus.
  */
-export class Menus<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Menus extends Section<FullScreenPokemon> {
     /**
      * Menus for PokeCenter computers.
      */
-    @component(Computer)
-    public readonly computer: Computer<TEightBittr>;
+    @member(Computer)
+    public readonly computer: Computer;
 
     /**
      * Manipulates item menus.
      */
-    @component(Items)
-    public readonly items: Items<TEightBittr>;
+    @member(Items)
+    public readonly items: Items;
 
     /**
      * Manipulates the on-screen keyboard menus.
      */
-    @component(Keyboards)
-    public readonly keyboards: Keyboards<TEightBittr>;
+    @member(Keyboards)
+    public readonly keyboards: Keyboards;
 
     /**
      * Opens and closes the root pause menu.
      */
-    @component(Pause)
-    public readonly pause: Pause<TEightBittr>;
+    @member(Pause)
+    public readonly pause: Pause;
 
     /**
      * Opens the Player menu.
      */
-    @component(Player)
-    public readonly player: Player<TEightBittr>;
+    @member(Player)
+    public readonly player: Player;
 
     /**
      * Opens the Pokedex and its individual listings.
      */
-    @component(Pokedex)
-    public readonly pokedex: Pokedex<TEightBittr>;
+    @member(Pokedex)
+    public readonly pokedex: Pokedex;
 
     /**
      * Manipulates Pokemon party and detail menus.
      */
-    @component(Pokemon)
-    public readonly pokemon: Pokemon<TEightBittr>;
+    @member(Pokemon)
+    public readonly pokemon: Pokemon;
 
     /**
      * Opens the Save menu.
      */
-    @component(Save)
-    public readonly save: Save<TEightBittr>;
+    @member(Save)
+    public readonly save: Save;
 
     /**
      * Opens and animates displays on the Town Map menu.
      */
-    @component(TownMap)
-    public readonly townMap: TownMap<TEightBittr>;
+    @member(TownMap)
+    public readonly townMap: TownMap;
 
     /**
      * Displays message when a Player tries to use an item that cannot be used.

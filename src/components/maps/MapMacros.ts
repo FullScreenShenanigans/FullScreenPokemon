@@ -1,11 +1,11 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
 /**
  * Map creation macros.
  */
-export class MapMacros<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class MapMacros extends Section<FullScreenPokemon> {
     /**
      * Macro Function used to create an alternating pattern of Things.
      *

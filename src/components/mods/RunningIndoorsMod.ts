@@ -1,14 +1,12 @@
 import { IMod } from "modattachr";
 
 import { IArea } from "../../components/Maps";
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow cycling indoors.
  */
-export class RunningIndoorsMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class RunningIndoorsMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

@@ -1,11 +1,10 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
 
 /**
  * Animates an Ember battle move.
  */
-export class Ember<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class Ember extends Move {
     /**
      * Runs the move's animation.
      *
@@ -55,10 +54,10 @@ export class Ember<TEightBittr extends FullScreenPokemon> extends Move<TEightBit
         this.createEmber("EmberSmall", x, y);
 
         this.eightBitter.timeHandler.addEvent(
-                (): void => {
-                    this.createEmber("EmberLarge", x, y);
-                },
-                6);
+            (): void => {
+                this.createEmber("EmberLarge", x, y);
+            },
+            6);
     }
 
     /**

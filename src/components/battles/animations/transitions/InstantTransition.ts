@@ -1,5 +1,3 @@
-import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-
 import { Transition } from "./Transition";
 
 /**
@@ -7,7 +5,7 @@ import { Transition } from "./Transition";
  *
  * @remarks Useful for tests!
  */
-export class InstantTransition<TEightBittr extends FullScreenPokemon> extends Transition<TEightBittr> {
+export class InstantTransition extends Transition {
     /**
      * Plays and immediately finishes the transition.
      */

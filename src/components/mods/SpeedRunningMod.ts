@@ -1,13 +1,11 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make the player move really quickly.
  */
-export class SpeedRunningMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class SpeedRunningMod extends ModComponent implements IMod {
     /**
      * Class name for the player's prototype.
      */

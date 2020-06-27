@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { ICharacter, IThing } from "../Things";
@@ -6,7 +6,7 @@ import { ICharacter, IThing } from "../Things";
 /**
  * DaisyTownMap cutscene routines.
  */
-export class DaisyTownMapCutscene<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class DaisyTownMapCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for Daisy giving the player a Town Map.
      */

@@ -1,11 +1,10 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { IThing } from "../../../../../Things";
 import { Move } from "../Move";
 
 /**
  * Animates a QuickAttack battle move.
  */
-export class QuickAttack<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class QuickAttack extends Move {
     /**
      * Runs the move's animation.
      *

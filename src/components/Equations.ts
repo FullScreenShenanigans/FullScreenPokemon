@@ -1,6 +1,6 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { IMove, IStatistic } from "battlemovr";
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -23,12 +23,12 @@ const isWildPokemonSchemaForLevel = (schema: IWildPokemonSchema): schema is IWil
 /**
  * Common equations.
  */
-export class Equations<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Equations extends Section<FullScreenPokemon> {
     /**
      * Equations for battle moves.
      */
-    @component(Moves)
-    public readonly moves: Moves<TEightBittr>;
+    @member(Moves)
+    public readonly moves: Moves;
 
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.

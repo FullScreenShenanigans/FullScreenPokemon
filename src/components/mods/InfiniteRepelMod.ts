@@ -1,13 +1,11 @@
 import { ICallbackRegister, IMod } from "modattachr";
 
-import { FullScreenPokemon } from "../../FullScreenPokemon";
-
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to prevent the player from encountering any wild Pokemon.
  */
-export class InfiniteRepelMod<TEightBittr extends FullScreenPokemon> extends ModComponent<TEightBittr> implements IMod {
+export class InfiniteRepelMod extends ModComponent implements IMod {
     /**
      * Name of the mod.
      */

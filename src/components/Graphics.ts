@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { Graphics as EightBittrGraphics } from "eightbittr";
 import { IPalette } from "pixelrendr";
 
@@ -71,6 +71,6 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrG
     /**
      * Collects Things to change visuals en masse.
      */
-    @component(Collections)
-    public readonly collections: Collections<TEightBittr>;
+    @member(Collections)
+    public readonly collections: Collections;
 }

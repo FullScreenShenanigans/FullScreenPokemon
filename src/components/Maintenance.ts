@@ -1,4 +1,4 @@
-import { GeneralComponent } from "eightbittr";
+import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -8,7 +8,7 @@ import { ICharacter, IPlayer, IThing } from "./Things";
 /**
  * Maintains Things during FrameTickr frames.
  */
-export class Maintenance<TEightBittr extends FullScreenPokemon> extends GeneralComponent<TEightBittr> {
+export class Maintenance extends Section<FullScreenPokemon> {
     /**
      * Generic maintenance Function for a group of Things. For each Thing, if
      * it isn't alive, it's removed from the group.

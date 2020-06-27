@@ -1,4 +1,3 @@
-import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
 import { Direction } from "../../../../../Constants";
 import { IMenu } from "../../../../../Menus";
 import { IThing } from "../../../../../Things";
@@ -7,7 +6,7 @@ import { Move } from "../Move";
 /**
  * Animates a PoisonSting battle move.
  */
-export class PoisonSting<TEightBittr extends FullScreenPokemon> extends Move<TEightBittr> {
+export class PoisonSting extends Move {
     /**
      * Runs the move's animation.
      *
