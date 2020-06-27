@@ -1,116 +1,166 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
-    <meta charset="utf-8" />
-    <title>FullScreenPokemon</title>
-    <meta name="keywords" content="FullScreenPokemon, full, screen, typescript, javascript, html5, gaming, online, online game, fun, distraction" />
-    <meta name="description" content="" />
+    <head>
+        <meta charset="utf-8" />
+        <title>FullScreenPokemon</title>
+        <meta
+            name="keywords"
+            content="FullScreenPokemon, full, screen, typescript, javascript, html5, gaming, online, online game, fun, distraction"
+        />
+        <meta name="description" content="" />
 
-    <link href="index.css" rel="stylesheet" />
+        <link href="index.css" rel="stylesheet" />
 
-    <link rel="shortcut icon" href="theme/Icon.gif">
-</head>
+        <link rel="shortcut icon" href="theme/Icon.gif" />
+    </head>
 
-<body>
-    <header>
-        <img src="theme/Header.gif" alt="fullscreenpokemon.com" />
-    </header>
+    <body>
+        <header>
+            <img src="theme/Header.gif" alt="fullscreenpokemon.com" />
+        </header>
 
-    <section id="game"></section>
+        <section id="game"></section>
 
-    <section id="explanation" class="section-text">
-        Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon.
-        It includes the original two generations, a random map generator, a <!-- social --> level editor, and over a dozen custom mods.
-    </section>
+        <section id="explanation" class="section-text">
+            Full Screen Pokemon is a free HTML5 remake of Nintendo's original Pokemon. It includes
+            the original two generations, a random map generator, a
+            <!-- social -->
+            level editor, and over a dozen custom mods.
+        </section>
 
-    <section id="social" class="section-text">
-        You may <a class="link-github" href="http://www.github.com/FullScreenShenanigans/FullScreenPokemon">download the game for yourself</a> from GitHub, the location of FullScreenPokemon's open source project.
-    </section>
+        <section id="social" class="section-text">
+            You may
+            <a
+                class="link-github"
+                href="http://www.github.com/FullScreenShenanigans/FullScreenPokemon"
+                >download the game for yourself</a
+            >
+            from GitHub, the location of FullScreenPokemon's open source project.
+        </section>
 
-    <section id="credits" class="section-text">
-        Full Screen Pokemon was made possible first and foremost by Nintendo, who originally created Pokemon and has since maintained the series.
-        It would also not have been possible without the dedicated efforts of the Pokemon fan community over the past two decades, in particular <a href="http://bulbapedia.bulbagarden.net/">Bulbapedia</a>.
-    </section>
+        <section id="credits" class="section-text">
+            Full Screen Pokemon was made possible first and foremost by Nintendo, who originally
+            created Pokemon and has since maintained the series. It would also not have been
+            possible without the dedicated efforts of the Pokemon fan community over the past two
+            decades, in particular <a href="http://bulbapedia.bulbagarden.net/">Bulbapedia</a>.
+        </section>
 
-    <section id="hangar96" class="section-text">
-        <a href="http://marathon.sourceforge.net" alt="Escape will make me god.">
-            <img class="hoverable" src="theme/Aleph One.png" />
-        </a>
-    </section>
+        <section id="hangar96" class="section-text">
+            <a href="http://marathon.sourceforge.net" alt="Escape will make me god.">
+                <img class="hoverable" src="theme/Aleph One.png" />
+            </a>
+        </section>
 
-    <section id="legal" class="section-text">
-        <small><em>Pokemon and all associated games and media are property of Nintendo and&#x2F;or Nintendo of America Inc., and are protected by United States and international copyright, trademark and other intellectual property laws.</em></small>
-    </section>
+        <section id="legal" class="section-text">
+            <small
+                ><em
+                    >Pokemon and all associated games and media are property of Nintendo
+                    and&#x2F;or Nintendo of America Inc., and are protected by United States and
+                    international copyright, trademark and other intellectual property laws.</em
+                ></small
+            >
+        </section>
 
-    <script data-main="main.js" src="../node_modules/requirejs/require.js" type="text/javascript"></script>
+        <script
+            data-main="../lib/main.js"
+            src="../node_modules/requirejs/require.js"
+            type="text/javascript"
+        ></script>
 
-    <script>
-        var dependencyNames = [
-            "babyioc",
-            "battlemovr",
-            "changelinr",
-            "flagswappr",
-            "itemsholdr",
-            "menugraphr",
-            "stateholdr",
-            "stringfilr",
-            "userwrappr",
-            "eightbittr",
-            "shenanigans-manager",
-            "timehandlr",
-            "areaspawnr",
-            "audioplayr",
-            "classcyclr",
-            "devicelayr",
-            "fpsanalyzr",
-            "frametickr",
-            "groupholdr",
-            "inputwritr",
-            "mapscreatr",
-            "mapscreenr",
-            "modattachr",
-            "numbermakr",
-            "objectmakr",
-            "pixeldrawr",
-            "pixelrendr",
-            "quadskeepr",
-            "sceneplayr",
-            "thinghittr",
-            "touchpassr",
-        ];
-        var externals = [
-            {"js":{"dev":"../node_modules/mobx/lib/mobx.umd","prod":"../node_modules/mobx/lib/mobx.umd.min"},"name":"mobx"},
-            {"js":{"dev":"../node_modules/mobx-react/index","prod":"../node_modules/mobx-react/index.min"},"name":"mobx-react"},
-            {"js":{"dev":"../node_modules/react/umd/react.development","prod":"../node_modules/react/lib/react.production"},"name":"react"},
-            {"js":{"dev":"../node_modules/react-dom/umd/react-dom.development","prod":"../node_modules/react-dom/lib/react-dom.production"},"name":"react-dom"},
-            {"js":{"dev":"../node_modules/userwrappr/dist/UserWrappr-Delayed"},"name":"UserWrappr-Delayed"},
-        ];
+        <script>
+            var dependencyNames = [
+                "babyioc",
+                "battlemovr",
+                "changelinr",
+                "flagswappr",
+                "itemsholdr",
+                "menugraphr",
+                "stateholdr",
+                "stringfilr",
+                "userwrappr",
+                "eightbittr",
+                "shenanigans-manager",
+                "timehandlr",
+                "areaspawnr",
+                "audioplayr",
+                "classcyclr",
+                "devicelayr",
+                "fpsanalyzr",
+                "frametickr",
+                "groupholdr",
+                "inputwritr",
+                "mapscreatr",
+                "mapscreenr",
+                "modattachr",
+                "numbermakr",
+                "objectmakr",
+                "pixeldrawr",
+                "pixelrendr",
+                "quadskeepr",
+                "sceneplayr",
+                "thinghittr",
+                "touchpassr",
+            ];
+            var externals = [
+                {
+                    js: {
+                        dev: "../node_modules/mobx/lib/mobx.umd",
+                        prod: "../node_modules/mobx/lib/mobx.umd.min",
+                    },
+                    name: "mobx",
+                },
+                {
+                    js: {
+                        dev: "../node_modules/mobx-react/index",
+                        prod: "../node_modules/mobx-react/index.min",
+                    },
+                    name: "mobx-react",
+                },
+                {
+                    js: {
+                        dev: "../node_modules/react/umd/react.development",
+                        prod: "../node_modules/react/lib/react.production",
+                    },
+                    name: "react",
+                },
+                {
+                    js: {
+                        dev: "../node_modules/react-dom/umd/react-dom.development",
+                        prod: "../node_modules/react-dom/lib/react-dom.production",
+                    },
+                    name: "react-dom",
+                },
+                {
+                    js: { dev: "../node_modules/userwrappr/dist/UserWrappr-Delayed" },
+                    name: "UserWrappr-Delayed",
+                },
+            ];
 
-        var config = {
-            packages: [],
-            paths: {}
-        };
+            var config = {
+                packages: [],
+                paths: {},
+            };
 
-        for (var i = 0; i < dependencyNames.length; i += 1) {
-            var dependencyName = dependencyNames[i].toLowerCase();
+            for (var i = 0; i < dependencyNames.length; i += 1) {
+                var dependencyName = dependencyNames[i].toLowerCase();
 
-            config.packages.push({
-                main: "index",
-                name: dependencyName,
-            });
-            config.paths[dependencyName] = "../node_modules/" + dependencyName + "/src";
-        }
-
-        for (var i = 0; i < externals.length; i += 1) {
-            var external = externals[i];
-            if (!external.js.dev) {
-                continue;
+                config.packages.push({
+                    main: "index",
+                    name: dependencyName,
+                });
+                config.paths[dependencyName] = "../node_modules/" + dependencyName + "/lib";
             }
 
-            config.paths[external.name] = external.js.dev;
-        }
+            for (var i = 0; i < externals.length; i += 1) {
+                var external = externals[i];
+                if (!external.js.dev) {
+                    continue;
+                }
 
-        requirejs.config(config);
-    </script>
-</body>
+                config.paths[external.name] = external.js.dev;
+            }
+
+            requirejs.config(config);
+        </script>
+    </body>
 </html>
