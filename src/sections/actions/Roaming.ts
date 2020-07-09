@@ -32,7 +32,7 @@ export class Roaming extends Section<FullScreenPokemon> {
      * @param thing   A Character to start roaming.
      */
     private continueRoaming(thing: IRoamingCharacter): void {
-        if (!thing.alive) {
+        if (thing.removed) {
             return;
         }
 

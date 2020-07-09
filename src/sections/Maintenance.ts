@@ -60,9 +60,6 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
                     this.game.scrolling.getHorizontalScrollAmount(),
                     this.game.scrolling.getVerticalScrollAmount());
                 return;
-
-            default:
-                return;
         }
     }
 

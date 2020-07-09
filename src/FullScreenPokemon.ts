@@ -1,14 +1,14 @@
-import { AudioPlayr } from "audioplayr";
+import { AudioPlayr, IAudioPlayrSettings } from "audioplayr";
 import { factory, member } from "babyioc";
 import { BattleMovr } from "battlemovr";
-import { ClassCyclr } from "classcyclr";
+import { ClassCyclr, IClassCyclrSettings } from "classcyclr";
 import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GroupHoldr } from "groupholdr";
 import { ItemsHoldr } from "itemsholdr";
 import { MenuGraphr } from "menugraphr";
-import { ModAttachr } from "modattachr";
-import { NumberMakr } from 'numbermakr';
+import { IModAttachrSettings, ModAttachr } from "modattachr";
+import { INumberMakrSettings, NumberMakr } from 'numbermakr';
 import { ScenePlayr } from "sceneplayr";
 import { StateHoldr } from "stateholdr";
 
@@ -58,6 +58,10 @@ import { Utilities } from "./sections/Utilities";
  */
 export interface IFullScreenPokemonComponentSettings extends IComponentSettings {
     // todo add here
+    audioPlayer: IAudioPlayrSettings;
+    classCycler: IClassCyclrSettings;
+    modAttacher: IModAttachrSettings;
+    numberMaker: INumberMakrSettings;
 
     /**
      * Settings for feature flags, particularly for a FlagSwappr.
@@ -266,7 +270,7 @@ export class FullScreenPokemon extends EightBittr {
      * Maintains Things during FrameTickr ticks.
      */
     @member(Maintenance)
-    public readonly maintenance: Maintenance;
+    public readonly maintenance: Maintenance<this>;
 
     /**
      * Enters and spawns map areas.

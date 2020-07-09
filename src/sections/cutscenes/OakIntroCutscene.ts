@@ -17,8 +17,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
     public async FirstDialog(settings: any): Promise<void> {
         let triggered = false;
 
-        settings.triggerer.alive = false;
-        this.game.stateHolder.addChange(settings.triggerer.id, "alive", false);
+        settings.triggerer.removed = true;
+        this.game.stateHolder.addChange(settings.triggerer.id, "removed", true);
 
         if (this.game.itemsHolder.getItem(this.game.storage.names.starter)) {
             this.game.mapScreener.blockInputs = false;

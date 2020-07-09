@@ -638,7 +638,7 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param other   A Detector triggered by thing.
      */
     public activateCutsceneTriggerer = (thing: IPlayer, other: IDetector): void => {
-        if (!other.alive || thing.collidedTrigger === other) {
+        if (other.removed || thing.collidedTrigger === other) {
             return;
         }
 
@@ -646,8 +646,6 @@ export class Actions extends Section<FullScreenPokemon> {
         this.animatePlayerDialogFreeze(thing);
 
         if (!other.keepAlive) {
-            other.alive = false;
-
             if (other.id.indexOf("Anonymous") !== -1) {
                 console.warn("Deleting anonymous CutsceneTriggerer:", other.id);
             }
@@ -692,7 +690,7 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param other   A Detector triggered by thing.
      */
     public activateCutsceneResponder(thing: ICharacter, other: IDetector): void {
-        if (!thing.player || !other.alive) {
+        if (!thing.player || other.removed) {
             return;
         }
 
@@ -714,7 +712,7 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param other   A Detector triggered by thing.
      */
     public activateMenuTriggerer = (thing: ICharacter, other: IMenuTriggerer): void => {
-        if (!other.alive || thing.collidedTrigger === other) {
+        if (other.removed || thing.collidedTrigger === other) {
             return;
         }
 

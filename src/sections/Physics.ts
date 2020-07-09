@@ -140,26 +140,4 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
         this.setLeft(thing, Math.round(x) * grid - this.game.mapScreener.left);
         this.setTop(thing, Math.round(y) * grid - this.game.mapScreener.top);
     }
-
-    /**
-     * Standard Function to kill a Thing, which means marking it as dead and
-     * clearing its numquads, resting, movement, and cycles. It will later be
-     * removed by its maintain* Function.
-     *
-     * @param thing   A Thing to kill.
-     */
-    public kill(thing: IThing): void {
-        if (!thing) {
-            return;
-        }
-
-        thing.nocollide = thing.hidden = thing.dead = true;
-        thing.alive = false;
-        thing.numquads = 0;
-        thing.movement = undefined;
-
-        this.game.classCycler.cancelAllCycles(thing);
-        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onkill, thing);
-        this.game.groupHolder.removeFromGroup(thing, thing.groupType);
-    }
 }

@@ -13,8 +13,8 @@ export class OakParcelPickupCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public Greeting(settings: any): void {
-        settings.triggerer.alive = false;
-        this.game.stateHolder.addChange(settings.triggerer.id, "alive", false);
+        settings.triggerer.removed = true;
+        this.game.stateHolder.addChange(settings.triggerer.id, "removed", true);
 
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(

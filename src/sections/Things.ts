@@ -1,5 +1,5 @@
 import { member } from "babyioc";
-import { ITimeCycles } from "classcyclr";
+import { ITimeCycles, IThing as IClassCyclrThing } from "classcyclr";
 import { IThing as IEightBittrThing, Things as EightBittrThings } from "eightbittr";
 import * as imenugraphr from "menugraphr";
 import * as itimehandlr from "timehandlr";
@@ -24,7 +24,9 @@ export interface IThingsById {
 /**
  * An in-game Thing with size, velocity, position, and other information.
  */
-export interface IThing extends IEightBittrThing, IStateSaveable {
+export interface IThing extends IEightBittrThing, Omit<IClassCyclrThing, 'onThingAdded'>, IStateSaveable {
+    spriteCycleSynched: any;
+    spriteCycle: any;
     flipHoriz?: boolean;
     flipVert?: boolean;
 
@@ -240,8 +242,7 @@ export interface ICharacter extends IThing {
     nextDirection?: Direction;
 
     /**
-     * Whether this is allowed to be outside the QuadsKeepr quadrants area, or not
-     * have a true .alive, without dieing.
+     * Whether this is allowed to be outside the QuadsKeepr quadrants area without getting pruned.
      */
     outerOk?: boolean;
 

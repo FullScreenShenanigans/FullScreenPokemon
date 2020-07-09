@@ -13,23 +13,6 @@ import { ICharacter, IThing } from "./Things";
  */
 export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBittrCollisions<TEightBittr> {
     /**
-     * Function generator for the generic canThingCollide checker. This is used
-     * repeatedly by ThingHittr to generate separately optimized Functions for
-     * different Thing types.
-     *
-     * @returns A Function that generates a canThingCollide checker.
-     */
-    public generateCanThingCollide = () => {
-        /**
-         * Generic checker for canCollide. This just returns if the Thing is alive.
-         *
-         * @param thing
-         * @returns Whether the thing can collide.
-         */
-        return (thing: IThing): boolean => thing.alive;
-    }
-
-    /**
      * Function generator for the generic isCharacterTouchingCharacter checker.
      * This is used repeatedly by ThingHittr to generate separately optimized
      * Functions for different Thing types.

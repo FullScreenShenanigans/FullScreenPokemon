@@ -155,7 +155,11 @@ export class ModEventNames {
     /**
      * Key for the event when a Thing is deleted.
      */
-    public readonly onkill = "onkill";
+    public readonly onKill = "onKill";
+
+    public readonly onModDisable = "onModDisable";
+
+    public readonly onModEnable = "onModEnable";
 
     /**
      * Key for the event when the right mouse button is pressed.

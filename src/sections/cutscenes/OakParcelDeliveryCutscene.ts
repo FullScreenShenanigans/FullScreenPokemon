@@ -79,7 +79,6 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
         const doormat: IThing = this.game.utilities.getExistingThingById("DoormatLeft");
         const rival: ICharacter = this.game.things.add(this.game.things.names.rival, doormat.left, doormat.top) as ICharacter;
 
-        rival.alive = true;
         settings.rival = rival;
 
         this.game.menuGrapher.deleteMenu("GeneralText");
