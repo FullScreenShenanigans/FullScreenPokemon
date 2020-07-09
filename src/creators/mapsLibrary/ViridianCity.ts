@@ -1,4 +1,4 @@
-import { IMapRaw } from "../../components/Maps";
+import { IMapRaw } from "../../sections/Maps";
 
 /* tslint:disable max-line-length object-literal-sort-keys */
 

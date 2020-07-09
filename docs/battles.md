@@ -1,6 +1,6 @@
 ## Battles
 
-Battles in FullScreenPokemon are driven by the [`Battles`](../src/components/Battles.ts) component and run by [BattleMovr](https://github.com/FullScreenShenanigans/BattleMovr).
+Battles in FullScreenPokemon are driven by the [`Battles`](../src/sections/Battles.ts) component and run by [BattleMovr](https://github.com/FullScreenShenanigans/BattleMovr).
 BattleMovr provides for keeping track of two teams of actors; `Battles` adds FullScreenPokemon-specific logic such as visualizing the battles.
 
 ### Simulating battles
@@ -21,18 +21,18 @@ FSP.battles.startBattle({
             actors: [
                 FSP.equations.createPokemon({
                     level: 50,
-                    title: "RATTATA".split("")
-                })
-            ]
+                    title: "RATTATA".split(""),
+                }),
+            ],
         },
         player: {
             actors: FSP.itemsHolder.getItem(FSP.storage.names.pokemonInParty),
             leader: {
                 nickname: FSP.itemsHolder.getItem(FSP.storage.names.name),
-                title: "Player".split("")
-            }
-        }
-    }
+                title: "Player".split(""),
+            },
+        },
+    },
 });
 ```
 
@@ -46,31 +46,31 @@ FSP.battles.startBattle({
             actors: [
                 FSP.equations.createPokemon({
                     level: 7,
-                    title: "METAPOD".split("")
+                    title: "METAPOD".split(""),
                 }),
                 FSP.equations.createPokemon({
                     level: 7,
-                    title: "METAPOD".split("")
-                })
+                    title: "METAPOD".split(""),
+                }),
             ],
             leader: {
                 nickname: "Bug Catcher".split(""),
-                title: "BugCatcher".split("")
-            }
+                title: "BugCatcher".split(""),
+            },
         },
         player: {
             actors: [
                 FSP.equations.createPokemon({
                     level: 50,
-                    title: "CHARIZARD".split("")
-                })
+                    title: "CHARIZARD".split(""),
+                }),
             ],
             leader: {
                 nickname: FSP.itemsHolder.getItem(FSP.storage.names.name),
-                title: "Player".split("")
-            }
-        }
-    }
+                title: "Player".split(""),
+            },
+        },
+    },
 });
 ```
 

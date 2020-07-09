@@ -6,13 +6,13 @@
 ![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
 [![NPM version](https://badge.fury.io/js/fullscreenpokemon.svg)](http://badge.fury.io/js/fullscreenpokemon)
 
-A free HTML5 remake of the original Pokemon, expanded for modern browsing.
+HTML5 remake of the original Pokemon, expanded for modern browsers.
 
 <!-- /Top -->
 
 ## Usage
 
-The built `src/index.html` uses [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) to fill the available window size with a game screen, option menus, and piped input events.
+The built `lib/index.html` uses [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) to fill the available window size with a game screen, option menus, and piped input events.
 It stores its generated instance as `window.FSP`.
 
 To do this in your own page, use the exported `createFspInterface` function.
@@ -20,11 +20,10 @@ To do this in your own page, use the exported `createFspInterface` function.
 ```javascript
 import { createFspInterface } from "fullscreenpokemon";
 
-createFspInterface(document.getElementById("game"))
-    .then(() => {
-        console.log("Ready to play!");
-        console.log(FSP);
-    });
+createFspInterface(document.getElementById("game")).then(() => {
+    console.log("Ready to play!");
+    console.log(FSP);
+});
 ```
 
 You can also directly create a new `FullScreenPokemon` instance with a manual size.

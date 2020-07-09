@@ -1,4 +1,4 @@
-import { IMapRaw } from "../../components/Maps";
+import { IMapRaw } from "../../sections/Maps";
 
 /* tslint:disable max-line-length object-literal-sort-keys */
 
@@ -181,29 +181,29 @@ export const PalletTown: IMapRaw = {
                 { thing: "FloorTiledDiagonal", y: 32, width: 256, height: 224 },
                 {
                     thing: "ComputerDesk", dialog:
-                    [
-                        "We've watched while the stars burned out, and creation played in reverse.",
-                        "The universe freezing in half light.",
-                        "Once I thought to escape.",
-                        "To end the end a master, step out of the path of collapse.",
-                        "Escape would make us god.",
-                        "Yet I cannot help remember one enigma.",
-                        "A hybrid, elusive destroyer.",
-                        "This is the only mystery I have not solved.",
-                        "The only element unaccounted for.",
-                        "Even S'bhuth is no more, he saved his entire race, but in the end, frozen by despair, he joined the chaos he sought to evade.",
-                        "But you were dead a thousand times.",
-                        "Hopeless encounters successfully won.",
-                        "A man long dead, grafted to machines your builders did not understand.",
-                        "You follow the path, fitting into an infinite pattern.",
-                        "Yours to manipulate, to destroy and rebuild.",
-                        "Now, in the quantum moment before the closure, when all become one.",
-                        "One moment left.",
-                        "One point of space and time.",
-                        "I know who you are.",
-                        "",
-                        "You are destiny.",
-                    ],
+                        [
+                            "We've watched while the stars burned out, and creation played in reverse.",
+                            "The universe freezing in half light.",
+                            "Once I thought to escape.",
+                            "To end the end a master, step out of the path of collapse.",
+                            "Escape would make us god.",
+                            "Yet I cannot help remember one enigma.",
+                            "A hybrid, elusive destroyer.",
+                            "This is the only mystery I have not solved.",
+                            "The only element unaccounted for.",
+                            "Even S'bhuth is no more, he saved his entire race, but in the end, frozen by despair, he joined the chaos he sought to evade.",
+                            "But you were dead a thousand times.",
+                            "Hopeless encounters successfully won.",
+                            "A man long dead, grafted to machines your builders did not understand.",
+                            "You follow the path, fitting into an infinite pattern.",
+                            "Yours to manipulate, to destroy and rebuild.",
+                            "Now, in the quantum moment before the closure, when all become one.",
+                            "One moment left.",
+                            "One point of space and time.",
+                            "I know who you are.",
+                            "",
+                            "You are destiny.",
+                        ],
                 },
                 { thing: "Table2x2", x: 32, tolBottom: 0 },
                 { thing: "StairsDown", x: 224, y: 32, entrance: "Player's House Floor 2 Stairs", transport: { map: "Pallet Town", location: "Player's House Floor 1 Stairs" } },

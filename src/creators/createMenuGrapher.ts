@@ -3,11 +3,11 @@ import {
     MenuGraphr,
 } from "menugraphr";
 
-import { IPokedex, IPokedexInformation } from "../components/constants/Pokemon";
-import { IDialog, IMenuBase, IMenuSchema } from "../components/Menus";
+import { IPokedex, IPokedexInformation } from "../sections/constants/Pokemon";
+import { IDialog, IMenuBase, IMenuSchema } from "../sections/Menus";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
+export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
     new MenuGraphr({
         aliases: {
             " ": "Space",
@@ -28,33 +28,33 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
             "'": "Apostrophe",
             "�": "eFancy",
         },
-        eightBitter: fsp,
+        game: game,
         replacements: {
             "PLAYER": (): string[] =>
-                fsp.itemsHolder.getItem(fsp.storage.names.name),
+                game.itemsHolder.getItem(game.storage.names.name),
             "RIVAL": (): string[] =>
-                fsp.itemsHolder.getItem(fsp.storage.names.nameRival),
+                game.itemsHolder.getItem(game.storage.names.nameRival),
             "POKE": "POK�".split(""),
             "POKEMON": "POK�MON".split(""),
             "POKEDEX": "POK�DEX".split(""),
             "POKEDEX.SEEN": (): string[] =>
-                fsp.utilities.makeDigit(
-                    fsp.saves.getPokedexListingsOrdered()
+                game.utilities.makeDigit(
+                    game.saves.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.seen))
                         .length,
                     12,
                     "\t")
                     .split(""),
             "POKEDEX.OWN": (): string[] =>
-                fsp.utilities.makeDigit(
-                    fsp.saves.getPokedexListingsOrdered()
+                game.utilities.makeDigit(
+                    game.saves.getPokedexListingsOrdered()
                         .filter((listing: IPokedexInformation): boolean => !!(listing && listing.caught))
                         .length,
                     12,
                     "\t")
                     .split(""),
             "BADGES.LENGTH": (): string[] => {
-                const badges: { [i: string]: boolean } = fsp.itemsHolder.getItem(fsp.storage.names.badges);
+                const badges: { [i: string]: boolean } = game.itemsHolder.getItem(game.storage.names.badges);
                 let total = 0;
 
                 for (const i in badges) {
@@ -66,7 +66,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 return total.toString().split("");
             },
             "POKEDEX.LENGTH": (): string[] => {
-                const pokedex: IPokedex = fsp.itemsHolder.getItem(fsp.storage.names.pokedex);
+                const pokedex: IPokedex = game.itemsHolder.getItem(game.storage.names.pokedex);
                 if (!pokedex) {
                     return ["0"];
                 }
@@ -78,10 +78,10 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                     .split("");
             },
             "TIME": (): string[] => {
-                const ticksRecorded: number = fsp.itemsHolder.getItem(fsp.storage.names.time);
-                const ticksUnrecorded: number = fsp.fpsAnalyzer.getRecordedTicks() - fsp.ticksElapsed;
+                const ticksRecorded: number = game.itemsHolder.getItem(game.storage.names.time);
+                const ticksUnrecorded: number = game.fpsAnalyzer.getRecordedTicks() - game.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
-                const secondsTotal: number = Math.floor(ticksTotal / ((fsp.settings.components.frameTicker || {}).interval || 1) || 0);
+                const secondsTotal: number = Math.floor(ticksTotal / ((game.settings.components.frameTicker || {}).interval || 1) || 0);
                 let hours: string = Math.floor(secondsTotal / 14400).toString();
                 let minutes: string = Math.floor((secondsTotal - Number(hours)) / 240).toString();
 
@@ -100,10 +100,10 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                 return (hours + ":" + minutes).split("");
             },
             "MONEY": (): string[] =>
-                fsp.itemsHolder.getItem(fsp.storage.names.money).toString().split(""),
+                game.itemsHolder.getItem(game.storage.names.money).toString().split(""),
         },
         sounds: {
-            onInteraction: "Menu Bleep",
+            onInteraction: () => game.audioPlayer.play("Menu Bleep"),
         },
         schemas: {
             "Computer": {
@@ -156,7 +156,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                         left: 240,
                     },
                 },
-                onMenuDelete: fsp.menus.pause.close,
+                onMenuDelete: game.menus.pause.close,
                 saveIndex: true,
                 textXOffset: 32,
                 textYOffset: 32,
@@ -2028,7 +2028,7 @@ export const createMenuGrapher = (fsp: FullScreenPokemon): MenuGraphr =>
                                 top: 36,
                             },
                         },
-                }],
+                    }],
                 container: "Battle",
                 hidden: true,
             } as IMenuSchema,

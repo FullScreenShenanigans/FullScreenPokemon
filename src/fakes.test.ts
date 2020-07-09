@@ -4,8 +4,8 @@ import { IEightBittrConstructorSettings } from "eightbittr";
 import { createStorage } from "itemsholdr";
 import * as sinon from "sinon";
 
-import { IMenu } from "./components/Menus";
-import { IPlayer } from "./components/Things";
+import { IMenu } from "./sections/Menus";
+import { IPlayer } from "./sections/Things";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
 export interface IStubFullScreenPokemonSettings extends Partial<IEightBittrConstructorSettings> {

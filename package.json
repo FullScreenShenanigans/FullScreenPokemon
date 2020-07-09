@@ -1,79 +1,141 @@
 {
-  "author": {
-    "email": "joshuakgoldberg@outlook.com",
-    "name": "Josh Goldberg"
-  },
-  "browser": "./src/index.js",
-  "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
-  },
-  "dependencies": {
-    "babyioc": "^0.8.0",
-    "battlemovr": "^0.8.0",
-    "changelinr": "^0.8.0",
-    "flagswappr": "^0.8.0",
-    "itemsholdr": "^0.8.0",
-    "menugraphr": "^0.8.0",
-    "stateholdr": "^0.8.0",
-    "stringfilr": "^0.8.0",
-    "userwrappr": "^0.8.0"
-  },
-  "description": "A free HTML5 remake of the original Pokemon, expanded for modern browsing.",
-  "devDependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/plugin-proposal-decorators": "^7.10.1",
-    "@babel/preset-react": "^7.10.1",
-    "@babel/preset-typescript": "^7.10.1",
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
-    "@types/sinon-chai": "^3.2.4",
-    "@types/sinon": "^9.0.4",
-    "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "@typescript-eslint/parser": "^3.3.0",
-    "babel-loader": "8.1.0",
-    "chai": "^4.2.0",
-    "concurrently": "^5.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint": "^7.3.0",
-    "glob": "^7.1.6",
-    "husky": "^4.2.5",
-    "lerna": "^3.22.1",
-    "lint-staged": "^10.2.11",
-    "mocha-headless-chrome": "^3.1.0",
-    "mocha": "^8.0.1",
-    "npm-check-updates": "^7.0.1",
-    "prettier": "^2.0.5",
-    "requirejs": "^2.3.6",
-    "shenanigans-manager": "^0.3.0",
-    "sinon-chai": "^3.5.0",
-    "sinon": "^9.0.2",
-    "typescript": "^3.9.5",
-    "watch": "^1.0.2",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
-  },
-  "license": "MIT",
-  "name": "fullscreenpokemon",
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
-  },
-  "scripts": {
-    "compile": "tsc",
-    "dist": "webpack",
-    "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate",
-    "link": "yarn link",
-    "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
-    "test": "yarn run test:setup && yarn run test:run",
-    "test:run": "mocha-headless-chrome --file test/index.html",
-    "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"
-  },
-  "shenanigans": {
-    "dist": true,
-    "external": true,
-    "name": "FullScreenPokemon"
-  },
-  "types": "./src/index.d.ts",
-  "version": "0.7.4"
+    "author": {
+        "email": "joshuakgoldberg@outlook.com",
+        "name": "Josh Goldberg"
+    },
+    "browser": "./src/index.js",
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/FullScreenPokemon/issues"
+    },
+    "dependencies": {
+        "areaspawnr": "^0.8.0",
+        "audioplayr": "^0.8.0",
+        "babyioc": "^0.8.0",
+        "battlemovr": "^0.8.0",
+        "changelinr": "^0.8.0",
+        "classcyclr": "^0.8.0",
+        "devicelayr": "^0.8.0",
+        "eightbittr": "^0.8.0",
+        "flagswappr": "^0.8.0",
+        "fpsanalyzr": "^0.8.0",
+        "frametickr": "^0.8.0",
+        "groupholdr": "^0.8.0",
+        "inputwritr": "^0.8.0",
+        "itemsholdr": "^0.8.0",
+        "mapscreatr": "^0.8.0",
+        "mapscreenr": "^0.8.0",
+        "menugraphr": "^0.8.0",
+        "modattachr": "^0.8.0",
+        "numbermakr": "^0.8.0",
+        "objectmakr": "^0.8.0",
+        "pixeldrawr": "^0.8.0",
+        "pixelrendr": "^0.8.0",
+        "quadskeepr": "^0.8.0",
+        "sceneplayr": "^0.8.0",
+        "stateholdr": "^0.8.0",
+        "stringfilr": "^0.8.0",
+        "thinghittr": "^0.8.0",
+        "timehandlr": "^0.8.0",
+        "touchpassr": "^0.8.0",
+        "userwrappr": "^0.8.0"
+    },
+    "description": "HTML5 remake of the original Pokemon, expanded for modern browsers.",
+    "devDependencies": {
+        "@babel/core": "^7.10.3",
+        "@babel/plugin-proposal-class-properties": "^7.10.1",
+        "@babel/plugin-proposal-decorators": "^7.10.1",
+        "@babel/preset-react": "^7.10.1",
+        "@babel/preset-typescript": "^7.10.1",
+        "@types/chai": "^4.2.11",
+        "@types/mocha": "^7.0.2",
+        "@types/sinon": "^9.0.4",
+        "@types/sinon-chai": "^3.2.4",
+        "@typescript-eslint/eslint-plugin": "^3.3.0",
+        "@typescript-eslint/parser": "^3.3.0",
+        "babel-loader": "8.1.0",
+        "chai": "^4.2.0",
+        "concurrently": "^5.2.0",
+        "eslint": "^7.3.0",
+        "eslint-config-prettier": "^6.11.0",
+        "glob": "^7.1.6",
+        "husky": "^4.2.5",
+        "lerna": "^3.22.1",
+        "lint-staged": "^10.2.11",
+        "mocha": "^8.0.1",
+        "mocha-headless-chrome": "^3.1.0",
+        "npm-check-updates": "^7.0.1",
+        "prettier": "^2.0.5",
+        "requirejs": "^2.3.6",
+        "shenanigans-manager": "^0.3.0",
+        "sinon": "^9.0.2",
+        "sinon-chai": "^3.5.0",
+        "typescript": "^3.9.5",
+        "watch": "^1.0.2",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12"
+    },
+    "license": "MIT",
+    "name": "fullscreenpokemon",
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenPokemon.git"
+    },
+    "scripts": {
+        "clean": "rm -rf lib *.tsbuildinfo",
+        "compile": "tsc",
+        "dist": "webpack",
+        "hydrate": "yarn shenanigans-manager hydrate",
+        "link": "yarn link",
+        "publish:ci": "yarn shenanigans-manager publish-if-updated",
+        "test": "yarn run test:setup && yarn run test:run",
+        "test:run": "mocha-headless-chrome --file test/index.html",
+        "test:setup": "yarn shenanigans-manager generate-tests"
+    },
+    "shenanigans": {
+        "dist": true,
+        "external": true,
+        "game": true,
+        "loading": {
+            "externals": [
+                {
+                    "js": {
+                        "dev": "../node_modules/mobx/lib/mobx.umd",
+                        "prod": "../node_modules/mobx/lib/mobx.umd.min"
+                    },
+                    "name": "mobx"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/mobx-react/index",
+                        "prod": "../node_modules/mobx-react/index.min"
+                    },
+                    "name": "mobx-react"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/react/umd/react.development",
+                        "prod": "../node_modules/react/lib/react.production"
+                    },
+                    "name": "react"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/react-dom/umd/react-dom.development",
+                        "prod": "../node_modules/react-dom/lib/react-dom.production"
+                    },
+                    "name": "react-dom"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/userwrappr/dist/UserWrappr-Delayed"
+                    },
+                    "name": "UserWrappr-Delayed"
+                }
+            ]
+        },
+        "name": "FullScreenPokemon",
+        "web": true
+    },
+    "types": "./src/index.d.ts",
+    "version": "0.7.4"
 }

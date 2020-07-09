@@ -1,6 +1,6 @@
 import { BattleMovr, IAction, ITeamAndAction, IUnderEachTeam } from "battlemovr";
 
-import { IBattleInfo } from "../components/Battles";
+import { IBattleInfo } from "../sections/Battles";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 export const createBattleMover = (fsp: FullScreenPokemon) =>
