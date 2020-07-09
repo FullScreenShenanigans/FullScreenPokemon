@@ -25,6 +25,9 @@ export interface IThingsById {
  * An in-game Thing with size, velocity, position, and other information.
  */
 export interface IThing extends IEightBittrThing, IStateSaveable {
+    flipHoriz?: boolean;
+    flipVert?: boolean;
+
     /**
      * What to do when a Character, commonly a Player, activates this Thing.
      *

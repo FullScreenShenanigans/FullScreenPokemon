@@ -1,6 +1,7 @@
 import { AudioPlayr } from "audioplayr";
 import { factory, member } from "babyioc";
 import { BattleMovr } from "battlemovr";
+import { ClassCyclr } from "classcyclr";
 import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GroupHoldr } from "groupholdr";
@@ -13,6 +14,7 @@ import { StateHoldr } from "stateholdr";
 
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
+import { createClassCycler } from "./creators/createClassCycler";
 import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
 import { createMenuGrapher } from "./creators/createMenuGrapher";
 import { createModAttacher } from "./creators/createModAttacher";
@@ -55,6 +57,8 @@ import { Utilities } from "./sections/Utilities";
  * Settings to initialize a new FullScreenPokemon.
  */
 export interface IFullScreenPokemonComponentSettings extends IComponentSettings {
+    // todo add here
+
     /**
      * Settings for feature flags, particularly for a FlagSwappr.
      */
@@ -98,6 +102,12 @@ export class FullScreenPokemon extends EightBittr {
      */
     @factory(createBattleMover)
     public readonly battleMover: BattleMovr;
+
+    /**
+     * Cycles through class names using TimeHandlr events.
+     */
+    @factory(createClassCycler)
+    public readonly classCycler: ClassCyclr;
 
     /**
      * Gates flags behind generational gaps.

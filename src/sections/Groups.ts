@@ -18,7 +18,13 @@ export interface IGroups {
  */
 export class Groups<TEightBittr extends FullScreenPokemon> extends EightBittrGroups<TEightBittr> {
     /**
-     * Names of known IThing groups.
+     * Names of known IThing groups, in drawing order.
      */
-    public readonly groupNames = ["Solid", "Character", "Scenery", "Terrain", "Text"];
+    public readonly groupNames = [
+        "Terrain",
+        "Scenery",
+        "Solid",
+        "Character",
+        "Text",
+    ];
 }

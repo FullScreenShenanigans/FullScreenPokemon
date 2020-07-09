@@ -5,6 +5,7 @@ import { IPalette } from "pixelrendr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { Collections } from "./graphics/Collections";
+import { Flipping } from "./graphics/Flipping";
 import { graphicsLibrary } from "./graphics/GraphicsLibrary";
 
 /**
@@ -62,4 +63,10 @@ export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrG
      */
     @member(Collections)
     public readonly collections: Collections;
+
+    /**
+     * Collects Things to change visuals en masse.
+     */
+    @member(Flipping)
+    public readonly flipping: Flipping;
 }
