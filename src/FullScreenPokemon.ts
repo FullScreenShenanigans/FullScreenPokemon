@@ -33,6 +33,7 @@ import { Equations } from "./sections/Equations";
 import { Evolution } from "./sections/Evolution";
 import { Experience } from "./sections/Experience";
 import { Fishing } from "./sections/Fishing";
+import { Frames } from "./sections/Frames";
 import { Gameplay } from "./sections/Gameplay";
 import { Graphics } from "./sections/Graphics";
 import { Groups, IGroups } from "./sections/Groups";
@@ -249,6 +250,12 @@ export class FullScreenPokemon extends EightBittr {
      */
     @member(Fishing)
     public readonly fishing: Fishing;
+
+    /**
+     * How to advance each frame of the game.
+     */
+    @member(Frames)
+    public readonly frames: Frames<this>;
 
     /**
      * Event hooks for major gameplay state changes.
