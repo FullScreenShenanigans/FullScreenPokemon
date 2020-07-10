@@ -1,10 +1,10 @@
-import { AudioPlayr } from "audioplayr";
+import { AudioPlayr, wrapNativeStorage } from "audioplayr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 export const createAudioPlayer = (game: FullScreenPokemon) =>
     new AudioPlayr({
         nameTransform: game.audio.nameTransform,
-        storage: game.itemsHolder,
+        storage: wrapNativeStorage(game.itemsHolder as Storage),
         ...game.settings.components.audioPlayer,
     });

@@ -7,10 +7,10 @@ import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GroupHoldr } from "groupholdr";
 import { ItemsHoldr } from "itemsholdr";
 import { MenuGraphr } from "menugraphr";
-import { IModAttachrSettings, ModAttachr } from "modattachr";
+import { IModAttachrSettings, ModAttachr, IModsItemsHoldr } from "modattachr";
 import { INumberMakrSettings, NumberMakr } from 'numbermakr';
 import { ScenePlayr } from "sceneplayr";
-import { StateHoldr } from "stateholdr";
+import { StateHoldr, IStateItemsHoldr } from "stateholdr";
 
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
@@ -57,16 +57,30 @@ import { Utilities } from "./sections/Utilities";
  * Settings to initialize a new FullScreenPokemon.
  */
 export interface IFullScreenPokemonComponentSettings extends IComponentSettings {
-    // todo add here
-    audioPlayer: IAudioPlayrSettings;
-    classCycler: IClassCyclrSettings;
-    modAttacher: IModAttachrSettings;
-    numberMaker: INumberMakrSettings;
+    /**
+     * Setings overrides for the game's AudioPlayr.
+     */
+    audioPlayer?: Partial<IAudioPlayrSettings>;
 
     /**
-     * Settings for feature flags, particularly for a FlagSwappr.
+     * Setings overrides for the game's ClassCyclr.
+     */
+    classCycler?: Partial<IClassCyclrSettings>;
+
+    /**
+     * Setings overrides for the game's FlagSwappr.
      */
     flagSwapper?: Partial<IFlagSwapprSettings<IFlags>>;
+
+    /**
+     * Setings overrides for the game's ModAttachr.
+     */
+    modAttacher?: Partial<IModAttachrSettings>;
+
+    /**
+     * Setings overrides for the game's NumberMakr.
+     */
+    numberMaker?: Partial<INumberMakrSettings>;
 }
 
 /**
@@ -127,7 +141,7 @@ export class FullScreenPokemon extends EightBittr {
     /**
      * Cache-based wrapper around localStorage.
      */
-    public readonly itemsHolder: ItemsHoldr<IStorageItems>;
+    public readonly itemsHolder: ItemsHoldr<IStorageItems> & IModsItemsHoldr & IStateItemsHoldr;
 
     /**
      * A flexible container for map attributes and viewport.
