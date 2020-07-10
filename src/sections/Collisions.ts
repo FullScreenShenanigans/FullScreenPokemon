@@ -13,6 +13,11 @@ import { ICharacter, IThing } from "./Things";
  */
 export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBittrCollisions<TEightBittr> {
     /**
+     * Names of groups that should be checked for collisions.
+     */
+    public readonly collidingGroupNames: string[] = ["Character"];
+
+    /**
      * Function generator for the generic isCharacterTouchingCharacter checker.
      * This is used repeatedly by ThingHittr to generate separately optimized
      * Functions for different Thing types.

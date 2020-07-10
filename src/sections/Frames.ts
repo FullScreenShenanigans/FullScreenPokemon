@@ -19,7 +19,6 @@ export class Frames<TEightBittr extends FullScreenPokemon> extends EightBittrFra
     // 2. Groups are updated for velocities and pruned.
     public maintain() {
         super.maintain();
-
         this.game.players.forEach(this.game.maintenance.maintainPlayer);
     }
 }
