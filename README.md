@@ -21,7 +21,7 @@ To do this in your own page, use the exported `createFspInterface` function.
 import { createFspInterface } from "fullscreenpokemon";
 
 createFspInterface(document.getElementById("game")).then(() => {
-    console.log("Ready to play!");
+    console.log("Ready to play! ✨");
     console.log(FSP);
 });
 ```
@@ -68,8 +68,8 @@ yarn run hydrate
 yarn run compile
 ```
 
-* `yarn run hydrate` creates a few auto-generated setup files locally.
-* `yarn run compile` builds source code with TypeScript
+-   `yarn run hydrate` creates a few auto-generated setup files locally.
+-   `yarn run compile` builds source code with TypeScript
 
 ### Running Tests
 
