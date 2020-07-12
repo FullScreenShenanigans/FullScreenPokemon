@@ -11,8 +11,11 @@ describe("Equations", () => {
             // Arrange
             const { fsp } = stubBlankGame();
             const pokemonTitle: string[] = "CHARMANDER".split("");
-            const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
-            const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 1;
+            const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[
+                pokemonTitle.join("")
+            ].evolutions!;
+            const pokemonLevel: number =
+                (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 1;
 
             // Act
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -29,8 +32,11 @@ describe("Equations", () => {
             // Arrange
             const { fsp } = stubBlankGame();
             const pokemonTitle: string[] = "CHARMANDER".split("");
-            const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
-            const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level + 1;
+            const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[
+                pokemonTitle.join("")
+            ].evolutions!;
+            const pokemonLevel: number =
+                (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level + 1;
 
             // Act
             const pokemon: IPokemon = fsp.equations.newPokemon({
@@ -47,8 +53,11 @@ describe("Equations", () => {
             // Arrange
             const { fsp } = stubBlankGame();
             const pokemonTitle: string[] = "CHARMANDER".split("");
-            const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[pokemonTitle.join("")].evolutions!;
-            const pokemonLevel: number = (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 2;
+            const evolutions: IPokemonEvolution[] = fsp.constants.pokemon.byName[
+                pokemonTitle.join("")
+            ].evolutions!;
+            const pokemonLevel: number =
+                (evolutions[0].requirements[0] as IPokemonEvolutionByLevel).level - 2;
 
             // Act
             const pokemon: IPokemon = fsp.equations.newPokemon({

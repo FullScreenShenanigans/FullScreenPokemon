@@ -28,12 +28,10 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
         this.game.actions.animatePlayerDialogFreeze(settings.player);
         this.game.actions.animateCharacterSetDirection(settings.player, Direction.Bottom);
 
-        await this.game.audioPlayer.play(
-            this.game.audio.names.professorOak,
-            {
-                alias: this.game.audio.aliases.theme,
-                loop: true,
-            });
+        await this.game.audioPlayer.play(this.game.audio.names.professorOak, {
+            alias: this.game.audio.aliases.theme,
+            loop: true,
+        });
 
         this.game.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
@@ -47,7 +45,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
                     triggered = true;
                     this.game.scenePlayer.playRoutine("Exclamation");
                 }
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -63,11 +62,10 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
 
         this.game.timeHandler.addEvent(
             (): void => this.game.menuGrapher.hideMenu("GeneralText"),
-            timeout);
+            timeout
+        );
 
-        this.game.timeHandler.addEvent(
-            this.game.scenePlayer.bindRoutine("Catchup"),
-            timeout);
+        this.game.timeHandler.addEvent(this.game.scenePlayer.bindRoutine("Catchup"), timeout);
     }
 
     /**
@@ -77,10 +75,13 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
      */
     public Catchup(settings: any): void {
         const door: IThing = this.game.utilities.getExistingThingById("Oak's Lab Door");
-        const oak: ICharacter = this.game.objectMaker.make<ICharacter>(this.game.things.names.oak, {
-            outerOk: true,
-            nocollide: true,
-        });
+        const oak: ICharacter = this.game.objectMaker.make<ICharacter>(
+            this.game.things.names.oak,
+            {
+                outerOk: true,
+                nocollide: true,
+            }
+        );
         const isToLeft: boolean = this.game.players[0].bordering[Direction.Left] !== undefined;
         const walkingInstructions: IWalkingInstructions = [
             {
@@ -122,7 +123,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
                 {
                     blocks: 0,
                     direction: Direction.Top,
-                });
+                }
+            );
         }
 
         walkingInstructions.push(this.game.scenePlayer.bindRoutine("GrassWarning"));
@@ -146,7 +148,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
                 "You need your own %%%%%%%POKEMON%%%%%%% for your protection. \n I know!",
                 "Here, come with me.",
             ],
-            this.game.scenePlayer.bindRoutine("FollowToLab"));
+            this.game.scenePlayer.bindRoutine("FollowToLab")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -190,9 +193,7 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
 
         this.game.menuGrapher.deleteMenu("GeneralText");
         this.game.actions.following.startFollowing(settings.player, settings.oak);
-        this.game.actions.walking.startWalkingOnPath(
-            settings.oak,
-            walkingInstructions);
+        this.game.actions.walking.startWalkingOnPath(settings.oak, walkingInstructions);
     }
 
     /**
@@ -205,24 +206,20 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
         this.game.stateHolder.addChange("Pallet Town::Oak's Lab::Oak", "alive", true);
         settings.oak.hidden = true;
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.actions.walking.startWalkingOnPath(
-                    this.game.players[0],
-                    [
-                        {
-                            blocks: 1,
-                            direction: Direction.Top,
-                        },
-                        (): void => {
-                            this.game.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
-                            this.game.players[0].hidden = true;
+        this.game.timeHandler.addEvent((): void => {
+            this.game.actions.walking.startWalkingOnPath(this.game.players[0], [
+                {
+                    blocks: 1,
+                    direction: Direction.Top,
+                },
+                (): void => {
+                    this.game.maps.setMap("Pallet Town", "Oak's Lab Floor 1 Door", false);
+                    this.game.players[0].hidden = true;
 
-                            this.game.scenePlayer.playRoutine("WalkToTable");
-                        },
-                    ]);
-            },
-            this.game.equations.walkingTicksPerBlock(this.game.players[0]));
+                    this.game.scenePlayer.playRoutine("WalkToTable");
+                },
+            ]);
+        }, this.game.equations.walkingTicksPerBlock(this.game.players[0]));
     }
 
     /**
@@ -265,25 +262,19 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
             },
         ]);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.players[0].hidden = false;
-            },
-            appearanceDelay);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.players[0].hidden = false;
+        }, appearanceDelay);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.actions.walking.startWalkingOnPath(
-                    settings.player,
-                    [
-                        {
-                            blocks: 8,
-                            direction: 0,
-                        },
-                        this.game.scenePlayer.bindRoutine("RivalComplain"),
-                    ]);
-            },
-            appearanceDelay);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.actions.walking.startWalkingOnPath(settings.player, [
+                {
+                    blocks: 8,
+                    direction: 0,
+                },
+                this.game.scenePlayer.bindRoutine("RivalComplain"),
+            ]);
+        }, appearanceDelay);
     }
 
     /**
@@ -300,7 +291,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             "%%%%%%%RIVAL%%%%%%%: Gramps! I'm fed up with waiting!",
-            this.game.scenePlayer.bindRoutine("OakThinksToRival"));
+            this.game.scenePlayer.bindRoutine("OakThinksToRival")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -321,7 +313,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
                 "When I was young, I was a serious %%%%%%%POKEMON%%%%%%% trainer!",
                 "In my old age, I have only 3 left, but you can have one! Choose!",
             ],
-            this.game.scenePlayer.bindRoutine("RivalProtests"));
+            this.game.scenePlayer.bindRoutine("RivalProtests")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -333,24 +326,24 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
 
         this.game.menuGrapher.deleteMenu("GeneralText");
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.menuGrapher.createMenu("GeneralText");
-            },
-            timeout);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.menuGrapher.createMenu("GeneralText");
+        }, timeout);
 
         this.game.timeHandler.addEvent(
-            (): void => this.game.menuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    "%%%%%%%RIVAL%%%%%%%: Hey! Gramps! What about me?",
-                ],
-                this.game.scenePlayer.bindRoutine("OakRespondsToProtest")),
-            timeout);
+            (): void =>
+                this.game.menuGrapher.addMenuDialog(
+                    "GeneralText",
+                    ["%%%%%%%RIVAL%%%%%%%: Hey! Gramps! What about me?"],
+                    this.game.scenePlayer.bindRoutine("OakRespondsToProtest")
+                ),
+            timeout
+        );
 
         this.game.timeHandler.addEvent(
             (): void => this.game.menuGrapher.setActiveMenu("GeneralText"),
-            timeout);
+            timeout
+        );
     }
 
     /**
@@ -372,24 +365,24 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
 
         this.game.menuGrapher.deleteMenu("GeneralText");
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.menuGrapher.createMenu(
-                    "GeneralText",
-                    {
-                        deleteOnFinish: true,
-                    });
-            },
-            timeout);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.menuGrapher.createMenu("GeneralText", {
+                deleteOnFinish: true,
+            });
+        }, timeout);
 
         this.game.timeHandler.addEvent(
-            (): void => this.game.menuGrapher.addMenuDialog(
-                "GeneralText",
-                "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!"),
-            timeout);
+            (): void =>
+                this.game.menuGrapher.addMenuDialog(
+                    "GeneralText",
+                    "Oak: Be patient! %%%%%%%RIVAL%%%%%%%, you can have one too!"
+                ),
+            timeout
+        );
 
         this.game.timeHandler.addEvent(
             (): void => this.game.menuGrapher.setActiveMenu("GeneralText"),
-            timeout);
+            timeout
+        );
     }
 }

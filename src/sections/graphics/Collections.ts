@@ -20,9 +20,10 @@ export class Collections extends Section<FullScreenPokemon> {
         };
 
         for (const thingRaw of thingsRaw) {
-            const thing: IThing = thingRaw.constructor === String
-                ? this.game.utilities.getExistingThingById(thingRaw as string)
-                : thingRaw as IThing;
+            const thing: IThing =
+                thingRaw.constructor === String
+                    ? this.game.utilities.getExistingThingById(thingRaw as string)
+                    : (thingRaw as IThing);
 
             if (!used[thing.title]) {
                 used[thing.title] = thing;

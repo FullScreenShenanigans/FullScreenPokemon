@@ -31,7 +31,9 @@ export enum Scrollability {
 /**
  * Moves the screen and Things in it.
  */
-export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittrScrolling<TEightBittr> {
+export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittrScrolling<
+    TEightBittr
+> {
     /**
      * Centers the current view of the Map based on scrollability.
      */
@@ -90,10 +92,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
      * Scrolls the game window horizontally until the Map is centered on the player.
      */
     public centerMapScreenHorizontallyOnPlayer(): void {
-        const difference: number = (
-            this.game.physics.getMidX(this.game.players[0])
-            - this.game.mapScreener.middleX)
-            | 0;
+        const difference: number =
+            (this.game.physics.getMidX(this.game.players[0]) - this.game.mapScreener.middleX) | 0;
 
         if (Math.abs(difference) > 0) {
             this.scrollWindow(difference);
@@ -104,10 +104,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
      * Scrolls the game window vertically until the Map is centered on the player.
      */
     public centerMapScreenVerticallyOnPlayer(): void {
-        const difference: number = (
-            this.game.physics.getMidY(this.game.players[0])
-            - this.game.mapScreener.middleY)
-            | 0;
+        const difference: number =
+            (this.game.physics.getMidY(this.game.players[0]) - this.game.mapScreener.middleY) | 0;
 
         if (Math.abs(difference) > 0) {
             this.scrollWindow(0, difference);
@@ -138,10 +136,10 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
             right: area.boundaries.right,
             bottom: area.boundaries.bottom,
             left: area.boundaries.left,
-            width: (area.boundaries.right - area.boundaries.left),
-            height: (area.boundaries.bottom - area.boundaries.top),
+            width: area.boundaries.right - area.boundaries.left,
+            height: area.boundaries.bottom - area.boundaries.top,
         };
-    }
+    };
 
     /**
      * Determines the scrollable directions.
@@ -155,8 +153,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
         }
 
         const boundaries: IAreaBoundaries = area.boundaries;
-        const width: number = (boundaries.right - boundaries.left);
-        const height: number = (boundaries.bottom - boundaries.top);
+        const width: number = boundaries.right - boundaries.left;
+        const height: number = boundaries.bottom - boundaries.top;
 
         if (width > this.game.mapScreener.width) {
             if (height > this.game.mapScreener.height) {
@@ -171,7 +169,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
         }
 
         return Scrollability.None;
-    }
+    };
 
     /**
      * Determines how much to scroll horizontally during upkeep based

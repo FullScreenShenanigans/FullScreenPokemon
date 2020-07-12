@@ -15,9 +15,22 @@ import { IHMMoveSchema } from "./constants/Moves";
 import { IArea, IMap } from "./Maps";
 import { IDialog, IDialogOptions } from "./Menus";
 import {
-    IAreaGate, IAreaSpawner, ICharacter, IDetector, IEnemy, IGymDetector, IHMCharacter,
-    IMenuTriggerer, IPlayer, IPokeball, IRoamingCharacter, ISightDetector, IThemeDetector,
-    IThing, ITransporter, ITransportSchema,
+    IAreaGate,
+    IAreaSpawner,
+    ICharacter,
+    IDetector,
+    IEnemy,
+    IGymDetector,
+    IHMCharacter,
+    IMenuTriggerer,
+    IPlayer,
+    IPokeball,
+    IRoamingCharacter,
+    ISightDetector,
+    IThemeDetector,
+    IThing,
+    ITransporter,
+    ITransportSchema,
 } from "./Things";
 
 /**
@@ -61,14 +74,13 @@ export class Actions extends Section<FullScreenPokemon> {
      */
     public spawnCharacter = (thing: ICharacter): void => {
         if (thing.sight) {
-            thing.sightDetector = this.game.things.add(
-                [
-                    this.game.things.names.sightDetector,
-                    {
-                        direction: thing.direction,
-                        width: thing.sight * 8,
-                    },
-                ]) as ISightDetector;
+            thing.sightDetector = this.game.things.add([
+                this.game.things.names.sightDetector,
+                {
+                    direction: thing.direction,
+                    width: thing.sight * 8,
+                },
+            ]) as ISightDetector;
             thing.sightDetector.viewer = thing;
             this.animatePositionSightDetector(thing);
         }
@@ -76,9 +88,10 @@ export class Actions extends Section<FullScreenPokemon> {
         if (thing.roaming) {
             this.game.timeHandler.addEvent(
                 (): void => this.roaming.startRoaming(thing as IRoamingCharacter),
-                this.game.numberMaker.randomInt(70));
+                this.game.numberMaker.randomInt(70)
+            );
         }
-    }
+    };
 
     /**
      * Collision callback for a Player and a Pokeball it's interacting with.
@@ -96,16 +109,12 @@ export class Actions extends Section<FullScreenPokemon> {
                 this.game.menuGrapher.createMenu("GeneralText");
                 this.game.menuGrapher.addMenuDialog(
                     "GeneralText",
-                    [
-                        "%%%%%%%PLAYER%%%%%%% found " + other.item + "!",
-                    ],
+                    ["%%%%%%%PLAYER%%%%%%% found " + other.item + "!"],
                     (): void => {
                         this.game.menuGrapher.deleteActiveMenu();
                         this.game.death.kill(other);
-                        this.game.stateHolder.addChange(
-                            other.id, "alive", false,
-                        );
-                    },
+                        this.game.stateHolder.addChange(other.id, "alive", false);
+                    }
                 );
                 this.game.menuGrapher.setActiveMenu("GeneralText");
 
@@ -157,7 +166,8 @@ export class Actions extends Section<FullScreenPokemon> {
                         {
                             text: "NO",
                             callback: (): void => console.log("What do, no?"),
-                        }],
+                        },
+                    ],
                 });
                 this.game.menuGrapher.setActiveMenu("Yes/No");
                 break;
@@ -165,7 +175,7 @@ export class Actions extends Section<FullScreenPokemon> {
             default:
                 throw new Error("Unknown Pokeball action: " + other.action + ".");
         }
-    }
+    };
 
     /**
      * Activates a WindowDetector by immediately starting its cycle of
@@ -178,9 +188,10 @@ export class Actions extends Section<FullScreenPokemon> {
             this.game.timeHandler.addEventInterval(
                 (): boolean => this.checkWindowDetector(thing),
                 7,
-                Infinity);
+                Infinity
+            );
         }
-    }
+    };
 
     /**
      * Freezes a Character to start a dialog.
@@ -247,7 +258,8 @@ export class Actions extends Section<FullScreenPokemon> {
         y: number,
         title: string,
         settings: any,
-        groupType?: string): [IThing, IThing, IThing, IThing] {
+        groupType?: string
+    ): [IThing, IThing, IThing, IThing] {
         const things: IThing[] = [];
 
         for (let i = 0; i < 4; i += 1) {
@@ -309,17 +321,13 @@ export class Actions extends Section<FullScreenPokemon> {
     public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
         const things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                for (const thing of things) {
-                    this.game.death.kill(thing);
-                }
-            },
-            7);
+        this.game.timeHandler.addEvent((): void => {
+            for (const thing of things) {
+                this.game.death.kill(thing);
+            }
+        }, 7);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.animateSmokeMedium(x, y, callback),
-            7);
+        this.game.timeHandler.addEvent((): void => this.animateSmokeMedium(x, y, callback), 7);
     }
 
     /**
@@ -330,23 +338,23 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeMedium", undefined, "Text");
+        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(
+            x,
+            y,
+            "SmokeMedium",
+            undefined,
+            "Text"
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => this.animateExpandCorners(things, 4),
-            7);
+        this.game.timeHandler.addEvent((): void => this.animateExpandCorners(things, 4), 7);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                for (const thing of things) {
-                    this.game.death.kill(thing);
-                }
-            },
-            14);
+        this.game.timeHandler.addEvent((): void => {
+            for (const thing of things) {
+                this.game.death.kill(thing);
+            }
+        }, 14);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.animateSmokeLarge(x, y, callback),
-            14);
+        this.game.timeHandler.addEvent((): void => this.animateSmokeLarge(x, y, callback), 14);
     }
 
     /**
@@ -357,21 +365,23 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param callback   A callback for when the animation is done.
      */
     public animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(x, y, "SmokeLarge", undefined, "Text");
+        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(
+            x,
+            y,
+            "SmokeLarge",
+            undefined,
+            "Text"
+        );
 
         this.animateExpandCorners(things, 10);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.animateExpandCorners(things, 8),
-            7);
+        this.game.timeHandler.addEvent((): void => this.animateExpandCorners(things, 8), 7);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                for (const thing of things) {
-                    this.game.death.kill(thing);
-                }
-            },
-            21);
+        this.game.timeHandler.addEvent((): void => {
+            for (const thing of things) {
+                this.game.death.kill(thing);
+            }
+        }, 21);
 
         if (callback) {
             this.game.timeHandler.addEvent(callback, 21);
@@ -386,15 +396,17 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param callback   A callback for when the exclamation is removed.
      * @returns The exclamation Thing.
      */
-    public animateExclamation(thing: IThing, timeout: number = 140, callback?: () => void): IThing {
+    public animateExclamation(
+        thing: IThing,
+        timeout: number = 140,
+        callback?: () => void
+    ): IThing {
         const exclamation: IThing = this.game.things.add(this.game.things.names.exclamation);
 
         this.game.physics.setMidXObj(exclamation, thing);
         this.game.physics.setBottom(exclamation, thing.top);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.game.death.kill(exclamation),
-            timeout);
+        this.game.timeHandler.addEvent((): void => this.game.death.kill(exclamation), timeout);
 
         if (callback) {
             this.game.timeHandler.addEvent(callback, timeout);
@@ -422,13 +434,20 @@ export class Actions extends Section<FullScreenPokemon> {
             this.game.constants.directionClasses[Direction.Top],
             this.game.constants.directionClasses[Direction.Right],
             this.game.constants.directionClasses[Direction.Bottom],
-            this.game.constants.directionClasses[Direction.Left]);
+            this.game.constants.directionClasses[Direction.Left]
+        );
 
-        this.game.graphics.classes.addClass(thing, this.game.constants.directionClasses[direction]);
+        this.game.graphics.classes.addClass(
+            thing,
+            this.game.constants.directionClasses[direction]
+        );
 
         if (direction === Direction.Right) {
             this.game.graphics.flipping.flipHoriz(thing);
-            this.game.graphics.classes.addClass(thing, this.game.constants.directionClasses[Direction.Left]);
+            this.game.graphics.classes.addClass(
+                thing,
+                this.game.constants.directionClasses[Direction.Left]
+            );
         }
     }
 
@@ -517,7 +536,8 @@ export class Actions extends Section<FullScreenPokemon> {
             this.game.menuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
-                (): void => this.animateCharacterDialogFinish(thing, other));
+                (): void => this.animateCharacterDialogFinish(thing, other)
+            );
             this.game.menuGrapher.setActiveMenu("GeneralText");
 
             this.game.saves.addItemToBag(other.gift);
@@ -566,7 +586,11 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param other   A Character that thing has finished talking to.
      * @param dialog   The dialog settings that just finished.
      */
-    public animateCharacterDialogOptions(thing: IPlayer, other: ICharacter, dialog: IDialog): void {
+    public animateCharacterDialogOptions(
+        thing: IPlayer,
+        other: ICharacter,
+        dialog: IDialog
+    ): void {
         if (!dialog.options) {
             throw new Error("Dialog should have .options.");
         }
@@ -586,14 +610,15 @@ export class Actions extends Section<FullScreenPokemon> {
                     this.animateCharacterDialogOptions(thing, other, callbackDialog as IDialog);
                 };
             } else {
-                words = (callbackDialog as IDialog).words || callbackDialog as string;
+                words = (callbackDialog as IDialog).words || (callbackDialog as string);
                 if ((callbackDialog as IDialog).cutscene) {
                     callback = this.game.scenePlayer.bindCutscene(
                         (callbackDialog as IDialog).cutscene!,
                         {
                             player: thing,
                             tirggerer: other,
-                        });
+                        }
+                    );
                 }
             }
 
@@ -602,8 +627,7 @@ export class Actions extends Section<FullScreenPokemon> {
                 this.game.menuGrapher.createMenu("GeneralText", {
                     deleteOnFinish: true,
                 });
-                this.game.menuGrapher.addMenuDialog(
-                    "GeneralText", words, callback);
+                this.game.menuGrapher.addMenuDialog("GeneralText", words, callback);
                 this.game.menuGrapher.setActiveMenu("GeneralText");
             };
         };
@@ -626,7 +650,8 @@ export class Actions extends Section<FullScreenPokemon> {
                 {
                     text: "NO",
                     callback: generateCallback(options.No),
-                }],
+                },
+            ],
         });
         this.game.menuGrapher.setActiveMenu("Yes/No");
     }
@@ -664,7 +689,7 @@ export class Actions extends Section<FullScreenPokemon> {
         if (other.routine) {
             this.game.scenePlayer.playRoutine(other.routine);
         }
-    }
+    };
 
     /**
      * Activates a Detector to play an audio theme.
@@ -673,7 +698,10 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param other   A Detector triggered by thing.
      */
     public activateThemePlayer = async (thing: IPlayer, other: IThemeDetector): Promise<void> => {
-        if (!thing.player || this.game.audioPlayer.hasSound(this.game.audio.aliases.theme, other.theme)) {
+        if (
+            !thing.player ||
+            this.game.audioPlayer.hasSound(this.game.audio.aliases.theme, other.theme)
+        ) {
             return;
         }
 
@@ -681,7 +709,7 @@ export class Actions extends Section<FullScreenPokemon> {
             alias: this.game.audio.aliases.theme,
             loop: true,
         });
-    }
+    };
 
     /**
      * Activates a Detector to play a cutscene, and potentially a dialog.
@@ -735,32 +763,24 @@ export class Actions extends Section<FullScreenPokemon> {
         }
 
         if (dialog) {
-            this.game.menuGrapher.addMenuDialog(
-                name,
-                dialog,
-                (): void => {
-                    const complete: () => void = (): void => {
-                        this.game.mapScreener.blockInputs = false;
-                        delete thing.collidedTrigger;
-                    };
+            this.game.menuGrapher.addMenuDialog(name, dialog, (): void => {
+                const complete: () => void = (): void => {
+                    this.game.mapScreener.blockInputs = false;
+                    delete thing.collidedTrigger;
+                };
 
-                    this.game.menuGrapher.deleteMenu("GeneralText");
+                this.game.menuGrapher.deleteMenu("GeneralText");
 
-                    if (other.pushSteps) {
-                        this.walking.startWalkingOnPath(
-                            thing,
-                            [
-                                ...other.pushSteps,
-                                complete,
-                            ]);
-                    } else {
-                        complete();
-                    }
-                });
+                if (other.pushSteps) {
+                    this.walking.startWalkingOnPath(thing, [...other.pushSteps, complete]);
+                } else {
+                    complete();
+                }
+            });
         }
 
         this.game.menuGrapher.setActiveMenu(name);
-    }
+    };
 
     /**
      * Activates a Character's sight detector for when another Character walks
@@ -784,7 +804,7 @@ export class Actions extends Section<FullScreenPokemon> {
             sightDetector: other,
             triggerer: other.viewer,
         });
-    }
+    };
 
     /**
      * Activation callback for level transports (any Thing with a .transport
@@ -828,7 +848,7 @@ export class Actions extends Section<FullScreenPokemon> {
             callback,
             color: "Black",
         });
-    }
+    };
 
     /**
      * Activation trigger for a gym statue. If the Player is looking up at it,
@@ -856,7 +876,7 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog("GeneralText", dialog);
         this.game.menuGrapher.setActiveMenu("GeneralText");
-    }
+    };
 
     /**
      * Calls an HMCharacter's partyActivate Function when the Player activates the HMCharacter.
@@ -865,11 +885,16 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param thing   The Solid to be affected.
      */
     public activateHMCharacter = (player: IPlayer, thing: IHMCharacter): void => {
-        if (thing.requiredBadge && !this.game.itemsHolder.getItem(this.game.storage.names.badges)[thing.requiredBadge]) {
+        if (
+            thing.requiredBadge &&
+            !this.game.itemsHolder.getItem(this.game.storage.names.badges)[thing.requiredBadge]
+        ) {
             return;
         }
 
-        for (const pokemon of this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty)) {
+        for (const pokemon of this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        )) {
             for (const move of pokemon.moves) {
                 if (move.title === thing.moveName) {
                     thing.moveCallback(player, pokemon);
@@ -877,7 +902,7 @@ export class Actions extends Section<FullScreenPokemon> {
                 }
             }
         }
-    }
+    };
 
     /**
      * Activates a Spawner by calling its .activate.
@@ -890,7 +915,7 @@ export class Actions extends Section<FullScreenPokemon> {
         }
 
         thing.activate.call(this, thing);
-    }
+    };
 
     /**
      * Checks if a WindowDetector is within frame, and activates it if so.
@@ -899,10 +924,11 @@ export class Actions extends Section<FullScreenPokemon> {
      */
     public checkWindowDetector(thing: IDetector): boolean {
         if (
-            thing.bottom < 0
-            || thing.left > this.game.mapScreener.width
-            || thing.top > this.game.mapScreener.height
-            || thing.right < 0) {
+            thing.bottom < 0 ||
+            thing.left > this.game.mapScreener.width ||
+            thing.top > this.game.mapScreener.height ||
+            thing.right < 0
+        ) {
             return false;
         }
 
@@ -931,8 +957,8 @@ export class Actions extends Section<FullScreenPokemon> {
         }
 
         if (
-            area.spawnedBy
-            && area.spawnedBy === (this.game.areaSpawner.getArea() as IArea).spawnedBy
+            area.spawnedBy &&
+            area.spawnedBy === (this.game.areaSpawner.getArea() as IArea).spawnedBy
         ) {
             this.game.death.kill(thing);
             return;
@@ -941,7 +967,7 @@ export class Actions extends Section<FullScreenPokemon> {
         area.spawnedBy = (this.game.areaSpawner.getArea() as IArea).spawnedBy;
 
         this.game.maps.activateAreaSpawner(thing, area);
-    }
+    };
 
     /**
      * Activation callback for an AreaGate. The Player is marked to now spawn
@@ -991,7 +1017,9 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.mapScreener.right = screenOffsetX + this.game.mapScreener.width;
         this.game.mapScreener.bottom = screenOffsetY + this.game.mapScreener.height;
         this.game.mapScreener.left = screenOffsetX;
-        this.game.mapScreener.activeArea = this.game.areaSpawner.getMap().areas[other.area] as IArea;
+        this.game.mapScreener.activeArea = this.game.areaSpawner.getMap().areas[
+            other.area
+        ] as IArea;
 
         this.game.itemsHolder.setItem(this.game.storage.names.map, other.map);
         this.game.itemsHolder.setItem(this.game.storage.names.area, other.area);
@@ -1000,12 +1028,10 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.maps.setStateCollection(area);
 
         other.active = false;
-        this.game.timeHandler.addEvent(
-            (): void => {
-                other.active = true;
-            },
-            2);
-    }
+        this.game.timeHandler.addEvent((): void => {
+            other.active = true;
+        }, 2);
+    };
 
     /**
      * Makes sure that Player is facing the correct HMCharacter
@@ -1016,7 +1042,11 @@ export class Actions extends Section<FullScreenPokemon> {
      * @todo Add context for what happens if player is not bordering the correct HMCharacter.
      * @todo Refactor to give borderedThing a .hmActivate property.
      */
-    public partyActivateCheckThing(player: IPlayer, pokemon: IPokemon, move: IHMMoveSchema): void {
+    public partyActivateCheckThing(
+        player: IPlayer,
+        pokemon: IPokemon,
+        move: IHMMoveSchema
+    ): void {
         const borderedThing: IThing | undefined = player.bordering[player.direction];
 
         if (borderedThing && borderedThing.title.indexOf(move.characterName!) !== -1) {
@@ -1034,7 +1064,7 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.menuGrapher.deleteAllMenus();
         this.game.menus.pause.close();
         this.game.death.kill(player.bordering[player.direction]!);
-    }
+    };
 
     /**
      * Makes a StrengthBoulder move.
@@ -1048,8 +1078,10 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.menuGrapher.deleteAllMenus();
         this.game.menus.pause.close();
 
-        if (!this.game.thingHitter.checkHitForThings(player as any, boulder as any)
-            || boulder.bordering[player.direction] !== undefined) {
+        if (
+            !this.game.thingHitter.checkHitForThings(player as any, boulder as any) ||
+            boulder.bordering[player.direction] !== undefined
+        ) {
             return;
         }
 
@@ -1080,12 +1112,13 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.timeHandler.addEventInterval(
             (): void => this.game.physics.shiftBoth(boulder, xvel, yvel),
             1,
-            8);
+            8
+        );
 
         for (let i = 0; i < boulder.bordering.length; i += 1) {
             boulder.bordering[i] = undefined;
         }
-    }
+    };
 
     /**
      * Starts the Player surfing.
@@ -1106,5 +1139,5 @@ export class Actions extends Section<FullScreenPokemon> {
         console.log("Should start walking");
         // this.animateCharacterStartWalking(player, player.direction, [1]);
         player.surfing = true;
-    }
+    };
 }

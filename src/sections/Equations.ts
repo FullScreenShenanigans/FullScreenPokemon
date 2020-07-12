@@ -17,8 +17,9 @@ import { ICharacter, IGrass } from "./Things";
  * @param schema   Wild Pokemon schema.
  * @returns Whether the schema has only one possible level.
  */
-const isWildPokemonSchemaForLevel = (schema: IWildPokemonSchema): schema is IWildPokemonSchemaWithLevel =>
-    "level" in schema;
+const isWildPokemonSchemaForLevel = (
+    schema: IWildPokemonSchema
+): schema is IWildPokemonSchemaWithLevel => "level" in schema;
 
 /**
  * Common equations.
@@ -145,9 +146,15 @@ export class Equations extends Section<FullScreenPokemon> {
             item: chosenInfo.item,
             iv,
             level: chosenInfo.level || 1,
-            moves: chosenInfo.moves || this.newPokemonMoves(chosenInfo.title, chosenInfo.level || 1),
+            moves:
+                chosenInfo.moves || this.newPokemonMoves(chosenInfo.title, chosenInfo.level || 1),
             nickname: chosenInfo.title,
-            statistics: this.newPokemonStatistics(chosenInfo.title, chosenInfo.level || 1, ev, iv),
+            statistics: this.newPokemonStatistics(
+                chosenInfo.title,
+                chosenInfo.level || 1,
+                ev,
+                iv
+            ),
             title: chosenInfo.title,
             types: this.game.constants.pokemon.byName[chosenInfo.title.join("")].types,
         };
@@ -163,14 +170,49 @@ export class Equations extends Section<FullScreenPokemon> {
      * @returns Statistics for the Pokemon.
      * @see http://bulbapedia.bulbagarden.net/wiki/Statistic#In_Generations_I_and_II
      */
-    public newPokemonStatistics(title: string[], level: number, ev: IValuePoints, iv: IValuePoints): IPokemonStatistics {
+    public newPokemonStatistics(
+        title: string[],
+        level: number,
+        ev: IValuePoints,
+        iv: IValuePoints
+    ): IPokemonStatistics {
         const schema: IPokemonListing = this.game.constants.pokemon.byName[title.join("")];
 
-        const attack: IStatistic = this.pokemonStatistic("attack", schema.attack, level, ev.attack, iv.attack);
-        const defense: IStatistic = this.pokemonStatistic("defense", schema.defense, level, ev.defense, iv.defense);
-        const health: IStatistic = this.pokemonStatistic("health", schema.health, level, ev.health, iv.health);
-        const special: IStatistic = this.pokemonStatistic("special", schema.special, level, ev.special, iv.special);
-        const speed: IStatistic = this.pokemonStatistic("speed", schema.speed, level, ev.speed, iv.speed);
+        const attack: IStatistic = this.pokemonStatistic(
+            "attack",
+            schema.attack,
+            level,
+            ev.attack,
+            iv.attack
+        );
+        const defense: IStatistic = this.pokemonStatistic(
+            "defense",
+            schema.defense,
+            level,
+            ev.defense,
+            iv.defense
+        );
+        const health: IStatistic = this.pokemonStatistic(
+            "health",
+            schema.health,
+            level,
+            ev.health,
+            iv.health
+        );
+        const special: IStatistic = this.pokemonStatistic(
+            "special",
+            schema.special,
+            level,
+            ev.special,
+            iv.special
+        );
+        const speed: IStatistic = this.pokemonStatistic(
+            "speed",
+            schema.speed,
+            level,
+            ev.speed,
+            iv.speed
+        );
 
         return { attack, defense, health, special, speed };
     }
@@ -184,7 +226,9 @@ export class Equations extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
      */
     public newPokemonMoves(title: string[], level: number): IMove[] {
-        const possibilities: IPokemonMoveListing[] = this.game.constants.pokemon.byName[title.join("")].moves.natural;
+        const possibilities: IPokemonMoveListing[] = this.game.constants.pokemon.byName[
+            title.join("")
+        ].moves.natural;
         const output: IMove[] = [];
         let move: IPokemonMoveListing;
         let newMove: IMove;
@@ -254,7 +298,13 @@ export class Equations extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @remarks Note: the page mentions rounding errors...
      */
-    public pokemonStatistic(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): IStatistic {
+    public pokemonStatistic(
+        statistic: keyof IPokemonStatistics,
+        base: number,
+        level: number,
+        ev: number,
+        iv: number
+    ): IStatistic {
         const normal: number = this.pokemonStatisticNormal(statistic, base, level, ev, iv);
 
         return {
@@ -275,12 +325,17 @@ export class Equations extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @remarks Note: the page mentions rounding errors...
      */
-    public pokemonStatisticNormal(statistic: keyof IPokemonStatistics, base: number, level: number, ev: number, iv: number): number {
-        const numerator: number = ((base + iv) * 2 + Math.floor(Math.ceil(Math.sqrt(ev)) / 4)) * level;
+    public pokemonStatisticNormal(
+        statistic: keyof IPokemonStatistics,
+        base: number,
+        level: number,
+        ev: number,
+        iv: number
+    ): number {
+        const numerator: number =
+            ((base + iv) * 2 + Math.floor(Math.ceil(Math.sqrt(ev)) / 4)) * level;
         const fractional: number = Math.floor(numerator / 100);
-        const addition: number = statistic === "health"
-            ? level + 10
-            : 5;
+        const addition: number = statistic === "health" ? level + 10 : 5;
 
         return fractional + addition;
     }
@@ -324,12 +379,14 @@ export class Equations extends Section<FullScreenPokemon> {
         const n: number = this.game.numberMaker.randomInt(ball.probabilityMax);
 
         // 3. The Pokemon is caught if...
-        if (pokemon.status) { // ... it is asleep or frozen and N is less than 25.
+        if (pokemon.status) {
+            // ... it is asleep or frozen and N is less than 25.
             if (n < 25) {
                 if (this.game.constants.statuses.probability25[pokemon.status]) {
                     return true;
                 }
-            } else if (n < 12) { // ... it is paralyzed, burned, or poisoned and N is less than 12.
+            } else if (n < 12) {
+                // ... it is paralyzed, burned, or poisoned and N is less than 12.
                 if (this.game.constants.statuses.probability12[pokemon.status]) {
                     return true;
                 }
@@ -337,7 +394,9 @@ export class Equations extends Section<FullScreenPokemon> {
         }
 
         // 4. Otherwise, if N minus the status value is greater than the Pokemon's catch rate, the Pokemon breaks free.
-        const catchRate: number | undefined = this.game.constants.pokemon.byName[pokemon.title.join("")].catchRate;
+        const catchRate: number | undefined = this.game.constants.pokemon.byName[
+            pokemon.title.join("")
+        ].catchRate;
         if (catchRate === undefined) {
             console.warn("Catch rate hasn't yet been added for", pokemon);
         }
@@ -351,9 +410,13 @@ export class Equations extends Section<FullScreenPokemon> {
         // 6. Calculate f.
         const f: number = Math.max(
             Math.min(
-                (pokemon.statistics.health.normal * 255 * 4) | 0 / (pokemon.statistics.health.current * ball.rate) | 0,
-                255),
-            1);
+                (pokemon.statistics.health.normal * 255 * 4) |
+                    (0 / (pokemon.statistics.health.current * ball.rate)) |
+                    0,
+                255
+            ),
+            1
+        );
 
         // 7. If f is greater than or equal to M, the Pokemon is caught. Otherwise, the Pokemon breaks free.
         return f > m;
@@ -369,11 +432,13 @@ export class Equations extends Section<FullScreenPokemon> {
      */
     public numBallShakes(pokemon: IPokemon, ball: IBattleBall): number {
         // 1. Calculate d.
-        const catchRate: number | undefined = this.game.constants.pokemon.byName[pokemon.title.join("")].catchRate;
+        const catchRate: number | undefined = this.game.constants.pokemon.byName[
+            pokemon.title.join("")
+        ].catchRate;
         if (catchRate === undefined) {
             console.warn("Catch rate hasn't yet been added for", pokemon);
         }
-        const d: number = catchRate! * 100 / ball.rate;
+        const d: number = (catchRate! * 100) / ball.rate;
 
         // 2. If d is greater than or equal to 256, the ball shakes three times before the Pokemon breaks free.
         if (d >= 256) {
@@ -385,13 +450,19 @@ export class Equations extends Section<FullScreenPokemon> {
         //    * 5 if it is paralyzed, poisoned, or burned.
         const f: number = Math.max(
             Math.min(
-                (pokemon.statistics.health.normal * 255 * 4) | 0 / (pokemon.statistics.health.normal * ball.rate) | 0,
-                255),
-            1);
-        const x: number = d * f / 255 + this.game.constants.statuses.shaking[pokemon.status || "normal"];
+                (pokemon.statistics.health.normal * 255 * 4) |
+                    (0 / (pokemon.statistics.health.normal * ball.rate)) |
+                    0,
+                255
+            ),
+            1
+        );
+        const x: number =
+            (d * f) / 255 + this.game.constants.statuses.shaking[pokemon.status || "normal"];
 
         // 4. If...
-        if (x < 10) { // x < 10: the Ball misses the Pokemon completely.
+        if (x < 10) {
+            // x < 10: the Ball misses the Pokemon completely.
             return 0;
         }
 
@@ -444,11 +515,7 @@ export class Equations extends Section<FullScreenPokemon> {
             case "fast":
                 return (Math.pow(level, 3) * 4) / 5;
             case "mediumSlow":
-                return (
-                    (6 / 5) * Math.pow(level, 3)
-                    - (Math.pow(level, 2) * 15)
-                    + (level * 100)
-                    - 140);
+                return (6 / 5) * Math.pow(level, 3) - Math.pow(level, 2) * 15 + level * 100 - 140;
             case "slow":
                 return (Math.pow(level, 3) * 5) / 4;
             // case "mediumFast":
@@ -492,6 +559,6 @@ export class Equations extends Section<FullScreenPokemon> {
      * @returns How wide the health bar should be.
      */
     public widthHealthBar(widthFullBar: number, statistic: IStatistic): number {
-        return (widthFullBar - 4) * statistic.current / statistic.normal;
+        return ((widthFullBar - 4) * statistic.current) / statistic.normal;
     }
 }

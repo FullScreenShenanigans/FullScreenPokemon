@@ -20,4 +20,3 @@ For example:
 
     Fixes #123
 -->
-

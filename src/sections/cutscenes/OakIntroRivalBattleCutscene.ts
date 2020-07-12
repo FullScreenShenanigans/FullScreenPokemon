@@ -20,12 +20,10 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 
-        await this.game.audioPlayer.play(
-            this.game.audio.names.rivalAppears,
-            {
-                alias: this.game.audio.aliases.theme,
-                loop: true,
-            });
+        await this.game.audioPlayer.play(this.game.audio.names.rivalAppears, {
+            alias: this.game.audio.aliases.theme,
+            loop: true,
+        });
 
         settings.rival = rival;
         this.game.actions.animateCharacterSetDirection(rival, Direction.Bottom);
@@ -38,7 +36,8 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
                 "%%%%%%%RIVAL%%%%%%%: Wait, %%%%%%%PLAYER%%%%%%%! Let's check out our %%%%%%%POKEMON%%%%%%%!",
                 "Come on, I'll take you on!",
             ],
-            this.game.scenePlayer.bindRoutine("Challenge", { further }));
+            this.game.scenePlayer.bindRoutine("Challenge", { further })
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -49,7 +48,9 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
      * @param args   Settings for the routine.
      */
     public Challenge(settings: any, args: any): void {
-        const starterRival: string[] = this.game.itemsHolder.getItem(this.game.storage.names.starterRival);
+        const starterRival: string[] = this.game.itemsHolder.getItem(
+            this.game.storage.names.starterRival
+        );
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
                 this.game.scenePlayer.startCutscene("OakIntroRivalLeaves");
@@ -58,7 +59,9 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
                 opponent: {
                     leader: {
                         title: "RivalPortrait".split(""),
-                        nickname: this.game.itemsHolder.getItem(this.game.storage.names.nameRival),
+                        nickname: this.game.itemsHolder.getItem(
+                            this.game.storage.names.nameRival
+                        ),
                     },
                     nextCutscene: "OakIntroRivalLeaves",
                     reward: 175,
@@ -73,16 +76,21 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
             texts: {
                 start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
                 outcomes: {
-                    [BattleOutcome.opponentVictory]: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
-                    [BattleOutcome.playerVictory]: (): string => [
-                        "%%%%%%%RIVAL%%%%%%%: WHAT?",
-                        "Unbelievable!",
-                        "I picked the wrong %%%%%%%POKEMON%%%%%%%!",
-                    ].join(" "),
+                    [BattleOutcome.opponentVictory]: (): string =>
+                        "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
+                    [BattleOutcome.playerVictory]: (): string =>
+                        [
+                            "%%%%%%%RIVAL%%%%%%%: WHAT?",
+                            "Unbelievable!",
+                            "I picked the wrong %%%%%%%POKEMON%%%%%%%!",
+                        ].join(" "),
                 },
             },
             // noBlackout: true,
-            keptThings: this.game.graphics.collections.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.game.graphics.collections.collectBattleKeptThings([
+                "player",
+                "Rival",
+            ]),
         };
         let blocks: number;
 
@@ -104,20 +112,18 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
             blocks += 1;
         }
 
-        this.game.actions.walking.startWalkingOnPath(
-            settings.rival,
-            [
-                {
-                    blocks,
-                    direction: Direction.Left,
-                },
-                {
-                    blocks: 1,
-                    direction: Direction.Bottom,
-                },
-                (): void => {
-                    this.game.battles.startBattle(battleInfo);
-                },
-            ]);
+        this.game.actions.walking.startWalkingOnPath(settings.rival, [
+            {
+                blocks,
+                direction: Direction.Left,
+            },
+            {
+                blocks: 1,
+                direction: Direction.Bottom,
+            },
+            (): void => {
+                this.game.battles.startBattle(battleInfo);
+            },
+        ]);
     }
 }

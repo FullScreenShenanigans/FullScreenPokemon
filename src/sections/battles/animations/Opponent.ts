@@ -23,24 +23,28 @@ export class Opponent extends Section<FullScreenPokemon> implements ITeamAnimati
     /**
      * Shared animations for teams switching Pokemon.
      */
-    @factory((container: Opponent) =>
-        new Switching(container, {
-            enter: {
-                team: Team.opponent,
-                getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
-                    const opponent: IThing = battleInfo.things.opponent;
-                    const menu: IMenu = container.game.menuGrapher.getMenu("GeneralText") as IMenu;
+    @factory(
+        (container: Opponent) =>
+            new Switching(container, {
+                enter: {
+                    team: Team.opponent,
+                    getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
+                        const opponent: IThing = battleInfo.things.opponent;
+                        const menu: IMenu = container.game.menuGrapher.getMenu(
+                            "GeneralText"
+                        ) as IMenu;
 
-                    return menu.right + opponent.width / 2;
+                        return menu.right + opponent.width / 2;
+                    },
+                    getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
+                        battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
+                    getSmokeLeft: (battleInfo: IBattleInfo): number =>
+                        battleInfo.things.menu.right - 32,
+                    getSmokeTop: (battleInfo: IBattleInfo): number =>
+                        battleInfo.things.menu.top + 32,
                 },
-                getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
-                    battleInfo.teams.opponent.selectedActor.title.join("") + "Front",
-                getSmokeLeft: (battleInfo: IBattleInfo): number =>
-                    battleInfo.things.menu.right - 32,
-                getSmokeTop: (battleInfo: IBattleInfo): number =>
-                    battleInfo.things.menu.top + 32,
-            },
-        }))
+            })
+    )
     public readonly switching: Switching;
 
     /**

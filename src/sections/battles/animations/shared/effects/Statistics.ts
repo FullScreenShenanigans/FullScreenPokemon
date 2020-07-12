@@ -14,7 +14,11 @@ export class Statistics extends Section<FullScreenPokemon> {
      * @param effect   Effect of the move that missed.
      * @param onComplete   Handler for when this is done.
      */
-    public run(_teamAndAction: ITeamAndAction<IMoveAction>, _effect: IMoveEffect, onComplete: () => void): void {
+    public run(
+        _teamAndAction: ITeamAndAction<IMoveAction>,
+        _effect: IMoveEffect,
+        onComplete: () => void
+    ): void {
         onComplete();
     }
 }

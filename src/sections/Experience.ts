@@ -15,7 +15,12 @@ export class Experience extends Section<FullScreenPokemon> {
      */
     public levelup(pokemon: IPokemon): void {
         pokemon.level += 1;
-        pokemon.statistics = this.game.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+        pokemon.statistics = this.game.equations.newPokemonStatistics(
+            pokemon.title,
+            pokemon.level,
+            pokemon.ev,
+            pokemon.iv
+        );
 
         // TODO: display text box containing levelup info
 
@@ -34,7 +39,10 @@ export class Experience extends Section<FullScreenPokemon> {
      */
     public gainExperience(pokemon: IPokemon, experience: number): boolean {
         pokemon.experience += experience;
-        if (pokemon.experience >= this.game.equations.experienceStarting(pokemon.title, pokemon.level + 1)) {
+        if (
+            pokemon.experience >=
+            this.game.equations.experienceStarting(pokemon.title, pokemon.level + 1)
+        ) {
             this.levelup(pokemon);
             return true;
         }
@@ -50,16 +58,25 @@ export class Experience extends Section<FullScreenPokemon> {
      */
     public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
         const experienceToGain = this.game.equations.experienceGained(
-            battleInfo.teams.player, battleInfo.teams.opponent);
+            battleInfo.teams.player,
+            battleInfo.teams.opponent
+        );
 
-        const experienceText: (string | string[])[][] = [[
-            battleInfo.teams.player.selectedActor.nickname,
-            ` gained ${experienceToGain} experience!`]];
+        const experienceText: (string | string[])[][] = [
+            [
+                battleInfo.teams.player.selectedActor.nickname,
+                ` gained ${experienceToGain} experience!`,
+            ],
+        ];
         this.game.menuGrapher.createMenu("GeneralText");
-        const levelUp = this.gainExperience(battleInfo.teams.player.selectedActor, experienceToGain);
+        const levelUp = this.gainExperience(
+            battleInfo.teams.player.selectedActor,
+            experienceToGain
+        );
         let callBack = onComplete;
         if (levelUp) {
-            callBack = () => this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete);
+            callBack = () =>
+                this.processBattleLevelUp(battleInfo.teams.player.selectedActor, onComplete);
         }
 
         this.game.menuGrapher.addMenuDialog("GeneralText", experienceText, callBack);
@@ -74,12 +91,7 @@ export class Experience extends Section<FullScreenPokemon> {
      */
     private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
         this.game.menuGrapher.createMenu("GeneralText");
-        const experienceText = [
-            [
-                pokemon.nickname,
-                ` grew to level ${pokemon.level}!`,
-            ],
-        ];
+        const experienceText = [[pokemon.nickname, ` grew to level ${pokemon.level}!`]];
         let callBack = onComplete;
         if (this.canLearnMoveAtLevel(pokemon)) {
             callBack = () => this.learnBattleMove(pokemon, onComplete);
@@ -110,5 +122,4 @@ export class Experience extends Section<FullScreenPokemon> {
         // TODO: implement this function
         onComplete();
     }
-
 }

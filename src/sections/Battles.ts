@@ -1,6 +1,14 @@
 import { member } from "babyioc";
 import {
-    IActor, IBattleInfo as IBattleInfoBase, IOnBattleComplete, IStatistic, IStatistics, ITeamBase, ITeamDescriptor, IUnderEachTeam, Team,
+    IActor,
+    IBattleInfo as IBattleInfoBase,
+    IOnBattleComplete,
+    IStatistic,
+    IStatistics,
+    ITeamBase,
+    ITeamDescriptor,
+    IUnderEachTeam,
+    Team,
 } from "battlemovr";
 import { Section } from "eightbittr";
 
@@ -267,17 +275,19 @@ export interface IBattleTeam extends ITeamBase, IEnemyTeam {
 /**
  * Information on an in-progress battle.
  */
-export type IBattleInfo = IBattleInfoBase & IBattleOptions & IPokemonBattleOptions & {
-    /**
-     * How many times the player has failed to flee.
-     */
-    fleeAttempts: number;
+export type IBattleInfo = IBattleInfoBase &
+    IBattleOptions &
+    IPokemonBattleOptions & {
+        /**
+         * How many times the player has failed to flee.
+         */
+        fleeAttempts: number;
 
-    /**
-     * Opposing teams in the battle.
-     */
-    teams: IUnderEachTeam<IBattleTeam>;
-};
+        /**
+         * Opposing teams in the battle.
+         */
+        teams: IUnderEachTeam<IBattleTeam>;
+    };
 
 /**
  * BattleMovr hooks to run trainer battles.
@@ -347,7 +357,9 @@ export class Battles extends Section<FullScreenPokemon> {
      * @returns Whether a player's party is wiped.
      */
     public isPartyWiped(): boolean {
-        for (const chosenPokemon of this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty)) {
+        for (const chosenPokemon of this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        )) {
             if (chosenPokemon.statistics.health.current !== 0) {
                 return false;
             }
@@ -360,7 +372,9 @@ export class Battles extends Section<FullScreenPokemon> {
      * Heals party back to full health.
      */
     public healParty(): void {
-        for (const pokemon of this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty)) {
+        for (const pokemon of this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        )) {
             this.game.battles.healPokemon(pokemon);
         }
     }
@@ -373,7 +387,8 @@ export class Battles extends Section<FullScreenPokemon> {
      */
     public canTeamAttemptFlee(team: Team): boolean {
         const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        return !(team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent).leader;
+        return !(team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent)
+            .leader;
     }
 
     /**
@@ -388,7 +403,8 @@ export class Battles extends Section<FullScreenPokemon> {
             {
                 ...this.game.constants.battles.texts.defaultBattleTexts,
                 ...partialBattleOptions.texts,
-            });
+            }
+        );
 
         const teams: IUnderEachTeam<ITeamDescriptor> = {
             opponent: {
@@ -396,7 +412,9 @@ export class Battles extends Section<FullScreenPokemon> {
                 selector: "opponent",
             },
             player: {
-                actors: this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty) as IPokemon[],
+                actors: this.game.itemsHolder.getItem(
+                    this.game.storage.names.pokemonInParty
+                ) as IPokemon[],
                 leader: {
                     nickname: this.game.itemsHolder.getItem(this.game.storage.names.name),
                     title: "PlayerBack".split(""),

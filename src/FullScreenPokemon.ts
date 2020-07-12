@@ -2,13 +2,18 @@ import { AudioPlayr, IAudioPlayrSettings } from "audioplayr";
 import { factory, member } from "babyioc";
 import { BattleMovr } from "battlemovr";
 import { ClassCyclr, IClassCyclrSettings } from "classcyclr";
-import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
+import {
+    EightBittr,
+    IComponentSettings,
+    IEightBittrConstructorSettings,
+    IEightBittrSettings,
+} from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GroupHoldr } from "groupholdr";
 import { ItemsHoldr } from "itemsholdr";
 import { MenuGraphr } from "menugraphr";
 import { IModAttachrSettings, ModAttachr, IModsItemsHoldr } from "modattachr";
-import { INumberMakrSettings, NumberMakr } from 'numbermakr';
+import { INumberMakrSettings, NumberMakr } from "numbermakr";
 import { ScenePlayr } from "sceneplayr";
 import { StateHoldr, IStateItemsHoldr } from "stateholdr";
 

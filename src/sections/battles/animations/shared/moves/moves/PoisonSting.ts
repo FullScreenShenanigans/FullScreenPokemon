@@ -13,7 +13,9 @@ export class PoisonSting extends Move {
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        const explosion = this.game.objectMaker.make<IThing>(this.game.things.names.explosionSmall);
+        const explosion = this.game.objectMaker.make<IThing>(
+            this.game.things.names.explosionSmall
+        );
         const menu: IMenu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
         let startX: number;
         let startY: number;
@@ -25,16 +27,14 @@ export class PoisonSting extends Move {
             startY = menu.bottom - (this.defenderThing.height + 8);
         }
         this.game.things.add(explosion, startX, startY);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(explosion);
-                this.game.battles.animations.things.flicker({
-                    callback,
-                    clearTime: 14,
-                    interval: 5,
-                    thing: this.defenderThing,
-                });
-            },
-            2);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(explosion);
+            this.game.battles.animations.things.flicker({
+                callback,
+                clearTime: 14,
+                interval: 5,
+                thing: this.defenderThing,
+            });
+        }, 2);
     }
 }

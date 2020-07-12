@@ -27,7 +27,7 @@ export interface IModComponentClass {
      */
     modName: string;
 
-    new(eightBitter: FullScreenPokemon, eventNames: ModEventNames): ModComponent;
+    new (eightBitter: FullScreenPokemon, eventNames: ModEventNames): ModComponent;
 }
 
 /**
@@ -66,5 +66,7 @@ export class Mods<TEightBittr extends FullScreenPokemon> extends Section<TEightB
      * General schemas for known mods, including names and events.
      */
     public readonly mods: IMod[] = Mods.modClasses.map(
-        (modClass) => this.modsByName[modClass.modName] = new modClass(this.game, this.eventNames));
+        (modClass) =>
+            (this.modsByName[modClass.modName] = new modClass(this.game, this.eventNames))
+    );
 }

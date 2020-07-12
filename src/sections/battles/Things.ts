@@ -37,7 +37,11 @@ export class Things extends Section<FullScreenPokemon> {
         this.game.physics.setBottom(battleInfo.things.opponent, battleInfo.things.menu.top + 108);
         this.game.physics.setRight(battleInfo.things.opponent, battleInfo.things.menu.right - 16);
 
-        this.game.groupHolder.switchGroup(battleInfo.things.opponent, battleInfo.things.opponent.groupType, "Text");
+        this.game.groupHolder.switchGroup(
+            battleInfo.things.opponent,
+            battleInfo.things.opponent.groupType,
+            "Text"
+        );
     }
 
     /**
@@ -55,8 +59,13 @@ export class Things extends Section<FullScreenPokemon> {
         this.game.things.add(
             battleInfo.things.player,
             battleInfo.things.menu.left,
-            battleInfo.things.menu.bottom - battleInfo.things.player.height * 2);
+            battleInfo.things.menu.bottom - battleInfo.things.player.height * 2
+        );
 
-        this.game.groupHolder.switchGroup(battleInfo.things.player, battleInfo.things.player.groupType, "Text");
+        this.game.groupHolder.switchGroup(
+            battleInfo.things.player,
+            battleInfo.things.player.groupType,
+            "Text"
+        );
     }
 }

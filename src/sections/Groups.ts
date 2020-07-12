@@ -20,11 +20,5 @@ export class Groups<TEightBittr extends FullScreenPokemon> extends EightBittrGro
     /**
      * Names of known IThing groups, in drawing order.
      */
-    public readonly groupNames = [
-        "Terrain",
-        "Scenery",
-        "Solid",
-        "Character",
-        "Text",
-    ];
+    public readonly groupNames = ["Terrain", "Scenery", "Solid", "Character", "Text"];
 }

@@ -16,13 +16,12 @@ export interface IBattleModification {
 /**
  * Move effects that are preferred.
  */
-export type IModificationPreference = (
+export type IModificationPreference =
     | ["Effect", string]
     | ["Move", string]
     | ["Statistic", string, number]
     | ["Super", string, string]
-    | ["Weak", string, string])
-;
+    | ["Weak", string, string];
 
 /**
  * Modification settings for the battle AI.

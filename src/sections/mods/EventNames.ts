@@ -32,13 +32,13 @@ export class ModEventNames {
      */
     public readonly onFaint = "onFaint";
 
-    /*	
-     * Key for the event when the game is starting to play.	
+    /*
+     * Key for the event when the game is starting to play.
      */
     public readonly onGamePlay = "onGamePlay";
 
-    /**	
-     * Key for the event when the game is paused.	
+    /**
+     * Key for the event when the game is paused.
      */
     public readonly onGamePause = "onGamePause";
 

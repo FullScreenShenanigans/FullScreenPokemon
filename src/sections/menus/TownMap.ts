@@ -35,20 +35,20 @@ export class TownMap extends Section<FullScreenPokemon> {
             },
             position: {
                 offset: {
-                    left: playerPosition[0] - (playerSize.width / 2),
-                    top: playerPosition[1] - (playerSize.height / 2),
+                    left: playerPosition[0] - playerSize.width / 2,
+                    top: playerPosition[1] - playerSize.height / 2,
                 },
             },
         });
         this.game.menuGrapher.setActiveMenu("Town Map");
-    }
+    };
 
     /**
      * Shows allowed flying locations on the Town Map menu.
      */
     public readonly showFlyLocations = (): void => {
         console.warn("Map fly locations not implemented.");
-    }
+    };
 
     /**
      * Shows a Pokemon's nest locations on the Town Map menu.
@@ -63,5 +63,5 @@ export class TownMap extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog("Town Map", [dialog]);
 
         console.warn("Pokemon map locations not implemented.");
-    }
+    };
 }

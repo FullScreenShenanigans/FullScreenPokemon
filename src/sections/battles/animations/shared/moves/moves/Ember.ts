@@ -26,22 +26,18 @@ export class Ember extends Move {
         }
 
         for (let i = 0; i < 3; i += 1) {
-            this.game.timeHandler.addEvent(
-                (): void => {
-                    this.animateEmbers(xPositions[i], yPosition);
-                },
-                i * 24);
+            this.game.timeHandler.addEvent((): void => {
+                this.animateEmbers(xPositions[i], yPosition);
+            }, i * 24);
         }
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.battles.animations.things.shake({
-                    callback,
-                    clearTime: 4,
-                    dx: 3,
-                });
-            },
-            84);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.battles.animations.things.shake({
+                callback,
+                clearTime: 4,
+                dx: 3,
+            });
+        }, 84);
     }
 
     /**
@@ -53,11 +49,9 @@ export class Ember extends Move {
     private animateEmbers(x: number, y: number): void {
         this.createEmber("EmberSmall", x, y);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.createEmber("EmberLarge", x, y);
-            },
-            6);
+        this.game.timeHandler.addEvent((): void => {
+            this.createEmber("EmberLarge", x, y);
+        }, 6);
     }
 
     /**

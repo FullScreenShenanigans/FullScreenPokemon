@@ -17,18 +17,19 @@ export class TailWhip extends Move {
 
         this.game.timeHandler.addEvent(
             (): void => this.game.physics.shiftHoriz(this.attackerThing, -dx * this.direction),
-            dt);
+            dt
+        );
         this.game.timeHandler.addEvent(
             (): void => this.game.physics.shiftHoriz(this.attackerThing, dx * this.direction),
-            dt * 2);
+            dt * 2
+        );
         this.game.timeHandler.addEvent(
             (): void => this.game.physics.shiftHoriz(this.attackerThing, -dx * this.direction),
-            dt * 3);
+            dt * 3
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.battles.animations.things.shake({ callback });
-            },
-            (dt * 3.5) | 0);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.battles.animations.things.shake({ callback });
+        }, (dt * 3.5) | 0);
     }
 }

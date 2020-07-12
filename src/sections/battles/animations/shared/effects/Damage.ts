@@ -24,7 +24,11 @@ export class Damage extends Section<FullScreenPokemon> {
      * @param effect   Effect of the move whose damage is being calculated.
      * @param onComplete   Handler for when this is done.
      */
-    public run(teamAndAction: ITeamAndAction<IMoveAction>, effect: IDamageEffect, onComplete: () => void): void {
+    public run(
+        teamAndAction: ITeamAndAction<IMoveAction>,
+        effect: IDamageEffect,
+        onComplete: () => void
+    ): void {
         const statistic: IStatistic = teamAndAction.target.actor.statistics.health;
         const amount: number = this.calculator.calculateDamage(teamAndAction, effect);
 
@@ -38,11 +42,15 @@ export class Damage extends Section<FullScreenPokemon> {
                     return;
                 }
 
-                this.game.battles.animations.getTeamAnimations(teamAndAction.target.team)
+                this.game.battles.animations
+                    .getTeamAnimations(teamAndAction.target.team)
                     .actions.effects.fainting.run(
                         teamAndAction.target.actor as IPokemon,
-                        teamAndAction.target.team, onComplete);
-            });
+                        teamAndAction.target.team,
+                        onComplete
+                    );
+            }
+        );
 
         statistic.current -= amount;
     }

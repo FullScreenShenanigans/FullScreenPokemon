@@ -17,13 +17,11 @@ export class Switching extends Section<FullScreenPokemon> {
      */
     public offerSwitch(team: Team, onComplete: () => void): void {
         const openPokemonMenu: () => void = (): void => {
-            this.openBattlePokemonMenu(
-                team,
-                (action: ISwitchAction): void => {
-                    this.game.battleMover.switchSelectedActor(team, action.newActor);
-                    this.game.menuGrapher.deleteMenu("Pokemon");
-                    this.game.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
-                });
+            this.openBattlePokemonMenu(team, (action: ISwitchAction): void => {
+                this.game.battleMover.switchSelectedActor(team, action.newActor);
+                this.game.menuGrapher.deleteMenu("Pokemon");
+                this.game.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
+            });
         };
 
         if (!this.game.battles.canTeamAttemptFlee(team)) {
@@ -54,7 +52,8 @@ export class Switching extends Section<FullScreenPokemon> {
                     ],
                 });
                 this.game.menuGrapher.setActiveMenu("Yes/No");
-            });
+            }
+        );
     }
 
     /**
@@ -75,15 +74,12 @@ export class Switching extends Section<FullScreenPokemon> {
                 }
             },
             onSwitch: (pokemon: IPokemon): void => {
-                this.attemptSwitch(
-                    team,
-                    pokemon,
-                    (): void => {
-                        onChoice({
-                            newActor: pokemon,
-                            type: "switch",
-                        });
+                this.attemptSwitch(team, pokemon, (): void => {
+                    onChoice({
+                        newActor: pokemon,
+                        type: "switch",
                     });
+                });
             },
         });
     }
@@ -112,17 +108,13 @@ export class Switching extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    pokemon.title,
-                    " is already out!",
-                ],
-            ],
+            [[pokemon.title, " is already out!"]],
             (): void => {
                 this.game.menuGrapher.deleteMenu("GeneralText");
                 this.game.menuGrapher.deleteMenu("PokemonMenuContext");
                 this.game.menuGrapher.setActiveMenu("Pokemon");
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

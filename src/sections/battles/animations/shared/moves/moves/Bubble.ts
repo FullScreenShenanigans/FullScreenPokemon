@@ -33,21 +33,22 @@ export class Bubble extends Move {
 
         this.game.timeHandler.addEvent(
             (): void => this.animateGroupTwo(xPositions[1], yPositions[1]),
-            24);
+            24
+        );
 
         this.game.timeHandler.addEvent(
             (): void => this.animateGroupThree(xPositions[2], yPositions[2]),
-            48);
+            48
+        );
 
         this.game.timeHandler.addEvent(
             (): void => this.animateGroupFour(xPositions[3], yPositions[3]),
-            72);
+            72
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.battles.animations.things.shake({ callback });
-            },
-            100);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.battles.animations.things.shake({ callback });
+        }, 100);
     }
 
     /**
@@ -57,13 +58,15 @@ export class Bubble extends Move {
      * @param y   Vertical position to animate on.
      */
     private animateGroupOne(x: number, y: number): void {
-        const bubbleLarge: IThing = this.game.things.add(this.game.things.names.bubbleLarge, x, y);
+        const bubbleLarge: IThing = this.game.things.add(
+            this.game.things.names.bubbleLarge,
+            x,
+            y
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(bubbleLarge);
-            },
-            96);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(bubbleLarge);
+        }, 96);
     }
 
     /**
@@ -73,11 +76,17 @@ export class Bubble extends Move {
      * @param y   Vertical position to animate on.
      */
     private animateGroupTwo(x: number, y: number): void {
-        const bubbleLarge: IThing = this.game.things.add(this.game.things.names.bubbleLarge, x, y);
+        const bubbleLarge: IThing = this.game.things.add(
+            this.game.things.names.bubbleLarge,
+            x,
+            y
+        );
         const bubblesSmall: IThing[] = [];
 
         for (let j = 0; j < 4; j += 1) {
-            bubblesSmall[j] = this.game.objectMaker.make<IThing>(this.game.things.names.bubbleSmall);
+            bubblesSmall[j] = this.game.objectMaker.make<IThing>(
+                this.game.things.names.bubbleSmall
+            );
         }
 
         this.game.things.add(bubblesSmall[0], x, y - 4);
@@ -85,14 +94,12 @@ export class Bubble extends Move {
         this.game.things.add(bubblesSmall[2], x + 8, y + 4);
         this.game.things.add(bubblesSmall[3], x, y + 8);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(bubbleLarge);
-                for (let j = 0; j < 4; j += 1) {
-                    this.game.death.kill(bubblesSmall[j]);
-                }
-            },
-            72);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(bubbleLarge);
+            for (let j = 0; j < 4; j += 1) {
+                this.game.death.kill(bubblesSmall[j]);
+            }
+        }, 72);
     }
 
     /**
@@ -106,8 +113,12 @@ export class Bubble extends Move {
         const bubblesSmall: IThing[] = [];
 
         for (let j = 0; j < 3; j += 1) {
-            bubblesLarge[j] = this.game.objectMaker.make<IThing>(this.game.things.names.bubbleLarge);
-            bubblesSmall[j] = this.game.objectMaker.make<IThing>(this.game.things.names.bubbleSmall);
+            bubblesLarge[j] = this.game.objectMaker.make<IThing>(
+                this.game.things.names.bubbleLarge
+            );
+            bubblesSmall[j] = this.game.objectMaker.make<IThing>(
+                this.game.things.names.bubbleSmall
+            );
         }
 
         this.game.things.add(bubblesLarge[0], x, y - 4);
@@ -117,14 +128,12 @@ export class Bubble extends Move {
         this.game.things.add(bubblesSmall[1], x, y + 8);
         this.game.things.add(bubblesSmall[2], x + 8, y + 6);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                for (let j = 0; j < 4; j += 1) {
-                    this.game.death.kill(bubblesLarge[j]);
-                    this.game.death.kill(bubblesSmall[j]);
-                }
-            },
-            42);
+        this.game.timeHandler.addEvent((): void => {
+            for (let j = 0; j < 4; j += 1) {
+                this.game.death.kill(bubblesLarge[j]);
+                this.game.death.kill(bubblesSmall[j]);
+            }
+        }, 42);
     }
 
     /**
@@ -138,8 +147,12 @@ export class Bubble extends Move {
         const bubblesSmall: IThing[] = [];
 
         for (let j = 0; j < 4; j += 1) {
-            bubblesLarge[j] = this.game.objectMaker.make<IThing>(this.game.things.names.bubbleLarge);
-            bubblesSmall[j] = this.game.objectMaker.make<IThing>(this.game.things.names.bubbleSmall);
+            bubblesLarge[j] = this.game.objectMaker.make<IThing>(
+                this.game.things.names.bubbleLarge
+            );
+            bubblesSmall[j] = this.game.objectMaker.make<IThing>(
+                this.game.things.names.bubbleSmall
+            );
         }
 
         this.game.things.add(bubblesLarge[0], x + 4, y + 12);
@@ -148,13 +161,11 @@ export class Bubble extends Move {
         this.game.things.add(bubblesSmall[0], x + 4, y - 4);
         this.game.things.add(bubblesSmall[1], x + 8, y);
         this.game.things.add(bubblesSmall[2], x, y + 12);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                for (let j = 0; j < 4; j += 1) {
-                    this.game.death.kill(bubblesLarge[j]);
-                    this.game.death.kill(bubblesSmall[j]);
-                }
-            },
-            24);
+        this.game.timeHandler.addEvent((): void => {
+            for (let j = 0; j < 4; j += 1) {
+                this.game.death.kill(bubblesLarge[j]);
+                this.game.death.kill(bubblesSmall[j]);
+            }
+        }, 24);
     }
 }

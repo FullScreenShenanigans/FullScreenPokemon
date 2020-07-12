@@ -37,7 +37,10 @@ describe("EncounterStarting", () => {
             const { fsp, player, wildPokemonOptions } = stubBlankGameForEncounter();
 
             // Act
-            fsp.actions.walking.encounters.starting.startWildEncounterBattle(player, wildPokemonOptions);
+            fsp.actions.walking.encounters.starting.startWildEncounterBattle(
+                player,
+                wildPokemonOptions
+            );
 
             // Assert
             const opponentActors = fsp.battleMover.getBattleInfo().teams.opponent.actors;
@@ -49,7 +52,10 @@ describe("EncounterStarting", () => {
             const { fsp, player, wildPokemonOptions } = stubBlankGameForEncounter();
 
             // Act
-            fsp.actions.walking.encounters.starting.startWildEncounterBattle(player, wildPokemonOptions);
+            fsp.actions.walking.encounters.starting.startWildEncounterBattle(
+                player,
+                wildPokemonOptions
+            );
 
             // Assert
             expect(fsp.mapScreener.blockInputs).to.be.equal(true);

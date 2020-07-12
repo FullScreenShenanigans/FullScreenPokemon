@@ -7,7 +7,9 @@ import { IThing } from "./Things";
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittrUtilities<TEightBittr> {
+export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittrUtilities<
+    TEightBittr
+> {
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
@@ -16,7 +18,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param times   How many times to repeat (by default, 1).
      */
     public stringOf(str: string, times: number = 1): string {
-        return (times === 0) ? "" : new Array((times || 1) + 1).join(str);
+        return times === 0 ? "" : new Array((times || 1) + 1).join(str);
     }
 
     /**
@@ -30,10 +32,12 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @example makeDigit(7, 3, 1); // '117'
      */
     public makeDigit(num: number | string, size: number, prefix?: any): string {
-        return this.stringOf(
-            prefix ? prefix.toString() : "0",
-            Math.max(0, size - String(num).length),
-        ) + num;
+        return (
+            this.stringOf(
+                prefix ? prefix.toString() : "0",
+                Math.max(0, size - String(num).length)
+            ) + num
+        );
     }
 
     /**
@@ -47,7 +51,13 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param keyCount   The key associated with the item's count, such as "amount".
      * @returns Whether the stackable item was newly added.
      */
-    public combineArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
+    public combineArrayMembers(
+        array: any[],
+        title: string,
+        count: number,
+        keyTitle: string,
+        keyCount: string
+    ): boolean {
         for (const member of array) {
             if (member[keyTitle] === title) {
                 member[keyCount] += count;
@@ -73,7 +83,13 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param keyCount   The key associated with the item's count, such as "amount".
      * @returns Whether the stackable item was removed.
      */
-    public removeArrayMembers(array: any[], title: string, count: number, keyTitle: string, keyCount: string): boolean {
+    public removeArrayMembers(
+        array: any[],
+        title: string,
+        count: number,
+        keyTitle: string,
+        keyCount: string
+    ): boolean {
         for (let i = 0; i < array.length; i += 1) {
             if (array[i][keyTitle] === title) {
                 array[i][keyCount] -= count;

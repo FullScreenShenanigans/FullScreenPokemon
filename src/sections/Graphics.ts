@@ -11,7 +11,9 @@ import { graphicsLibrary } from "./graphics/GraphicsLibrary";
 /**
  * Changes the visual appearance of Things.
  */
-export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrGraphics<TEightBittr> {
+export class Graphics<TEightBittr extends FullScreenPokemon> extends EightBittrGraphics<
+    TEightBittr
+> {
     /**
      * What class name should indicate a Thing is to be flipped verticallu.
      */

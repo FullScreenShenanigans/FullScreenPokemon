@@ -1,5 +1,7 @@
 import {
-    IListMenuSchema, IMenuChildSchema, IMenuWordPadLeftCommand,
+    IListMenuSchema,
+    IMenuChildSchema,
+    IMenuWordPadLeftCommand,
     MenuGraphr,
 } from "menugraphr";
 
@@ -18,8 +20,8 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
             "[": "LeftSquareBracket",
             "]": "RightSquareBracket",
             "-": "Hyphen",
-            "MDash": "MDash",
-            "_": "Underscore",
+            MDash: "MDash",
+            _: "Underscore",
             "?": "QuestionMark",
             "!": "ExclamationMark",
             "/": "Slash",
@@ -30,31 +32,41 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
         },
         game: game,
         replacements: {
-            "PLAYER": (): string[] =>
-                game.itemsHolder.getItem(game.storage.names.name),
-            "RIVAL": (): string[] =>
-                game.itemsHolder.getItem(game.storage.names.nameRival),
-            "POKE": "POK�".split(""),
-            "POKEMON": "POK�MON".split(""),
-            "POKEDEX": "POK�DEX".split(""),
+            PLAYER: (): string[] => game.itemsHolder.getItem(game.storage.names.name),
+            RIVAL: (): string[] => game.itemsHolder.getItem(game.storage.names.nameRival),
+            POKE: "POK�".split(""),
+            POKEMON: "POK�MON".split(""),
+            POKEDEX: "POK�DEX".split(""),
             "POKEDEX.SEEN": (): string[] =>
-                game.utilities.makeDigit(
-                    game.saves.getPokedexListingsOrdered()
-                        .filter((listing: IPokedexInformation): boolean => !!(listing && listing.seen))
-                        .length,
-                    12,
-                    "\t")
+                game.utilities
+                    .makeDigit(
+                        game.saves
+                            .getPokedexListingsOrdered()
+                            .filter(
+                                (listing: IPokedexInformation): boolean =>
+                                    !!(listing && listing.seen)
+                            ).length,
+                        12,
+                        "\t"
+                    )
                     .split(""),
             "POKEDEX.OWN": (): string[] =>
-                game.utilities.makeDigit(
-                    game.saves.getPokedexListingsOrdered()
-                        .filter((listing: IPokedexInformation): boolean => !!(listing && listing.caught))
-                        .length,
-                    12,
-                    "\t")
+                game.utilities
+                    .makeDigit(
+                        game.saves
+                            .getPokedexListingsOrdered()
+                            .filter(
+                                (listing: IPokedexInformation): boolean =>
+                                    !!(listing && listing.caught)
+                            ).length,
+                        12,
+                        "\t"
+                    )
                     .split(""),
             "BADGES.LENGTH": (): string[] => {
-                const badges: { [i: string]: boolean } = game.itemsHolder.getItem(game.storage.names.badges);
+                const badges: { [i: string]: boolean } = game.itemsHolder.getItem(
+                    game.storage.names.badges
+                );
                 let total = 0;
 
                 for (const i in badges) {
@@ -73,15 +85,17 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
 
                 return Object.keys(pokedex)
                     .filter((listing): boolean => !!pokedex[listing].seen)
-                    .length
-                    .toString()
+                    .length.toString()
                     .split("");
             },
-            "TIME": (): string[] => {
+            TIME: (): string[] => {
                 const ticksRecorded: number = game.itemsHolder.getItem(game.storage.names.time);
-                const ticksUnrecorded: number = game.fpsAnalyzer.getRecordedTicks() - game.ticksElapsed;
+                const ticksUnrecorded: number =
+                    game.fpsAnalyzer.getRecordedTicks() - game.ticksElapsed;
                 const ticksTotal: number = Math.floor(ticksRecorded + ticksUnrecorded);
-                const secondsTotal: number = Math.floor(ticksTotal / ((game.settings.components.frameTicker || {}).interval || 1) || 0);
+                const secondsTotal: number = Math.floor(
+                    ticksTotal / ((game.settings.components.frameTicker || {}).interval || 1) || 0
+                );
                 let hours: string = Math.floor(secondsTotal / 14400).toString();
                 let minutes: string = Math.floor((secondsTotal - Number(hours)) / 240).toString();
 
@@ -99,21 +113,21 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
 
                 return (hours + ":" + minutes).split("");
             },
-            "MONEY": (): string[] =>
+            MONEY: (): string[] =>
                 game.itemsHolder.getItem(game.storage.names.money).toString().split(""),
         },
         sounds: {
             onInteraction: () => game.audioPlayer.play("Menu Bleep"),
         },
         schemas: {
-            "Computer": {
+            Computer: {
                 keepOnBack: true,
                 size: {
                     height: 160,
                     width: 280,
                 },
             },
-            "StartOptions": {
+            StartOptions: {
                 size: {
                     width: 240,
                     height: 160,
@@ -122,15 +136,11 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     horizontal: "center",
                     vertical: "center",
                 },
-                clearedIndicesOnDeletion: [
-                    "Pause",
-                    "Pokemon",
-                    "Items",
-                ],
+                clearedIndicesOnDeletion: ["Pause", "Pokemon", "Items"],
                 textXOffset: 32,
                 ignoreB: true,
             } as IListMenuSchema,
-            "GeneralText": {
+            GeneralText: {
                 size: {
                     height: 96,
                     width: 320,
@@ -145,7 +155,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 ignoreB: true,
                 textPaddingRight: 12,
             },
-            "Pause": {
+            Pause: {
                 size: {
                     width: 160,
                     height: 224,
@@ -162,7 +172,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 32,
                 textPaddingY: 31,
             } as IListMenuSchema,
-            "Pokedex": {
+            Pokedex: {
                 size: {
                     width: 352,
                 },
@@ -213,7 +223,8 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "menu",
                         name: "PokedexNumbers",
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 backMenu: "Pause",
                 ignoreProgressB: true,
                 scrollingItemsComputed: true,
@@ -222,7 +233,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 28,
                 textYOffset: 44,
             } as IListMenuSchema,
-            "PokedexNumbers": {
+            PokedexNumbers: {
                 size: {
                     width: 64,
                     height: 80,
@@ -247,13 +258,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 top: 48,
                             },
                         },
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 container: "Pokedex",
                 hidden: true,
                 textSpeed: 0,
                 textPaddingY: 16,
             } as any,
-            "PokedexOptions": {
+            PokedexOptions: {
                 size: {
                     width: 86,
                     height: 148,
@@ -274,7 +286,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 16,
                 textYOffset: 20,
             } as IListMenuSchema,
-            "PokedexListing": {
+            PokedexListing: {
                 size: {
                     width: 320,
                     height: 288,
@@ -336,10 +348,11 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                         size: {
                             width: 160,
                         },
-                    }],
+                    },
+                ],
                 lined: true,
             } as IMenuBase,
-            "PokedexListingSprite": {
+            PokedexListingSprite: {
                 position: {
                     offset: {
                         left: 32,
@@ -353,7 +366,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 hidden: true,
                 container: "PokedexListing",
             } as IMenuSchema,
-            "PokedexListingName": {
+            PokedexListingName: {
                 position: {
                     offset: {
                         left: 128,
@@ -365,7 +378,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textSpeed: 0,
                 textYOffset: 0,
             } as IMenuSchema,
-            "PokedexListingLabel": {
+            PokedexListingLabel: {
                 position: {
                     offset: {
                         left: 128,
@@ -377,7 +390,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textSpeed: 0,
                 textYOffset: 0,
             } as IMenuSchema,
-            "PokedexListingHeight": {
+            PokedexListingHeight: {
                 position: {
                     offset: {
                         left: 144,
@@ -420,14 +433,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 top: 2,
                             },
                         },
-                    }],
+                    },
+                ],
                 container: "PokedexListing",
                 hidden: true,
                 textSpeed: 0,
                 textXOffset: 32,
                 textYOffset: 0,
             } as IMenuSchema,
-            "PokedexListingHeightFeet": {
+            PokedexListingHeightFeet: {
                 size: {
                     height: 40,
                     width: 80,
@@ -438,7 +452,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textPaddingX: -32,
             } as IMenuSchema,
-            "PokedexListingHeightInches": {
+            PokedexListingHeightInches: {
                 size: {
                     height: 40,
                     width: 80,
@@ -449,7 +463,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textPaddingX: -32,
             } as IMenuSchema,
-            "PokedexListingWeight": {
+            PokedexListingWeight: {
                 position: {
                     offset: {
                         left: 144,
@@ -473,14 +487,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 left: 128,
                             },
                         },
-                    } as IDialog & IMenuChildSchema],
+                    } as IDialog & IMenuChildSchema,
+                ],
                 container: "PokedexListing",
                 hidden: true,
                 textSpeed: 0,
                 textXOffset: 64,
                 textYOffset: 0,
             } as IMenuSchema,
-            "PokedexListingNumber": {
+            PokedexListingNumber: {
                 size: {
                     width: 80,
                     height: 16,
@@ -491,17 +506,19 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                         top: 128,
                     },
                 },
-                childrenSchemas: [{
-                    type: "text",
-                    words: [["No", "."]],
-                } as IDialog & IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: [["No", "."]],
+                    } as IDialog & IMenuChildSchema,
+                ],
                 container: "PokedexListing",
                 hidden: true,
                 textSpeed: 0,
                 textXOffset: 32,
                 textYOffset: -2,
             } as IMenuSchema,
-            "PokedexListingInfo": {
+            PokedexListingInfo: {
                 position: {
                     vertical: "bottom",
                     horizontal: "center",
@@ -518,7 +535,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textSpeed: 0,
                 textXOffset: 8,
             } as IMenuSchema,
-            "Pokemon": {
+            Pokemon: {
                 size: {
                     height: 320,
                     width: 320,
@@ -529,10 +546,12 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                         left: -16,
                     },
                 },
-                childrenSchemas: [{
-                    type: "menu",
-                    name: "PokemonDialog",
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "menu",
+                        name: "PokemonDialog",
+                    } as IMenuChildSchema,
+                ],
                 backMenu: "Pause",
                 arrowXOffset: 32,
                 arrowYOffset: 20,
@@ -543,7 +562,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 16,
                 plain: true,
             } as IListMenuSchema,
-            "PokemonDialog": {
+            PokemonDialog: {
                 size: {
                     height: 96,
                 },
@@ -551,22 +570,22 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     horizontal: "stretch",
                     vertical: "bottom",
                 },
-                childrenSchemas: [{
-                    type: "text",
-                    words: [
-                        "Choose a %%%%%%%POKEMON%%%%%%%.",
-                    ],
-                    position: {
-                        offset: {
-                            left: 16,
-                            top: 30,
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["Choose a %%%%%%%POKEMON%%%%%%%."],
+                        position: {
+                            offset: {
+                                left: 16,
+                                top: 30,
+                            },
                         },
-                    },
-                } as IDialog & IMenuChildSchema],
+                    } as IDialog & IMenuChildSchema,
+                ],
                 container: "Pokemon",
                 textSpeed: 0,
             },
-            "PokemonMenuContext": {
+            PokemonMenuContext: {
                 size: {
                     width: 144,
                     height: 112,
@@ -579,7 +598,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 textYOffset: 16,
             },
-            "PokemonMenuStats": {
+            PokemonMenuStats: {
                 size: {
                     width: 352,
                     height: 300,
@@ -712,9 +731,10 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 left: -122,
                             },
                         },
-                    }],
+                    },
+                ],
             },
-            "PokemonMenuStatsTitle": {
+            PokemonMenuStatsTitle: {
                 size: {
                     width: 176,
                     height: 16,
@@ -731,7 +751,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "PokemonMenuStatsLevel": {
+            PokemonMenuStatsLevel: {
                 size: {
                     width: 144,
                     height: 16,
@@ -747,17 +767,19 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 16,
                 textYOffset: 0,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: [["Level"]],
-                    position: {
-                        offset: {
-                            top: 6,
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: [["Level"]],
+                        position: {
+                            offset: {
+                                top: 6,
+                            },
                         },
-                    },
-                } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsHPBar": {
+            PokemonMenuStatsHPBar: {
                 position: {
                     offset: {
                         left: 192,
@@ -785,11 +807,12 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 left: 32,
                             },
                         },
-                    }],
+                    },
+                ],
                 container: "PokemonMenuStats",
                 hidden: true,
             } as IMenuSchema,
-            "PokemonMenuStatsHP": {
+            PokemonMenuStatsHP: {
                 size: {
                     width: 96,
                     height: 16,
@@ -806,7 +829,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "PokemonMenuStatsNumber": {
+            PokemonMenuStatsNumber: {
                 size: {
                     width: 160,
                     height: 32,
@@ -822,12 +845,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 textYOffset: 0,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: [[["No"], "."]],
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: [[["No"], "."]],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsStatus": {
+            PokemonMenuStatsStatus: {
                 size: {
                     width: 160,
                     height: 32,
@@ -843,12 +868,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 112,
                 textYOffset: 0,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: ["STATUS/"],
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["STATUS/"],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsType1": {
+            PokemonMenuStatsType1: {
                 size: {
                     width: 160,
                     height: 32,
@@ -863,12 +890,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 hidden: true,
                 textYOffset: 16,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: ["TYPE4/"],
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["TYPE4/"],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsType2": {
+            PokemonMenuStatsType2: {
                 size: {
                     width: 160,
                     height: 32,
@@ -883,12 +912,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 hidden: true,
                 textYOffset: 16,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: ["TYPE8/"],
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["TYPE8/"],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsID": {
+            PokemonMenuStatsID: {
                 size: {
                     width: 288,
                     height: 64,
@@ -903,12 +934,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 hidden: true,
                 textYOffset: 16,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: [[["ID"], ["No"], "/"]],
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: [[["ID"], ["No"], "/"]],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsOT": {
+            PokemonMenuStatsOT: {
                 size: {
                     width: 288,
                     height: 64,
@@ -923,12 +956,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 hidden: true,
                 textYOffset: 16,
                 textSpeed: 0,
-                childrenSchemas: [{
-                    type: "text",
-                    words: ["OT/"],
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "text",
+                        words: ["OT/"],
+                    } as IMenuChildSchema,
+                ],
             } as IMenuSchema,
-            "PokemonMenuStatsExperience": {
+            PokemonMenuStatsExperience: {
                 size: {
                     width: 172,
                     height: 80,
@@ -976,14 +1011,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 left: 82,
                             },
                         },
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 container: "PokemonMenuStats",
                 plain: true,
                 textXOffset: 0,
                 textYOffset: 28,
                 textSpeed: 0,
             } as IMenuBase,
-            "PokemonMenuStatsExperienceFrom": {
+            PokemonMenuStatsExperienceFrom: {
                 size: {
                     width: 60,
                 },
@@ -999,7 +1035,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 0,
                 textYOffset: 0,
             } as IMenuSchema,
-            "PokemonMenuStatsExperienceNext": {
+            PokemonMenuStatsExperienceNext: {
                 position: {
                     offset: {
                         top: 60,
@@ -1015,14 +1051,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 top: 6,
                             },
                         },
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 container: "PokemonMenuStatsExperience",
                 hidden: true,
                 textSpeed: 0,
                 textXOffset: 16,
                 textYOffset: 0,
             } as IMenuSchema,
-            "PokemonMenuStatsMoves": {
+            PokemonMenuStatsMoves: {
                 size: {
                     width: 352,
                     height: 172,
@@ -1034,7 +1071,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 textYOffset: 14,
             },
-            "Items": {
+            Items: {
                 size: {
                     width: 256,
                     height: 176,
@@ -1052,7 +1089,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 scrollingItemsComputed: true,
                 textXOffset: 32,
             } as IListMenuSchema,
-            "Item": {
+            Item: {
                 size: {
                     width: 112,
                     height: 80,
@@ -1069,7 +1106,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 textYOffset: 16,
             },
-            "Player": {
+            Player: {
                 size: {
                     width: 320,
                     height: 288,
@@ -1123,13 +1160,14 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "menu",
                         name: "PlayerBottom",
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 backMenu: "Pause",
                 dirty: true,
                 ignoreProgressB: true,
                 textSpeed: 0,
             } as IMenuBase,
-            "PlayerTop": {
+            PlayerTop: {
                 size: {
                     width: 308,
                     height: 116,
@@ -1167,12 +1205,13 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 top: 14,
                             },
                         },
-                    }],
+                    },
+                ],
                 light: true,
                 container: "Player",
                 textSpeed: 0,
             } as IMenuBase,
-            "PlayerBottom": {
+            PlayerBottom: {
                 size: {
                     width: 276,
                     height: 116,
@@ -1187,8 +1226,20 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "text",
                         words: [
-                            ["1Shadow"], " ", ["2Shadow"], " ", ["3Shadow"], " ", ["4Shadow"],
-                            ["5Shadow"], " ", ["6Shadow"], " ", ["7Shadow"], " ", ["8Shadow"],
+                            ["1Shadow"],
+                            " ",
+                            ["2Shadow"],
+                            " ",
+                            ["3Shadow"],
+                            " ",
+                            ["4Shadow"],
+                            ["5Shadow"],
+                            " ",
+                            ["6Shadow"],
+                            " ",
+                            ["7Shadow"],
+                            " ",
+                            ["8Shadow"],
                         ],
                         position: {
                             offset: {
@@ -1276,14 +1327,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 top: 72,
                             },
                         },
-                    }],
+                    },
+                ],
                 light: true,
                 container: "Player",
                 textSpeed: 0,
                 textPaddingX: 34,
                 textPaddingY: 48,
             } as IMenuBase,
-            "Save": {
+            Save: {
                 size: {
                     width: 256,
                     height: 160,
@@ -1360,13 +1412,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 length: 14,
                                 word: "%%%%%%%TIME%%%%%%%",
                                 alignRight: true,
-                            } as IMenuWordPadLeftCommand],
+                            } as IMenuWordPadLeftCommand,
+                        ],
                         position: {
                             offset: {
                                 top: 28,
                             },
                         },
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 textSpeed: 0,
             },
             "Yes/No": {
@@ -1418,7 +1472,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 textYOffset: 16,
             },
-            "Money": {
+            Money: {
                 size: {
                     width: 144,
                     height: 48,
@@ -1458,11 +1512,13 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     } as IMenuChildSchema,
                     {
                         type: "text",
-                        words: [{
-                            command: "padLeft",
-                            length: "%%%%%%%MONEY%%%%%%%",
-                            word: "$",
-                        }],
+                        words: [
+                            {
+                                command: "padLeft",
+                                length: "%%%%%%%MONEY%%%%%%%",
+                                word: "$",
+                            },
+                        ],
                         position: {
                             offset: {
                                 top: 16,
@@ -1471,20 +1527,23 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     } as IMenuChildSchema,
                     {
                         type: "text",
-                        words: [{
-                            command: "padLeft",
-                            length: 32,
-                            word: "%%%%%%%MONEY%%%%%%%",
-                        }],
+                        words: [
+                            {
+                                command: "padLeft",
+                                length: 32,
+                                word: "%%%%%%%MONEY%%%%%%%",
+                            },
+                        ],
                         position: {
                             offset: {
                                 top: 16,
                             },
                         },
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 textSpeed: 0,
             },
-            "ShopItems": {
+            ShopItems: {
                 size: {
                     width: 256,
                     height: 176,
@@ -1500,7 +1559,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 scrollingItems: 16,
             } as IListMenuSchema,
-            "ShopItemsAmount": {
+            ShopItemsAmount: {
                 size: {
                     width: 208,
                     height: 48,
@@ -1532,7 +1591,8 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "menu",
                         name: "Town Map Inside",
-                    } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 ignoreProgressB: true,
                 textSpeed: 0,
                 textXOffset: 32,
@@ -1553,11 +1613,12 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     {
                         type: "thing",
                         thing: "TownMapNoWater",
-                    }],
+                    },
+                ],
                 container: "Town Map",
                 watery: true,
             } as IMenuBase,
-            "Battle": {
+            Battle: {
                 size: {
                     width: 320,
                     height: 192,
@@ -1566,13 +1627,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     horizontal: "center",
                     vertical: "center",
                 },
-                childrenSchemas: [{
-                    type: "menu",
-                    name: "GeneralText",
-                } as IMenuChildSchema],
+                childrenSchemas: [
+                    {
+                        type: "menu",
+                        name: "GeneralText",
+                    } as IMenuChildSchema,
+                ],
                 hidden: true,
             } as IMenuSchema,
-            "BattlePlayerHealth": {
+            BattlePlayerHealth: {
                 size: {
                     width: 154,
                     height: 26,
@@ -1634,7 +1697,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textPaddingX: 2,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattlePlayerPokeballs": {
+            BattlePlayerPokeballs: {
                 size: {
                     width: 112,
                     height: 20,
@@ -1652,7 +1715,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 0,
                 textYOffset: 0,
             } as IMenuSchema,
-            "BattlePlayerHealthTitle": {
+            BattlePlayerHealthTitle: {
                 size: {
                     width: 152,
                 },
@@ -1668,7 +1731,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattlePlayerHealthLevel": {
+            BattlePlayerHealthLevel: {
                 position: {
                     offset: {
                         top: -24,
@@ -1685,14 +1748,15 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 left: 2,
                             },
                         },
-                    }],
+                    },
+                ],
                 container: "BattlePlayerHealth",
                 hidden: true,
                 textXOffset: 16,
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattlePlayerHealthAmount": {
+            BattlePlayerHealthAmount: {
                 size: {
                     height: 16,
                 },
@@ -1743,7 +1807,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 hidden: true,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattlePlayerHealthNumbers": {
+            BattlePlayerHealthNumbers: {
                 size: {
                     width: 256,
                     height: 40,
@@ -1760,7 +1824,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattleOpponentHealth": {
+            BattleOpponentHealth: {
                 size: {
                     width: 154,
                     height: 26,
@@ -1808,7 +1872,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textPaddingX: 2,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattleOpponentPokeballs": {
+            BattleOpponentPokeballs: {
                 size: {
                     width: 112,
                     height: 20,
@@ -1826,7 +1890,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 0,
                 textYOffset: 0,
             } as IMenuSchema,
-            "BattleOpponentHealthTitle": {
+            BattleOpponentHealthTitle: {
                 position: {
                     offset: {
                         top: -34,
@@ -1839,30 +1903,32 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattleOpponentHealthLevel": {
+            BattleOpponentHealthLevel: {
                 position: {
                     offset: {
                         top: -18,
                         left: 42,
                     },
                 },
-                childrenSchemas: [{
-                    type: "thing",
-                    thing: "CharLevel",
-                    position: {
-                        offset: {
-                            top: 6,
-                            left: 2,
+                childrenSchemas: [
+                    {
+                        type: "thing",
+                        thing: "CharLevel",
+                        position: {
+                            offset: {
+                                top: 6,
+                                left: 2,
+                            },
                         },
-                    },
-                } as IMenuChildSchema],
+                    } as IMenuChildSchema,
+                ],
                 container: "BattleOpponentHealth",
                 hidden: true,
                 textXOffset: 16,
                 textYOffset: 0,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattleOpponentHealthAmount": {
+            BattleOpponentHealthAmount: {
                 position: {
                     offset: {
                         left: 12,
@@ -1906,7 +1972,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 height: 16,
                 textSpeed: 0,
             } as IMenuSchema,
-            "BattleDisplayInitial": {
+            BattleDisplayInitial: {
                 size: {
                     width: 288,
                 },
@@ -1917,7 +1983,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 container: "Battle",
                 hidden: true,
             } as IMenuSchema,
-            "BattleOptions": {
+            BattleOptions: {
                 size: {
                     width: 192,
                     height: 96,
@@ -1926,18 +1992,13 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                     horizontal: "right",
                     vertical: "bottom",
                 },
-                clearedIndicesOnDeletion: [
-                    "Pause",
-                    "Pokemon",
-                    "Items",
-                    "BattleFightList",
-                ],
+                clearedIndicesOnDeletion: ["Pause", "Pokemon", "Items", "BattleFightList"],
                 container: "GeneralText",
                 ignoreB: true,
                 textXOffset: 32,
                 textColumnWidth: 96,
             } as IListMenuSchema,
-            "BattleDisplayPlayer": {
+            BattleDisplayPlayer: {
                 size: {
                     width: 180,
                     height: 84,
@@ -2028,11 +2089,12 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                                 top: 36,
                             },
                         },
-                    }],
+                    },
+                ],
                 container: "Battle",
                 hidden: true,
             } as IMenuSchema,
-            "BattleDisplayOpponent": {
+            BattleDisplayOpponent: {
                 size: {
                     width: 164,
                     height: 60,
@@ -2051,7 +2113,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 4,
                 textYOffset: -2,
             } as IMenuBase,
-            "BattleFightList": {
+            BattleFightList: {
                 size: {
                     width: 256,
                 },
@@ -2067,7 +2129,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textPaddingY: 16,
                 arrowXOffset: 4,
             } as IListMenuSchema,
-            "LevelUpStats": {
+            LevelUpStats: {
                 size: {
                     width: 192,
                     height: 160,
@@ -2077,7 +2139,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textYOffset: 16,
                 textPaddingY: 16,
             },
-            "NameOptions": {
+            NameOptions: {
                 size: {
                     width: 176,
                     height: 192,
@@ -2092,7 +2154,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 ignoreB: true,
                 textXOffset: 32,
             },
-            "Keyboard": {
+            Keyboard: {
                 size: {
                     width: 320,
                     height: 288,
@@ -2117,7 +2179,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 ],
                 plain: true,
             } as IMenuBase,
-            "KeyboardKeys": {
+            KeyboardKeys: {
                 size: {
                     width: 320,
                     height: 176,
@@ -2132,7 +2194,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 32,
                 textYOffset: 14,
             } as IListMenuSchema,
-            "KeyboardResult": {
+            KeyboardResult: {
                 size: {
                     height: 32,
                     width: 128,
@@ -2149,7 +2211,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 textXOffset: 2,
                 textYOffset: 0,
             } as IMenuSchema,
-            "KeyboardTitle": {
+            KeyboardTitle: {
                 size: {
                     height: 32,
                 },

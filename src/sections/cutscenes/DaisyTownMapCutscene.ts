@@ -14,10 +14,9 @@ export class DaisyTownMapCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Grandpa asked you to run an errand? Here, this will help you!",
-            ],
-            this.game.scenePlayer.bindRoutine("ReceiveMap"));
+            ["Grandpa asked you to run an errand? Here, this will help you!"],
+            this.game.scenePlayer.bindRoutine("ReceiveMap")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -36,21 +35,18 @@ export class DaisyTownMapCutscene extends Section<FullScreenPokemon> {
         delete daisy.cutscene;
         this.game.stateHolder.addChange(daisy.id, "cutscene", undefined);
 
-        daisy.dialog = [
-            "Use the TOWN MAP to find out where you are.",
-        ];
+        daisy.dialog = ["Use the TOWN MAP to find out where you are."];
         this.game.stateHolder.addChange(daisy.id, "dialog", daisy.dialog);
 
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "%%%%%%%PLAYER%%%%%%% got a TOWN MAP!",
-            ],
+            ["%%%%%%%PLAYER%%%%%%% got a TOWN MAP!"],
             (): void => {
                 this.game.scenePlayer.stopCutscene();
                 this.game.menuGrapher.deleteMenu("GeneralText");
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         console.warn("Player does not actually get a Town Map...");

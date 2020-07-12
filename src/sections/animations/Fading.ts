@@ -50,7 +50,8 @@ export class Fading extends Section<FullScreenPokemon> {
         change: number,
         goal: number,
         speed: number,
-        onCompletion?: (thing: IThing) => void): ITimeEvent | undefined {
+        onCompletion?: (thing: IThing) => void
+    ): ITimeEvent | undefined {
         (thing as any)[attribute] += change;
 
         if (change > 0) {
@@ -71,17 +72,9 @@ export class Fading extends Section<FullScreenPokemon> {
             }
         }
 
-        return this.game.timeHandler.addEvent(
-            (): void => {
-                this.animateFadeAttribute(
-                    thing,
-                    attribute,
-                    change,
-                    goal,
-                    speed,
-                    onCompletion);
-            },
-            speed);
+        return this.game.timeHandler.addEvent((): void => {
+            this.animateFadeAttribute(thing, attribute, change, goal, speed, onCompletion);
+        }, speed);
     }
 
     /**
@@ -95,26 +88,23 @@ export class Fading extends Section<FullScreenPokemon> {
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.game.objectMaker.make<IThing>(color + this.game.things.names.square, {
-            width: this.game.mapScreener.width,
-            height: this.game.mapScreener.height,
-            opacity: 0,
-        });
+        const blank: IThing = this.game.objectMaker.make<IThing>(
+            color + this.game.things.names.square,
+            {
+                width: this.game.mapScreener.width,
+                height: this.game.mapScreener.height,
+                opacity: 0,
+            }
+        );
 
         this.game.things.add(blank);
 
-        this.animateFadeAttribute(
-            blank,
-            "opacity",
-            change,
-            1,
-            speed,
-            (): void => {
-                this.game.death.kill(blank);
-                if (callback) {
-                    callback();
-                }
-            });
+        this.animateFadeAttribute(blank, "opacity", change, 1, speed, (): void => {
+            this.game.death.kill(blank);
+            if (callback) {
+                callback();
+            }
+        });
 
         return blank;
     }
@@ -130,26 +120,23 @@ export class Fading extends Section<FullScreenPokemon> {
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.game.objectMaker.make<IThing>(color + this.game.things.names.square, {
-            width: this.game.mapScreener.width,
-            height: this.game.mapScreener.height,
-            opacity: 1,
-        });
+        const blank: IThing = this.game.objectMaker.make<IThing>(
+            color + this.game.things.names.square,
+            {
+                width: this.game.mapScreener.width,
+                height: this.game.mapScreener.height,
+                opacity: 1,
+            }
+        );
 
         this.game.things.add(blank);
 
-        this.animateFadeAttribute(
-            blank,
-            "opacity",
-            -change,
-            0,
-            speed,
-            (): void => {
-                this.game.death.kill(blank);
-                if (callback) {
-                    callback(settings, ...args);
-                }
-            });
+        this.animateFadeAttribute(blank, "opacity", -change, 0, speed, (): void => {
+            this.game.death.kill(blank);
+            if (callback) {
+                callback(settings, ...args);
+            }
+        });
 
         return blank;
     }

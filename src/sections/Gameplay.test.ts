@@ -39,10 +39,7 @@ describe("Gameplay", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.be.deep.equal([
-                "NEW GAME",
-                "LOAD FILE",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["NEW GAME", "LOAD FILE"]);
         });
 
         it("also includes the CONTINUE option when the game was started", (): void => {
@@ -57,11 +54,7 @@ describe("Gameplay", () => {
             // Assert
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
-            expect(optionTexts).to.be.deep.equal([
-                "CONTINUE",
-                "NEW GAME",
-                "LOAD FILE",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["CONTINUE", "NEW GAME", "LOAD FILE"]);
         });
     });
 });

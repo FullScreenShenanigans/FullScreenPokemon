@@ -24,7 +24,10 @@ export interface IThingsById {
 /**
  * An in-game Thing with size, velocity, position, and other information.
  */
-export interface IThing extends IEightBittrThing, Omit<IClassCyclrThing, 'onThingAdded'>, IStateSaveable {
+export interface IThing
+    extends IEightBittrThing,
+        Omit<IClassCyclrThing, "onThingAdded">,
+        IStateSaveable {
     spriteCycleSynched: any;
     spriteCycle: any;
     flipHoriz?: boolean;
@@ -743,7 +746,10 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
      *                       applied to the Thing's position (by default, false).
      */
     public add<TThing extends IThing = IThing>(
-        thingRaw: string | IThing | [string, any], left: number = 0, top: number = 0, useSavedInfo?: boolean,
+        thingRaw: string | IThing | [string, any],
+        left: number = 0,
+        top: number = 0,
+        useSavedInfo?: boolean
     ): TThing {
         const thing: TThing = super.add(thingRaw, left, top) as TThing;
 
@@ -776,11 +782,21 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
 
         // Sprite cycles
         let cycle: any;
-        if (cycle = thing.spriteCycle) {
-            this.game.classCycler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+        if ((cycle = thing.spriteCycle)) {
+            this.game.classCycler.addClassCycle(
+                thing,
+                cycle[0],
+                cycle[1] || undefined,
+                cycle[2] || undefined
+            );
         }
-        if (cycle = thing.spriteCycleSynched) {
-            this.game.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+        if ((cycle = thing.spriteCycleSynched)) {
+            this.game.classCycler.addClassCycleSynched(
+                thing,
+                cycle[0],
+                cycle[1] || undefined,
+                cycle[2] || undefined
+            );
         }
 
         // Terrain and Scenery groups will never have collisions checked
@@ -793,7 +809,7 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
                 this.game.areaSpawner.getMapName(),
                 this.game.areaSpawner.getAreaName(),
                 thing.title,
-                (thing.name || "Anonymous"),
+                thing.name || "Anonymous",
             ].join("::");
         }
     }
@@ -810,14 +826,10 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         }
 
         if (savedInfo.xloc) {
-            this.game.physics.setLeft(
-                thing,
-                this.game.mapScreener.left + savedInfo.xloc);
+            this.game.physics.setLeft(thing, this.game.mapScreener.left + savedInfo.xloc);
         }
         if (savedInfo.yloc) {
-            this.game.physics.setTop(
-                thing,
-                this.game.mapScreener.top + savedInfo.yloc);
+            this.game.physics.setTop(thing, this.game.mapScreener.top + savedInfo.yloc);
         }
     }
 }

@@ -15,7 +15,9 @@ export class OakIntroRivalLeavesCutscene extends Section<FullScreenPokemon> {
     public AfterBattle(): void {
         this.game.mapScreener.blockInputs = true;
 
-        for (const pokemon of this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty)) {
+        for (const pokemon of this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        )) {
             this.game.battles.healPokemon(pokemon);
         }
 
@@ -35,7 +37,7 @@ export class OakIntroRivalLeavesCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 this.game.menuGrapher.deleteActiveMenu();
                 this.game.timeHandler.addEvent(this.game.scenePlayer.bindRoutine("Goodbye"), 21);
-            },
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -47,10 +49,9 @@ export class OakIntroRivalLeavesCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!",
-            ],
-            this.game.scenePlayer.bindRoutine("Walking"));
+            ["%%%%%%%PLAYER%%%%%%%! Gramps! Smell ya later!"],
+            this.game.scenePlayer.bindRoutine("Walking")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -75,13 +76,12 @@ export class OakIntroRivalLeavesCutscene extends Section<FullScreenPokemon> {
                 this.game.stateHolder.addChange(rival.id, "alive", false);
                 this.game.menuGrapher.deleteActiveMenu();
 
-                this.game.timeHandler.addEvent(
-                    (): void => {
-                        this.game.menus.displayMessage(
-                            "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!");
-                        this.game.mapScreener.blockInputs = false;
-                    },
-                    10);
+                this.game.timeHandler.addEvent((): void => {
+                    this.game.menus.displayMessage(
+                        "OAK: %%%%%%%PLAYER%%%%%%%, raise your young %%%%%%%POKEMON%%%%%%% by making it fight!"
+                    );
+                    this.game.mapScreener.blockInputs = false;
+                }, 10);
             },
         ];
 

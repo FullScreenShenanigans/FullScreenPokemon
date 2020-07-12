@@ -56,8 +56,12 @@ export class NuzlockeChallengeMod extends ModComponent implements IMod {
             // }
         },
         [this.eventNames.onFaint]: (thing: IPokemon, actors: IPokemon[]): void => {
-            const partyPokemon: IPokemon[] = this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty);
-            const pcPokemon: IPokemon[] = this.game.itemsHolder.getItem(this.game.storage.names.pokemonInPC);
+            const partyPokemon: IPokemon[] = this.game.itemsHolder.getItem(
+                this.game.storage.names.pokemonInParty
+            );
+            const pcPokemon: IPokemon[] = this.game.itemsHolder.getItem(
+                this.game.storage.names.pokemonInPC
+            );
 
             actors.splice(actors.indexOf(thing), 1);
             partyPokemon.splice(partyPokemon.indexOf(thing), 1);

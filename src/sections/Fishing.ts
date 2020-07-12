@@ -1,4 +1,3 @@
-
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -19,8 +18,10 @@ export class Fishing extends Section<FullScreenPokemon> {
      * @param rod   The rod that will be used to fish.
      */
     public startFishing(player: IPlayer, item: IItemSchema): void {
-        if (player.bordering[player.direction] === undefined ||
-            player.bordering[player.direction]!.title.indexOf("WaterEdge") === -1) {
+        if (
+            player.bordering[player.direction] === undefined ||
+            player.bordering[player.direction]!.title.indexOf("WaterEdge") === -1
+        ) {
             this.game.menus.cannotDoThat();
             return;
         }
@@ -32,28 +33,23 @@ export class Fishing extends Section<FullScreenPokemon> {
             ignoreA: true,
             ignoreB: true,
         });
-        this.game.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!",
-            ]);
+        this.game.menuGrapher.addMenuDialog("GeneralText", [
+            "%%%%%%%PLAYER%%%%%%% used " + rod.title + "!",
+        ]);
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         this.game.physics.setWidth(player, 7, true);
         this.game.graphics.classes.addClass(player, "fishing");
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                if (!this.canLandFish()) {
-                    this.game.fishing.playerFailedLandingFish(player);
-                    return;
-                }
+        this.game.timeHandler.addEvent((): void => {
+            if (!this.canLandFish()) {
+                this.game.fishing.playerFailedLandingFish(player);
+                return;
+            }
 
-                this.game.actions.animateExclamation(player);
-                this.game.fishing.playerLandedFish(player, rod);
-            },
-            180,
-        );
+            this.game.actions.animateExclamation(player);
+            this.game.fishing.playerLandedFish(player, rod);
+        }, 180);
     }
 
     /**
@@ -69,35 +65,31 @@ export class Fishing extends Section<FullScreenPokemon> {
         const chosen: IWildPokemonSchema = this.game.equations.chooseRandomWildPokemon(options);
         const chosenPokemon: IPokemon = this.game.equations.createPokemon(chosen);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.menuGrapher.createMenu("GeneralText", {
-                    deleteOnFinish: true,
-                });
-                this.game.menuGrapher.addMenuDialog(
-                    "GeneralText",
-                    [
-                        "Oh! \n It's a bite!",
-                    ],
-                    (): void => {
-                        console.log("Should start battle with", chosenPokemon);
-                        // this.game.battles.startBattle({
-                        //     battlers: {
-                        //         opponent: {
-                        //             name: chosenPokemon.title,
-                        //             actors: [chosenPokemon],
-                        //             category: "Wild",
-                        //             sprite: chosenPokemon.title.join("") + "Front"
-                        //         }
-                        //     }
-                        // });
-                    });
-                this.game.menuGrapher.setActiveMenu("GeneralText");
-                this.game.graphics.classes.removeClass(player, "fishing");
-                this.game.physics.setWidth(player, 8, true);
-            },
-            140,
-        );
+        this.game.timeHandler.addEvent((): void => {
+            this.game.menuGrapher.createMenu("GeneralText", {
+                deleteOnFinish: true,
+            });
+            this.game.menuGrapher.addMenuDialog(
+                "GeneralText",
+                ["Oh! \n It's a bite!"],
+                (): void => {
+                    console.log("Should start battle with", chosenPokemon);
+                    // this.game.battles.startBattle({
+                    //     battlers: {
+                    //         opponent: {
+                    //             name: chosenPokemon.title,
+                    //             actors: [chosenPokemon],
+                    //             category: "Wild",
+                    //             sprite: chosenPokemon.title.join("") + "Front"
+                    //         }
+                    //     }
+                    // });
+                }
+            );
+            this.game.menuGrapher.setActiveMenu("GeneralText");
+            this.game.graphics.classes.removeClass(player, "fishing");
+            this.game.physics.setWidth(player, 8, true);
+        }, 140);
     }
 
     /**

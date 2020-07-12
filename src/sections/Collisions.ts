@@ -11,7 +11,9 @@ import { ICharacter, IThing } from "./Things";
 /**
  * ThingHittr collision function generators.
  */
-export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBittrCollisions<TEightBittr> {
+export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBittrCollisions<
+    TEightBittr
+> {
     /**
      * Names of groups that should be checked for collisions.
      */
@@ -34,15 +36,16 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          * @param other
          * @returns Whether thing is touching other.
          */
-        return (thing: ICharacter, other: ICharacter): boolean => (
-            !thing.nocollide && !other.nocollide
-            && thing.following !== other
-            && other.following !== thing
-            && thing.right >= (other.left + other.tolLeft)
-            && thing.left <= (other.right - other.tolRight)
-            && thing.bottom >= (other.top + other.tolTop)
-            && thing.top <= (other.bottom - other.tolBottom));
-    }
+        return (thing: ICharacter, other: ICharacter): boolean =>
+            !thing.nocollide &&
+            !other.nocollide &&
+            thing.following !== other &&
+            other.following !== thing &&
+            thing.right >= other.left + other.tolLeft &&
+            thing.left <= other.right - other.tolRight &&
+            thing.bottom >= other.top + other.tolTop &&
+            thing.top <= other.bottom - other.tolBottom;
+    };
 
     /**
      * Function generator for the generic isCharacterTouchingSolid checker. This
@@ -60,13 +63,14 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
          * @param other
          * @returns Whether thing is touching other.
          */
-        return (thing: ICharacter, other: IThing): boolean => (
-            !thing.nocollide && !other.nocollide
-            && thing.right >= (other.left + other.tolLeft)
-            && thing.left <= (other.right - other.tolRight)
-            && thing.bottom >= (other.top + other.tolTop)
-            && thing.top <= (other.bottom - other.tolBottom));
-    }
+        return (thing: ICharacter, other: IThing): boolean =>
+            !thing.nocollide &&
+            !other.nocollide &&
+            thing.right >= other.left + other.tolLeft &&
+            thing.left <= other.right - other.tolRight &&
+            thing.bottom >= other.top + other.tolTop &&
+            thing.top <= other.bottom - other.tolBottom;
+    };
 
     /**
      * Function generator for the generic hitCharacterThing callback. This is
@@ -100,7 +104,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
             // that multiple borderings will be replaced by the most recent
             switch (this.game.physics.getDirectionBordering(thing, other)) {
                 case Direction.Top:
-                    if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
+                    if (
+                        thing.left !== other.right - other.tolRight &&
+                        thing.right !== other.left + other.tolLeft
+                    ) {
                         this.setThingBordering(thing, other, Direction.Top);
                         this.setThingBordering(other, thing, Direction.Bottom);
                         this.game.physics.setTop(thing, other.bottom - other.tolBottom);
@@ -108,7 +115,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                     break;
 
                 case Direction.Right:
-                    if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
+                    if (
+                        thing.top !== other.bottom - other.tolBottom &&
+                        thing.bottom !== other.top + other.tolTop
+                    ) {
                         this.setThingBordering(thing, other, Direction.Right);
                         this.setThingBordering(other, thing, Direction.Left);
                         this.game.physics.setRight(thing, other.left + other.tolLeft);
@@ -116,7 +126,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                     break;
 
                 case Direction.Bottom:
-                    if (thing.left !== other.right - other.tolRight && thing.right !== other.left + other.tolLeft) {
+                    if (
+                        thing.left !== other.right - other.tolRight &&
+                        thing.right !== other.left + other.tolLeft
+                    ) {
                         this.setThingBordering(thing, other, Direction.Bottom);
                         this.setThingBordering(other, thing, Direction.Top);
                         this.game.physics.setBottom(thing, other.top + other.tolTop);
@@ -124,7 +137,10 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
                     break;
 
                 case Direction.Left:
-                    if (thing.top !== other.bottom - other.tolBottom && thing.bottom !== other.top + other.tolTop) {
+                    if (
+                        thing.top !== other.bottom - other.tolBottom &&
+                        thing.bottom !== other.top + other.tolTop
+                    ) {
                         this.setThingBordering(thing, other, Direction.Left);
                         this.setThingBordering(other, thing, Direction.Right);
                         this.game.physics.setLeft(thing, other.right - other.tolRight);
@@ -138,7 +154,7 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
             // Todo: investigate why this never returns true?
             return false;
         };
-    }
+    };
 
     /**
      * Function generators for checking whether a Thing may collide.
@@ -176,7 +192,11 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
      * @param direction   The direction border being changed.
      */
     public setThingBordering(thing: IThing, other: IThing, direction: Direction): void {
-        if (thing.bordering[direction] && thing.bordering[direction]!.borderPrimary && !other.borderPrimary) {
+        if (
+            thing.bordering[direction] &&
+            thing.bordering[direction]!.borderPrimary &&
+            !other.borderPrimary
+        ) {
             return;
         }
 

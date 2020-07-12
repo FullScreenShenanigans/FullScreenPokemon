@@ -14,7 +14,11 @@ export class Statuses extends Section<FullScreenPokemon> {
      * @param effect   Effect of the move that missed.
      * @param onComplete   Handler for when this is done.
      */
-    public run(teamAndAction: ITeamAndAction<IMoveAction>, effect: IMoveEffect, onComplete: () => void): void {
+    public run(
+        teamAndAction: ITeamAndAction<IMoveAction>,
+        effect: IMoveEffect,
+        onComplete: () => void
+    ): void {
         console.log("Status!", teamAndAction, effect);
         onComplete();
     }

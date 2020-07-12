@@ -41,60 +41,76 @@ export class Slash extends Move {
         this.game.timeHandler.addEventInterval(
             (): void => {
                 for (const slash of slashes) {
-                    const left: number = this.direction === Direction.Right ? slash.left : slash.right - 3;
+                    const left: number =
+                        this.direction === Direction.Right ? slash.left : slash.right - 3;
                     const top: number = slash.bottom - 3;
 
                     this.game.timeHandler.addEvent(
-                        (): void => this.game.physics.shiftHoriz(slash, differenceX * (this.direction * -1) / 16),
-                        1);
+                        (): void =>
+                            this.game.physics.shiftHoriz(
+                                slash,
+                                (differenceX * (this.direction * -1)) / 16
+                            ),
+                        1
+                    );
                     this.game.timeHandler.addEvent(
-                        (): void => this.game.physics.shiftVert(slash, differenceX * (this.direction) / 16),
-                        1);
+                        (): void =>
+                            this.game.physics.shiftVert(
+                                slash,
+                                (differenceX * this.direction) / 16
+                            ),
+                        1
+                    );
 
-                    const line: IThing = this.game.things.add(this.game.things.names.scratchLine, left, top);
+                    const line: IThing = this.game.things.add(
+                        this.game.things.names.scratchLine,
+                        left,
+                        top
+                    );
                     if (this.direction === 1) {
                         this.game.graphics.flipping.flipHoriz(line);
                     }
                     lineArray.push(line);
                     if (time === 14) {
-                        const explosion = this.game.things.add
-                            (this.game.things.names.explosionSmall,
-                                left - 18, top);
+                        const explosion = this.game.things.add(
+                            this.game.things.names.explosionSmall,
+                            left - 18,
+                            top
+                        );
                         explosionArray.push(explosion);
                     }
                 }
                 time += 1;
             },
             1,
-            16);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                for (const slash of slashes) {
-                    this.game.death.kill(slash);
-                }
+            16
+        );
+        this.game.timeHandler.addEvent((): void => {
+            for (const slash of slashes) {
+                this.game.death.kill(slash);
+            }
 
-                for (const line of lineArray) {
-                    this.game.battles.animations.things.flicker({
-                        clearTime: 10,
-                        interval: 2,
-                        thing: line,
-                    });
-                }
-                for (const explosion of explosionArray) {
-                    this.game.death.kill(explosion);
-                }
-
-                for (const line of lineArray) {
-                    this.game.death.kill(line);
-                }
-
+            for (const line of lineArray) {
                 this.game.battles.animations.things.flicker({
-                    callback,
-                    clearTime: 14,
-                    interval: 5,
-                    thing: this.defenderThing,
+                    clearTime: 10,
+                    interval: 2,
+                    thing: line,
                 });
-            },
-            24);
+            }
+            for (const explosion of explosionArray) {
+                this.game.death.kill(explosion);
+            }
+
+            for (const line of lineArray) {
+                this.game.death.kill(line);
+            }
+
+            this.game.battles.animations.things.flicker({
+                callback,
+                clearTime: 14,
+                interval: 5,
+                thing: this.defenderThing,
+            });
+        }, 24);
     }
 }

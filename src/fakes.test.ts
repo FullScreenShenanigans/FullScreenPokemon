@@ -42,11 +42,9 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
                     cancelFrame: clock.clearTimeout,
                     getTimestamp: () => clock.now,
                     requestFrame: (callback) =>
-                        clock.setTimeout(
-                            () => {
-                                callback(clock.now);
-                            },
-                            1),
+                        clock.setTimeout(() => {
+                            callback(clock.now);
+                        }, 1),
                 },
             },
             itemsHolder: { prefix, storage },

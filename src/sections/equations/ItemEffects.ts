@@ -25,7 +25,10 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param statistic   The statistic that is being modified.
      */
     private increaseBattleStat(statistic: IStatistic) {
-        statistic.current = Math.min(statistic.normal * 4, (statistic.normal / 2) + statistic.current);
+        statistic.current = Math.min(
+            statistic.normal * 4,
+            statistic.normal / 2 + statistic.current
+        );
     }
 
     /**
@@ -36,7 +39,6 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param type   The string representing the stat name.
      */
     public useXItem(pokemon: IPokemon, statistic: IStatistic, type: string) {
-
         //TODO: Implement X Accuracy
         //https://github.com/FullScreenShenanigans/FullScreenPokemon/issues/657
 
@@ -46,14 +48,13 @@ export class ItemEffects extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                [
-                    "%%%%%%%PLAYER%%%%%%% used X " + type.toUpperCase() + "!",
-                ],
+                ["%%%%%%%PLAYER%%%%%%% used X " + type.toUpperCase() + "!"],
                 pokemon.title.join("") + "'s " + type.toUpperCase() + " rose!",
             ],
             (): void => {
                 this.increaseBattleStat(statistic);
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -69,8 +70,11 @@ export class ItemEffects extends Section<FullScreenPokemon> {
         }
 
         for (const statisticName of this.game.constants.pokemon.statisticNames) {
-            pokemon.statistics[statisticName].current = (statisticName === "health") ? pokemon.statistics[statisticName].normal * percentage
-                : pokemon.statistics[statisticName].current = pokemon.statistics[statisticName].normal;
+            pokemon.statistics[statisticName].current =
+                statisticName === "health"
+                    ? pokemon.statistics[statisticName].normal * percentage
+                    : (pokemon.statistics[statisticName].current =
+                          pokemon.statistics[statisticName].normal);
         }
 
         pokemon.status = undefined;
@@ -88,14 +92,11 @@ export class ItemEffects extends Section<FullScreenPokemon> {
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    pokemon.title.join("") + " is revitalized!",
-                ],
-            ],
+            [[pokemon.title.join("") + " is revitalized!"]],
             (): void => {
                 this.revivePokemon(pokemon, percentage);
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 

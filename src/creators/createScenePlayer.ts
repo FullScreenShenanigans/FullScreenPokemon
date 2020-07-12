@@ -7,7 +7,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
  * @returns Scene settings for the FullScreenPokemon instance.
  */
 export const createScenePlayer = (fsp: FullScreenPokemon): ScenePlayr =>
-    new ScenePlayr({
+    new ScenePlayr(({
         cutscenes: {
             Computer: {
                 firstRoutine: "Open",
@@ -70,4 +70,4 @@ export const createScenePlayer = (fsp: FullScreenPokemon): ScenePlayr =>
             },
         },
         scope: fsp.cutscenes,
-    } as any as IScenePlayrSettings);
+    } as any) as IScenePlayrSettings);

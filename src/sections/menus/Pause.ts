@@ -60,7 +60,7 @@ export class Pause extends Section<FullScreenPokemon> {
 
         this.game.menuGrapher.createMenu("Pause", {
             size: {
-                height: (options.length * 32) + 48,
+                height: options.length * 32 + 48,
             },
         });
 
@@ -68,14 +68,14 @@ export class Pause extends Section<FullScreenPokemon> {
             options,
         });
         this.game.menuGrapher.setActiveMenu("Pause");
-    }
+    };
 
     /**
      * Closes the Pause menu.
      */
     public readonly close = (): void => {
         this.game.menuGrapher.deleteMenu("Pause");
-    }
+    };
 
     /**
      * Toggles whether the Pause menu is open. If there is an active menu, A
@@ -93,8 +93,6 @@ export class Pause extends Section<FullScreenPokemon> {
             return;
         }
 
-        this.game.menuGrapher.getMenu("Pause") === undefined
-            ? this.open()
-            : this.close();
-    }
+        this.game.menuGrapher.getMenu("Pause") === undefined ? this.open() : this.close();
+    };
 }

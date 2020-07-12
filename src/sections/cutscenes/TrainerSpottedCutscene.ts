@@ -18,7 +18,8 @@ export class TrainerSpottedCutscene extends Section<FullScreenPokemon> {
         this.game.actions.animateExclamation(
             settings.triggerer,
             70,
-            this.game.scenePlayer.bindRoutine("Approach"));
+            this.game.scenePlayer.bindRoutine("Approach")
+        );
     }
 
     /**
@@ -32,17 +33,17 @@ export class TrainerSpottedCutscene extends Section<FullScreenPokemon> {
         const direction: Direction = triggerer.direction;
         const directionName: string = Direction[direction].toLowerCase();
         const locationTriggerer: number = (triggerer as any)[directionName];
-        const locationPlayer: number = (player as any)[this.game.constants.directionOpposites[directionName]];
+        const locationPlayer: number = (player as any)[
+            this.game.constants.directionOpposites[directionName]
+        ];
         const distance: number = Math.abs(locationTriggerer - locationPlayer);
         const blocks: number = Math.max(0, distance / this.game.constants.blockSize);
 
         if (blocks) {
-            this.game.actions.walking.startWalkingOnPath(
-                triggerer,
-                [
-                    { blocks, direction },
-                    this.game.scenePlayer.bindRoutine("Dialog"),
-                ]);
+            this.game.actions.walking.startWalkingOnPath(triggerer, [
+                { blocks, direction },
+                this.game.scenePlayer.bindRoutine("Dialog"),
+            ]);
         } else {
             this.game.scenePlayer.playRoutine("Dialog");
         }
@@ -54,7 +55,10 @@ export class TrainerSpottedCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public Dialog(settings: any): void {
-        this.game.collisions.detectors.collideCharacterDialog(settings.player, settings.triggerer);
+        this.game.collisions.detectors.collideCharacterDialog(
+            settings.player,
+            settings.triggerer
+        );
         this.game.mapScreener.blockInputs = false;
     }
 }

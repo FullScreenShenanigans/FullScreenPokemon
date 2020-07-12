@@ -153,8 +153,12 @@ export interface IPokemonEvolution {
  * The requirements for a Pokemon to be able to evolve.
  */
 export type IPokemonEvolutionRequirement =
-    IPokemonEvolutionByLevel | IPokemonEvolutionByHappiness | IPokemonEvolutionByTime |
-    IPokemonEvolutionByTrade | IPokemonEvolutionByItem | IPokemonEvolutionByStats;
+    | IPokemonEvolutionByLevel
+    | IPokemonEvolutionByHappiness
+    | IPokemonEvolutionByTime
+    | IPokemonEvolutionByTrade
+    | IPokemonEvolutionByItem
+    | IPokemonEvolutionByStats;
 
 /**
  * Requirements for a Pokemon that evolves via levelup.
@@ -312,22 +316,22 @@ export interface INewPokemon {
     /**
      * Items held by Pokemon.
      */
-     item?: string[];
+    item?: string[];
 
     /**
      * Level of Pokemon.
      */
-     level?: number;
+    level?: number;
 
     /**
      * Moves that Pokemon has.
      */
-     moves?: IMove[];
+    moves?: IMove[];
 
     /**
      * Name of Pokemon.
      */
-     title: string[];
+    title: string[];
 }
 
 /**
@@ -337,12 +341,23 @@ export class Pokemon {
     /**
      * Names of all statistics Pokemon have.
      */
-    public readonly statisticNames: IStringKeysOf<IPokemonStatistics>[] = ["attack", "defense", "health", "special", "speed"];
+    public readonly statisticNames: IStringKeysOf<IPokemonStatistics>[] = [
+        "attack",
+        "defense",
+        "health",
+        "special",
+        "speed",
+    ];
 
     /**
      * Names of Pokemon statistics to display in statistics menus.
      */
-    public readonly statisticNamesDisplayed: IStringKeysOf<IPokemonStatistics>[] = ["attack", "defense", "special", "speed"];
+    public readonly statisticNamesDisplayed: IStringKeysOf<IPokemonStatistics>[] = [
+        "attack",
+        "defense",
+        "special",
+        "speed",
+    ];
 
     /**
      * All known Pokemon, keyed by concatenated name.
@@ -355,15 +370,17 @@ export class Pokemon {
             info: [
                 "Using its ability to read minds, it will identify impending danger and TELEPORT to safety.",
             ],
-            evolutions: [{
-                evolvedForm: ["K", "A", "D", "A", "B", "R", "A"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 16,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["K", "A", "D", "A", "B", "R", "A"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 16,
+                        },
+                    ],
+                },
+            ],
             number: 63,
             height: ["2", "11"],
             weight: 43,
@@ -374,14 +391,18 @@ export class Pokemon {
             special: 105,
             speed: 90,
             moves: {
-                natural: [{
-                    move: "Teleport",
-                    level: 1,
-                }],
-                hm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                natural: [
+                    {
+                        move: "Teleport",
+                        level: 1,
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -474,7 +495,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         AERODACTYL: {
@@ -518,11 +540,14 @@ export class Pokemon {
                     {
                         move: "Hyper Beam",
                         level: 54,
-                    }],
-                hm: [{
-                    move: "Fly",
-                    level: 2,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Fly",
+                        level: 2,
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -591,7 +616,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ALAKAZAM: {
@@ -647,11 +673,14 @@ export class Pokemon {
                     {
                         move: "Reflect",
                         level: 42,
-                    }],
-                hm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -752,7 +781,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ARBOK: {
@@ -804,11 +834,14 @@ export class Pokemon {
                     {
                         move: "Acid",
                         level: 47,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -877,7 +910,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ARCANINE: {
@@ -913,7 +947,8 @@ export class Pokemon {
                     {
                         move: "Take Down",
                         level: 1,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -986,7 +1021,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -1059,7 +1095,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ARTICUNO: {
@@ -1099,11 +1136,14 @@ export class Pokemon {
                     {
                         move: "Mist",
                         level: 60,
-                    }],
-                hm: [{
-                    move: "Fly",
-                    level: 2,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Fly",
+                        level: 2,
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -1180,7 +1220,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         BEEDRILL: {
@@ -1228,15 +1269,20 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 35,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
-                tm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
+                tm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
             },
         },
         BELLSPROUT: {
@@ -1246,15 +1292,17 @@ export class Pokemon {
             info: [
                 "A carnivorous %%%%%%%POKEMON%%%%%%% that traps and eats bugs. It uses its root feet to soak up needed moisture.",
             ],
-            evolutions: [{
-                evolvedForm: ["W", "E", "E", "P", "I", "N", "B", "E", "L", "L"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 21,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["W", "E", "E", "P", "I", "N", "B", "E", "L", "L"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 21,
+                        },
+                    ],
+                },
+            ],
             number: 69,
             height: ["2", "4"],
             weight: 8.8,
@@ -1301,11 +1349,14 @@ export class Pokemon {
                     {
                         move: "Slam",
                         level: 42,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -1358,7 +1409,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         BLASTOISE: {
@@ -1418,7 +1470,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 52,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -1427,7 +1480,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -1528,7 +1582,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         BULBASAUR: {
@@ -1539,15 +1594,17 @@ export class Pokemon {
                 "A strange seed was planted on its back at birth.",
                 "The plant sprouts and grows with this %%%%%%%POKEMON%%%%%%%.",
             ],
-            evolutions: [{
-                evolvedForm: ["I", "V", "Y", "S", "A", "U", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 16,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["I", "V", "Y", "S", "A", "U", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 16,
+                        },
+                    ],
+                },
+            ],
             number: 1,
             height: ["2", "4"],
             weight: 15.2,
@@ -1594,11 +1651,14 @@ export class Pokemon {
                     {
                         move: "Solar Beam",
                         level: 48,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -1655,7 +1715,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         BUTTERFREE: {
@@ -1707,7 +1768,8 @@ export class Pokemon {
                     {
                         move: "Psybeam",
                         level: 32,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -1785,7 +1847,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         CATERPIE: {
@@ -1795,15 +1858,17 @@ export class Pokemon {
             info: [
                 "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.",
             ],
-            evolutions: [{
-                evolvedForm: ["M", "E", "T", "A", "P", "O", "D"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 7,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["M", "E", "T", "A", "P", "O", "D"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 7,
+                        },
+                    ],
+                },
+            ],
             number: 10,
             height: ["1", "0"],
             weight: 6.4,
@@ -1877,7 +1942,8 @@ export class Pokemon {
                     {
                         move: "Double-Edge",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Strength",
@@ -1886,7 +1952,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -2023,7 +2090,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         CHARIZARD: {
@@ -2083,7 +2151,8 @@ export class Pokemon {
                     {
                         move: "Fire Spin",
                         level: 55,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -2092,7 +2161,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -2193,7 +2263,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         CHARMANDER: {
@@ -2204,15 +2275,17 @@ export class Pokemon {
                 "Obviously prefers hot places.",
                 "When it rains, steam is said to spout from the tip of its tail.",
             ],
-            evolutions: [{
-                evolvedForm: ["C", "H", "A", "R", "M", "E", "L", "E", "O", "N"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 16,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["C", "H", "A", "R", "M", "E", "L", "E", "O", "N"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 16,
+                        },
+                    ],
+                },
+            ],
             number: 4,
             height: ["2", "0"],
             weight: 18.7,
@@ -2255,7 +2328,8 @@ export class Pokemon {
                     {
                         move: "Fire Spin",
                         level: 46,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -2264,7 +2338,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -2353,7 +2428,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         CHARMELEON: {
@@ -2363,15 +2439,17 @@ export class Pokemon {
             info: [
                 "When it swings its burning tail, it elevates the temperature to unbearably high levels.",
             ],
-            evolutions: [{
-                evolvedForm: ["C", "H", "A", "R", "I", "Z", "A", "R", "D"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 36,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["C", "H", "A", "R", "I", "Z", "A", "R", "D"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 36,
+                        },
+                    ],
+                },
+            ],
             number: 5,
             height: ["3", "7"],
             weight: 41.9,
@@ -2418,7 +2496,8 @@ export class Pokemon {
                     {
                         move: "Fire Spin",
                         level: 56,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -2508,7 +2587,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         CLEFABLE: {
@@ -2544,7 +2624,8 @@ export class Pokemon {
                     {
                         move: "Sing",
                         level: 1,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Strength",
@@ -2553,7 +2634,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Strength",
@@ -2562,7 +2644,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
             },
         },
         CLEFAIRY: {
@@ -2572,15 +2655,17 @@ export class Pokemon {
             info: [
                 "Its magical and cute appeal has many admirers. It is rare and found only in certain areas.",
             ],
-            evolutions: [{
-                evolvedForm: ["C", "L", "E", "F", "A", "B", "L", "E"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Moon Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["C", "L", "E", "F", "A", "B", "L", "E"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Moon Stone",
+                        },
+                    ],
+                },
+            ],
             number: 35,
             height: ["2", "0"],
             weight: 16.5,
@@ -2623,7 +2708,8 @@ export class Pokemon {
                     {
                         move: "Light Screen",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Strength",
@@ -2632,7 +2718,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -2757,7 +2844,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         CLOYSTER: {
@@ -2797,12 +2885,15 @@ export class Pokemon {
                     {
                         move: "Spike Cannon",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
-                tm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                tm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
             },
         },
         CUBONE: {
@@ -2812,15 +2903,17 @@ export class Pokemon {
             info: [
                 "Because it never removes its skull helmet, no one has ever seen this %%%%%%%POKEMON%%%%%%%'s real face.",
             ],
-            evolutions: [{
-                evolvedForm: ["M", "A", "R", "O", "W", "A", "K"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 28,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["M", "A", "R", "O", "W", "A", "K"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 28,
+                        },
+                    ],
+                },
+            ],
             number: 104,
             height: ["1", "4"],
             weight: 14.3,
@@ -2859,11 +2952,14 @@ export class Pokemon {
                     {
                         move: "Rage",
                         level: 46,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -2960,7 +3056,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DEWGONG: {
@@ -3012,7 +3109,8 @@ export class Pokemon {
                     {
                         move: "Ice Beam",
                         level: 56,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -3086,7 +3184,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DIGLETT: {
@@ -3096,15 +3195,17 @@ export class Pokemon {
             info: [
                 "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground.",
             ],
-            evolutions: [{
-                evolvedForm: ["D", "U", "G", "T", "R", "I", "O"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 26,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["D", "U", "G", "T", "R", "I", "O"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 26,
+                        },
+                    ],
+                },
+            ],
             number: 50,
             height: ["0", "8"],
             weight: 1.8,
@@ -3139,7 +3240,8 @@ export class Pokemon {
                     {
                         move: "Earthquake",
                         level: 40,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -3196,7 +3298,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Scratch",
@@ -3221,7 +3324,8 @@ export class Pokemon {
                     {
                         move: "Earthquake",
                         level: 40,
-                    }],
+                    },
+                ],
             },
         },
         DITTO: {
@@ -3241,10 +3345,12 @@ export class Pokemon {
             special: 48,
             speed: 48,
             moves: {
-                natural: [{
-                    move: "Transform",
-                    level: 1,
-                }],
+                natural: [
+                    {
+                        move: "Transform",
+                        level: 1,
+                    },
+                ],
                 hm: [],
                 tm: [],
             },
@@ -3302,7 +3408,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 51,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -3368,7 +3475,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DODUO: {
@@ -3378,15 +3486,17 @@ export class Pokemon {
             info: [
                 "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints.",
             ],
-            evolutions: [{
-                evolvedForm: ["D", "O", "D", "R", "I", "O"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 31,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["D", "O", "D", "R", "I", "O"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 31,
+                        },
+                    ],
+                },
+            ],
             number: 84,
             height: ["4", "7"],
             weight: 86.4,
@@ -3425,11 +3535,14 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 44,
-                    }],
-                hm: [{
-                    move: "Fly",
-                    level: 2,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Fly",
+                        level: 2,
+                    },
+                ],
                 tm: [
                     {
                         move: "Whirlwind",
@@ -3490,7 +3603,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DRAGONAIR: {
@@ -3500,15 +3614,17 @@ export class Pokemon {
             info: [
                 "A mystical %%%%%%%POKEMON%%%%%%% that exudes a gentle aura. Has the ability to change climate conditions.",
             ],
-            evolutions: [{
-                evolvedForm: ["D", "R", "A", "G", "O", "N", "I", "T", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 55,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["D", "R", "A", "G", "O", "N", "I", "T", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 55,
+                        },
+                    ],
+                },
+            ],
             number: 148,
             height: ["13", "1"],
             weight: 36.4,
@@ -3551,7 +3667,8 @@ export class Pokemon {
                     {
                         move: "Hyper Beam",
                         level: 55,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -3645,7 +3762,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DRAGONITE: {
@@ -3701,7 +3819,8 @@ export class Pokemon {
                     {
                         move: "Hyper Beam",
                         level: 60,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -3710,7 +3829,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -3811,7 +3931,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DRATINI: {
@@ -3821,15 +3942,17 @@ export class Pokemon {
             info: [
                 "Long considered a mythical %%%%%%%POKEMON%%%%%%% until recently when a small colony was found living underwater.",
             ],
-            evolutions: [{
-                evolvedForm: ["D", "R", "A", "G", "O", "N", "A", "I", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 30,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["D", "R", "A", "G", "O", "N", "A", "I", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 30,
+                        },
+                    ],
+                },
+            ],
             number: 147,
             height: ["5", "11"],
             weight: 7.3,
@@ -3868,11 +3991,14 @@ export class Pokemon {
                     {
                         move: "Hyper Beam",
                         level: 50,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -3961,7 +4087,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DROWZEE: {
@@ -3971,15 +4098,17 @@ export class Pokemon {
             info: [
                 "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams.",
             ],
-            evolutions: [{
-                evolvedForm: ["H", "Y", "P", "N", "O"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 26,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["H", "Y", "P", "N", "O"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 26,
+                        },
+                    ],
+                },
+            ],
             number: 96,
             height: ["3", "3"],
             weight: 71.4,
@@ -4022,7 +4151,8 @@ export class Pokemon {
                     {
                         move: "Meditate",
                         level: 37,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -4120,7 +4250,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         DUGTRIO: {
@@ -4172,7 +4303,8 @@ export class Pokemon {
                     {
                         move: "Earthquake",
                         level: 47,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -4206,7 +4338,8 @@ export class Pokemon {
                     {
                         move: "Earthquake",
                         level: 47,
-                    }],
+                    },
+                ],
             },
         },
         EEVEE: {
@@ -4279,7 +4412,8 @@ export class Pokemon {
                     {
                         move: "Take Down",
                         level: 45,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -4332,7 +4466,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Tackle",
@@ -4365,7 +4500,8 @@ export class Pokemon {
                     {
                         move: "Take Down",
                         level: 42,
-                    }],
+                    },
+                ],
             },
         },
         EKANS: {
@@ -4375,15 +4511,17 @@ export class Pokemon {
             info: [
                 "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole.",
             ],
-            evolutions: [{
-                evolvedForm: ["A", "R", "B", "O", "K"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 22,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["A", "R", "B", "O", "K"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 22,
+                        },
+                    ],
+                },
+            ],
             number: 23,
             height: ["6", "7"],
             weight: 15.2,
@@ -4422,7 +4560,8 @@ export class Pokemon {
                     {
                         move: "Acid",
                         level: 38,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -4488,7 +4627,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ELECTABUZZ: {
@@ -4536,7 +4676,8 @@ export class Pokemon {
                     {
                         move: "Thunder",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Strength",
@@ -4545,7 +4686,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -4650,7 +4792,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ELECTRODE: {
@@ -4702,7 +4845,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -4788,7 +4932,7 @@ export class Pokemon {
                 "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms.",
             ],
             evolutions: [
-                 {
+                {
                     evolvedForm: ["E", "X", "E", "G", "G", "U", "T", "O", "R"],
                     requirements: [
                         {
@@ -4840,7 +4984,8 @@ export class Pokemon {
                     {
                         move: "Sleep Powder",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -4874,7 +5019,8 @@ export class Pokemon {
                     {
                         move: "Sleep Powder",
                         level: 48,
-                    }],
+                    },
+                ],
             },
         },
         EXEGGUTOR: {
@@ -4906,15 +5052,20 @@ export class Pokemon {
                     {
                         move: "Stomp",
                         level: 28,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
-                tm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
+                tm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
             },
         },
         FARFETCHD: {
@@ -4962,7 +5113,8 @@ export class Pokemon {
                     {
                         move: "Slash",
                         level: 39,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -5028,7 +5180,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         FEAROW: {
@@ -5080,11 +5233,14 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 43,
-                    }],
-                hm: [{
-                    move: "Fly",
-                    level: 2,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Fly",
+                        level: 2,
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -5141,7 +5297,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         FLAREON: {
@@ -5209,7 +5366,8 @@ export class Pokemon {
                     {
                         move: "Flamethrower",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -5270,7 +5428,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -5331,7 +5490,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GASTLY: {
@@ -5341,15 +5501,17 @@ export class Pokemon {
             info: [
                 "Almost invisible, this gaseous %%%%%%%POKEMON%%%%%%% cloaks the target and puts it to sleep without notice.",
             ],
-            evolutions: [{
-                evolvedForm: ["H", "A", "U", "N", "T", "E", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 25,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["H", "A", "U", "N", "T", "E", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 25,
+                        },
+                    ],
+                },
+            ],
             number: 92,
             height: ["4", "3"],
             weight: 0.2,
@@ -5380,7 +5542,8 @@ export class Pokemon {
                     {
                         move: "Dream Eater",
                         level: 35,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -5402,7 +5565,8 @@ export class Pokemon {
                     {
                         move: "Dream Eater",
                         level: 35,
-                    }],
+                    },
+                ],
             },
         },
         GENGAR: {
@@ -5442,11 +5606,14 @@ export class Pokemon {
                     {
                         move: "Dream Eater",
                         level: 38,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -5551,7 +5718,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GEODUDE: {
@@ -5561,15 +5729,17 @@ export class Pokemon {
             info: [
                 "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "R", "A", "V", "E", "L", "E", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 25,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "R", "A", "V", "E", "L", "E", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 25,
+                        },
+                    ],
+                },
+            ],
             number: 74,
             height: ["1", "4"],
             weight: 44.1,
@@ -5608,7 +5778,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 36,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -5698,7 +5869,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GLOOM: {
@@ -5708,15 +5880,17 @@ export class Pokemon {
             info: [
                 "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey.",
             ],
-            evolutions: [{
-                evolvedForm: ["V", "I", "L", "E", "P", "L", "U", "M", "E"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Leaf Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["V", "I", "L", "E", "P", "L", "U", "M", "E"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Leaf Stone",
+                        },
+                    ],
+                },
+            ],
             number: 44,
             height: ["2", "7"],
             weight: 19,
@@ -5763,7 +5937,8 @@ export class Pokemon {
                     {
                         move: "Solar Beam",
                         level: 52,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -5817,7 +5992,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GOLBAT: {
@@ -5869,7 +6045,8 @@ export class Pokemon {
                     {
                         move: "Haze",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Razor Wind",
@@ -5926,7 +6103,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Bite",
@@ -5959,7 +6137,8 @@ export class Pokemon {
                     {
                         move: "Haze",
                         level: 43,
-                    }],
+                    },
+                ],
             },
         },
         GOLDEEN: {
@@ -5969,15 +6148,17 @@ export class Pokemon {
             info: [
                 "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen.",
             ],
-            evolutions: [{
-                evolvedForm: ["S", "E", "A", "K", "I", "N", "G"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 33,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["S", "E", "A", "K", "I", "N", "G"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 33,
+                        },
+                    ],
+                },
+            ],
             number: 118,
             height: ["2", "0"],
             weight: 33.1,
@@ -6020,11 +6201,14 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 54,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -6089,7 +6273,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GOLDUCK: {
@@ -6141,7 +6326,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 59,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -6239,7 +6425,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GOLEM: {
@@ -6291,11 +6478,14 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 43,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -6392,7 +6582,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GRAVELER: {
@@ -6402,14 +6593,16 @@ export class Pokemon {
             info: [
                 "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "O", "L", "E", "M"],
-                requirements: [
-                    {
-                        method: "Trade",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "O", "L", "E", "M"],
+                    requirements: [
+                        {
+                            method: "Trade",
+                        },
+                    ],
+                },
+            ],
             number: 75,
             height: ["3", "3"],
             weight: 231.5,
@@ -6452,7 +6645,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -6542,7 +6736,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GRIMER: {
@@ -6552,15 +6747,17 @@ export class Pokemon {
             info: [
                 "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories.",
             ],
-            evolutions: [{
-                evolvedForm: ["M", "U", "K"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 38,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["M", "U", "K"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 38,
+                        },
+                    ],
+                },
+            ],
             number: 88,
             height: ["2", "11"],
             weight: 66.1,
@@ -6603,7 +6800,8 @@ export class Pokemon {
                     {
                         move: "Acid Armor",
                         level: 55,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -6660,7 +6858,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Disable",
@@ -6693,7 +6892,8 @@ export class Pokemon {
                     {
                         move: "Acid Armor",
                         level: 55,
-                    }],
+                    },
+                ],
             },
         },
         GROWLITHE: {
@@ -6703,15 +6903,17 @@ export class Pokemon {
             info: [
                 "Very protective of its territory. It will bark and bite to repel intruders from its space.",
             ],
-            evolutions: [{
-                evolvedForm: ["A", "R", "C", "A", "N", "I", "N", "E"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Fire Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["A", "R", "C", "A", "N", "I", "N", "E"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Fire Stone",
+                        },
+                    ],
+                },
+            ],
             number: 58,
             height: ["2", "4"],
             weight: 41.9,
@@ -6750,7 +6952,8 @@ export class Pokemon {
                     {
                         move: "Flamethrower",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -6780,7 +6983,8 @@ export class Pokemon {
                     {
                         move: "Flamethrower",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         GYARADOS: {
@@ -6836,7 +7040,8 @@ export class Pokemon {
                     {
                         move: "Hyper Beam",
                         level: 52,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -6845,7 +7050,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Surf",
@@ -6854,7 +7060,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
             },
         },
         HAUNTER: {
@@ -6864,14 +7071,16 @@ export class Pokemon {
             info: [
                 "Because of its ability to slip through block walls, it is said to be from another dimension.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "E", "N", "G", "A", "R"],
-                requirements: [
-                    {
-                        method: "Trade",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "E", "N", "G", "A", "R"],
+                    requirements: [
+                        {
+                            method: "Trade",
+                        },
+                    ],
+                },
+            ],
             number: 93,
             height: ["5", "3"],
             weight: 0.2,
@@ -6902,7 +7111,8 @@ export class Pokemon {
                     {
                         move: "Dream Eater",
                         level: 38,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -6924,7 +7134,8 @@ export class Pokemon {
                     {
                         move: "Dream Eater",
                         level: 38,
-                    }],
+                    },
+                ],
             },
         },
         HITMONCHAN: {
@@ -6972,11 +7183,14 @@ export class Pokemon {
                     {
                         move: "Counter",
                         level: 53,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -7049,7 +7263,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         HITMONLEE: {
@@ -7097,7 +7312,8 @@ export class Pokemon {
                     {
                         move: "Mega Kick",
                         level: 53,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -7171,7 +7387,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         HORSEA: {
@@ -7181,15 +7398,17 @@ export class Pokemon {
             info: [
                 "Known to shoot down flying bugs with precision blasts of ink from the surface of the water.",
             ],
-            evolutions: [{
-                evolvedForm: ["S", "E", "A", "D", "R", "A"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 32,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["S", "E", "A", "D", "R", "A"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 32,
+                        },
+                    ],
+                },
+            ],
             number: 116,
             height: ["1", "4"],
             weight: 17.6,
@@ -7224,11 +7443,14 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 45,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -7289,7 +7511,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         HYPNO: {
@@ -7349,7 +7572,8 @@ export class Pokemon {
                     {
                         move: "Meditate",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -7451,7 +7675,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         IVYSAUR: {
@@ -7461,15 +7686,17 @@ export class Pokemon {
             info: [
                 "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.",
             ],
-            evolutions: [{
-                evolvedForm: ["V", "E", "N", "U", "S", "A", "U", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 32,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["V", "E", "N", "U", "S", "A", "U", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 32,
+                        },
+                    ],
+                },
+            ],
             number: 2,
             height: ["3", "3"],
             weight: 28.7,
@@ -7520,11 +7747,14 @@ export class Pokemon {
                     {
                         move: "Solar Beam",
                         level: 54,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -7581,7 +7811,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         JIGGLYPUFF: {
@@ -7591,15 +7822,17 @@ export class Pokemon {
             info: [
                 "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep.",
             ],
-            evolutions: [{
-                evolvedForm: ["W", "I", "G", "G", "L", "Y", "T", "U", "F", "F"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Moon Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["W", "I", "G", "G", "L", "Y", "T", "U", "F", "F"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Moon Stone",
+                        },
+                    ],
+                },
+            ],
             number: 39,
             height: ["1", "8"],
             weight: 12.1,
@@ -7642,7 +7875,8 @@ export class Pokemon {
                     {
                         move: "Double-Edge",
                         level: 39,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Strength",
@@ -7651,7 +7885,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -7772,7 +8007,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         JOLTEON: {
@@ -7840,12 +8076,15 @@ export class Pokemon {
                     {
                         move: "Thunder",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [],
-                tm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                tm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
             },
         },
         JYNX: {
@@ -7897,7 +8136,8 @@ export class Pokemon {
                     {
                         move: "Blizzard",
                         level: 58,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Mega Punch",
@@ -8002,7 +8242,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Lovely Kiss",
@@ -8035,7 +8276,8 @@ export class Pokemon {
                     {
                         move: "Blizzard",
                         level: 58,
-                    }],
+                    },
+                ],
             },
         },
         KABUTO: {
@@ -8045,15 +8287,17 @@ export class Pokemon {
             info: [
                 "A %%%%%%%POKEMON%%%%%%% that was resurrected from a fossil found in what was once the ocean floor eons ago.",
             ],
-            evolutions: [{
-                evolvedForm: ["K", "A", "B", "U", "T", "O", "P", "S"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 40,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["K", "A", "B", "U", "T", "O", "P", "S"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 40,
+                        },
+                    ],
+                },
+            ],
             number: 140,
             height: ["1", "8"],
             weight: 25.4,
@@ -8088,11 +8332,14 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 49,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -8153,7 +8400,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         KABUTOPS: {
@@ -8201,7 +8449,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 53,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -8291,7 +8540,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         KADABRA: {
@@ -8301,14 +8551,16 @@ export class Pokemon {
             info: [
                 "It emits special alpha waves from its body that induce headaches just by being close by.",
             ],
-            evolutions: [{
-                evolvedForm: ["A", "L", "A", "K", "A", "Z", "A", "M"],
-                requirements: [
-                    {
-                        method: "Trade",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["A", "L", "A", "K", "A", "Z", "A", "M"],
+                    requirements: [
+                        {
+                            method: "Trade",
+                        },
+                    ],
+                },
+            ],
             number: 64,
             height: ["4", "3"],
             weight: 124.6,
@@ -8355,11 +8607,14 @@ export class Pokemon {
                     {
                         move: "Reflect",
                         level: 42,
-                    }],
-                hm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -8456,7 +8711,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         KAKUNA: {
@@ -8466,15 +8722,17 @@ export class Pokemon {
             info: [
                 "Almost incapable of moving, this %%%%%%%POKEMON%%%%%%% can only harden its shell to protect itself from predators.",
             ],
-            evolutions: [{
-                evolvedForm: ["B", "E", "E", "D", "R", "I", "L", "L"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 10,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["B", "E", "E", "D", "R", "I", "L", "L"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 10,
+                        },
+                    ],
+                },
+            ],
             number: 14,
             height: ["2", "0"],
             weight: 22,
@@ -8485,15 +8743,19 @@ export class Pokemon {
             special: 25,
             speed: 35,
             moves: {
-                natural: [{
-                    move: "Harden",
-                    level: 1,
-                }],
+                natural: [
+                    {
+                        move: "Harden",
+                        level: 1,
+                    },
+                ],
                 hm: [],
-                tm: [{
-                    move: "Harden",
-                    level: 1,
-                }],
+                tm: [
+                    {
+                        move: "Harden",
+                        level: 1,
+                    },
+                ],
             },
         },
         KANGASKHAN: {
@@ -8541,7 +8803,8 @@ export class Pokemon {
                     {
                         move: "Dizzy Punch",
                         level: 46,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -8651,7 +8914,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         KINGLER: {
@@ -8703,7 +8967,8 @@ export class Pokemon {
                     {
                         move: "Harden",
                         level: 49,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -8716,7 +8981,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -8781,7 +9047,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         KOFFING: {
@@ -8791,15 +9058,17 @@ export class Pokemon {
             info: [
                 "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning.",
             ],
-            evolutions: [{
-                evolvedForm: ["W", "E", "E", "Z", "I", "N", "G"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 35,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["W", "E", "E", "Z", "I", "N", "G"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 35,
+                        },
+                    ],
+                },
+            ],
             number: 109,
             height: ["2", "0"],
             weight: 2.2,
@@ -8838,7 +9107,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -8887,7 +9157,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Smog",
@@ -8916,7 +9187,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 48,
-                    }],
+                    },
+                ],
             },
         },
         KRABBY: {
@@ -8926,15 +9198,17 @@ export class Pokemon {
             info: [
                 "Its pincers are not only powerful weapons, they are used for balance when walking sideways.",
             ],
-            evolutions: [{
-                evolvedForm: ["K", "I", "N", "G", "L", "E", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 28,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["K", "I", "N", "G", "L", "E", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 28,
+                        },
+                    ],
+                },
+            ],
             number: 98,
             height: ["1", "4"],
             weight: 14.3,
@@ -8973,7 +9247,8 @@ export class Pokemon {
                     {
                         move: "Harden",
                         level: 40,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -9035,7 +9310,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         LAPRAS: {
@@ -9087,7 +9363,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 46,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -9096,7 +9373,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -9193,7 +9471,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         LICKITUNG: {
@@ -9241,7 +9520,8 @@ export class Pokemon {
                     {
                         move: "Screech",
                         level: 39,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -9351,7 +9631,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MACHAMP: {
@@ -9403,11 +9684,14 @@ export class Pokemon {
                     {
                         move: "Submission",
                         level: 52,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -9500,7 +9784,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MACHOKE: {
@@ -9510,14 +9795,16 @@ export class Pokemon {
             info: [
                 "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions.",
             ],
-            evolutions: [{
-                evolvedForm: ["M", "A", "C", "H", "A", "M", "P"],
-                requirements: [
-                    {
-                        method: "Trade",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["M", "A", "C", "H", "A", "M", "P"],
+                    requirements: [
+                        {
+                            method: "Trade",
+                        },
+                    ],
+                },
+            ],
             number: 67,
             height: ["4", "11"],
             weight: 155.4,
@@ -9560,7 +9847,8 @@ export class Pokemon {
                     {
                         move: "Submission",
                         level: 52,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -9650,7 +9938,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MACHOP: {
@@ -9660,15 +9949,17 @@ export class Pokemon {
             info: [
                 "Loves to build its muscles. It trains in all styles of martial arts to become even stronger.",
             ],
-            evolutions: [{
-                evolvedForm: ["M", "A", "C", "H", "O", "K", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 28,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["M", "A", "C", "H", "O", "K", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 28,
+                        },
+                    ],
+                },
+            ],
             number: 66,
             height: ["2", "7"],
             weight: 43,
@@ -9703,11 +9994,14 @@ export class Pokemon {
                     {
                         move: "Submission",
                         level: 46,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -9796,7 +10090,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MAGIKARP: {
@@ -9806,15 +10101,17 @@ export class Pokemon {
             info: [
                 "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "Y", "A", "R", "A", "D", "O", "S"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 20,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "Y", "A", "R", "A", "D", "O", "S"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 20,
+                        },
+                    ],
+                },
+            ],
             number: 129,
             height: ["2", "11"],
             weight: 22,
@@ -9833,7 +10130,8 @@ export class Pokemon {
                     {
                         move: "Tackle",
                         level: 15,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [],
             },
@@ -9883,7 +10181,8 @@ export class Pokemon {
                     {
                         move: "Flamethrower",
                         level: 55,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -9973,7 +10272,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MAGNEMITE: {
@@ -9983,15 +10283,17 @@ export class Pokemon {
             info: [
                 "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves.",
             ],
-            evolutions: [{
-                evolvedForm: ["M", "A", "G", "N", "E", "T", "O", "N"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 30,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["M", "A", "G", "N", "E", "T", "O", "N"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 30,
+                        },
+                    ],
+                },
+            ],
             number: 81,
             height: ["1", "0"],
             weight: 13.2,
@@ -10030,11 +10332,14 @@ export class Pokemon {
                     {
                         move: "Screech",
                         level: 47,
-                    }],
-                hm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -10095,7 +10400,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MAGNETON: {
@@ -10151,7 +10457,8 @@ export class Pokemon {
                     {
                         move: "Screech",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -10217,7 +10524,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MANKEY: {
@@ -10227,15 +10535,17 @@ export class Pokemon {
             info: [
                 "Extremely quick to anger. It could be docile one moment then thrashing away the next instant.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "R", "I", "M", "E", "A", "P", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 28,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "R", "I", "M", "E", "A", "P", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 28,
+                        },
+                    ],
+                },
+            ],
             number: 56,
             height: ["1", "8"],
             weight: 61.7,
@@ -10274,11 +10584,14 @@ export class Pokemon {
                     {
                         move: "Thrash",
                         level: 39,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -10371,7 +10684,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MAROWAK: {
@@ -10427,11 +10741,14 @@ export class Pokemon {
                     {
                         move: "Rage",
                         level: 55,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -10532,7 +10849,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MEOWTH: {
@@ -10542,15 +10860,17 @@ export class Pokemon {
             info: [
                 "Adores circular objects. Wanders the streets on a nightly basis to look for dropped loose change.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "E", "R", "S", "I", "A", "N"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 28,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "E", "R", "S", "I", "A", "N"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 28,
+                        },
+                    ],
+                },
+            ],
             number: 52,
             height: ["1", "4"],
             weight: 9.3,
@@ -10589,7 +10909,8 @@ export class Pokemon {
                     {
                         move: "Slash",
                         level: 44,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -10619,7 +10940,8 @@ export class Pokemon {
                     {
                         move: "Slash",
                         level: 44,
-                    }],
+                    },
+                ],
             },
         },
         METAPOD: {
@@ -10629,15 +10951,17 @@ export class Pokemon {
             info: [
                 "this %%%%%%%POKEMON%%%%%%% is vulnerable to attack while its shell is soft, exposing its weak and tender body.",
             ],
-            evolutions: [{
-                evolvedForm: ["B", "U", "T", "T", "E", "R", "F", "R", "E", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 10,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["B", "U", "T", "T", "E", "R", "F", "R", "E", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 10,
+                        },
+                    ],
+                },
+            ],
             number: 11,
             height: ["2", "4"],
             weight: 21.8,
@@ -10648,10 +10972,12 @@ export class Pokemon {
             special: 25,
             speed: 30,
             moves: {
-                natural: [{
-                    move: "Harden",
-                    level: 1,
-                }],
+                natural: [
+                    {
+                        move: "Harden",
+                        level: 1,
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -10661,7 +10987,8 @@ export class Pokemon {
                     {
                         move: "Harden",
                         level: 7,
-                    }],
+                    },
+                ],
             },
         },
         MEW: {
@@ -10701,7 +11028,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 40,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -10722,7 +11050,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -10923,7 +11252,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MEWTWO: {
@@ -10979,7 +11309,8 @@ export class Pokemon {
                     {
                         move: "Amnesia",
                         level: 81,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Strength",
@@ -10988,7 +11319,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -11125,7 +11457,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MOLTRES: {
@@ -11165,7 +11498,8 @@ export class Pokemon {
                     {
                         move: "Sky Attack",
                         level: 60,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -11231,7 +11565,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MrHyphenMime: {
@@ -11279,11 +11614,14 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 47,
-                    }],
-                hm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -11388,7 +11726,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         MUK: {
@@ -11444,7 +11783,8 @@ export class Pokemon {
                     {
                         move: "Acid Armor",
                         level: 60,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -11482,7 +11822,8 @@ export class Pokemon {
                     {
                         move: "Acid Armor",
                         level: 60,
-                    }],
+                    },
+                ],
             },
         },
         NIDOKING: {
@@ -11530,7 +11871,8 @@ export class Pokemon {
                     {
                         move: "Thrash",
                         level: 23,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -11539,7 +11881,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Surf",
@@ -11548,7 +11891,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
             },
         },
         NIDOQUEEN: {
@@ -11596,7 +11940,8 @@ export class Pokemon {
                     {
                         move: "Body Slam",
                         level: 23,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -11605,7 +11950,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Surf",
@@ -11614,7 +11960,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
             },
         },
         NIDORANFemaleSymbol: {
@@ -11624,15 +11971,17 @@ export class Pokemon {
             info: [
                 "Although small, its venomous barbs render this %%%%%%%POKEMON%%%%%%% dangerous. The female has smaller horns.",
             ],
-            evolutions: [{
-                evolvedForm: ["N", "I", "D", "O", "R", "I", "N", "A"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 16,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["N", "I", "D", "O", "R", "I", "N", "A"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 16,
+                        },
+                    ],
+                },
+            ],
             number: 29,
             height: ["1", "4"],
             weight: 15.4,
@@ -11737,7 +12086,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -11798,7 +12148,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         NIDORANMaleSymbol: {
@@ -11808,15 +12159,17 @@ export class Pokemon {
             info: [
                 "Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom.",
             ],
-            evolutions: [{
-                evolvedForm: ["N", "I", "D", "O", "R", "I", "N", "O"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 16,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["N", "I", "D", "O", "R", "I", "N", "O"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 16,
+                        },
+                    ],
+                },
+            ],
             number: 32,
             height: ["1", "8"],
             weight: 19.8,
@@ -11891,7 +12244,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -11956,7 +12310,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -12021,7 +12376,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         NIDORINA: {
@@ -12031,15 +12387,17 @@ export class Pokemon {
             info: [
                 "The female's horn develops slowly. Prefers physical attacks such as clawing and biting.",
             ],
-            evolutions: [{
-                evolvedForm: ["N", "I", "D", "O", "Q", "U", "E", "E", "N"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Moon Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["N", "I", "D", "O", "Q", "U", "E", "E", "N"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Moon Stone",
+                        },
+                    ],
+                },
+            ],
             number: 30,
             height: ["2", "7"],
             weight: 44.1,
@@ -12086,7 +12444,8 @@ export class Pokemon {
                     {
                         move: "Double Kick",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -12124,7 +12483,8 @@ export class Pokemon {
                     {
                         move: "Fury Swipes",
                         level: 46,
-                    }],
+                    },
+                ],
             },
         },
         NIDORINO: {
@@ -12134,15 +12494,17 @@ export class Pokemon {
             info: [
                 "An aggressive %%%%%%%POKEMON%%%%%%% that is quick to attack. The horn on its head secretes a powerful venom.",
             ],
-            evolutions: [{
-                evolvedForm: ["N", "I", "D", "O", "K", "I", "N", "G"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Moon Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["N", "I", "D", "O", "K", "I", "N", "G"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Moon Stone",
+                        },
+                    ],
+                },
+            ],
             number: 33,
             height: ["2", "11"],
             weight: 43,
@@ -12189,7 +12551,8 @@ export class Pokemon {
                     {
                         move: "Double Kick",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -12227,7 +12590,8 @@ export class Pokemon {
                     {
                         move: "Horn Drill",
                         level: 46,
-                    }],
+                    },
+                ],
             },
         },
         NINETALES: {
@@ -12263,7 +12627,8 @@ export class Pokemon {
                     {
                         move: "Tail Whip",
                         level: 1,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -12328,7 +12693,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -12393,7 +12759,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ODDISH: {
@@ -12403,15 +12770,17 @@ export class Pokemon {
             info: [
                 "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "L", "O", "O", "M"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 21,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "L", "O", "O", "M"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 21,
+                        },
+                    ],
+                },
+            ],
             number: 43,
             height: ["1", "8"],
             weight: 11.9,
@@ -12450,7 +12819,8 @@ export class Pokemon {
                     {
                         move: "Solar Beam",
                         level: 46,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -12504,7 +12874,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         OMANYTE: {
@@ -12514,15 +12885,17 @@ export class Pokemon {
             info: [
                 "Although long extinct, in rare cases, it can be genetically resurrected from fossils.",
             ],
-            evolutions: [{
-                evolvedForm: ["O", "M", "A", "S", "T", "A", "R"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 40,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["O", "M", "A", "S", "T", "A", "R"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 40,
+                        },
+                    ],
+                },
+            ],
             number: 138,
             height: ["1", "4"],
             weight: 16.5,
@@ -12557,7 +12930,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 53,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -12619,7 +12993,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         OMASTAR: {
@@ -12667,11 +13042,14 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 49,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -12752,7 +13130,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ONIX: {
@@ -12800,7 +13179,8 @@ export class Pokemon {
                     {
                         move: "Harden",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -12870,7 +13250,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PARAS: {
@@ -12880,15 +13261,17 @@ export class Pokemon {
             info: [
                 "Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "A", "R", "A", "S", "E", "C", "T"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 24,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "A", "R", "A", "S", "E", "C", "T"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 24,
+                        },
+                    ],
+                },
+            ],
             number: 46,
             height: ["1", "0"],
             weight: 11.9,
@@ -12923,11 +13306,14 @@ export class Pokemon {
                     {
                         move: "Growth",
                         level: 41,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -12992,7 +13378,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PARASECT: {
@@ -13044,7 +13431,8 @@ export class Pokemon {
                     {
                         move: "Growth",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -13114,7 +13502,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PERSIAN: {
@@ -13170,7 +13559,8 @@ export class Pokemon {
                     {
                         move: "Slash",
                         level: 51,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -13243,7 +13633,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Bite",
@@ -13280,7 +13671,8 @@ export class Pokemon {
                     {
                         move: "Slash",
                         level: 51,
-                    }],
+                    },
+                ],
             },
         },
         PIDGEOT: {
@@ -13336,7 +13728,8 @@ export class Pokemon {
                     {
                         move: "Mirror Move",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -13398,7 +13791,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PIDGEOTTO: {
@@ -13408,15 +13802,17 @@ export class Pokemon {
             info: [
                 "Very protective of its sprawling territorial area, this %%%%%%%POKEMON%%%%%%% will fiercely peck at any intruder.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "I", "D", "G", "E", "O", "T"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 36,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "I", "D", "G", "E", "O", "T"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 36,
+                        },
+                    ],
+                },
+            ],
             number: 17,
             height: ["3", "7"],
             weight: 66.1,
@@ -13459,11 +13855,14 @@ export class Pokemon {
                     {
                         move: "Mirror Move",
                         level: 49,
-                    }],
-                hm: [{
-                    move: "Fly",
-                    level: 2,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Fly",
+                        level: 2,
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -13520,7 +13919,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PIDGEY: {
@@ -13530,15 +13930,17 @@ export class Pokemon {
             info: [
                 "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "I", "D", "G", "E", "O", "T", "T", "O"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 18,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "I", "D", "G", "E", "O", "T", "T", "O"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 18,
+                        },
+                    ],
+                },
+            ],
             number: 16,
             height: ["1", "0"],
             weight: 4,
@@ -13577,11 +13979,14 @@ export class Pokemon {
                     {
                         move: "Mirror Move",
                         level: 44,
-                    }],
-                hm: [{
-                    move: "Fly",
-                    level: 2,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Fly",
+                        level: 2,
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -13638,7 +14043,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PIKACHU: {
@@ -13648,15 +14054,17 @@ export class Pokemon {
             info: [
                 "When several of these %%%%%%%POKEMON%%%%%%% gather, their electricity could build and cause lightning storms.",
             ],
-            evolutions: [{
-                evolvedForm: ["R", "A", "I", "C", "H", "U"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Thunder Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["R", "A", "I", "C", "H", "U"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Thunder Stone",
+                        },
+                    ],
+                },
+            ],
             number: 25,
             height: ["1", "4"],
             weight: 13.2,
@@ -13695,7 +14103,8 @@ export class Pokemon {
                     {
                         move: "Thunder",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -13781,7 +14190,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PINSIR: {
@@ -13829,7 +14239,8 @@ export class Pokemon {
                     {
                         move: "Swords Dance",
                         level: 54,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -13838,7 +14249,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -13895,7 +14307,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         POLIWAG: {
@@ -13905,15 +14318,17 @@ export class Pokemon {
             info: [
                 "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "O", "L", "I", "W", "H", "I", "R", "L"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 25,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "O", "L", "I", "W", "H", "I", "R", "L"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 25,
+                        },
+                    ],
+                },
+            ],
             number: 60,
             height: ["2", "0"],
             weight: 27.3,
@@ -13952,7 +14367,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 45,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -14022,7 +14438,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         POLIWHIRL: {
@@ -14032,15 +14449,17 @@ export class Pokemon {
             info: [
                 "Capable of living in or out of water. When out of water, it sweats to keep its body slimy.",
             ],
-            evolutions: [{
-                evolvedForm: ["P", "O", "L", "I", "W", "R", "A", "T", "H"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Water Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["P", "O", "L", "I", "W", "R", "A", "T", "H"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Water Stone",
+                        },
+                    ],
+                },
+            ],
             number: 61,
             height: ["3", "3"],
             weight: 44.1,
@@ -14087,7 +14506,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 49,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -14096,7 +14516,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -14197,7 +14618,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         POLIWRATH: {
@@ -14241,7 +14663,8 @@ export class Pokemon {
                     {
                         move: "Water Gun",
                         level: 19,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -14251,7 +14674,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
             },
         },
         PONYTA: {
@@ -14261,15 +14685,17 @@ export class Pokemon {
             info: [
                 "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time.",
             ],
-            evolutions: [{
-                evolvedForm: ["R", "A", "P", "I", "D", "A", "S", "H"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 40,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["R", "A", "P", "I", "D", "A", "S", "H"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 40,
+                        },
+                    ],
+                },
+            ],
             number: 77,
             height: ["3", "3"],
             weight: 66.1,
@@ -14308,7 +14734,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -14369,7 +14796,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Ember",
@@ -14398,7 +14826,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 48,
-                    }],
+                    },
+                ],
             },
         },
         PORYGON: {
@@ -14446,7 +14875,8 @@ export class Pokemon {
                     {
                         move: "Tri Attack",
                         level: 42,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -14536,7 +14966,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PRIMEAPE: {
@@ -14592,11 +15023,14 @@ export class Pokemon {
                     {
                         move: "Thrash",
                         level: 46,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -14693,7 +15127,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         PSYDUCK: {
@@ -14703,15 +15138,17 @@ export class Pokemon {
             info: [
                 "While lulling its enemies with its vacant look, this wily %%%%%%%POKEMON%%%%%%% will use psychokinetic powers.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "O", "L", "D", "U", "C", "K"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 33,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "O", "L", "D", "U", "C", "K"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 33,
+                        },
+                    ],
+                },
+            ],
             number: 54,
             height: ["2", "7"],
             weight: 43.2,
@@ -14746,7 +15183,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 52,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -14840,7 +15278,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         RAICHU: {
@@ -14872,15 +15311,20 @@ export class Pokemon {
                     {
                         move: "Thunder Wave",
                         level: 1,
-                    }],
-                hm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
-                tm: [{
-                    move: "Flash",
-                    level: 5,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
+                tm: [
+                    {
+                        move: "Flash",
+                        level: 5,
+                    },
+                ],
             },
         },
         RAPIDASH: {
@@ -14940,7 +15384,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 55,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -14982,7 +15427,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 55,
-                    }],
+                    },
+                ],
             },
         },
         RATICATE: {
@@ -15030,7 +15476,8 @@ export class Pokemon {
                     {
                         move: "Super Fang",
                         level: 41,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -15111,7 +15558,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Quick Attack",
@@ -15140,7 +15588,8 @@ export class Pokemon {
                     {
                         move: "Super Fang",
                         level: 41,
-                    }],
+                    },
+                ],
             },
         },
         RATTATA: {
@@ -15150,15 +15599,17 @@ export class Pokemon {
             info: [
                 "Bites anything when it attacks. Small and very quick, it is a common sight in many places.",
             ],
-            evolutions: [{
-                evolvedForm: ["R", "A", "T", "I", "C", "A", "T", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 20,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["R", "A", "T", "I", "C", "A", "T", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 20,
+                        },
+                    ],
+                },
+            ],
             number: 19,
             height: ["1", "0"],
             weight: 7.7,
@@ -15193,7 +15644,8 @@ export class Pokemon {
                     {
                         move: "Super Fang",
                         level: 34,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -15219,7 +15671,8 @@ export class Pokemon {
                     {
                         move: "Super Fang",
                         level: 34,
-                    }],
+                    },
+                ],
             },
         },
         RHYDON: {
@@ -15279,7 +15732,8 @@ export class Pokemon {
                     {
                         move: "Take Down",
                         level: 64,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -15288,7 +15742,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -15409,7 +15864,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         RHYHORN: {
@@ -15419,15 +15875,17 @@ export class Pokemon {
             info: [
                 "Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying.",
             ],
-            evolutions: [{
-                evolvedForm: ["R", "H", "Y", "D", "O", "N"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 42,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["R", "H", "Y", "D", "O", "N"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 42,
+                        },
+                    ],
+                },
+            ],
             number: 111,
             height: ["3", "3"],
             weight: 253.5,
@@ -15466,11 +15924,14 @@ export class Pokemon {
                     {
                         move: "Take Down",
                         level: 55,
-                    }],
-                hm: [{
-                    move: "Strength",
-                    level: 4,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Strength",
+                        level: 4,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -15547,7 +16008,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SANDSHREW: {
@@ -15557,15 +16019,17 @@ export class Pokemon {
             info: [
                 "Burrows deep underground in arid locations far from water. It only emerges to hunt for food.",
             ],
-            evolutions: [{
-                evolvedForm: ["S", "A", "N", "D", "S", "L", "A", "S", "H"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 22,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["S", "A", "N", "D", "S", "L", "A", "S", "H"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 22,
+                        },
+                    ],
+                },
+            ],
             number: 27,
             height: ["2", "0"],
             weight: 26.5,
@@ -15600,7 +16064,8 @@ export class Pokemon {
                     {
                         move: "Fury Swipes",
                         level: 38,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -15609,7 +16074,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -15686,7 +16152,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SANDSLASH: {
@@ -15734,7 +16201,8 @@ export class Pokemon {
                     {
                         move: "Fury Swipes",
                         level: 47,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -15743,7 +16211,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -15824,7 +16293,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SCYTHER: {
@@ -15872,7 +16342,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 42,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -15926,7 +16397,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SEADRA: {
@@ -15974,7 +16446,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 52,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -16040,7 +16513,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SEAKING: {
@@ -16096,11 +16570,14 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 54,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -16169,7 +16646,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SEEL: {
@@ -16179,15 +16657,17 @@ export class Pokemon {
             info: [
                 "The protruding horn on its head is very hard. It is used for bashing through thick ice.",
             ],
-            evolutions: [{
-                evolvedForm: ["D", "E", "W", "G", "O", "N", "G"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 34,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["D", "E", "W", "G", "O", "N", "G"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 34,
+                        },
+                    ],
+                },
+            ],
             number: 86,
             height: ["3", "7"],
             weight: 198.4,
@@ -16222,7 +16702,8 @@ export class Pokemon {
                     {
                         move: "Ice Beam",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -16292,7 +16773,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SHELLDER: {
@@ -16302,15 +16784,17 @@ export class Pokemon {
             info: [
                 "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open.",
             ],
-            evolutions: [{
-                evolvedForm: ["C", "L", "O", "Y", "S", "T", "E", "R"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Water Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["C", "L", "O", "Y", "S", "T", "E", "R"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Water Stone",
+                        },
+                    ],
+                },
+            ],
             number: 90,
             height: ["1", "0"],
             weight: 8.8,
@@ -16349,11 +16833,14 @@ export class Pokemon {
                     {
                         move: "Ice Beam",
                         level: 50,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -16430,7 +16917,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SLOWBRO: {
@@ -16490,7 +16978,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 55,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -16624,7 +17113,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SLOWPOKE: {
@@ -16634,15 +17124,17 @@ export class Pokemon {
             info: [
                 "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack.",
             ],
-            evolutions: [{
-                evolvedForm: ["S", "L", "O", "W", "B", "R", "O"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 37,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["S", "L", "O", "W", "B", "R", "O"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 37,
+                        },
+                    ],
+                },
+            ],
             number: 79,
             height: ["3", "11"],
             weight: 79.4,
@@ -16681,7 +17173,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -16694,7 +17187,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Toxic",
@@ -16803,7 +17297,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SNORLAX: {
@@ -16851,7 +17346,8 @@ export class Pokemon {
                     {
                         move: "Hyper Beam",
                         level: 56,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -16860,7 +17356,8 @@ export class Pokemon {
                     {
                         move: "Strength",
                         level: 4,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Mega Punch",
@@ -16997,7 +17494,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SPEAROW: {
@@ -17007,15 +17505,17 @@ export class Pokemon {
             info: [
                 "Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne.",
             ],
-            evolutions: [{
-                evolvedForm: ["F", "E", "A", "R", "O", "W"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 20,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["F", "E", "A", "R", "O", "W"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 20,
+                        },
+                    ],
+                },
+            ],
             number: 21,
             height: ["1", "0"],
             weight: 4.4,
@@ -17054,7 +17554,8 @@ export class Pokemon {
                     {
                         move: "Agility",
                         level: 36,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -17108,7 +17609,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         SQUIRTLE: {
@@ -17119,15 +17621,17 @@ export class Pokemon {
                 "After birth, its back swells and hardens into a shell.",
                 "Powerfully sprays foam from its mouth.",
             ],
-            evolutions: [{
-                evolvedForm: ["W", "A", "R", "T", "O", "R", "T", "L", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 16,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["W", "A", "R", "T", "O", "R", "T", "L", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 16,
+                        },
+                    ],
+                },
+            ],
             number: 7,
             height: ["1", "8"],
             weight: 19.8,
@@ -17170,7 +17674,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 42,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -17260,7 +17765,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         STARMIE: {
@@ -17292,7 +17798,8 @@ export class Pokemon {
                     {
                         move: "Water Gun",
                         level: 1,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Surf",
@@ -17301,7 +17808,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Surf",
@@ -17310,7 +17818,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
             },
         },
         STARYU: {
@@ -17320,15 +17829,17 @@ export class Pokemon {
             info: [
                 "An enigmatic %%%%%%%POKEMON%%%%%%% that can effortlessly regenerate any appendage it loses in battle.",
             ],
-            evolutions: [{
-                evolvedForm: ["S", "T", "A", "R", "M", "I", "E"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Water Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["S", "T", "A", "R", "M", "I", "E"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Water Stone",
+                        },
+                    ],
+                },
+            ],
             number: 120,
             height: ["2", "7"],
             weight: 76.1,
@@ -17371,7 +17882,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 47,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -17465,7 +17977,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         TANGELA: {
@@ -17517,11 +18030,14 @@ export class Pokemon {
                     {
                         move: "Growth",
                         level: 49,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -17582,7 +18098,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         TAUROS: {
@@ -17626,7 +18143,8 @@ export class Pokemon {
                     {
                         move: "Take Down",
                         level: 51,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -17708,7 +18226,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         TENTACOOL: {
@@ -17718,15 +18237,17 @@ export class Pokemon {
             info: [
                 "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid.",
             ],
-            evolutions: [{
-                evolvedForm: ["T", "E", "N", "T", "A", "C", "R", "U", "E", "L"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 30,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["T", "E", "N", "T", "A", "C", "R", "U", "E", "L"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 30,
+                        },
+                    ],
+                },
+            ],
             number: 72,
             height: ["2", "11"],
             weight: 100.3,
@@ -17773,7 +18294,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 48,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -17782,7 +18304,8 @@ export class Pokemon {
                     {
                         move: "Surf",
                         level: 3,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -17851,7 +18374,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         TENTACRUEL: {
@@ -17915,7 +18439,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Cut",
@@ -17924,7 +18449,8 @@ export class Pokemon {
                     {
                         move: "Surf",
                         level: 3,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Swords Dance",
@@ -17997,7 +18523,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         VAPOREON: {
@@ -18065,15 +18592,20 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 54,
-                    }],
-                hm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
-                tm: [{
-                    move: "Surf",
-                    level: 3,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
+                tm: [
+                    {
+                        move: "Surf",
+                        level: 3,
+                    },
+                ],
             },
         },
         VENOMOTH: {
@@ -18133,7 +18665,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 50,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -18175,7 +18708,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         VENONAT: {
@@ -18185,15 +18719,17 @@ export class Pokemon {
             info: [
                 "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night.",
             ],
-            evolutions: [{
-                evolvedForm: ["V", "E", "N", "O", "M", "O", "T", "H"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 31,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["V", "E", "N", "O", "M", "O", "T", "H"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 31,
+                        },
+                    ],
+                },
+            ],
             number: 48,
             height: ["3", "3"],
             weight: 66.1,
@@ -18236,7 +18772,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -18293,7 +18830,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Disable",
@@ -18334,7 +18872,8 @@ export class Pokemon {
                     {
                         move: "Psychic",
                         level: 43,
-                    }],
+                    },
+                ],
             },
         },
         VENUSAUR: {
@@ -18398,7 +18937,8 @@ export class Pokemon {
                     {
                         move: "Solar Beam",
                         level: 65,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -18460,7 +19000,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         VICTREEBEL: {
@@ -18508,15 +19049,20 @@ export class Pokemon {
                     {
                         move: "Sleep Powder",
                         level: 18,
-                    }],
-                hm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
-                tm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                    },
+                ],
+                hm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
+                tm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
             },
         },
         VILEPLUME: {
@@ -18564,12 +19110,15 @@ export class Pokemon {
                     {
                         move: "Sleep Powder",
                         level: 19,
-                    }],
+                    },
+                ],
                 hm: [],
-                tm: [{
-                    move: "Cut",
-                    level: 1,
-                }],
+                tm: [
+                    {
+                        move: "Cut",
+                        level: 1,
+                    },
+                ],
             },
         },
         VOLTORB: {
@@ -18579,15 +19128,17 @@ export class Pokemon {
             info: [
                 "Usually found in power plants. Easily mistaken for a POKÃ© BALL, they have zapped many people.",
             ],
-            evolutions: [{
-                evolvedForm: ["E", "L", "E", "C", "T", "R", "O", "D", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 30,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["E", "L", "E", "C", "T", "R", "O", "D", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 30,
+                        },
+                    ],
+                },
+            ],
             number: 100,
             height: ["1", "8"],
             weight: 22.9,
@@ -18626,7 +19177,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 43,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -18692,7 +19244,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         VULPIX: {
@@ -18702,15 +19255,17 @@ export class Pokemon {
             info: [
                 "At the time of birth, it has just one tail. The tail splits from its tip as it grows older.",
             ],
-            evolutions: [{
-                evolvedForm: ["N", "I", "N", "E", "T", "A", "L", "E", "S"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Fire Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["N", "I", "N", "E", "T", "A", "L", "E", "S"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Fire Stone",
+                        },
+                    ],
+                },
+            ],
             number: 37,
             height: ["2", "0"],
             weight: 21.8,
@@ -18749,7 +19304,8 @@ export class Pokemon {
                     {
                         move: "Fire Spin",
                         level: 42,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -18810,7 +19366,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Ember",
@@ -18839,7 +19396,8 @@ export class Pokemon {
                     {
                         move: "Fire Spin",
                         level: 42,
-                    }],
+                    },
+                ],
             },
         },
         WARTORTLE: {
@@ -18849,15 +19407,17 @@ export class Pokemon {
             info: [
                 "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance.",
             ],
-            evolutions: [{
-                evolvedForm: ["B", "L", "A", "S", "T", "O", "I", "S", "E"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 36,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["B", "L", "A", "S", "T", "O", "I", "S", "E"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 36,
+                        },
+                    ],
+                },
+            ],
             number: 8,
             height: ["3", "3"],
             weight: 49.6,
@@ -18904,7 +19464,8 @@ export class Pokemon {
                     {
                         move: "Hydro Pump",
                         level: 47,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -18994,7 +19555,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         WEEDLE: {
@@ -19004,15 +19566,17 @@ export class Pokemon {
             info: [
                 "Often found in forests, eating leaves. It has a sharp venomous stinger on its head.",
             ],
-            evolutions: [{
-                evolvedForm: ["K", "A", "K", "U", "N", "A"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 7,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["K", "A", "K", "U", "N", "A"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 7,
+                        },
+                    ],
+                },
+            ],
             number: 13,
             height: ["1", "0"],
             weight: 7.1,
@@ -19031,7 +19595,8 @@ export class Pokemon {
                     {
                         move: "String Shot",
                         level: 1,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [],
             },
@@ -19043,15 +19608,17 @@ export class Pokemon {
             info: [
                 "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID.",
             ],
-            evolutions: [{
-                evolvedForm: ["V", "I", "C", "T", "R", "E", "E", "B", "E", "L"],
-                requirements: [
-                    {
-                        method: "item",
-                        item: "Leaf Stone",
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["V", "I", "C", "T", "R", "E", "E", "B", "E", "L"],
+                    requirements: [
+                        {
+                            method: "item",
+                            item: "Leaf Stone",
+                        },
+                    ],
+                },
+            ],
             number: 70,
             height: ["3", "3"],
             weight: 14.1,
@@ -19102,7 +19669,8 @@ export class Pokemon {
                     {
                         move: "Slam",
                         level: 49,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -19156,7 +19724,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         WEEZING: {
@@ -19208,7 +19777,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 53,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Toxic",
@@ -19261,7 +19831,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Sludge",
@@ -19294,7 +19865,8 @@ export class Pokemon {
                     {
                         move: "Explosion",
                         level: 53,
-                    }],
+                    },
+                ],
             },
         },
         WIGGLYTUFF: {
@@ -19330,7 +19902,8 @@ export class Pokemon {
                     {
                         move: "Sing",
                         level: 1,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -19340,7 +19913,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
             },
         },
         ZAPDOS: {
@@ -19380,7 +19954,8 @@ export class Pokemon {
                     {
                         move: "Light Screen",
                         level: 60,
-                    }],
+                    },
+                ],
                 hm: [
                     {
                         move: "Fly",
@@ -19389,7 +19964,8 @@ export class Pokemon {
                     {
                         move: "Flash",
                         level: 5,
-                    }],
+                    },
+                ],
                 tm: [
                     {
                         move: "Razor Wind",
@@ -19462,7 +20038,8 @@ export class Pokemon {
                     {
                         move: "Substitute",
                         level: 50,
-                    }],
+                    },
+                ],
             },
         },
         ZUBAT: {
@@ -19472,15 +20049,17 @@ export class Pokemon {
             info: [
                 "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets.",
             ],
-            evolutions: [{
-                evolvedForm: ["G", "O", "L", "B", "A", "T"],
-                requirements: [
-                    {
-                        method: "level",
-                        level: 22,
-                    },
-                ],
-            }],
+            evolutions: [
+                {
+                    evolvedForm: ["G", "O", "L", "B", "A", "T"],
+                    requirements: [
+                        {
+                            method: "level",
+                            level: 22,
+                        },
+                    ],
+                },
+            ],
             number: 41,
             height: ["2", "7"],
             weight: 16.5,
@@ -19515,7 +20094,8 @@ export class Pokemon {
                     {
                         move: "Haze",
                         level: 36,
-                    }],
+                    },
+                ],
                 hm: [],
                 tm: [
                     {
@@ -19541,7 +20121,8 @@ export class Pokemon {
                     {
                         move: "Haze",
                         level: 36,
-                    }],
+                    },
+                ],
             },
         },
     };

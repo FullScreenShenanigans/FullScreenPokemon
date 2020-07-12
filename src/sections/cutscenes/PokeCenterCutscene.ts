@@ -34,10 +34,10 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
                 "We heal your %%%%%%%POKEMON%%%%%%% back to perfect health!",
                 "Shall we heal your %%%%%%%POKEMON%%%%%%%?",
             ],
-            (): void => this.choose(machine, nurse),
+            (): void => this.choose(machine, nurse)
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
-    }
+    };
 
     /**
      * Cutscene for choosing whether or not to heal Pokemon.
@@ -46,21 +46,18 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("Heal/Cancel", {
             killOnB: ["GeneralText"],
         });
-        this.game.menuGrapher.addMenuList(
-            "Heal/Cancel",
-            {
-                options: [
-                    {
-                        callback: (): void => this.chooseHeal(machine, nurse),
-                        text: "HEAL",
-                    },
-                    {
-                        callback: this.chooseCancel,
-                        text: "CANCEL",
-                    },
-                ],
-            },
-        );
+        this.game.menuGrapher.addMenuList("Heal/Cancel", {
+            options: [
+                {
+                    callback: (): void => this.chooseHeal(machine, nurse),
+                    text: "HEAL",
+                },
+                {
+                    callback: this.chooseCancel,
+                    text: "CANCEL",
+                },
+            ],
+        });
         this.game.menuGrapher.setActiveMenu("Heal/Cancel");
     }
 
@@ -76,10 +73,8 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Ok. We'll need your %%%%%%%POKEMON%%%%%%%.",
-            ],
-            (): void => this.healing(machine, nurse),
+            ["Ok. We'll need your %%%%%%%POKEMON%%%%%%%."],
+            (): void => this.healing(machine, nurse)
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -89,7 +84,9 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
      *
      */
     private healing(machine: IThing, nurse: ICharacter): void {
-        const party: IPokemon[] = this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty);
+        const party: IPokemon[] = this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        );
         const balls: IThing[] = [];
         const dt = 35;
         const left: number = machine.left + 20;
@@ -104,16 +101,19 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
                     this.game.things.add(
                         this.game.things.names.healingMachineBall,
                         left + (i % 2) * 12,
-                        top + Math.floor(i / 2) * 10),
+                        top + Math.floor(i / 2) * 10
+                    )
                 );
                 i += 1;
             },
             dt,
-            party.length);
+            party.length
+        );
 
         this.game.timeHandler.addEvent(
             (): void => this.healingAction(machine, nurse, balls),
-            dt * (party.length + 1));
+            dt * (party.length + 1)
+        );
     }
 
     /**
@@ -126,9 +126,12 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
 
         this.game.timeHandler.addEventInterval(
             (): void => {
-                const changer = i % 2 === 0
-                    ? (thing: IThing, className: string): void => this.game.graphics.classes.addClass(thing, className)
-                    : (thing: IThing, className: string): void => this.game.graphics.classes.removeClass(thing, className);
+                const changer =
+                    i % 2 === 0
+                        ? (thing: IThing, className: string): void =>
+                              this.game.graphics.classes.addClass(thing, className)
+                        : (thing: IThing, className: string): void =>
+                              this.game.graphics.classes.removeClass(thing, className);
 
                 for (const ball of balls) {
                     changer(ball, "lit");
@@ -139,11 +142,13 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
                 i += 1;
             },
             this.ballFlickerRate,
-            numFlashes);
+            numFlashes
+        );
 
         this.game.timeHandler.addEvent(
             (): void => this.healingComplete(nurse, balls),
-            (numFlashes + 2) * this.ballFlickerRate);
+            (numFlashes + 2) * this.ballFlickerRate
+        );
     }
 
     /**
@@ -153,7 +158,9 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
      * @param args Settings for the routine.
      */
     private healingComplete(nurse: ICharacter, balls: IThing[]): void {
-        const party: IPokemon[] = this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty);
+        const party: IPokemon[] = this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        );
 
         for (const ball of balls) {
             this.game.death.kill(ball);
@@ -175,16 +182,15 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 this.game.menuGrapher.deleteMenu("GeneralText");
                 this.game.scenePlayer.stopCutscene();
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         const map: string = this.game.itemsHolder.getItem(this.game.storage.names.map);
         const mapInfo: IMap = this.game.areaSpawner.getMap() as IMap;
         const location: string | undefined = mapInfo.locationDefault;
 
-        this.game.itemsHolder.setItem(
-            this.game.storage.names.lastPokecenter,
-            { map, location });
+        this.game.itemsHolder.setItem(this.game.storage.names.lastPokecenter, { map, location });
     }
 
     /**
@@ -196,13 +202,12 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "We hope to see you again!",
-            ],
+            ["We hope to see you again!"],
             (): void => {
                 this.game.menuGrapher.deleteMenu("GeneralText");
                 this.game.scenePlayer.stopCutscene();
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
-    }
+    };
 }

@@ -4,8 +4,12 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { IPokemon } from "./Battles";
 import {
-    IPokemonEvolution, IPokemonEvolutionByItem, IPokemonEvolutionByLevel,
-    IPokemonEvolutionByStats, IPokemonEvolutionByTrade, IPokemonEvolutionRequirement,
+    IPokemonEvolution,
+    IPokemonEvolutionByItem,
+    IPokemonEvolutionByLevel,
+    IPokemonEvolutionByStats,
+    IPokemonEvolutionByTrade,
+    IPokemonEvolutionRequirement,
 } from "./constants/Pokemon";
 
 /**
@@ -71,7 +75,9 @@ export interface IRequirementHandlers {
 /**
  * Handler that takes in a pokemon and the requirements for its evolution, and outputs if it is eligible to evolve.
  */
-export type IRequirementHandler = (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>) => boolean;
+export type IRequirementHandler = (
+    args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>
+) => boolean;
 
 /**
  * Logic for what Pokemon are able to evolve into.
@@ -81,15 +87,20 @@ export class Evolution extends Section<FullScreenPokemon> {
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
     private readonly requirementHandlers: IRequirementHandlers = {
-        level: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>): boolean =>
-            args.pokemon.level >= args.requirement.level,
-        item: (args: IRequirementHandlerArgs<IItemModifier, IPokemonEvolutionByItem>): boolean => {
+        level: (
+            args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>
+        ): boolean => args.pokemon.level >= args.requirement.level,
+        item: (
+            args: IRequirementHandlerArgs<IItemModifier, IPokemonEvolutionByItem>
+        ): boolean => {
             if (args.modifier) {
                 return args.requirement.item === args.modifier.item.join("");
             }
             return false;
         },
-        trade: (args: IRequirementHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>): boolean => {
+        trade: (
+            args: IRequirementHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>
+        ): boolean => {
             if (args.modifier) {
                 return args.modifier.type === "trade";
             }
@@ -101,10 +112,12 @@ export class Evolution extends Section<FullScreenPokemon> {
         happiness: (): boolean => false,
         // Time of day does not seem to be implemented yet (#441)
         time: (): boolean => false,
-        stats: (args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>): boolean => {
+        stats: (
+            args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>
+        ): boolean => {
             const difference: number =
-                args.pokemon.statistics[args.requirement.greaterStat].normal
-                - args.pokemon.statistics[args.requirement.lesserStat].normal;
+                args.pokemon.statistics[args.requirement.greaterStat].normal -
+                args.pokemon.statistics[args.requirement.lesserStat].normal;
             if (args.requirement.mayBeEqual) {
                 return difference === 0;
             }
@@ -120,8 +133,13 @@ export class Evolution extends Section<FullScreenPokemon> {
      * @param modifier   Modifier for specific situations such as trade.
      * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
      */
-    public checkEvolutions(pokemon: IPokemon, modifier?: IEvolutionModifier): string[] | undefined {
-        const evolutions: IPokemonEvolution[] | undefined = this.game.constants.pokemon.byName[pokemon.title.join("")].evolutions;
+    public checkEvolutions(
+        pokemon: IPokemon,
+        modifier?: IEvolutionModifier
+    ): string[] | undefined {
+        const evolutions: IPokemonEvolution[] | undefined = this.game.constants.pokemon.byName[
+            pokemon.title.join("")
+        ].evolutions;
         if (!evolutions) {
             return undefined;
         }
@@ -143,7 +161,12 @@ export class Evolution extends Section<FullScreenPokemon> {
      */
     public evolve(pokemon: IPokemon, evolvedForm: string[]): void {
         pokemon.title = evolvedForm;
-        pokemon.statistics = this.game.equations.newPokemonStatistics(pokemon.title, pokemon.level, pokemon.ev, pokemon.iv);
+        pokemon.statistics = this.game.equations.newPokemonStatistics(
+            pokemon.title,
+            pokemon.level,
+            pokemon.ev,
+            pokemon.iv
+        );
         pokemon.types = this.game.constants.pokemon.byName[pokemon.title.join("")].types;
     }
 
@@ -155,13 +178,19 @@ export class Evolution extends Section<FullScreenPokemon> {
      * @param modifier   Modifier for specific situations such as trade.
      * @returns Whether the Pokemon meets the requirements to evolve.
      */
-    private checkEvolution(pokemon: IPokemon, evolution: IPokemonEvolution, modifier?: IEvolutionModifier): boolean {
+    private checkEvolution(
+        pokemon: IPokemon,
+        evolution: IPokemonEvolution,
+        modifier?: IEvolutionModifier
+    ): boolean {
         for (const requirement of evolution.requirements) {
             if (!this.requirementHandlers[requirement.method]) {
                 throw new Error("Evolution requirement does not have a correct method property.");
             }
 
-            if (!this.requirementHandlers[requirement.method]({ modifier, pokemon, requirement })) {
+            if (
+                !this.requirementHandlers[requirement.method]({ modifier, pokemon, requirement })
+            ) {
                 return false;
             }
         }

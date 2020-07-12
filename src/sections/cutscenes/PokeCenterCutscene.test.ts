@@ -45,13 +45,17 @@ const skipBallsFlickering = (clock: Clock, fsp: FullScreenPokemon): void => {
 
     // Balls dissapearing after 8 flashes + a double-long pause
     clock.tick(fsp.cutscenes.pokeCenter.ballFlickerRate * fsp.frameTicker.getInterval() * 10);
-
 };
 
 describe("PokeCenterCutscene", () => {
     it("heals the player's Pokemon when the HEAL dialog has YES chosen", () => {
         // Arrange
-        const { clock, fsp, player, firstPokemonInParty } = stubBlankGameWithNurseAndMachineAfterWelcome();
+        const {
+            clock,
+            fsp,
+            player,
+            firstPokemonInParty,
+        } = stubBlankGameWithNurseAndMachineAfterWelcome();
 
         firstPokemonInParty.status = "frozen";
 
@@ -65,7 +69,11 @@ describe("PokeCenterCutscene", () => {
 
     it("doesn't heal the player's Pokemon when the HEAL dialog has NO chosen", () => {
         // Arrange
-        const { fsp, player, firstPokemonInParty } = stubBlankGameWithNurseAndMachineAfterWelcome();
+        const {
+            fsp,
+            player,
+            firstPokemonInParty,
+        } = stubBlankGameWithNurseAndMachineAfterWelcome();
 
         firstPokemonInParty.status = "frozen";
 

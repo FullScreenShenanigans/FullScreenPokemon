@@ -23,9 +23,7 @@ export class Ledges extends Section<FullScreenPokemon> {
         this.addHopOffset(thing);
         this.addHopShadow(thing);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.endLedgeHop(thing),
-            ticksPerBlock * 2);
+        this.game.timeHandler.addEvent((): void => this.endLedgeHop(thing), ticksPerBlock * 2);
     }
 
     /**
@@ -51,18 +49,17 @@ export class Ledges extends Section<FullScreenPokemon> {
         const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(thing);
         let dy = -2;
 
-        this.game.timeHandler.addEventInterval(
-            (): void => {
-                dy *= -1;
-            },
-            ticksPerBlock + 1);
+        this.game.timeHandler.addEventInterval((): void => {
+            dy *= -1;
+        }, ticksPerBlock + 1);
 
         this.game.timeHandler.addEventInterval(
             (): void => {
                 thing.offsetY += dy;
             },
             1,
-            ticksPerBlock * 2);
+            ticksPerBlock * 2
+        );
     }
 
     /**
@@ -76,7 +73,8 @@ export class Ledges extends Section<FullScreenPokemon> {
         this.game.timeHandler.addEventInterval(
             (): boolean => this.updateShadowPosition(thing),
             1,
-            Infinity);
+            Infinity
+        );
     }
 
     /**

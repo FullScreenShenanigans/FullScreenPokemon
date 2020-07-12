@@ -25,10 +25,9 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
      * @param onChoice   Callback for when this is done.
      */
     public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
-        const newPokemon: IPokemon | undefined = battleInfo.teams[Team[team]].actors
-            .filter((actor: IPokemon): boolean =>
-                actor.statistics.health.current !== 0)
-        [0] as IPokemon | undefined;
+        const newPokemon: IPokemon | undefined = battleInfo.teams[Team[team]].actors.filter(
+            (actor: IPokemon): boolean => actor.statistics.health.current !== 0
+        )[0] as IPokemon | undefined;
 
         if (newPokemon !== undefined) {
             this.game.battleMover.switchSelectedActor(team, newPokemon);
@@ -37,7 +36,8 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
             this.game.battleMover.stopBattle(
                 team === Team.opponent
                     ? BattleOutcome.playerVictory
-                    : BattleOutcome.opponentVictory);
+                    : BattleOutcome.opponentVictory
+            );
         }
     }
 
@@ -51,9 +51,8 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
      */
     public nextAction(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
         const attackingTeam: IBattleTeam = battleInfo.teams[Team[team]];
-        const defendingTeam: IBattleTeam = team === Team.opponent
-            ? battleInfo.teams.player
-            : battleInfo.teams.opponent;
+        const defendingTeam: IBattleTeam =
+            team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent;
         const attackingActor: IPokemon = battleInfo.teams[Team[team]].selectedActor;
 
         // Wild Pokemon just choose randomly
@@ -66,7 +65,11 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
             return;
         }
 
-        let possibilities: IMovePossibility[] = this.movePriorityGenerator.generate(attackingTeam, defendingTeam, attackingActor.moves);
+        let possibilities: IMovePossibility[] = this.movePriorityGenerator.generate(
+            attackingTeam,
+            defendingTeam,
+            attackingActor.moves
+        );
 
         // The AI uses rejection sampling on the four moves with ratio 63:64:63:66,
         // with only the moves that are most favored after applying the modifications being acceptable.
@@ -78,8 +81,9 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
                 }
             }
 
-            possibilities = possibilities.filter((possibility: IMovePossibility): boolean =>
-                possibility.priority === lowest);
+            possibilities = possibilities.filter(
+                (possibility: IMovePossibility): boolean => possibility.priority === lowest
+            );
         }
 
         onChoice({

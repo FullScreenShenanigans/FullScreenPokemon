@@ -24,9 +24,7 @@ describe("Items", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.be.deep.equal([
-                "CANCEL",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["CANCEL"]);
         });
 
         it("displays item names and CANCEL when the player has items", (): void => {
@@ -50,11 +48,7 @@ describe("Items", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.be.deep.equal([
-                "FIRST",
-                "SECOND",
-                "CANCEL",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["FIRST", "SECOND", "CANCEL"]);
         });
 
         it("uses stored items item when no item listings are provided", () => {
@@ -80,11 +74,7 @@ describe("Items", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.be.deep.equal([
-                "FIRST",
-                "SECOND",
-                "CANCEL",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["FIRST", "SECOND", "CANCEL"]);
         });
 
         it("opens an item's menu when that item is selected", () => {
@@ -135,10 +125,7 @@ describe("Items", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.be.deep.equal([
-                "USE",
-                "TOSS",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["USE", "TOSS"]);
         });
 
         it("adds a GIVE option when the feature is enabled", () => {
@@ -158,11 +145,7 @@ describe("Items", () => {
             const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
             const optionTexts = options.map((option) => option.text);
 
-            expect(optionTexts).to.be.deep.equal([
-                "USE",
-                "TOSS",
-                "GIVE",
-            ]);
+            expect(optionTexts).to.be.deep.equal(["USE", "TOSS", "GIVE"]);
         });
 
         it("creates a menu that calls the given onUse setting when USE is selected", () => {

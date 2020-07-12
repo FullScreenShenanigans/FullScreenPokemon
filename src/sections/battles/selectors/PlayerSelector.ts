@@ -26,10 +26,10 @@ export class PlayerSelector extends Section<FullScreenPokemon> implements ISelec
      * @param onChoice   Callback for when this is done.
      */
     public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
-        const remaining: boolean = battleInfo.teams[Team[team]].actors
-            .filter((actor: IPokemon): boolean =>
-                actor.statistics.health.current !== 0)
-            .length > 0;
+        const remaining: boolean =
+            battleInfo.teams[Team[team]].actors.filter(
+                (actor: IPokemon): boolean => actor.statistics.health.current !== 0
+            ).length > 0;
 
         if (remaining) {
             this.switching.offerSwitch(team, onComplete);
@@ -37,7 +37,8 @@ export class PlayerSelector extends Section<FullScreenPokemon> implements ISelec
             this.game.battleMover.stopBattle(
                 team === Team.opponent
                     ? BattleOutcome.playerVictory
-                    : BattleOutcome.opponentVictory);
+                    : BattleOutcome.opponentVictory
+            );
         }
     }
 
@@ -73,10 +74,10 @@ export class PlayerSelector extends Section<FullScreenPokemon> implements ISelec
                 },
                 {
                     text: ["Poke", "Mon"],
-                    callback: (): void => this.switching.openBattlePokemonMenu(
-                        team,
-                        onChoice,
-                        (): void => this.resetGui(battleInfo, team, onChoice)),
+                    callback: (): void =>
+                        this.switching.openBattlePokemonMenu(team, onChoice, (): void =>
+                            this.resetGui(battleInfo, team, onChoice)
+                        ),
                 },
                 {
                     text: "RUN",
@@ -95,16 +96,15 @@ export class PlayerSelector extends Section<FullScreenPokemon> implements ISelec
      */
     private openBattleMovesMenu(battleInfo: IBattleInfo, onChoice: IOnChoice): void {
         const moves: IMove[] = battleInfo.teams.player.selectedActor.moves;
-        const options: any[] = moves.map((move: IMove): any =>
-            ({
-                text: move.title.toUpperCase(),
-                callback: (): void => {
-                    onChoice({
-                        move: move.title,
-                        type: "move",
-                    });
-                },
-            }));
+        const options: any[] = moves.map((move: IMove): any => ({
+            text: move.title.toUpperCase(),
+            callback: (): void => {
+                onChoice({
+                    move: move.title,
+                    type: "move",
+                });
+            },
+        }));
 
         for (let i: number = moves.length; i < 4; i += 1) {
             options.push({

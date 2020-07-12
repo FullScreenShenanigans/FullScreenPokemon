@@ -24,7 +24,9 @@ describe("EncounterChoices", () => {
             };
 
             // Act
-            const options = fsp.actions.walking.encounters.choices.getWildEncounterPokemonOptions(player);
+            const options = fsp.actions.walking.encounters.choices.getWildEncounterPokemonOptions(
+                player
+            );
 
             // Assert
             expect(options).to.be.equal(wildGrassPokemon);
@@ -48,7 +50,9 @@ describe("EncounterChoices", () => {
             };
 
             // Act
-            const options = fsp.actions.walking.encounters.choices.getWildEncounterPokemonOptions(player);
+            const options = fsp.actions.walking.encounters.choices.getWildEncounterPokemonOptions(
+                player
+            );
 
             // Assert
             expect(options).to.be.equal(wildSurfingPokemon);
@@ -72,7 +76,9 @@ describe("EncounterChoices", () => {
             };
 
             // Act
-            const options = fsp.actions.walking.encounters.choices.getWildEncounterPokemonOptions(player);
+            const options = fsp.actions.walking.encounters.choices.getWildEncounterPokemonOptions(
+                player
+            );
 
             // Assert
             expect(options).to.be.equal(wildWalkingPokemon);

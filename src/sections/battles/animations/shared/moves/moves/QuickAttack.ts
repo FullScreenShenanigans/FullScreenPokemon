@@ -16,35 +16,28 @@ export class QuickAttack extends Move {
         this.game.timeHandler.addEventInterval(
             (): void => this.game.physics.shiftHoriz(this.attackerThing, xvel),
             1,
-            38);
+            38
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                xvel *= -1;
-            },
-            20);
+        this.game.timeHandler.addEvent((): void => {
+            xvel *= -1;
+        }, 20);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.attackerThing.hidden = !this.attackerThing.hidden;
-            },
-            15);
+        this.game.timeHandler.addEvent((): void => {
+            this.attackerThing.hidden = !this.attackerThing.hidden;
+        }, 15);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.attackerThing.hidden = !this.attackerThing.hidden;
-                this.game.battles.animations.things.flicker({
-                    callback,
-                    clearTime: 12,
-                    interval: 6,
-                    thing: this.defenderThing,
-                });
-            },
-            40);
+        this.game.timeHandler.addEvent((): void => {
+            this.attackerThing.hidden = !this.attackerThing.hidden;
+            this.game.battles.animations.things.flicker({
+                callback,
+                clearTime: 12,
+                interval: 6,
+                thing: this.defenderThing,
+            });
+        }, 40);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.animateExplosions(),
-            20);
+        this.game.timeHandler.addEvent((): void => this.animateExplosions(), 20);
     }
 
     /**
@@ -72,20 +65,14 @@ export class QuickAttack extends Move {
         }
 
         this.game.things.add(explosions[0], startX[0], startY[0]);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(explosions[0]);
-                this.game.things.add(explosions[1], startX[1], startY[1]);
-            },
-            4);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(explosions[1]);
-                this.game.things.add(explosions[2], startX[2], startY[2]);
-            },
-            8);
-        this.game.timeHandler.addEvent(
-            (): void => this.game.death.kill(explosions[2]),
-            12);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(explosions[0]);
+            this.game.things.add(explosions[1], startX[1], startY[1]);
+        }, 4);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(explosions[1]);
+            this.game.things.add(explosions[2], startX[2], startY[2]);
+        }, 8);
+        this.game.timeHandler.addEvent((): void => this.game.death.kill(explosions[2]), 12);
     }
 }

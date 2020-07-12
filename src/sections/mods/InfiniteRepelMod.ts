@@ -16,7 +16,8 @@ export class InfiniteRepelMod extends ModComponent implements IMod {
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.game.actions.walking.encounters.choices.getWildEncounterPokemonOptions = () => undefined;
+            this.game.actions.walking.encounters.choices.getWildEncounterPokemonOptions = () =>
+                undefined;
         },
         [this.eventNames.onModDisable]: (): void => {
             delete this.game.actions.walking.encounters.choices.getWildEncounterPokemonOptions;

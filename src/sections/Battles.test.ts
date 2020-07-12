@@ -39,7 +39,12 @@ const createGame = () => {
     return { clock, fsp, player, charmander, enemyPokemon };
 };
 
-const processBattle = (fsp: FullScreenPokemon, enemyPokemon: IPokemon, player: IPlayer, clock: Clock) => {
+const processBattle = (
+    fsp: FullScreenPokemon,
+    enemyPokemon: IPokemon,
+    player: IPlayer,
+    clock: Clock
+) => {
     fsp.battles.startBattle({
         teams: {
             opponent: {
@@ -60,9 +65,7 @@ describe("Battles", () => {
         // Arrange
         const { clock, fsp, player, charmander, enemyPokemon } = createGame();
         charmander.status = "paralyzed";
-        fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
-            charmander,
-        ]);
+        fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [charmander]);
 
         // Act
         processBattle(fsp, enemyPokemon, player, clock);
@@ -75,9 +78,7 @@ describe("Battles", () => {
     it("displays a normal Pokeball sprite when a Pokemon is not affected by any status conditions", (): void => {
         // Arrange
         const { clock, fsp, player, charmander, enemyPokemon } = createGame();
-        fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
-            charmander,
-        ]);
+        fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [charmander]);
 
         // Act
         processBattle(fsp, enemyPokemon, player, clock);

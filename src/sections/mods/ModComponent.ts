@@ -31,7 +31,10 @@ export abstract class ModComponent extends Section<FullScreenPokemon> implements
      *
      * @param source   EightBittr instance to wrap around, or one of its components.
      */
-    public constructor(source: FullScreenPokemon | Section<FullScreenPokemon>, eventNames: ModEventNames) {
+    public constructor(
+        source: FullScreenPokemon | Section<FullScreenPokemon>,
+        eventNames: ModEventNames
+    ) {
         super(source);
 
         this.eventNames = eventNames;

@@ -8,8 +8,21 @@ export class Types {
      * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
     public readonly names: string[] = [
-        "Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug",
-        "Ghost", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon",
+        "Normal",
+        "Fighting",
+        "Flying",
+        "Poison",
+        "Ground",
+        "Rock",
+        "Bug",
+        "Ghost",
+        "Fire",
+        "Water",
+        "Grass",
+        "Electric",
+        "Psychic",
+        "Ice",
+        "Dragon",
     ];
 
     /**

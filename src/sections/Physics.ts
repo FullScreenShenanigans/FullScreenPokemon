@@ -8,7 +8,9 @@ import { ICharacter, IGrass, IThing } from "./Things";
 /**
  * Physics functions to move Things around.
  */
-export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPhysics<TEightBittr> {
+export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPhysics<
+    TEightBittr
+> {
     /**
      * Determines the bordering direction from one Thing to another.
      *
@@ -17,7 +19,7 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
      * @returns The direction from thing to other.
      */
     public getDirectionBordering(thing: IThing, other: IThing): Direction | undefined {
-        if (Math.abs((thing.top) - (other.bottom - other.tolBottom)) < 4) {
+        if (Math.abs(thing.top - (other.bottom - other.tolBottom)) < 4) {
             return Direction.Top;
         }
 
@@ -50,14 +52,10 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
         const dy: number = this.getMidY(other) - this.getMidY(thing);
 
         if (Math.abs(dx) > Math.abs(dy)) {
-            return dx > 0
-                ? Direction.Right
-                : Direction.Left;
+            return dx > 0 ? Direction.Right : Direction.Left;
         }
 
-        return dy > 0
-            ? Direction.Bottom
-            : Direction.Top;
+        return dy > 0 ? Direction.Bottom : Direction.Top;
     }
 
     /**
@@ -69,10 +67,11 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
      */
     public isThingWithinOther(thing: IThing, other: IThing): boolean {
         return (
-            thing.top >= other.top
-            && thing.right <= other.right
-            && thing.bottom <= other.bottom
-            && thing.left >= other.left);
+            thing.top >= other.top &&
+            thing.right <= other.right &&
+            thing.bottom <= other.bottom &&
+            thing.left >= other.left
+        );
     }
 
     /**
@@ -91,11 +90,11 @@ export class Physics<TEightBittr extends FullScreenPokemon> extends EightBittrPh
             return false;
         }
 
-        if (other.top > (thing.top + thing.height / 2)) {
+        if (other.top > thing.top + thing.height / 2) {
             return false;
         }
 
-        if (other.bottom < (thing.top + thing.height / 2)) {
+        if (other.bottom < thing.top + thing.height / 2) {
             return false;
         }
 

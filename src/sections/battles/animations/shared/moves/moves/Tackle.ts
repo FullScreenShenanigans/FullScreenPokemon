@@ -20,28 +20,23 @@ export class Tackle extends Move {
                 this.game.physics.shiftHoriz(this.attackerThing, xvel);
             },
             1,
-            dt * 2 - 1);
+            dt * 2 - 1
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                xvel *= -1;
-            },
-            dt);
+        this.game.timeHandler.addEvent((): void => {
+            xvel *= -1;
+        }, dt);
 
         if (this.teamAndAction.source.team === Team.player) {
-            this.game.timeHandler.addEvent(
-                (): void => this.flickerDefender(callback),
-                dt * 2);
+            this.game.timeHandler.addEvent((): void => this.flickerDefender(callback), dt * 2);
         } else {
-            this.game.timeHandler.addEvent(
-                (): void => {
-                    this.game.battles.animations.things.shake({
-                        callback: (): void => {
-                            this.flickerDefender(callback);
-                        },
-                    });
-                },
-                dt * 2);
+            this.game.timeHandler.addEvent((): void => {
+                this.game.battles.animations.things.shake({
+                    callback: (): void => {
+                        this.flickerDefender(callback);
+                    },
+                });
+            }, dt * 2);
         }
     }
 

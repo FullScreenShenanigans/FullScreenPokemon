@@ -11,7 +11,10 @@ export class Pokedex extends Section<FullScreenPokemon> {
      * Opens the Pokedex menu.
      */
     public readonly open = (): void => {
-        const listings: (IPokedexInformation | undefined)[] = this.game.saves.getPokedexListingsOrdered();
+        const listings: (
+            | IPokedexInformation
+            | undefined
+        )[] = this.game.saves.getPokedexListingsOrdered();
         let currentListing: IPokedexInformation;
 
         this.game.menuGrapher.createMenu("Pokedex");
@@ -65,11 +68,9 @@ export class Pokedex extends Section<FullScreenPokemon> {
             options: [
                 {
                     callback: (): void => {
-                        this.openPokedexListing(
-                            currentListing.title,
-                            (): void => {
-                                this.game.menuGrapher.setActiveMenu("PokedexOptions");
-                            });
+                        this.openPokedexListing(currentListing.title, (): void => {
+                            this.game.menuGrapher.setActiveMenu("PokedexOptions");
+                        });
                     },
                     text: "DATA",
                 },
@@ -94,7 +95,7 @@ export class Pokedex extends Section<FullScreenPokemon> {
                 },
             ],
         });
-    }
+    };
 
     /**
      * Opens a Pokedex listing for a Pokemon.
@@ -102,7 +103,11 @@ export class Pokedex extends Section<FullScreenPokemon> {
      * @param title   The title of the Pokemon to open the listing for.
      * @param callback   A callback for when the menu is closed.
      */
-    public openPokedexListing(title: string[], callback?: (...args: any[]) => void, menuSettings?: any): void {
+    public openPokedexListing(
+        title: string[],
+        callback?: (...args: any[]) => void,
+        menuSettings?: any
+    ): void {
         const pokemon: IPokemonListing = this.game.constants.pokemon.byName[title.join("")];
         const height: string[] = pokemon.height;
         const feet: string = [].slice.call(height[0]).reverse().join("");
@@ -129,21 +134,23 @@ export class Pokedex extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog("PokedexListingWeight", pokemon.weight.toString());
         this.game.menuGrapher.addMenuDialog(
             "PokedexListingNumber",
-            this.game.utilities.makeDigit(pokemon.number, 3, "0"));
+            this.game.utilities.makeDigit(pokemon.number, 3, "0")
+        );
 
-        this.game.menuGrapher.addMenuDialog(
-            "PokedexListingInfo",
-            pokemon.info[0],
-            (): void => {
-                if (pokemon.info.length < 2) {
-                    onCompletion();
-                    return;
-                }
+        this.game.menuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[0], (): void => {
+            if (pokemon.info.length < 2) {
+                onCompletion();
+                return;
+            }
 
-                this.game.menuGrapher.createMenu("PokedexListingInfo");
-                this.game.menuGrapher.addMenuDialog("PokedexListingInfo", pokemon.info[1], onCompletion);
-                this.game.menuGrapher.setActiveMenu("PokedexListingInfo");
-            });
+            this.game.menuGrapher.createMenu("PokedexListingInfo");
+            this.game.menuGrapher.addMenuDialog(
+                "PokedexListingInfo",
+                pokemon.info[1],
+                onCompletion
+            );
+            this.game.menuGrapher.setActiveMenu("PokedexListingInfo");
+        });
 
         this.game.menuGrapher.setActiveMenu("PokedexListingInfo");
     }

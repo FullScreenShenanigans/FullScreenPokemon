@@ -43,7 +43,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a body of water.
@@ -57,13 +57,15 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const width: number = reference.width || 32;
         const height: number = reference.height || 32;
         const open: boolean[] = reference.open || [true, true, true, true];
-        const output: any[] = [{
-            thing: "Water",
-            x,
-            y,
-            width,
-            height,
-        }];
+        const output: any[] = [
+            {
+                thing: "Water",
+                x,
+                y,
+                width,
+                height,
+            },
+        ];
 
         if (!open[0]) {
             output.push({
@@ -102,7 +104,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a House.
@@ -201,7 +203,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a Large House.
@@ -231,7 +233,8 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 thing: "HouseLargeTopRight",
                 x: x + width - 32,
                 y,
-            }];
+            },
+        ];
 
         y += 80;
         for (let i = 2; i < stories; i += 1) {
@@ -323,7 +326,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a Gym.
@@ -358,8 +361,9 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 x: x + 64,
                 y: y + 64,
                 width: width - 128,
-            }];
-    }
+            },
+        ];
+    };
 
     /**
      * Macro Function used to create a Building.
@@ -389,7 +393,8 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 thing: "BuildingTopRight",
                 x: x + width - 16,
                 y,
-            }];
+            },
+        ];
 
         y += 64;
 
@@ -501,7 +506,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a Mountain.
@@ -721,7 +726,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a Pokemon Center.
@@ -899,7 +904,8 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 y: y + 224,
                 width: 64,
                 entrance: reference.entrance,
-            }];
+            },
+        ];
 
         if (reference.transport) {
             output.push({
@@ -932,7 +938,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 
     /**
      * Macro Function used to create a PokeMart.
@@ -1068,7 +1074,8 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 y: y + 224,
                 width: 64,
                 entrance: reference.entrance,
-            }];
+            },
+        ];
 
         if (reference.transport) {
             output.push({
@@ -1082,5 +1089,5 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         return output;
-    }
+    };
 }

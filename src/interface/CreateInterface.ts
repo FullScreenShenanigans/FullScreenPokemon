@@ -9,5 +9,4 @@ import { createUserWrapprSettings } from "./InterfaceSettings";
  * @returns A Promise for creating the game interface.
  */
 export const createFspInterface = async (container: HTMLElement): Promise<void> =>
-    new UserWrappr(createUserWrapprSettings())
-        .createDisplay(container);
+    new UserWrappr(createUserWrapprSettings()).createDisplay(container);

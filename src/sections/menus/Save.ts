@@ -33,5 +33,5 @@ export class Save extends Section<FullScreenPokemon> {
         this.game.menuGrapher.setActiveMenu("Yes/No");
 
         this.game.saves.autoSaveIfEnabled();
-    }
+    };
 }

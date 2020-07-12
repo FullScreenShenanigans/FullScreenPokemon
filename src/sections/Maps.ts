@@ -353,10 +353,7 @@ export interface IWildPokemonSchemaWithLevels extends IWildPokemonSchemaBase {
     levels: number[];
 }
 
-export type IWildPokemonSchema = (
-    | IWildPokemonSchemaWithLevel
-    | IWildPokemonSchemaWithLevels
-);
+export type IWildPokemonSchema = IWildPokemonSchemaWithLevel | IWildPokemonSchemaWithLevels;
 
 /**
  * A raw JSON-friendly description of a location.
@@ -538,7 +535,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
     };
 
     public readonly maps = {
-        "Blank": {
+        Blank: {
             name: "Blank",
             locationDefault: "Black",
             locations: {
@@ -594,7 +591,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 this.game.utilities.proliferate(area, attributes[attribute]);
             }
         }
-    }
+    };
 
     /**
      * Adds a Thing via addPreThing based on the specifications in a PreThing.
@@ -618,7 +615,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
             thing,
             prething.left - this.game.mapScreener.left,
             prething.top - this.game.mapScreener.top,
-            true);
+            true
+        );
 
         // Either the prething or thing, in that order, may request to be in the
         // front or back of the container
@@ -627,11 +625,15 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 switch (position) {
                     case "beginning":
                         this.game.utilities.arrayToBeginning(
-                            thing, this.game.groupHolder.getGroup(thing.groupType) as IThing[]);
+                            thing,
+                            this.game.groupHolder.getGroup(thing.groupType) as IThing[]
+                        );
                         break;
                     case "end":
                         this.game.utilities.arrayToEnd(
-                            thing, this.game.groupHolder.getGroup(thing.groupType) as IThing[]);
+                            thing,
+                            this.game.groupHolder.getGroup(thing.groupType) as IThing[]
+                        );
                         break;
                     default:
                         throw new Error("Unknown position: " + position + ".");
@@ -640,7 +642,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         }
 
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onAddPreThing, prething);
-    }
+    };
 
     /**
      * Adds a new Player Thing to the game and sets it as eightBitter.player. Any
@@ -654,7 +656,9 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      * @returns A newly created Player in the game.
      */
     public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.game.objectMaker.make<IPlayer>(this.game.things.names.player);
+        const player: IPlayer = this.game.objectMaker.make<IPlayer>(
+            this.game.things.names.player
+        );
         player.keys = player.getKeys();
 
         this.game.players[0] = player;
@@ -685,9 +689,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         this.game.numberMaker.resetFromSeed(map.seed);
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onSetMap, map);
 
-        return this.setLocation(
-            location || map.locationDefault || "Blank",
-            noEntrance);
+        return this.setLocation(location || map.locationDefault || "Blank", noEntrance);
     }
 
     /**
@@ -718,7 +720,9 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
 
         this.game.mapScreener.activeArea = location.area;
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onPreSetLocation, location);
-        this.game.pixelDrawer.setBackground((this.game.areaSpawner.getArea() as IArea).background);
+        this.game.pixelDrawer.setBackground(
+            (this.game.areaSpawner.getArea() as IArea).background
+        );
 
         if (location.area.map.name !== "Blank") {
             this.game.itemsHolder.setItem(this.game.storage.names.map, location.area.map.name);
@@ -752,15 +756,13 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         });
 
         if (location.push) {
-            this.game.actions.walking.startWalkingOnPath(
-                this.game.players[0],
-                [
-                    {
-                        blocks: 1,
-                        direction: this.game.players[0].direction,
-                    },
-                    (): void => this.game.saves.autoSaveIfEnabled(),
-                ]);
+            this.game.actions.walking.startWalkingOnPath(this.game.players[0], [
+                {
+                    blocks: 1,
+                    direction: this.game.players[0].direction,
+                },
+                (): void => this.game.saves.autoSaveIfEnabled(),
+            ]);
         }
 
         return location;
@@ -779,7 +781,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         const prethings: any = this.game.areaSpawner.getPreThings();
         const area: IArea = this.game.areaSpawner.getArea() as IArea;
         const map: IMap = this.game.areaSpawner.getMap() as IMap;
-        const boundaries: IAreaBoundaries = this.game.areaSpawner.getArea().boundaries as IAreaBoundaries;
+        const boundaries: IAreaBoundaries = this.game.areaSpawner.getArea()
+            .boundaries as IAreaBoundaries;
 
         prething.direction = direction;
         switch (direction) {
@@ -812,7 +815,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         }
 
         this.game.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
-    }
+    };
 
     /**
      * Runs an areaSpawner to place its Area's Things in the map.
@@ -862,7 +865,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                     areaName: area.name,
                     mapName: area.map.name,
                 },
-                creation);
+                creation
+            );
 
             command.x = (command.x || 0) + x;
             command.y = (command.y || 0) + y;
@@ -872,7 +876,12 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 delete command.entrance;
             }
 
-            this.game.mapsCreator.analyzePreSwitch(command, prethingsCurrent, areaCurrent, mapCurrent);
+            this.game.mapsCreator.analyzePreSwitch(
+                command,
+                prethingsCurrent,
+                areaCurrent,
+                mapCurrent
+            );
         }
 
         this.game.areaSpawner.spawnArea(
@@ -880,7 +889,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
             this.game.quadsKeeper.top,
             this.game.quadsKeeper.right,
             this.game.quadsKeeper.bottom,
-            this.game.quadsKeeper.left);
+            this.game.quadsKeeper.left
+        );
         this.game.maps.addAreaGate(thing, area, x, y);
 
         area.spawned = true;
@@ -896,7 +906,12 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      * @param offsetY   Vertical spawning offset for the Area.
      * @returns The added AreaGate.
      */
-    public addAreaGate(thing: IAreaGate, area: IArea, offsetX: number, offsetY: number): IAreaGate {
+    public addAreaGate(
+        thing: IAreaGate,
+        area: IArea,
+        offsetX: number,
+        offsetY: number
+    ): IAreaGate {
         const properties: any = {
             area: thing.area,
             areaOffsetX: offsetX,
@@ -932,7 +947,11 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
-        return this.game.things.add([this.game.things.names.areaGate, properties], left, top) as IAreaGate;
+        return this.game.things.add(
+            [this.game.things.names.areaGate, properties],
+            left,
+            top
+        ) as IAreaGate;
     }
 
     /**

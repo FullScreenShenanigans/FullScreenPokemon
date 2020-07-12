@@ -25,5 +25,5 @@ export class Audio<TEightBittr extends FullScreenPokemon> extends Section<TEight
     /**
      * Transforms provided names into file names.
      */
-    public readonly nameTransform = (name: string) => `../src/sounds/${name}.mp3`
+    public readonly nameTransform = (name: string) => `../src/sounds/${name}.mp3`;
 }

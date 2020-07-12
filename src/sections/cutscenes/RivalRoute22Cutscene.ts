@@ -20,11 +20,14 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
         const player: IPlayer = settings.player;
         const triggerer: ICharacter = settings.triggerer;
         const playerUpper: number = Number(Math.abs(player.top - triggerer.top) < 4);
-        const rival: ICharacter = this.game.objectMaker.make<ICharacter>(this.game.things.names.rival, {
-            direction: 0,
-            nocollide: true,
-            opacity: 0,
-        });
+        const rival: ICharacter = this.game.objectMaker.make<ICharacter>(
+            this.game.things.names.rival,
+            {
+                direction: 0,
+                nocollide: true,
+                opacity: 0,
+            }
+        );
         const walkingInstructions: IWalkingInstructions = [
             {
                 blocks: 2,
@@ -37,7 +40,9 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
         ];
 
         if (playerUpper) {
-            walkingInstructions.push(() => this.game.actions.animateCharacterSetDirection(rival, 0));
+            walkingInstructions.push(() =>
+                this.game.actions.animateCharacterSetDirection(rival, 0)
+            );
         }
 
         settings.rival = rival;
@@ -57,7 +62,8 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
     public RivalTalks(settings: any): void {
         this.game.actions.animateCharacterSetDirection(
             settings.player,
-            this.game.physics.getDirectionBordering(settings.player, settings.rival)!);
+            this.game.physics.getDirectionBordering(settings.player, settings.rival)!
+        );
 
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
@@ -69,7 +75,8 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
                 "The guard won't let you through!",
                 "By the way did your %%%%%%%POKEMON%%%%%%% get any stronger?",
             ],
-            this.game.scenePlayer.bindRoutine("Challenge"));
+            this.game.scenePlayer.bindRoutine("Challenge")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -79,7 +86,9 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
      * @param settings  Settings used for the cutscene.
      */
     public Challenge(): void {
-        const starterRival: string[] = this.game.itemsHolder.getItem(this.game.storage.names.starterRival);
+        const starterRival: string[] = this.game.itemsHolder.getItem(
+            this.game.storage.names.starterRival
+        );
         const battleInfo: IPartialBattleOptions = {
             onComplete: (): void => {
                 this.game.scenePlayer.startCutscene("RivalRoute22Leaves");
@@ -88,7 +97,9 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
                 opponent: {
                     leader: {
                         title: "RivalPortrait".split(""),
-                        nickname: this.game.itemsHolder.getItem(this.game.storage.names.nameRival),
+                        nickname: this.game.itemsHolder.getItem(
+                            this.game.storage.names.nameRival
+                        ),
                     },
                     nextCutscene: "RivalRoute22Leaves",
                     reward: 280,
@@ -107,11 +118,15 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
             texts: {
                 start: (): string => "%%%%%%%RIVAL%%%%%%% wants to fight!",
                 outcomes: {
-                    [BattleOutcome.opponentVictory]: (): string => "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
+                    [BattleOutcome.opponentVictory]: (): string =>
+                        "%%%%%%%RIVAL%%%%%%%: Yeah! Am I great or what?",
                     [BattleOutcome.playerVictory]: (): string => "Aww! You just lucked out!",
                 },
             },
-            keptThings: this.game.graphics.collections.collectBattleKeptThings(["player", "Rival"]),
+            keptThings: this.game.graphics.collections.collectBattleKeptThings([
+                "player",
+                "Rival",
+            ]),
         };
 
         this.game.battles.startBattle(battleInfo);

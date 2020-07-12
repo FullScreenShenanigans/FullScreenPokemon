@@ -59,14 +59,10 @@ export class MoveAdder extends Section<FullScreenPokemon> {
             if (element.title === move.title) {
                 this.game.menuGrapher.addMenuDialog(
                     "GeneralText",
-                    [
-                        [
-                            pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!",
-                        ],
-                    ],
+                    [[pokemon.title.join("") + " knows " + move.title.toUpperCase() + "!"]],
                     (): void => {
                         this.game.menuGrapher.deleteActiveMenu();
-                    },
+                    }
                 );
                 this.game.menuGrapher.setActiveMenu("GeneralText");
                 return true;
@@ -85,15 +81,11 @@ export class MoveAdder extends Section<FullScreenPokemon> {
     private learnsNewMove(pokemon: IPokemon, move: IMove) {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    pokemon.title.join("") + " learned " + move.title.toUpperCase() + "!",
-                ],
-            ],
+            [[pokemon.title.join("") + " learned " + move.title.toUpperCase() + "!"]],
             (): void => {
                 this.addMove(pokemon, move, pokemon.moves.length);
                 this.game.menuGrapher.deleteActiveMenu();
-            },
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -110,12 +102,13 @@ export class MoveAdder extends Section<FullScreenPokemon> {
             "GeneralText",
             [
                 [
-                    pokemon.title.join("") + " is trying to learn " + move.title.toUpperCase() + "!",
+                    pokemon.title.join("") +
+                        " is trying to learn " +
+                        move.title.toUpperCase() +
+                        "!",
                 ],
                 "But, " + pokemon.title.join("") + " can't learn more than 4 moves!",
-                [
-                    "Delete an older move to make room for " + move.title.toUpperCase() + "?",
-                ],
+                ["Delete an older move to make room for " + move.title.toUpperCase() + "?"],
             ],
             (): void => {
                 this.game.menuGrapher.createMenu("Yes/No", {
@@ -130,10 +123,12 @@ export class MoveAdder extends Section<FullScreenPokemon> {
                         {
                             text: "NO",
                             callback: () => this.refuseLearnMove(pokemon, move),
-                        }],
+                        },
+                    ],
                 });
                 this.game.menuGrapher.setActiveMenu("Yes/No");
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -148,19 +143,14 @@ export class MoveAdder extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    "Which move should be forgotten?",
-                ],
-            ],
+            [["Which move should be forgotten?"]],
             (): void => {
                 const moves: IMove[] = pokemon.moves;
 
-                const options: any[] = moves.map((temp: IMove): any =>
-                    ({
-                        text: temp.title.toUpperCase(),
-                        callback: () => this.teachMove(pokemon, move, pokemon.moves.indexOf(temp)),
-                    }));
+                const options: any[] = moves.map((temp: IMove): any => ({
+                    text: temp.title.toUpperCase(),
+                    callback: () => this.teachMove(pokemon, move, pokemon.moves.indexOf(temp)),
+                }));
 
                 const newPos: IMenuSchemaPosition = {
                     offset: {
@@ -174,7 +164,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
                 });
                 this.game.menuGrapher.addMenuList("BattleFightList", { options });
                 this.game.menuGrapher.setActiveMenu("BattleFightList");
-            },
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -192,18 +182,18 @@ export class MoveAdder extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                [
-                    "1, 2 and... Poof!",
-                ],
-                pokemon.title.join("") + " forgot " + pokemon.moves[index].title.toUpperCase() + "!",
-                [
-                    "And...",
-                ],
+                ["1, 2 and... Poof!"],
+                pokemon.title.join("") +
+                    " forgot " +
+                    pokemon.moves[index].title.toUpperCase() +
+                    "!",
+                ["And..."],
                 pokemon.title.join("") + " learned " + move.title.toUpperCase() + "!",
             ],
             (): void => {
                 this.addMove(pokemon, move, index);
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -220,11 +210,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
 
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    "Abandon learning " + move.title.toUpperCase() + "?",
-                ],
-            ],
+            [["Abandon learning " + move.title.toUpperCase() + "?"]],
             (): void => {
                 this.game.menuGrapher.createMenu("Yes/No", {
                     killOnB: ["GeneralText"],
@@ -240,24 +226,26 @@ export class MoveAdder extends Section<FullScreenPokemon> {
                                     deleteOnFinish: true,
                                 });
 
-                                this.game.menuGrapher.addMenuDialog(
-                                    "GeneralText",
+                                this.game.menuGrapher.addMenuDialog("GeneralText", [
                                     [
-                                        [
-                                            pokemon.title.join("") + " did not learn " + move.title.toUpperCase() + "!",
-                                        ],
+                                        pokemon.title.join("") +
+                                            " did not learn " +
+                                            move.title.toUpperCase() +
+                                            "!",
                                     ],
-                                );
+                                ]);
                                 this.game.menuGrapher.setActiveMenu("GeneralText");
                             },
                         },
                         {
                             text: "NO",
                             callback: () => this.startDialog(pokemon, move),
-                        }],
+                        },
+                    ],
                 });
                 this.game.menuGrapher.setActiveMenu("Yes/No");
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

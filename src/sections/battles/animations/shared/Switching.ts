@@ -39,7 +39,10 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Switching settings for animation positions and sprites.
      */
-    public constructor(eightBitter: FullScreenPokemon | Section<FullScreenPokemon>, settings: ISwitchingSettings) {
+    public constructor(
+        eightBitter: FullScreenPokemon | Section<FullScreenPokemon>,
+        settings: ISwitchingSettings
+    ) {
         super(eightBitter);
 
         this.settings = settings;
@@ -99,12 +102,12 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
             "GeneralText",
             battleInfo.texts.teams.player.retract(
                 battleInfo.teams.player,
-                battleInfo.teams.player.selectedActor.title.join("")),
+                battleInfo.teams.player.selectedActor.title.join("")
+            ),
             (): void => {
-                this.shrinking.contractDown(
-                    battleInfo.things.player,
-                    onComplete);
-            });
+                this.shrinking.contractDown(battleInfo.things.player, onComplete);
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

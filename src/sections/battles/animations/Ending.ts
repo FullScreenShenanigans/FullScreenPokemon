@@ -19,7 +19,8 @@ export class Ending extends Section<FullScreenPokemon> {
         const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
 
         const queue: Queue = new Queue();
-        const finalTextGenerator: IBattleOutcomeTextGenerator | undefined = battleInfo.texts.outcomes[outcome];
+        const finalTextGenerator: IBattleOutcomeTextGenerator | undefined =
+            battleInfo.texts.outcomes[outcome];
 
         if (finalTextGenerator) {
             queue.add((onComplete: () => void): void => {
@@ -27,7 +28,8 @@ export class Ending extends Section<FullScreenPokemon> {
                 this.game.menuGrapher.addMenuDialog(
                     "GeneralText",
                     finalTextGenerator(outcome),
-                    onComplete);
+                    onComplete
+                );
                 this.game.menuGrapher.setActiveMenu("GeneralText");
             });
         }
@@ -44,10 +46,7 @@ export class Ending extends Section<FullScreenPokemon> {
         if (afterBattle !== undefined) {
             queue.add((onComplete: () => void): void => {
                 this.game.menuGrapher.createMenu("GeneralText");
-                this.game.menuGrapher.addMenuDialog(
-                    "GeneralText",
-                    afterBattle(),
-                    onComplete);
+                this.game.menuGrapher.addMenuDialog("GeneralText", afterBattle(), onComplete);
                 this.game.menuGrapher.setActiveMenu("GeneralText");
             });
         }
@@ -55,7 +54,9 @@ export class Ending extends Section<FullScreenPokemon> {
         queue.run((): void => this.finalize(battleInfo, outcome, onBattleComplete));
 
         if (this.game.battles.isPartyWiped()) {
-            const { map, location } = this.game.itemsHolder.getItem(this.game.storage.names.lastPokecenter);
+            const { map, location } = this.game.itemsHolder.getItem(
+                this.game.storage.names.lastPokecenter
+            );
             this.game.battles.healParty();
             this.game.maps.setMap(map, location);
             this.game.mapScreener.blockInputs = false;
@@ -69,7 +70,11 @@ export class Ending extends Section<FullScreenPokemon> {
      * @param outcome   Descriptor of what finished the battle.
      * @param onComplete   Callback for when this is done.
      */
-    private finalize(battleInfo: IBattleInfo, outcome: BattleOutcome, onComplete: () => void): void {
+    private finalize(
+        battleInfo: IBattleInfo,
+        outcome: BattleOutcome,
+        onComplete: () => void
+    ): void {
         this.game.menuGrapher.deleteMenu("Battle");
         this.game.menuGrapher.deleteMenu("GeneralText");
 

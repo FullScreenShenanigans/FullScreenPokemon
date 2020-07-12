@@ -19,10 +19,9 @@ export class OakParcelPickupCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Hey! You came from PALLET TOWN?",
-            ],
-            this.game.scenePlayer.bindRoutine("WalkToCounter"));
+            ["Hey! You came from PALLET TOWN?"],
+            this.game.scenePlayer.bindRoutine("WalkToCounter")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -32,19 +31,17 @@ export class OakParcelPickupCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public WalkToCounter(settings: any): void {
-        this.game.actions.walking.startWalkingOnPath(
-            settings.player,
-            [
-                {
-                    blocks: 2,
-                    direction: Direction.Top,
-                },
-                {
-                    blocks: 1,
-                    direction: Direction.Left,
-                },
-                this.game.scenePlayer.bindRoutine("CounterDialog"),
-            ]);
+        this.game.actions.walking.startWalkingOnPath(settings.player, [
+            {
+                blocks: 2,
+                direction: Direction.Top,
+            },
+            {
+                blocks: 1,
+                direction: Direction.Left,
+            },
+            this.game.scenePlayer.bindRoutine("CounterDialog"),
+        ]);
     }
 
     /**
@@ -63,10 +60,15 @@ export class OakParcelPickupCutscene extends Section<FullScreenPokemon> {
                 this.game.menuGrapher.deleteMenu("GeneralText");
                 this.game.scenePlayer.stopCutscene();
                 this.game.mapScreener.blockInputs = false;
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         this.game.stateHolder.addChangeToCollection(
-            "Pallet Town::Oak's Lab", "Oak", "cutscene", "OakParcelDelivery");
+            "Pallet Town::Oak's Lab",
+            "Oak",
+            "cutscene",
+            "OakParcelDelivery"
+        );
     }
 }

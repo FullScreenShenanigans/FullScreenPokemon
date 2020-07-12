@@ -1,7 +1,13 @@
 import { IGameWindow } from "eightbittr";
 import { IPipe } from "inputwritr";
 import {
-    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrapprSettings, OptionType, UserWrappr,
+    IAbsoluteSizeSchema,
+    IBooleanSchema,
+    IMultiSelectSchema,
+    IRelativeSizeSchema,
+    IUserWrapprSettings,
+    OptionType,
+    UserWrappr,
 } from "userwrappr";
 
 import { IModComponentClass, Mods } from "../sections/Mods";
@@ -56,9 +62,42 @@ const sizes: IGameSizes = {
  * Keys that may be mapped to game inputs.
  */
 const keys: string[] = [
-    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-    "up", "right", "down", "left",
-    "backspace", "ctrl", "enter", "escape", "shift", "space",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "up",
+    "right",
+    "down",
+    "left",
+    "backspace",
+    "ctrl",
+    "enter",
+    "escape",
+    "shift",
+    "space",
 ];
 
 /**
@@ -95,7 +134,8 @@ export const createUserWrapprSettings = ({
             {
                 options: [
                     {
-                        getInitialValue: (): boolean => game.itemsHolder.getItem(game.storage.names.autoSave),
+                        getInitialValue: (): boolean =>
+                            game.itemsHolder.getItem(game.storage.names.autoSave),
                         saveValue: (autoSave: boolean): void => {
                             game.itemsHolder.setAutoSave(autoSave);
                             game.itemsHolder.setItem(game.storage.names.autoSave, autoSave);
@@ -129,7 +169,7 @@ export const createUserWrapprSettings = ({
                         options: [".25x", ".5x", "1x", "2x", "5x", "10x", "20x"],
                         saveValue: (value: string): void => {
                             const multiplier = parseFloat(value.replace("x", ""));
-                            game.frameTicker.setInterval((1000 / 60) / multiplier);
+                            game.frameTicker.setInterval(1000 / 60 / multiplier);
                             game.pixelDrawer.setFramerateSkip(multiplier);
                         },
                         title: "Speed",
@@ -142,10 +182,16 @@ export const createUserWrapprSettings = ({
                             getInitialValue: () => false,
                             saveValue: (value: boolean): void => {
                                 if (value) {
-                                    deviceMotionPipe = game.inputWriter.makePipe("ondevicemotion", "type");
+                                    deviceMotionPipe = game.inputWriter.makePipe(
+                                        "ondevicemotion",
+                                        "type"
+                                    );
                                     gameWindow.addEventListener("devicemotion", deviceMotionPipe);
                                 } else if (deviceMotionPipe !== undefined) {
-                                    gameWindow.removeEventListener("devicemotion", deviceMotionPipe);
+                                    gameWindow.removeEventListener(
+                                        "devicemotion",
+                                        deviceMotionPipe
+                                    );
                                     deviceMotionPipe = undefined;
                                 }
                             },
@@ -163,7 +209,8 @@ export const createUserWrapprSettings = ({
                         type: OptionType.Select,
                     },
                     {
-                        getInitialValue: (): number => Math.round(game.audioPlayer.getVolume() * 100),
+                        getInitialValue: (): number =>
+                            Math.round(game.audioPlayer.getVolume() * 100),
                         maximum: 100,
                         minimum: 0,
                         saveValue: (value: number): void => {
@@ -177,33 +224,37 @@ export const createUserWrapprSettings = ({
             },
             {
                 options: ((controls: string[]): IMultiSelectSchema[] =>
-                    controls.map((control: string): IMultiSelectSchema => ({
-                        getInitialValue: (): string[] =>
-                            game.inputWriter.aliasConverter
-                                .getAliasAsKeyStrings(control)
-                                .map((text: string): string => text.toLowerCase()),
-                        options: keys,
-                        saveValue: (newValue: string[], oldValue: string[]): void => {
-                            game.inputWriter.switchAliasValues(control, oldValue, newValue);
-                        },
-                        selections: 2,
-                        title: control,
-                        type: OptionType.MultiSelect,
-                    }))
-                )(["a", "b", "left", "right", "up", "down", "pause"]),
+                    controls.map(
+                        (control: string): IMultiSelectSchema => ({
+                            getInitialValue: (): string[] =>
+                                game.inputWriter.aliasConverter
+                                    .getAliasAsKeyStrings(control)
+                                    .map((text: string): string => text.toLowerCase()),
+                            options: keys,
+                            saveValue: (newValue: string[], oldValue: string[]): void => {
+                                game.inputWriter.switchAliasValues(control, oldValue, newValue);
+                            },
+                            selections: 2,
+                            title: control,
+                            type: OptionType.MultiSelect,
+                        })
+                    ))(["a", "b", "left", "right", "up", "down", "pause"]),
                 title: "Controls",
             },
             {
-                options: Mods.modClasses.map((modClass: IModComponentClass): IBooleanSchema => ({
-                    getInitialValue: (): boolean => !!game.mods.modsByName[modClass.modName].enabled,
-                    saveValue: (value: boolean): void => {
-                        value
-                            ? game.modAttacher.enableMod(modClass.modName)
-                            : game.modAttacher.disableMod(modClass.modName);
-                    },
-                    title: modClass.modName,
-                    type: OptionType.Boolean,
-                })),
+                options: Mods.modClasses.map(
+                    (modClass: IModComponentClass): IBooleanSchema => ({
+                        getInitialValue: (): boolean =>
+                            !!game.mods.modsByName[modClass.modName].enabled,
+                        saveValue: (value: boolean): void => {
+                            value
+                                ? game.modAttacher.enableMod(modClass.modName)
+                                : game.modAttacher.disableMod(modClass.modName);
+                        },
+                        title: modClass.modName,
+                        type: OptionType.Boolean,
+                    })
+                ),
                 title: "Mods!",
             },
         ],
@@ -244,11 +295,9 @@ export const createUserWrapprSettings = ({
                 right: "4px",
                 width: "auto",
                 padding: "4px 3px 7px 3px",
-                boxShadow: [
-                    "0 3px 7px black inset",
-                    "0 0 0 4px #99ccff",
-                    "0 0 14px black",
-                ].join(", "),
+                boxShadow: ["0 3px 7px black inset", "0 0 0 4px #99ccff", "0 0 14px black"].join(
+                    ", "
+                ),
                 background: "#005599",
             },
             optionsList: {

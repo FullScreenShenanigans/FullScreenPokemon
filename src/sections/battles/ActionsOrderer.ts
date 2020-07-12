@@ -33,7 +33,10 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @see https://www.dragonflycave.com/mechanics/battle#turnorder
      * @todo Account for items, statuses, etc.
      */
-    public order(actions: IUnderEachTeam<IAction>, battleInfo: IBattleInfo): ITeamAndAction<any>[] {
+    public order(
+        actions: IUnderEachTeam<IAction>,
+        battleInfo: IBattleInfo
+    ): ITeamAndAction<any>[] {
         const unorderedActions: [ITeamAndAction<any>, ITeamAndAction<any>] = [
             {
                 action: actions.opponent,
@@ -66,7 +69,8 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
             this.filterForItem,
             this.filterForPriority,
             this.filterForSpeed,
-            this.filterForMove);
+            this.filterForMove
+        );
     }
 
     /**
@@ -76,7 +80,10 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param filters   Filters to apply, in order.
      * @returns Actions ordered by the filters.
      */
-    private runFilters(unorderedActions: ITeamAndActionPair, ...filters: IOrderFilter[]): ITeamAndActionPair {
+    private runFilters(
+        unorderedActions: ITeamAndActionPair,
+        ...filters: IOrderFilter[]
+    ): ITeamAndActionPair {
         for (const filter of filters) {
             if (filter(unorderedActions[0], unorderedActions[1])) {
                 return unorderedActions;
@@ -97,7 +104,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @returns Whether the action should go first.
      */
     private readonly filterForPlayerFleeing: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
-        a.source.team === Team.player && a.action.type === "flee"
+        a.source.team === Team.player && a.action.type === "flee";
 
     /**
      * Filters an action for being a switch.
@@ -106,7 +113,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @returns Whether the action should go first.
      */
     private readonly filterForSwitch: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
-        a.action.type === "switch"
+        a.action.type === "switch";
 
     /**
      * Filters an action for being a switch.
@@ -115,7 +122,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @returns Whether the action should go first.
      */
     private readonly filterForItem: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
-        a.action.type === "item"
+        a.action.type === "item";
 
     /**
      * Filters an action for having a higher priority.
@@ -124,7 +131,10 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForPriority: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
+    private readonly filterForPriority: IOrderFilter = (
+        a: ITeamAndAction<any>,
+        b: ITeamAndAction<any>
+    ): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
@@ -133,7 +143,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
         const bMove: IMoveSchema = this.game.constants.moves.byName[b.action.move];
 
         return aMove.priority! > bMove.priority!;
-    }
+    };
 
     /**
      * Filters an action for having a higher Pokemon speed.
@@ -142,7 +152,10 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForSpeed: IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>): boolean => {
+    private readonly filterForSpeed: IOrderFilter = (
+        a: ITeamAndAction<any>,
+        b: ITeamAndAction<any>
+    ): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
@@ -160,7 +173,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
         }
 
         return aPokemon.statistics.speed.current > bPokemon.statistics.speed.current;
-    }
+    };
 
     /**
      * Filters an action for being a move.
@@ -170,5 +183,5 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @remarks This is added last so player moves go before wild Pokemon fleeing.
      */
     private readonly filterForMove: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
-        a.action.type === "move"
+        a.action.type === "move";
 }

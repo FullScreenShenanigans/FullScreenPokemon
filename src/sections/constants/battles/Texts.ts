@@ -26,7 +26,11 @@ export interface IFleeTextGenerators {
  * @param move   Name of the move.
  * @returns Text for the Pokemon using the move.
  */
-export type IMoveTextGenerator = (team: IBattleTeam, pokemon: string, move: string) => IMenuDialogRaw;
+export type IMoveTextGenerator = (
+    team: IBattleTeam,
+    pokemon: string,
+    move: string
+) => IMenuDialogRaw;
 
 /**
  * Generates text for a Pokemon being retracted.
@@ -176,8 +180,7 @@ export class Texts {
                     `${pokemon} used ${move}!`,
                 retract: (_team: IBattleTeam, pokemon: string): string =>
                     `${pokemon}, enough! Come back!`,
-                sendOut: (_team: IBattleTeam, pokemon: string): string =>
-                    `Go, ${pokemon}!`,
+                sendOut: (_team: IBattleTeam, pokemon: string): string => `Go, ${pokemon}!`,
             },
             opponent: {
                 move: (_team: IBattleTeam, pokemon: string, move: string): string =>

@@ -15,7 +15,10 @@ export class Following extends Section<FullScreenPokemon> {
      * @param lead   The leading Character.
      */
     public startFollowing(follow: ICharacter, lead: ICharacter): void {
-        const direction: Direction | undefined = this.game.physics.getDirectionBordering(follow, lead);
+        const direction: Direction | undefined = this.game.physics.getDirectionBordering(
+            follow,
+            lead
+        );
         if (direction === undefined) {
             throw new Error("Characters are too far away to follow.");
         }

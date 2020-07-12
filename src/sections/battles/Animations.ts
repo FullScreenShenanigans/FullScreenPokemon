@@ -39,7 +39,7 @@ export class Animations extends Section<FullScreenPokemon> implements IAnimation
      */
     public readonly start = (onComplete: () => void): void => {
         new Starting(this.game).run(onComplete);
-    }
+    };
 
     /**
      * Animation for a battle ending.
@@ -49,7 +49,7 @@ export class Animations extends Section<FullScreenPokemon> implements IAnimation
      */
     public readonly complete = (outcome: BattleOutcome, onComplete: () => void): void => {
         new Ending(this.game).run(outcome, onComplete);
-    }
+    };
 
     /**
      * Retrieves the animator for a team.

@@ -20,7 +20,10 @@ export class Calculator extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
      * @remarks Todo: Factor in spec differences from burns, etc.
      */
-    public calculateDamage(teamAndAction: ITeamAndAction<IMoveAction>, effect: IDamageEffect): number {
+    public calculateDamage(
+        teamAndAction: ITeamAndAction<IMoveAction>,
+        effect: IDamageEffect
+    ): number {
         const base: number = effect.damage;
 
         if (!isFinite(base)) {
@@ -33,12 +36,18 @@ export class Calculator extends Section<FullScreenPokemon> {
         const level: number = attacker.level * Number(critical);
         const attack: number = attacker.statistics.attack.current;
         const defense: number = defender.statistics.defense.current;
-        const modifier: number = this.getDamageModifier(teamAndAction.action.move, attacker, defender);
+        const modifier: number = this.getDamageModifier(
+            teamAndAction.action.move,
+            attacker,
+            defender
+        );
 
         const damage: number = Math.round(
             Math.max(
                 ((((level * 2 + 10) / 250) * (attack / defense) * base + 2) | 0) * modifier,
-                1));
+                1
+            )
+        );
 
         return Math.min(teamAndAction.target.actor.statistics.health.current, damage);
     }
@@ -70,13 +79,17 @@ export class Calculator extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
     public getTypeEffectiveness(move: string, defender: IPokemon): number {
-        const defenderTypes: string[] = this.game.constants.pokemon.byName[defender.title.join("")].types;
+        const defenderTypes: string[] = this.game.constants.pokemon.byName[
+            defender.title.join("")
+        ].types;
         const typeIndices: { [i: string]: number } = this.game.constants.types.indices;
         const moveIndex: number = typeIndices[this.game.constants.moves.byName[move].type];
         let total = 1;
 
         for (const defenderType of defenderTypes) {
-            const effectivenesses: number[] = this.game.constants.types.effectivenessTable[moveIndex];
+            const effectivenesses: number[] = this.game.constants.types.effectivenessTable[
+                moveIndex
+            ];
             total *= effectivenesses[typeIndices[defenderType]];
         }
 
@@ -93,7 +106,8 @@ export class Calculator extends Section<FullScreenPokemon> {
      */
     public isCriticalHit(move: string, attacker: IPokemon): boolean {
         const moveInfo: IMoveSchema = this.game.constants.moves.byName[move];
-        const baseSpeed: number = this.game.constants.pokemon.byName[attacker.title.join("")].speed;
+        const baseSpeed: number = this.game.constants.pokemon.byName[attacker.title.join("")]
+            .speed;
         let denominator = 512;
 
         // Moves with a high critical-hit ratio, such as Slash, are eight times more likely to land a critical hit,
@@ -113,6 +127,8 @@ export class Calculator extends Section<FullScreenPokemon> {
 
         // As with move accuracy in the handheld games, if the probability of landing a critical hit would be 100%,
         // it instead becomes 255/256 or about 99.6%.
-        return this.game.numberMaker.randomBooleanProbability(Math.max(baseSpeed / denominator, 255 / 256));
+        return this.game.numberMaker.randomBooleanProbability(
+            Math.max(baseSpeed / denominator, 255 / 256)
+        );
     }
 }

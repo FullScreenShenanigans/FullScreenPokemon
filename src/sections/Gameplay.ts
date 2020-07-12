@@ -22,7 +22,8 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends Section<TEi
             {
                 text: "LOAD FILE",
                 callback: (): void => this.loadFile(),
-            }];
+            },
+        ];
 
         this.game.saves.checkForOldStorageData();
 
@@ -49,7 +50,8 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends Section<TEi
         this.game.maps.setMap(
             this.game.itemsHolder.getItem(this.game.storage.names.map) || "Blank",
             this.game.itemsHolder.getItem(this.game.storage.names.location),
-            true);
+            true
+        );
         this.game.maps.entranceAnimations.resume();
 
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onGameStartPlay);
@@ -72,32 +74,30 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends Section<TEi
      * game state. The onGameStartIntro mod event is triggered.
      */
     public loadFile(): void {
-        const dummy: HTMLInputElement = this.game.utilities.createElement(
-            "input",
-            {
-                type: "file",
-                onchange: (event: IDataMouseEvent): void => {
-                    event.preventDefault();
-                    event.stopPropagation();
+        const dummy: HTMLInputElement = this.game.utilities.createElement("input", {
+            type: "file",
+            onchange: (event: IDataMouseEvent): void => {
+                event.preventDefault();
+                event.stopPropagation();
 
-                    const file: File = (dummy.files || event.dataTransfer.files)[0];
-                    if (!file) {
+                const file: File = (dummy.files || event.dataTransfer.files)[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader: FileReader = new FileReader();
+                reader.onloadend = (loadEvent): void => {
+                    const currentTarget = loadEvent.currentTarget as FileReader | null;
+                    if (!currentTarget || typeof currentTarget.result !== "string") {
                         return;
                     }
 
-                    const reader: FileReader = new FileReader();
-                    reader.onloadend = (loadEvent): void => {
-                        const currentTarget = loadEvent.currentTarget as FileReader | null;
-                        if (!currentTarget || typeof currentTarget.result !== "string") {
-                            return;
-                        }
-
-                        this.game.saves.loadRawData(currentTarget.result);
-                        delete reader.onloadend;
-                    };
-                    reader.readAsText(file);
-                },
-            });
+                    this.game.saves.loadRawData(currentTarget.result);
+                    delete reader.onloadend;
+                };
+                reader.readAsText(file);
+            },
+        });
 
         dummy.click();
 

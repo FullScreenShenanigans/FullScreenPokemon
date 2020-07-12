@@ -24,10 +24,9 @@ export class Computer extends Section<FullScreenPokemon> {
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "%%%%%%%PLAYER%%%%%%% turned on the PC.",
-            ],
-            this.listOptions);
+            ["%%%%%%%PLAYER%%%%%%% turned on the PC."],
+            this.listOptions
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -41,11 +40,15 @@ export class Computer extends Section<FullScreenPokemon> {
                 text: "BILL's PC",
             },
             {
-                callback: (): void => {/* ... */ },
+                callback: (): void => {
+                    /* ... */
+                },
                 text: "%%%%%%%PLAYER%%%%%%%'s PC",
             },
             {
-                callback: (): void => {/* ... */ },
+                callback: (): void => {
+                    /* ... */
+                },
                 text: "PROF. OAK's PC",
             },
             {
@@ -57,22 +60,17 @@ export class Computer extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("Computer");
         this.game.menuGrapher.addMenuList("Computer", { options });
         this.game.menuGrapher.setActiveMenu("Computer");
-    }
+    };
 
     /**
      * Closes the PC.
      */
     private readonly close = (): void => {
         this.game.menuGrapher.createMenu("GeneralText");
-        this.game.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                "TOODALOO!",
-            ],
-            (): void => {
-                this.game.menuGrapher.deleteMenu("Computer");
-                this.game.menuGrapher.deleteMenu("GeneralText");
-            });
+        this.game.menuGrapher.addMenuDialog("GeneralText", ["TOODALOO!"], (): void => {
+            this.game.menuGrapher.deleteMenu("Computer");
+            this.game.menuGrapher.deleteMenu("GeneralText");
+        });
         this.game.menuGrapher.setActiveMenu("GeneralText");
-    }
+    };
 }

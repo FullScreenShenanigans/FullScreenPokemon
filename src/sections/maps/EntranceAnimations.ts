@@ -15,7 +15,7 @@ export class EntranceAnimations extends Section<FullScreenPokemon> {
         this.game.maps.addPlayer(0, 0);
 
         this.game.players[0].hidden = true;
-    }
+    };
 
     /**
      * Standard Map entrance Function. Character is placed based on specified Location.
@@ -27,7 +27,8 @@ export class EntranceAnimations extends Section<FullScreenPokemon> {
 
         this.game.actions.animateCharacterSetDirection(
             this.game.players[0],
-            location.direction || Direction.Top);
+            location.direction || Direction.Top
+        );
 
         this.game.scrolling.centerMapScreen();
 
@@ -40,7 +41,7 @@ export class EntranceAnimations extends Section<FullScreenPokemon> {
         if (location.routine && this.game.scenePlayer.getCutsceneName()) {
             this.game.scenePlayer.playRoutine(location.routine);
         }
-    }
+    };
 
     /**
      * Map entrace Function used when player is added to the Map at the beginning
@@ -50,7 +51,10 @@ export class EntranceAnimations extends Section<FullScreenPokemon> {
         const savedInfo: any = this.game.stateHolder.getChanges("player") || {};
 
         this.game.maps.addPlayer(savedInfo.xloc || 0, savedInfo.yloc || 0, true);
-        this.game.actions.animateCharacterSetDirection(this.game.players[0], savedInfo.direction || Direction.Top);
+        this.game.actions.animateCharacterSetDirection(
+            this.game.players[0],
+            savedInfo.direction || Direction.Top
+        );
         this.game.scrolling.centerMapScreen();
-    }
+    };
 }

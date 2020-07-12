@@ -21,12 +21,18 @@ export class SpeedRunningMod extends ModComponent implements IMod {
      */
     public readonly events: ICallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            const stats: any = this.game.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
+            const stats: any = this.game.objectMaker.getPrototypeOf(
+                SpeedRunningMod.playerClassName
+            );
             this.game.players[0].speed = stats.speed = 10;
         },
         [this.eventNames.onModDisable]: (): void => {
-            const stats: any = this.game.objectMaker.getPrototypeOf(SpeedRunningMod.playerClassName);
-            const oldSpeed: number = this.game.settings.components.objectMaker!.properties![SpeedRunningMod.playerClassName].speed;
+            const stats: any = this.game.objectMaker.getPrototypeOf(
+                SpeedRunningMod.playerClassName
+            );
+            const oldSpeed: number = this.game.settings.components.objectMaker!.properties![
+                SpeedRunningMod.playerClassName
+            ].speed;
             this.game.players[0].speed = stats.speed = oldSpeed;
         },
     };

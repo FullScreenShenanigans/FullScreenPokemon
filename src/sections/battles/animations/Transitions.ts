@@ -46,7 +46,9 @@ export class Transitions extends Section<FullScreenPokemon> {
      * @param settings   Settings to play the transition.
      */
     public play<TSettings extends ITransitionSettings>(settings: TSettings): void {
-        const name: string = settings.name || this.game.numberMaker.randomArrayMember(Object.keys(this.transitions));
+        const name: string =
+            settings.name ||
+            this.game.numberMaker.randomArrayMember(Object.keys(this.transitions));
 
         new (this.transitions[name] || Transition)(this.game, settings).play();
     }

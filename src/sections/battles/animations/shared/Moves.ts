@@ -36,7 +36,8 @@ export class Moves extends Section<FullScreenPokemon> {
      */
     public playMove(teamAndAction: ITeamAndAction<IMoveAction>, callback: () => void): void {
         const battleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        const animatorType = this.movesBag[teamAndAction.action.move.toUpperCase()] || this.movesBag.default;
+        const animatorType =
+            this.movesBag[teamAndAction.action.move.toUpperCase()] || this.movesBag.default;
         const animator = new animatorType(this.game, teamAndAction);
 
         this.game.menuGrapher.createMenu("GeneralText");
@@ -45,8 +46,10 @@ export class Moves extends Section<FullScreenPokemon> {
             battleInfo.texts.teams[Team[teamAndAction.source.team]].move(
                 battleInfo.teams[Team[teamAndAction.source.team]],
                 battleInfo.teams[Team[teamAndAction.source.team]].selectedActor.title.join(""),
-                teamAndAction.action.move),
-            (): void => animator.runAnimation(callback));
+                teamAndAction.action.move
+            ),
+            (): void => animator.runAnimation(callback)
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

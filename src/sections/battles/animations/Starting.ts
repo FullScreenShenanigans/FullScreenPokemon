@@ -85,23 +85,26 @@ export class Starting extends Section<FullScreenPokemon> {
             player,
             (playerGoal - playerX) / timeout,
             playerGoal,
-            1);
+            1
+        );
 
         this.game.animations.sliding.slideHorizontally(
             opponent,
             (opponentGoal - opponentX) / timeout,
             opponentGoal,
-            1);
+            1
+        );
 
-        this.game.saves.addPokemonToPokedex(battleInfo.teams.opponent.selectedActor.title, PokedexListingStatus.Seen);
+        this.game.saves.addPokemonToPokedex(
+            battleInfo.teams.opponent.selectedActor.title,
+            PokedexListingStatus.Seen
+        );
 
         this.game.menuGrapher.setActiveMenu("GeneralText");
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.showPlayerPokeballs(battleInfo);
-                this.runOpeningText(battleInfo, onComplete);
-            },
-            timeout);
+        this.game.timeHandler.addEvent((): void => {
+            this.showPlayerPokeballs(battleInfo);
+            this.runOpeningText(battleInfo, onComplete);
+        }, timeout);
     }
 
     /**
@@ -115,7 +118,8 @@ export class Starting extends Section<FullScreenPokemon> {
             this.game.menuGrapher.createMenu("BattlePlayerPokeballs");
             this.game.battles.decorations.addPokeballs(
                 "BattlePlayerPokeballs",
-                battleInfo.teams.player.actors);
+                battleInfo.teams.player.actors
+            );
         }
 
         if (battleInfo.teams.opponent.leader) {
@@ -124,7 +128,8 @@ export class Starting extends Section<FullScreenPokemon> {
             this.game.battles.decorations.addPokeballs(
                 "BattleOpponentPokeballs",
                 battleInfo.teams.opponent.actors,
-                true);
+                true
+            );
         }
     }
 
@@ -146,7 +151,8 @@ export class Starting extends Section<FullScreenPokemon> {
                 this.game.menuGrapher.deleteMenu("BattleOpponentHealth");
                 this.game.menuGrapher.createMenu("GeneralText");
                 onComplete();
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

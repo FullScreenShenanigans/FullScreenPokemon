@@ -29,14 +29,15 @@ export class Decorations extends Section<FullScreenPokemon> {
      * @param battleInfo   Info for the current battle.
      */
     public createInitialThings(battleInfo: IBattleInfo): IBattleThings {
-        const background: IThing = this.addThingAsText(
-            "DirtWhite",
-            {
-                height: this.game.mapScreener.height,
-                id: Decorations.backgroundId,
-                width: this.game.mapScreener.width,
-            });
-        this.game.utilities.arrayToBeginning(background, this.game.groupHolder.getGroup("Text") as IThing[]);
+        const background: IThing = this.addThingAsText("DirtWhite", {
+            height: this.game.mapScreener.height,
+            id: Decorations.backgroundId,
+            width: this.game.mapScreener.width,
+        });
+        this.game.utilities.arrayToBeginning(
+            background,
+            this.game.groupHolder.getGroup("Text") as IThing[]
+        );
 
         const menu: IMenu = this.game.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
 
@@ -44,13 +45,15 @@ export class Decorations extends Section<FullScreenPokemon> {
             this.getInitialTitle(battleInfo.teams.opponent, "Front"),
             {
                 opacity: 0,
-            });
+            }
+        );
 
         const player: IThing = this.addThingAsText(
             this.getInitialTitle(battleInfo.teams.player, "Back"),
             {
                 opacity: 0,
-            });
+            }
+        );
         this.game.physics.setLeft(player, menu.right + player.width);
         this.game.physics.setBottom(player, menu.bottom - player.height);
 
@@ -113,7 +116,9 @@ export class Decorations extends Section<FullScreenPokemon> {
      */
     public moveToBeforeBackground(thing: IThing): void {
         const texts: IThing[] = this.game.groupHolder.getGroup("Text") as IThing[];
-        const background: IThing = this.game.utilities.getExistingThingById(Decorations.backgroundId);
+        const background: IThing = this.game.utilities.getExistingThingById(
+            Decorations.backgroundId
+        );
         const backgroundIndex: number = texts.indexOf(background);
 
         this.game.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);

@@ -68,24 +68,24 @@ export class Items extends Section<FullScreenPokemon> {
      * @param settings   Custom attributes to apply to the menu.
      */
     public open(settings: IItemsMenuSettings): void {
-        const listings: IInventoryListing[] = settings.items || this.game.itemsHolder.getItem(this.game.storage.names.items);
-        const options: any[] = listings.map((listing: IInventoryListing): any =>
-            ({
-                text: listing.item,
-                callback: (): void => this.openItem(listing, settings),
-                textsFloating: [
-                    {
-                        text: [["Times"]],
-                        x: 128,
-                        y: 18,
-                    },
-                    {
-                        text: this.game.utilities.makeDigit(listing.amount, 2, " "),
-                        x: 146,
-                        y: 16,
-                    },
-                ],
-            }));
+        const listings: IInventoryListing[] =
+            settings.items || this.game.itemsHolder.getItem(this.game.storage.names.items);
+        const options: any[] = listings.map((listing: IInventoryListing): any => ({
+            text: listing.item,
+            callback: (): void => this.openItem(listing, settings),
+            textsFloating: [
+                {
+                    text: [["Times"]],
+                    x: 128,
+                    y: 18,
+                },
+                {
+                    text: this.game.utilities.makeDigit(listing.amount, 2, " "),
+                    x: 146,
+                    y: 16,
+                },
+            ],
+        }));
 
         options.push({
             text: "CANCEL",
@@ -132,7 +132,9 @@ export class Items extends Section<FullScreenPokemon> {
         if (this.game.flagSwapper.flags.heldItems) {
             options.push({
                 callback: (): void => {
-                    const partyPokemon: IPokemon[] = this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty);
+                    const partyPokemon: IPokemon[] = this.game.itemsHolder.getItem(
+                        this.game.storage.names.pokemonInParty
+                    );
                     const chosenPokemon = partyPokemon[0];
                     chosenPokemon.item = listing.item.split("");
                     listing.amount = listing.amount - 1;

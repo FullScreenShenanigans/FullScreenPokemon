@@ -26,15 +26,15 @@ export interface IMovesBag {
  * Built-in battle move runners, keyed by move name.
  */
 export const DefaultMovesBag: IMovesBag = {
-    "BUBBLE": Bubble,
-    "EMBER": Ember,
-    "GROWL": Growl,
+    BUBBLE: Bubble,
+    EMBER: Ember,
+    GROWL: Growl,
     "QUICK ATTACK": QuickAttack,
-    "SCRATCH": Scratch,
-    "TACKLE": Tackle,
+    SCRATCH: Scratch,
+    TACKLE: Tackle,
     "TAIL WHIP": TailWhip,
-    "SLASH" : Slash,
-    "PAY DAY" : PayDay,
-    "POISON STING" : PoisonSting,
-    "default": Move,
+    SLASH: Slash,
+    "PAY DAY": PayDay,
+    "POISON STING": PoisonSting,
+    default: Move,
 };

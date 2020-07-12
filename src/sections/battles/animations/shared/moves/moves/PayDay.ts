@@ -43,40 +43,26 @@ export class PayDay extends Move {
             startY[1] = startY[0] - 50;
         }
         this.game.things.add(explosions[0], startX[0], startY[0]);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(explosions[0]);
-                this.game.things.add(explosions[1], startX[1], startY[1]);
-            },
-            4);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.things.add(coin, startX[0], startY[1] + 30);
-                this.game.death.kill(explosions[1]);
-            },
-            8);
-        this.game.timeHandler.addEvent(
-            shiftDown,
-            10);
-        this.game.timeHandler.addEvent(
-            shiftUp,
-            14);
-        this.game.timeHandler.addEvent(
-            shiftDown,
-            18);
-        this.game.timeHandler.addEvent(
-            shiftUp,
-            22);
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.death.kill(coin);
-                this.game.battles.animations.things.flicker({
-                    callback,
-                    clearTime: 12,
-                    interval: 6,
-                    thing: this.defenderThing,
-                });
-            },
-            26);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(explosions[0]);
+            this.game.things.add(explosions[1], startX[1], startY[1]);
+        }, 4);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.things.add(coin, startX[0], startY[1] + 30);
+            this.game.death.kill(explosions[1]);
+        }, 8);
+        this.game.timeHandler.addEvent(shiftDown, 10);
+        this.game.timeHandler.addEvent(shiftUp, 14);
+        this.game.timeHandler.addEvent(shiftDown, 18);
+        this.game.timeHandler.addEvent(shiftUp, 22);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.death.kill(coin);
+            this.game.battles.animations.things.flicker({
+                callback,
+                clearTime: 12,
+                interval: 6,
+                thing: this.defenderThing,
+            });
+        }, 26);
     }
 }

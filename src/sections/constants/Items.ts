@@ -87,13 +87,13 @@ export class Items {
      * All known items, keyed by English name.
      */
     public readonly byName: { [i: string]: IItemSchema } = {
-        "Antidote": {
+        Antidote: {
             price: 100,
             effect: "Cures Poison",
             category: "Main",
             name: "Antidote".split(""),
         },
-        "Awakening": {
+        Awakening: {
             price: 250,
             effect: "Cures Sleep",
             category: "Main",
@@ -105,13 +105,13 @@ export class Items {
             category: "Main",
             name: "Burn Heal".split(""),
         },
-        "Calcium": {
+        Calcium: {
             price: 9800,
             effect: "Raises Special Attack",
             category: "Main",
             name: "Calcium".split(""),
         },
-        "Carbos": {
+        Carbos: {
             price: 9800,
             effect: "Raises Speed",
             category: "Main",
@@ -123,7 +123,7 @@ export class Items {
             category: "Main",
             name: "Dire Hit".split(""),
         },
-        "Elixer": {
+        Elixer: {
             price: undefined,
             effect: "Restores 10PP to each move",
             category: "Main",
@@ -135,7 +135,7 @@ export class Items {
             category: "Main",
             name: "Escape Rope".split(""),
         },
-        "Ether": {
+        Ether: {
             effect: "Restores 10PP of one move",
             category: "Main",
             name: "Ether".split(""),
@@ -188,7 +188,7 @@ export class Items {
             category: "Main",
             name: "Ice Heal".split(""),
         },
-        "Iron": {
+        Iron: {
             price: 9800,
             effect: "Raises Defense",
             category: "Main",
@@ -199,7 +199,7 @@ export class Items {
             category: "Main",
             name: "Leaf Stone".split(""),
         },
-        "Lemonade": {
+        Lemonade: {
             price: 350,
             effect: "Restores 80HP",
             category: "Main",
@@ -237,7 +237,7 @@ export class Items {
             category: "Main",
             name: "Moon Stone".split(""),
         },
-        "Nugget": {
+        Nugget: {
             effect: "Sell for money",
             category: "Main",
             name: "Nugget".split(""),
@@ -254,7 +254,7 @@ export class Items {
             category: "Main",
             name: "Poke Doll".split(""),
         },
-        "Potion": {
+        Potion: {
             price: 300,
             effect: "Restores 20HP",
             category: "Main",
@@ -265,7 +265,7 @@ export class Items {
             category: "Main",
             name: "PP Up".split(""),
         },
-        "Protein": {
+        Protein: {
             price: 9800,
             effect: "Raises Attack",
             category: "Main",
@@ -276,13 +276,13 @@ export class Items {
             category: "Main",
             name: "Rare Candy".split(""),
         },
-        "Repel": {
+        Repel: {
             price: 350,
             effect: "Repels weaker Pokemon for 100 steps",
             category: "Main",
             name: "Repel".split(""),
         },
-        "Revive": {
+        Revive: {
             price: 1500,
             effect: "Recovers a fainted Pokemon to half max HP",
             category: "Main",
@@ -306,7 +306,7 @@ export class Items {
             category: "Main",
             name: "Super Repel".split(""),
         },
-        "Thunderstone": {
+        Thunderstone: {
             price: 2100,
             effect: "Evolves Eevee and Pikachu",
             category: "Main",
@@ -348,7 +348,7 @@ export class Items {
             category: "Main",
             name: "X Speed".split(""),
         },
-        "Pokeball": {
+        Pokeball: {
             price: 200,
             effect: "Catches Pokemon",
             category: "Pokeball",
@@ -376,7 +376,7 @@ export class Items {
             category: "Pokeball",
             name: "Safari Ball".split(""),
         },
-        "Bicycle": {
+        Bicycle: {
             effect: "Allows travel at double speed",
             category: "Key",
             error: "No cycling allowed here.",
@@ -426,7 +426,7 @@ export class Items {
             category: "Key",
             name: "Helix Fossil".split(""),
         },
-        "Itemfinder": {
+        Itemfinder: {
             effect: "Detects hidden items in close proximity",
             category: "Key",
             name: "Itemfinder".split(""),
@@ -454,12 +454,12 @@ export class Items {
             type: "old",
             name: "Old Rod".split(""),
         } as IRod,
-        "Pokeflute": {
+        Pokeflute: {
             effect: "Awakens sleeping Pokemon",
             category: "Key",
             name: "Pokeflute".split(""),
         },
-        "Pokedex": {
+        Pokedex: {
             effect: "Records all information about Pokemon seen and caught",
             category: "Key",
             name: "Pokedex".split(""),
@@ -492,277 +492,277 @@ export class Items {
             category: "Key",
             name: "Town Map".split(""),
         },
-        "HM01": {
+        HM01: {
             effect: "Cut",
             category: "HM",
             name: "HM01".split(""),
         },
-        "HM02": {
+        HM02: {
             effect: "Fly",
             category: "HM",
             name: "HM02".split(""),
         },
-        "HM03": {
+        HM03: {
             effect: "Surf",
             category: "HM",
             name: "HM03".split(""),
         },
-        "HM04": {
+        HM04: {
             effect: "Strength",
             category: "HM",
             name: "HM04".split(""),
         },
-        "HM05": {
+        HM05: {
             effect: "Flash",
             category: "HM",
             name: "HM05".split(""),
         },
-        "TM01": {
+        TM01: {
             effect: "Mega Punch",
             category: "TM",
             name: "TM01".split(""),
         },
-        "TM02": {
+        TM02: {
             effect: "Razor Wnd",
             category: "TM",
             name: "TM02".split(""),
         },
-        "TM03": {
+        TM03: {
             effect: "Swords Dance",
             category: "TM",
             name: "TM03".split(""),
         },
-        "TM04": {
+        TM04: {
             effect: "Whirlwind",
             category: "TM",
             name: "TM04".split(""),
         },
-        "TM05": {
+        TM05: {
             effect: "Mega Kick",
             category: "TM",
             name: "TM05".split(""),
         },
-        "TM06": {
+        TM06: {
             effect: "Toxic",
             category: "TM",
             name: "TM06".split(""),
         },
-        "TM07": {
+        TM07: {
             effect: "Horn Drill",
             category: "TM",
             name: "TM07".split(""),
         },
-        "TM08": {
+        TM08: {
             effect: "Body Slam",
             category: "TM",
             name: "TM08".split(""),
         },
-        "TM09": {
+        TM09: {
             effect: "Take Down",
             category: "TM",
             name: "TM09".split(""),
         },
-        "TM10": {
+        TM10: {
             effect: "Double-Edge",
             category: "TM",
             name: "TM10".split(""),
         },
-        "TM11": {
+        TM11: {
             effect: "BubbleBeam",
             category: "TM",
             name: "TM11".split(""),
         },
-        "TM12": {
+        TM12: {
             effect: "Water Gun",
             category: "TM",
             name: "TM12".split(""),
         },
-        "TM13": {
+        TM13: {
             effect: "Ice Beam",
             category: "TM",
             name: "TM13".split(""),
         },
-        "TM14": {
+        TM14: {
             effect: "Blizzard",
             category: "TM",
             name: "TM14".split(""),
         },
-        "TM15": {
+        TM15: {
             effect: "Hyper Beam",
             category: "TM",
             name: "TM15".split(""),
         },
-        "TM16": {
+        TM16: {
             effect: "Pay Day",
             category: "TM",
             name: "TM16".split(""),
         },
-        "TM17": {
+        TM17: {
             effect: "Submission",
             category: "TM",
             name: "TM17".split(""),
         },
-        "TM18": {
+        TM18: {
             effect: "Counter",
             category: "TM",
             name: "TM18".split(""),
         },
-        "TM19": {
+        TM19: {
             effect: "Seismic Toss",
             category: "TM",
             name: "TM19".split(""),
         },
-        "TM20": {
+        TM20: {
             effect: "Rage",
             category: "TM",
             name: "TM20".split(""),
         },
-        "TM21": {
+        TM21: {
             effect: "Mega Drain",
             category: "TM",
             name: "TM21".split(""),
         },
-        "TM22": {
+        TM22: {
             effect: "SolarBeam",
             category: "TM",
             name: "TM22".split(""),
         },
-        "TM23": {
+        TM23: {
             effect: "Dragon Rage",
             category: "TM",
             name: "TM23".split(""),
         },
-        "TM24": {
+        TM24: {
             effect: "Thunderbolt",
             category: "TM",
             name: "TM24".split(""),
         },
-        "TM25": {
+        TM25: {
             effect: "Thunder",
             category: "TM",
             name: "TM25".split(""),
         },
-        "TM26": {
+        TM26: {
             effect: "Earthquake",
             category: "TM",
             name: "TM26".split(""),
         },
-        "TM27": {
+        TM27: {
             effect: "Fissure",
             category: "TM",
             name: "TM27".split(""),
         },
-        "TM28": {
+        TM28: {
             effect: "Dig",
             category: "TM",
             name: "TM28".split(""),
         },
-        "TM29": {
+        TM29: {
             effect: "Psychic",
             category: "TM",
             name: "TM29".split(""),
         },
-        "TM30": {
+        TM30: {
             effect: "Teleport",
             category: "TM",
             name: "TM30".split(""),
         },
-        "TM31": {
+        TM31: {
             effect: "Mimic",
             category: "TM",
             name: "TM31".split(""),
         },
-        "TM32": {
+        TM32: {
             effect: "Double Team",
             category: "TM",
             name: "TM32".split(""),
         },
-        "TM33": {
+        TM33: {
             effect: "Reflect",
             category: "TM",
             name: "TM33".split(""),
         },
-        "TM34": {
+        TM34: {
             effect: "Bide",
             category: "TM",
             name: "TM34".split(""),
         },
-        "TM35": {
+        TM35: {
             effect: "Metronome",
             category: "TM",
             name: "TM35".split(""),
         },
-        "TM36": {
+        TM36: {
             effect: "Selfdestruct",
             category: "TM",
             name: "TM36".split(""),
         },
-        "TM37": {
+        TM37: {
             effect: "Egg Bomb",
             category: "TM",
             name: "TM37".split(""),
         },
-        "TM38": {
+        TM38: {
             effect: "Fire Blast",
             category: "TM",
             name: "TM38".split(""),
         },
-        "TM39": {
+        TM39: {
             effect: "Swift",
             category: "TM",
             name: "TM39".split(""),
         },
-        "TM40": {
+        TM40: {
             effect: "Skull Bash",
             category: "TM",
             name: "TM40".split(""),
         },
-        "TM41": {
+        TM41: {
             effect: "Softboiled",
             category: "TM",
             name: "TM41".split(""),
         },
-        "TM42": {
+        TM42: {
             effect: "Dream Eater",
             category: "TM",
             name: "TM42".split(""),
         },
-        "TM43": {
+        TM43: {
             effect: "Sky Attack",
             category: "TM",
             name: "TM43".split(""),
         },
-        "TM44": {
+        TM44: {
             effect: "Rest",
             category: "TM",
             name: "TM44".split(""),
         },
-        "TM45": {
+        TM45: {
             effect: "Thunder Wave",
             category: "TM",
             name: "TM45".split(""),
         },
-        "TM46": {
+        TM46: {
             effect: "Psywave",
             category: "TM",
             name: "TM46".split(""),
         },
-        "TM47": {
+        TM47: {
             effect: "Explosion",
             category: "TM",
             name: "TM47".split(""),
         },
-        "TM48": {
+        TM48: {
             effect: "Rock Slide",
             category: "TM",
             name: "TM48".split(""),
         },
-        "TM49": {
+        TM49: {
             effect: "Tri Attack",
             category: "TM",
             name: "TM49".split(""),
         },
-        "TM50": {
+        TM50: {
             effect: "Substitute",
             category: "TM",
             name: "TM50".split(""),

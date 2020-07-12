@@ -8,9 +8,9 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
-    yarn_cache_key_1: &yarn_cache_key_1 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
-    yarn_cache_key_2: &yarn_cache_key_2 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
-    yarn_cache_key_3: &yarn_cache_key_3 v1-repo-{{ checksum "yarn.lock" }}
+    yarn_cache_key_1: &yarn_cache_key_1 yarn---
+    yarn_cache_key_2: &yarn_cache_key_2 yarn--
+    yarn_cache_key_3: &yarn_cache_key_3 yarn-
 
     restore_yarn_cache: &restore_yarn_cache
         restore_cache:

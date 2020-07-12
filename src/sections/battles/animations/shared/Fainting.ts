@@ -20,15 +20,11 @@ export class Fainting extends Section<FullScreenPokemon> {
         const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
         const teamName: "player" | "opponent" = Team[team] as "player" | "opponent";
         const thing: IThing = battleInfo.things[teamName];
-        const scale = thing.scale === undefined
-            ? 1
-            : thing.scale;
-        const blank: IThing = this.game.battles.decorations.addThingAsText(
-            "WhiteSquare",
-            {
-                width: thing.width * scale,
-                height: thing.height * scale,
-            });
+        const scale = thing.scale === undefined ? 1 : thing.scale;
+        const blank: IThing = this.game.battles.decorations.addThingAsText("WhiteSquare", {
+            width: thing.width * scale,
+            height: thing.height * scale,
+        });
 
         this.game.battles.decorations.moveToBeforeBackground(blank);
         this.game.battles.decorations.moveToBeforeBackground(thing);
@@ -43,7 +39,9 @@ export class Fainting extends Section<FullScreenPokemon> {
             1,
             (): void => {
                 const playerName = this.game.itemsHolder.getItem(this.game.storage.names.name);
-                const partyIsWipedText: (string | string[])[][] = [[pokemon.nickname, " fainted!"]];
+                const partyIsWipedText: (string | string[])[][] = [
+                    [pokemon.nickname, " fainted!"],
+                ];
 
                 if (teamName === "opponent") {
                     this.processOpponentFainting(partyIsWipedText, onComplete, battleInfo);
@@ -53,9 +51,14 @@ export class Fainting extends Section<FullScreenPokemon> {
                 this.game.menuGrapher.setActiveMenu("GeneralText");
                 this.game.death.kill(thing);
                 this.game.death.kill(blank);
-            });
+            }
+        );
 
-        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onFaint, pokemon, battleInfo.teams.player.actors);
+        this.game.modAttacher.fireEvent(
+            this.game.mods.eventNames.onFaint,
+            pokemon,
+            battleInfo.teams.player.actors
+        );
     }
 
     /**
@@ -63,12 +66,13 @@ export class Fainting extends Section<FullScreenPokemon> {
      */
     private processOpponentFainting(
         partyIsWipedText: (string | string[])[][],
-        onComplete: () => void, battleInfo: IBattleInfo,
+        onComplete: () => void,
+        battleInfo: IBattleInfo
     ) {
         this.game.menuGrapher.createMenu("GeneralText");
-        this.game.menuGrapher.addMenuDialog(
-            "GeneralText", partyIsWipedText,
-            () => this.game.experience.processBattleExperience(battleInfo, onComplete));
+        this.game.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, () =>
+            this.game.experience.processBattleExperience(battleInfo, onComplete)
+        );
     }
 
     /**
@@ -77,13 +81,14 @@ export class Fainting extends Section<FullScreenPokemon> {
     private processPlayerFainting(
         partyIsWipedText: (string | string[])[][],
         onComplete: () => void,
-        playerName: string[],
+        playerName: string[]
     ) {
         this.game.menuGrapher.createMenu("GeneralText");
         if (this.game.battles.isPartyWiped()) {
             partyIsWipedText.push(
                 [playerName, " is out of useable Pokemon!"],
-                [playerName, " blacked out!"]);
+                [playerName, " blacked out!"]
+            );
         }
 
         this.game.menuGrapher.addMenuDialog("GeneralText", partyIsWipedText, onComplete);

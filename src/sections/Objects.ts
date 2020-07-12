@@ -6,7 +6,9 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Raw ObjectMakr factory settings.
  */
-export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrObjects<TEightBittr> {
+export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrObjects<
+    TEightBittr
+> {
     /**
      * How properties can be mapped from an Array to indices.
      */
@@ -1125,9 +1127,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         Flower: {
             width: 16,
             height: 16,
-            spriteCycle: [
-                ["one", "one", "two", "three"], "waving", 56,
-            ],
+            spriteCycle: [["one", "one", "two", "three"], "waving", 56],
         },
         FlowerVase: [24, 24],
         ForestDirt: [16, 16],
@@ -1190,7 +1190,9 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         },
         Water: {
             spriteCycle: [
-                ["one", "two", "three", "two", "one", "four", "five", "four"], "waving", 56,
+                ["one", "two", "three", "two", "one", "four", "five", "four"],
+                "waving",
+                56,
             ],
         },
         Text: {

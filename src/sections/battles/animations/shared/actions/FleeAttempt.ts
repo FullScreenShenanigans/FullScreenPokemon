@@ -32,7 +32,8 @@ export class FleeAttempt extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.flee.success(),
-            (): void => this.game.battleMover.stopBattle(BattleOutcome.playerFled));
+            (): void => this.game.battleMover.stopBattle(BattleOutcome.playerFled)
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -47,7 +48,8 @@ export class FleeAttempt extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             battleInfo.texts.flee.fail(),
-            onComplete);
+            onComplete
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 

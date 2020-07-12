@@ -67,9 +67,11 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
      */
     private getWalkingPokemonOptions(): IWildPokemonSchema[] | undefined {
         const area = this.game.mapScreener.activeArea;
-        if (area.wildPokemon === undefined
-            || area.wildPokemon.walking === undefined
-            || !this.game.equations.doesWalkingEncounterHappen()) {
+        if (
+            area.wildPokemon === undefined ||
+            area.wildPokemon.walking === undefined ||
+            !this.game.equations.doesWalkingEncounterHappen()
+        ) {
             return undefined;
         }
 
@@ -96,7 +98,9 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
 
         const options: IWildPokemonSchema[] | undefined = areaWildPokemon.surfing;
         if (options === undefined) {
-            throw new Error("SUrfing area doesn't have any wild surfing Pokemon options defined.");
+            throw new Error(
+                "SUrfing area doesn't have any wild surfing Pokemon options defined."
+            );
         }
 
         return options;

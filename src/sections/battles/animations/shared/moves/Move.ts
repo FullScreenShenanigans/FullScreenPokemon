@@ -51,7 +51,10 @@ export class Move extends Section<FullScreenPokemon> {
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param teamAndAction   Team and move being performed.
      */
-    public constructor(eightBitter: FullScreenPokemon, teamAndAction: ITeamAndAction<IMoveAction>) {
+    public constructor(
+        eightBitter: FullScreenPokemon,
+        teamAndAction: ITeamAndAction<IMoveAction>
+    ) {
         super(eightBitter);
 
         this.teamAndAction = teamAndAction;

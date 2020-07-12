@@ -8,4 +8,4 @@ export const createModAttacher = (game: FullScreenPokemon) =>
         mods: game.mods.mods,
         transformModName: (name: string): string => `Mods::${name}`,
         ...game.settings.components.modAttacher,
-    });	
+    });

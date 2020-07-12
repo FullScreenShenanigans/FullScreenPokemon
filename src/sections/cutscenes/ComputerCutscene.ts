@@ -11,5 +11,5 @@ export class ComputerCutscene extends Section<FullScreenPokemon> {
      */
     public readonly Open = (): void => {
         this.game.menus.computer.open();
-    }
+    };
 }

@@ -48,17 +48,15 @@ export class Detectors extends Section<FullScreenPokemon> {
                 deleteOnFinish: !other.dialogOptions,
             });
             this.game.menuGrapher.setActiveMenu("GeneralText");
-            this.game.menuGrapher.addMenuDialog(
-                "GeneralText",
-                dialog,
-                (): void => this.game.actions.animateCharacterDialogFinish(thing, other),
+            this.game.menuGrapher.addMenuDialog("GeneralText", dialog, (): void =>
+                this.game.actions.animateCharacterDialogFinish(thing, other)
             );
         }
 
         if (other.switchDirectionOnDialog) {
             this.game.actions.animateCharacterSetDirection(other, direction);
         }
-    }
+    };
 
     /**
      * Collision callback for a Character and a CollisionDetector. Only Players may
@@ -76,10 +74,10 @@ export class Detectors extends Section<FullScreenPokemon> {
         if (other.active) {
             if (!other.requireOverlap || this.game.physics.isThingWithinOther(thing, other)) {
                 if (
-                    typeof other.requireDirection !== "undefined"
-                    && !(thing.keys)[other.requireDirection]
-                    && !thing.allowDirectionAsKeys
-                    && thing.direction !== other.requireDirection
+                    typeof other.requireDirection !== "undefined" &&
+                    !thing.keys[other.requireDirection] &&
+                    !thing.allowDirectionAsKeys &&
+                    thing.direction !== other.requireDirection
                 ) {
                     return false;
                 }
@@ -105,5 +103,5 @@ export class Detectors extends Section<FullScreenPokemon> {
         }
 
         return false;
-    }
+    };
 }

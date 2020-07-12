@@ -6,10 +6,13 @@ import { ICharacter } from "./Things";
 
 describe("Collisions", () => {
     describe("isCharacterTouchingCharacter", () => {
-        const stubCharacterType: [string, any] = ["Lady", {
-            width: 8,
-            height: 12,
-        }];
+        const stubCharacterType: [string, any] = [
+            "Lady",
+            {
+                width: 8,
+                height: 12,
+            },
+        ];
 
         it("returns true when characters are touching", (): void => {
             // Arrange

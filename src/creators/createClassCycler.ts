@@ -13,4 +13,4 @@ export const createClassCycler = (game: FullScreenPokemon) =>
         },
         timeHandler: game.timeHandler,
         ...game.settings.components.classCycler,
-    });	
+    });

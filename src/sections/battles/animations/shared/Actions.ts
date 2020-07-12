@@ -1,5 +1,12 @@
 import { member } from "babyioc";
-import { IFleeAction, IItemAction, IMoveAction, IOnActions, ISwitchAction, ITeamAndAction } from "battlemovr";
+import {
+    IFleeAction,
+    IItemAction,
+    IMoveAction,
+    IOnActions,
+    ISwitchAction,
+    ITeamAndAction,
+} from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
@@ -47,9 +54,9 @@ export class Actions extends Section<FullScreenPokemon> implements IOnActions {
      * @param onComplete   Callback for when the action is done.
      */
     public move(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
-        new Moves(this.game, DefaultMovesBag).playMove(
-            teamAndAction,
-            (): void => new Effects(this.game).runMoveEffects(teamAndAction, onComplete));
+        new Moves(this.game, DefaultMovesBag).playMove(teamAndAction, (): void =>
+            new Effects(this.game).runMoveEffects(teamAndAction, onComplete)
+        );
     }
 
     /**

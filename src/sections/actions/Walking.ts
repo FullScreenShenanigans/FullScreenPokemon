@@ -57,7 +57,10 @@ export class Walking extends Section<FullScreenPokemon> {
         }
 
         let instructionIndex = 0;
-        let currentInstruction: IWalkingInstruction = this.parseWalkingInstruction(path[0], thing);
+        let currentInstruction: IWalkingInstruction = this.parseWalkingInstruction(
+            path[0],
+            thing
+        );
         let remainingBlocks: number = currentInstruction.blocks;
 
         if (!remainingBlocks) {
@@ -66,32 +69,32 @@ export class Walking extends Section<FullScreenPokemon> {
         }
 
         thing.nextDirection = undefined;
-        this.startWalking(
-            thing,
-            currentInstruction.direction,
-            (): void => {
-                remainingBlocks -= 1;
+        this.startWalking(thing, currentInstruction.direction, (): void => {
+            remainingBlocks -= 1;
 
-                while (!remainingBlocks) {
-                    instructionIndex += 1;
+            while (!remainingBlocks) {
+                instructionIndex += 1;
 
-                    if (instructionIndex >= path.length) {
-                        thing.wantsToWalk = false;
+                if (instructionIndex >= path.length) {
+                    thing.wantsToWalk = false;
 
-                        if (thing.direction !== currentInstruction.direction) {
-                            this.game.actions.animateCharacterSetDirection(thing, currentInstruction.direction);
-                        }
-
-                        return;
+                    if (thing.direction !== currentInstruction.direction) {
+                        this.game.actions.animateCharacterSetDirection(
+                            thing,
+                            currentInstruction.direction
+                        );
                     }
 
-                    currentInstruction = this.parseWalkingInstruction(path[instructionIndex], thing);
-                    remainingBlocks = currentInstruction.blocks;
-                    thing.nextDirection = currentInstruction.direction;
+                    return;
                 }
 
-                thing.wantsToWalk = true;
-            });
+                currentInstruction = this.parseWalkingInstruction(path[instructionIndex], thing);
+                remainingBlocks = currentInstruction.blocks;
+                thing.nextDirection = currentInstruction.direction;
+            }
+
+            thing.wantsToWalk = true;
+        });
     }
 
     /**
@@ -101,19 +104,27 @@ export class Walking extends Section<FullScreenPokemon> {
      * @param commands   Instructions on how to walk.
      * @param onContinueWalking   Callback to run before continuing walking.
      */
-    public startWalking(thing: ICharacter, direction: Direction, onContinueWalking?: Function): void {
+    public startWalking(
+        thing: ICharacter,
+        direction: Direction,
+        onContinueWalking?: Function
+    ): void {
         const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(thing);
 
         this.setWalkingAttributes(thing, direction);
         this.setWalkingGraphics(thing);
 
         if (thing.follower) {
-            this.startWalking(thing.follower, this.game.physics.getDirectionBetween(thing.follower, thing));
+            this.startWalking(
+                thing.follower,
+                this.game.physics.getDirectionBetween(thing.follower, thing)
+            );
         }
 
         this.game.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
-            ticksPerBlock + 1);
+            ticksPerBlock + 1
+        );
     }
 
     /**
@@ -123,12 +134,19 @@ export class Walking extends Section<FullScreenPokemon> {
      * @param ticksPerBlock   How many ticks it takes to span a block.
      * @param onContinueWalking   Callback to run before continuing walking.
      */
-    public continueWalking(thing: ICharacter, ticksPerBlock: number, onContinueWalking?: Function): void {
+    public continueWalking(
+        thing: ICharacter,
+        ticksPerBlock: number,
+        onContinueWalking?: Function
+    ): void {
         if (onContinueWalking) {
             onContinueWalking();
         }
 
-        if (!thing.wantsToWalk || (thing.player && this.tryStartWildPokemonEncounter(thing as IPlayer))) {
+        if (
+            !thing.wantsToWalk ||
+            (thing.player && this.tryStartWildPokemonEncounter(thing as IPlayer))
+        ) {
             this.stopWalking(thing);
             return;
         }
@@ -140,14 +158,16 @@ export class Walking extends Section<FullScreenPokemon> {
         if (thing.follower) {
             this.game.actions.following.continueFollowing(
                 thing.follower,
-                this.game.physics.getDirectionBetween(thing.follower, thing));
+                this.game.physics.getDirectionBetween(thing.follower, thing)
+            );
         }
 
         this.game.physics.snapToGrid(thing);
 
         this.game.timeHandler.addEvent(
             (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
-            ticksPerBlock);
+            ticksPerBlock
+        );
     }
 
     /**
@@ -203,7 +223,9 @@ export class Walking extends Section<FullScreenPokemon> {
             return false;
         }
 
-        const wildPokemonOptions: IWildPokemonSchema[] | undefined = this.encounters.choices.getWildEncounterPokemonOptions(thing);
+        const wildPokemonOptions:
+            | IWildPokemonSchema[]
+            | undefined = this.encounters.choices.getWildEncounterPokemonOptions(thing);
         if (wildPokemonOptions === undefined || wildPokemonOptions.length === 0) {
             return false;
         }
@@ -263,28 +285,28 @@ export class Walking extends Section<FullScreenPokemon> {
         const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(thing);
         const ticksPerStep: number = ticksPerBlock / 2;
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.classCycler.addClassCycle(
-                    thing,
-                    ["walking", "standing"],
-                    "walking",
-                    ticksPerStep);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.classCycler.addClassCycle(
+                thing,
+                ["walking", "standing"],
+                "walking",
+                ticksPerStep
+            );
 
-                thing.walkingFlipping = this.game.timeHandler.addEventInterval(
-                    (): void => {
-                        if (thing.direction % 2 === 0) {
-                            if (thing.flipHoriz) {
-                                this.game.graphics.flipping.unflipHoriz(thing);
-                            } else {
-                                this.game.graphics.flipping.flipHoriz(thing);
-                            }
+            thing.walkingFlipping = this.game.timeHandler.addEventInterval(
+                (): void => {
+                    if (thing.direction % 2 === 0) {
+                        if (thing.flipHoriz) {
+                            this.game.graphics.flipping.unflipHoriz(thing);
+                        } else {
+                            this.game.graphics.flipping.flipHoriz(thing);
                         }
-                    },
-                    ticksPerStep * 2,
-                    Infinity);
-            },
-            ticksPerStep);
+                    }
+                },
+                ticksPerStep * 2,
+                Infinity
+            );
+        }, ticksPerStep);
     }
 
     /**
@@ -292,14 +314,17 @@ export class Walking extends Section<FullScreenPokemon> {
      */
     private parseWalkingInstruction(
         instruction: IWalkingInstruction | IWalkingInstructionGenerator,
-        thing: ICharacter): IWalkingInstruction {
+        thing: ICharacter
+    ): IWalkingInstruction {
         if (typeof instruction !== "function") {
             return instruction;
         }
 
-        return instruction(thing) || {
-            blocks: 0,
-            direction: thing.direction,
-        };
+        return (
+            instruction(thing) || {
+                blocks: 0,
+                direction: thing.direction,
+            }
+        );
     }
 }

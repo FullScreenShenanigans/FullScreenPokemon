@@ -20,7 +20,9 @@ describe("ItemEffects", () => {
             itemEffects.capturePokemon(pokemon);
 
             // Assert
-            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[0].title).to.be.equal(pokemon.title);
+            expect(
+                fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[0].title
+            ).to.be.equal(pokemon.title);
         });
 
         it("adds a second Pokemon to your party when your party has one Pokemon", (): void => {
@@ -37,7 +39,9 @@ describe("ItemEffects", () => {
             itemEffects.capturePokemon(pokemon);
 
             // Assert
-            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title).to.be.equal(pokemon.title);
+            expect(
+                fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title
+            ).to.be.equal(pokemon.title);
         });
 
         it("adds a third Pokemon to your party when your party has two Pokemon", (): void => {
@@ -54,7 +58,9 @@ describe("ItemEffects", () => {
             itemEffects.capturePokemon(pokemon);
 
             // Assert
-            expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title).to.be.equal(pokemon.title);
+            expect(
+                fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[1].title
+            ).to.be.equal(pokemon.title);
         });
 
         it("does not add a new Pokemon to your party when your party has six Pokemon", (): void => {
@@ -78,7 +84,9 @@ describe("ItemEffects", () => {
 
             // Assert
             for (let i = 0; i < 6; i += 1) {
-                expect(fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i].title).to.be.equal(squirtle.title);
+                expect(
+                    fsp.itemsHolder.getItem(fsp.storage.names.pokemonInParty)[i].title
+                ).to.be.equal(squirtle.title);
             }
         });
 
@@ -120,5 +128,5 @@ describe("ItemEffects", () => {
             // Assert
             expect(result).to.be.equal(false);
         });
-     });
+    });
 });

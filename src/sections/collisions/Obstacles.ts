@@ -22,7 +22,7 @@ export class Obstacles extends Section<FullScreenPokemon> {
         this.game.actions.grass.enterGrassVisually(thing, other);
 
         return true;
-    }
+    };
 
     /**
      * Collision callback for a Character and a Ledge. If possible, the Character
@@ -62,7 +62,7 @@ export class Obstacles extends Section<FullScreenPokemon> {
         this.game.actions.ledges.startLedgeHop(thing, other);
 
         return true;
-    }
+    };
 
     /**
      * Collision callback for a Character and a WaterEdge. If possible, the Character
@@ -78,12 +78,14 @@ export class Obstacles extends Section<FullScreenPokemon> {
             return false;
         }
 
-        this.game.actions.walking.startWalkingOnPath(thing, [{
-            blocks: 2,
-            direction: thing.direction,
-        }]);
+        this.game.actions.walking.startWalkingOnPath(thing, [
+            {
+                blocks: 2,
+                direction: thing.direction,
+            },
+        ]);
         thing.surfing = false;
         this.game.graphics.classes.removeClass(thing, "surfing");
         return true;
-    }
+    };
 }

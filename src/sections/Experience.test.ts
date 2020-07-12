@@ -19,7 +19,13 @@ const skipBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer): void
     clock.tick(1000);
 };
 
-const startBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer, enemyPokemon: IPokemon, charmander: IPokemon) => {
+const startBattle = (
+    clock: Clock,
+    fsp: FullScreenPokemon,
+    player: IPlayer,
+    enemyPokemon: IPokemon,
+    charmander: IPokemon
+) => {
     fsp.battles.startBattle({
         teams: {
             opponent: {
@@ -53,9 +59,7 @@ const createGame = (charmanderLevel: number) => {
         ],
     });
 
-    fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [
-        charmander,
-    ]);
+    fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [charmander]);
 
     const enemyPokemon: IPokemon = fsp.equations.newPokemon({
         level: 1,

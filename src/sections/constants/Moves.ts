@@ -67,13 +67,13 @@ export class Moves {
      * All known Pokemon moves, keyed by English name.
      */
     public readonly byName: { [i: string]: IMoveSchema } = {
-        "Absorb": {
+        Absorb: {
             accuracy: 100,
             effects: [],
             PP: 20,
             type: "Grass",
         },
-        "Acid": {
+        Acid: {
             type: "Poison",
             effects: [],
             accuracy: 100,
@@ -84,12 +84,12 @@ export class Moves {
             effects: [],
             PP: 40,
         },
-        "Agility": {
+        Agility: {
             type: "Psychic",
             effects: [],
             PP: 30,
         },
-        "Amnesia": {
+        Amnesia: {
             type: "Psychic",
             effects: [],
             PP: 20,
@@ -100,35 +100,35 @@ export class Moves {
             accuracy: 100,
             PP: 20,
         },
-        "Barrage": {
+        Barrage: {
             type: "Normal",
             effects: [],
             accuracy: 85,
             PP: 20,
         },
-        "Barrier": {
+        Barrier: {
             type: "Psychic",
             effects: [],
             PP: 30,
         },
-        "Bide": {
+        Bide: {
             type: "Normal",
             effects: [],
             PP: 10,
         },
-        "Bind": {
+        Bind: {
             type: "Normal",
             effects: [],
             accuracy: 75,
             PP: 20,
         },
-        "Bite": {
+        Bite: {
             type: "Normal",
             effects: [],
             accuracy: 100,
             PP: 25,
         },
-        "Blizzard": {
+        Blizzard: {
             type: "Ice",
             effects: [],
             accuracy: 90,
@@ -146,13 +146,13 @@ export class Moves {
             accuracy: 85,
             PP: 20,
         },
-        "Bonemerang": {
+        Bonemerang: {
             type: "Ground",
             effects: [],
             accuracy: 90,
             PP: 10,
         },
-        "Bubble": {
+        Bubble: {
             type: "Water",
             effects: [],
             accuracy: 100,
@@ -164,7 +164,7 @@ export class Moves {
             accuracy: 100,
             PP: 20,
         },
-        "Clamp": {
+        Clamp: {
             type: "Water",
             effects: [],
             accuracy: 75,
@@ -182,36 +182,36 @@ export class Moves {
             accuracy: 100,
             PP: 10,
         },
-        "Confusion": {
+        Confusion: {
             type: "Psychic",
             effects: [],
             accuracy: 100,
             PP: 25,
         },
-        "Constrict": {
+        Constrict: {
             type: "Normal",
             effects: [],
             accuracy: 100,
             PP: 35,
         },
-        "Conversion": {
+        Conversion: {
             type: "Normal",
             effects: [],
             PP: 30,
         },
-        "Counter": {
+        Counter: {
             type: "Fighting",
             effects: [],
             accuracy: 100,
             PP: 20,
         },
-        "Crabhammer": {
+        Crabhammer: {
             type: "Water",
             effects: [],
             accuracy: 85,
             PP: 10,
         },
-        "Cut": {
+        Cut: {
             type: "Normal",
             effects: [],
             accuracy: 95,
@@ -225,13 +225,13 @@ export class Moves {
             effects: [],
             PP: 40,
         },
-        "Dig": {
+        Dig: {
             type: "Ground",
             effects: [],
             accuracy: 100,
             PP: 10,
         },
-        "Disable": {
+        Disable: {
             type: "Normal",
             effects: [],
             accuracy: 55,
@@ -284,7 +284,7 @@ export class Moves {
             accuracy: 100,
             PP: 20,
         },
-        "Earthquake": {
+        Earthquake: {
             type: "Ground",
             effects: [
                 {
@@ -302,13 +302,13 @@ export class Moves {
             accuracy: 75,
             PP: 10,
         },
-        "Ember": {
+        Ember: {
             type: "Fire",
             effects: [],
             accuracy: 100,
             PP: 25,
         },
-        "Explosion": {
+        Explosion: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -332,26 +332,26 @@ export class Moves {
             accuracy: 70,
             PP: 15,
         },
-        "Fissure": {
+        Fissure: {
             type: "Ground",
             effects: [],
             accuracy: 30,
             PP: 5,
         },
-        "Flamethrower": {
+        Flamethrower: {
             type: "Fire",
             effects: [],
             accuracy: 100,
             PP: 15,
         },
-        "Flash": {
+        Flash: {
             type: "Normal",
             effects: [],
             accuracy: 70,
             PP: 20,
             requiredBadge: "Boulder",
         } as IHMMoveSchema,
-        "Fly": {
+        Fly: {
             type: "Flying",
             effects: [],
             accuracy: 95,
@@ -375,35 +375,37 @@ export class Moves {
             accuracy: 80,
             PP: 15,
         },
-        "Glare": {
+        Glare: {
             type: "Normal",
             effects: [],
             accuracy: 75,
             PP: 30,
         },
-        "Growl": {
+        Growl: {
             type: "Normal",
-            effects: [{
-                change: -1,
-                statistic: "attack",
-                target: EffectTarget.defender,
-                type: "statistic",
-            }],
+            effects: [
+                {
+                    change: -1,
+                    statistic: "attack",
+                    target: EffectTarget.defender,
+                    type: "statistic",
+                },
+            ],
             accuracy: 100,
             PP: 40,
         },
-        "Growth": {
+        Growth: {
             type: "Normal",
             effects: [],
             PP: 40,
         },
-        "Guillotine": {
+        Guillotine: {
             type: "Normal",
             effects: [],
             accuracy: 30,
             PP: 5,
         },
-        "Gust": {
+        Gust: {
             type: "Normal",
             effects: [
                 {
@@ -415,17 +417,17 @@ export class Moves {
             accuracy: 100,
             PP: 35,
         },
-        "Harden": {
+        Harden: {
             type: "Normal",
             effects: [],
             PP: 30,
         },
-        "Haze": {
+        Haze: {
             type: "Ice",
             effects: [],
             PP: 30,
         },
-        "Headbutt": {
+        Headbutt: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -467,7 +469,7 @@ export class Moves {
             accuracy: 90,
             PP: 15,
         },
-        "Hypnosis": {
+        Hypnosis: {
             type: "Psychic",
             effects: [],
             accuracy: 60,
@@ -497,7 +499,7 @@ export class Moves {
             accuracy: 100,
             PP: 25,
         },
-        "Kinesis": {
+        Kinesis: {
             type: "Psychic",
             effects: [],
             accuracy: 80,
@@ -515,13 +517,13 @@ export class Moves {
             accuracy: 90,
             PP: 10,
         },
-        "Leer": {
+        Leer: {
             type: "Normal",
             effects: [],
             accuracy: 100,
             PP: 30,
         },
-        "Lick": {
+        Lick: {
             type: "Ghost",
             effects: [],
             accuracy: 100,
@@ -544,7 +546,7 @@ export class Moves {
             accuracy: 90,
             PP: 20,
         },
-        "Meditate": {
+        Meditate: {
             type: "Psychic",
             effects: [],
             PP: 40,
@@ -567,17 +569,17 @@ export class Moves {
             accuracy: 85,
             PP: 20,
         },
-        "Metronome": {
+        Metronome: {
             type: "Normal",
             effects: [],
             PP: 10,
         },
-        "Mimic": {
+        Mimic: {
             type: "Normal",
             effects: [],
             PP: 10,
         },
-        "Minimize": {
+        Minimize: {
             type: "Normal",
             effects: [],
             PP: 20,
@@ -587,7 +589,7 @@ export class Moves {
             effects: [],
             PP: 20,
         },
-        "Mist": {
+        Mist: {
             type: "Ice",
             effects: [],
             PP: 30,
@@ -610,7 +612,7 @@ export class Moves {
             accuracy: 100,
             PP: 20,
         },
-        "Peck": {
+        Peck: {
             type: "Flying",
             effects: [],
             accuracy: 100,
@@ -652,25 +654,25 @@ export class Moves {
             accuracy: 100,
             PP: 35,
         },
-        "Pound": {
+        Pound: {
             type: "Normal",
             effects: [],
             accuracy: 100,
             PP: 35,
         },
-        "Psybeam": {
+        Psybeam: {
             type: "Psychic",
             effects: [],
             accuracy: 100,
             PP: 20,
         },
-        "Psychic": {
+        Psychic: {
             type: "Psychic",
             effects: [],
             accuracy: 100,
             PP: 10,
         },
-        "Psywave": {
+        Psywave: {
             type: "Psychic",
             effects: [],
             accuracy: 80,
@@ -683,7 +685,7 @@ export class Moves {
             PP: 30,
             priority: 1,
         },
-        "Rage": {
+        Rage: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -701,22 +703,22 @@ export class Moves {
             accuracy: 75,
             PP: 10,
         },
-        "Recover": {
+        Recover: {
             type: "Normal",
             effects: [],
             PP: 20,
         },
-        "Reflect": {
+        Reflect: {
             type: "Psychic",
             effects: [],
             PP: 20,
         },
-        "Rest": {
+        Rest: {
             type: "Psychic",
             effects: [],
             PP: 10,
         },
-        "Roar": {
+        Roar: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -746,7 +748,7 @@ export class Moves {
             accuracy: 100,
             PP: 15,
         },
-        "Scratch": {
+        Scratch: {
             type: "Normal",
             effects: [
                 {
@@ -758,7 +760,7 @@ export class Moves {
             accuracy: 100,
             PP: 35,
         },
-        "Screech": {
+        Screech: {
             type: "Normal",
             effects: [],
             accuracy: 85,
@@ -776,12 +778,12 @@ export class Moves {
             accuracy: 100,
             PP: 5,
         },
-        "Sharpen": {
+        Sharpen: {
             type: "Normal",
             effects: [],
             PP: 30,
         },
-        "Sing": {
+        Sing: {
             type: "Normal",
             effects: [],
             accuracy: 55,
@@ -799,22 +801,21 @@ export class Moves {
             accuracy: 90,
             PP: 5,
         },
-        "Slam": {
+        Slam: {
             type: "Normal",
             effects: [],
             accuracy: 75,
             PP: 20,
         },
-        "Slash": {
+        Slash: {
             type: "Normal",
-            effects:
-                [
-                    {
-                        damage: 70,
-                        target: EffectTarget.defender,
-                        type: "damage",
-                    },
-                ],
+            effects: [
+                {
+                    damage: 70,
+                    target: EffectTarget.defender,
+                    type: "damage",
+                },
+            ],
             accuracy: 100,
             PP: 20,
         },
@@ -824,19 +825,19 @@ export class Moves {
             accuracy: 75,
             PP: 15,
         },
-        "Sludge": {
+        Sludge: {
             type: "Poison",
             effects: [],
             accuracy: 100,
             PP: 20,
         },
-        "Smog": {
+        Smog: {
             type: "Poison",
             effects: [],
             accuracy: 70,
             PP: 20,
         },
-        "Smokescreen": {
+        Smokescreen: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -865,24 +866,24 @@ export class Moves {
             accuracy: 100,
             PP: 15,
         },
-        "Splash": {
+        Splash: {
             type: "Normal",
             effects: [],
             PP: 40,
         },
-        "Spore": {
+        Spore: {
             type: "Grass",
             effects: [],
             accuracy: 100,
             PP: 15,
         },
-        "Stomp": {
+        Stomp: {
             type: "Normal",
             effects: [],
             accuracy: 100,
             PP: 20,
         },
-        "Strength": {
+        Strength: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -897,7 +898,7 @@ export class Moves {
             accuracy: 95,
             PP: 40,
         },
-        "Struggle": {
+        Struggle: {
             type: "Normal",
             effects: [],
             PP: 10,
@@ -908,13 +909,13 @@ export class Moves {
             accuracy: 75,
             PP: 30,
         },
-        "Submission": {
+        Submission: {
             type: "Fighting",
             effects: [],
             accuracy: 80,
             PP: 25,
         },
-        "Substitute": {
+        Substitute: {
             type: "Normal",
             effects: [],
             PP: 10,
@@ -925,13 +926,13 @@ export class Moves {
             accuracy: 90,
             PP: 10,
         },
-        "Supersonic": {
+        Supersonic: {
             type: "Normal",
             effects: [],
             accuracy: 55,
             PP: 20,
         },
-        "Surf": {
+        Surf: {
             type: "Water",
             effects: [],
             accuracy: 100,
@@ -940,7 +941,7 @@ export class Moves {
             characterName: "WaterEdge",
             requiredBadge: "Soul",
         } as IHMMoveSchema,
-        "Swift": {
+        Swift: {
             type: "Normal",
             effects: [],
             PP: 20,
@@ -950,7 +951,7 @@ export class Moves {
             effects: [],
             PP: 30,
         },
-        "Tackle": {
+        Tackle: {
             type: "Normal",
             effects: [
                 {
@@ -974,18 +975,18 @@ export class Moves {
             accuracy: 85,
             PP: 20,
         },
-        "Teleport": {
+        Teleport: {
             type: "Psychic",
             effects: [],
             PP: 20,
         },
-        "Thrash": {
+        Thrash: {
             type: "Normal",
             effects: [],
             accuracy: 100,
             PP: 20,
         },
-        "Thunder": {
+        Thunder: {
             type: "Electric",
             effects: [],
             accuracy: 70,
@@ -1009,19 +1010,19 @@ export class Moves {
             accuracy: 100,
             PP: 20,
         },
-        "Thunderbolt": {
+        Thunderbolt: {
             type: "Electric",
             effects: [],
             accuracy: 100,
             PP: 15,
         },
-        "Toxic": {
+        Toxic: {
             type: "Poison",
             effects: [],
             accuracy: 85,
             PP: 10,
         },
-        "Transform": {
+        Transform: {
             type: "Normal",
             effects: [],
             PP: 10,
@@ -1032,7 +1033,7 @@ export class Moves {
             accuracy: 100,
             PP: 10,
         },
-        "Twineedle": {
+        Twineedle: {
             type: "Bug",
             effects: [],
             accuracy: 100,
@@ -1056,13 +1057,13 @@ export class Moves {
             accuracy: 100,
             PP: 25,
         },
-        "Waterfall": {
+        Waterfall: {
             type: "Water",
             effects: [],
             accuracy: 100,
             PP: 15,
         },
-        "Whirlwind": {
+        Whirlwind: {
             type: "Normal",
             effects: [],
             accuracy: 100,
@@ -1074,12 +1075,12 @@ export class Moves {
             accuracy: 100,
             PP: 35,
         },
-        "Withdraw": {
+        Withdraw: {
             type: "Water",
             effects: [],
             PP: 40,
         },
-        "Wrap": {
+        Wrap: {
             type: "Normal",
             effects: [],
             accuracy: 85,

@@ -123,7 +123,7 @@ export interface IMenu extends IMenuBase, IThing {
 /**
  * A ListMenu Thing.
  */
-export interface IListMenu extends IMenu, imenugraphr.IListMenuBase { }
+export interface IListMenu extends IMenu, imenugraphr.IListMenuBase {}
 
 /**
  * Manipulates MenuGraphr menus.
@@ -199,12 +199,7 @@ export class Menus extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
-        this.game.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                message,
-            ],
-        );
+        this.game.menuGrapher.addMenuDialog("GeneralText", [message]);
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

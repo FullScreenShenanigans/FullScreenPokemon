@@ -56,7 +56,6 @@ export interface IShakeSettings {
      * How long to wait between movements.
      */
     interval?: number;
-
 }
 
 /**
@@ -80,17 +79,16 @@ export class Things extends Section<FullScreenPokemon> {
                 settings.thing.hidden = !settings.thing.hidden;
             },
             interval,
-            clearTime || 49);
+            clearTime || 49
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                settings.thing.flickering = settings.thing.hidden = false;
+        this.game.timeHandler.addEvent((): void => {
+            settings.thing.flickering = settings.thing.hidden = false;
 
-                if (settings.callback) {
-                    settings.callback();
-                }
-            },
-            clearTime * interval + 1);
+            if (settings.callback) {
+                settings.callback();
+            }
+        }, clearTime * interval + 1);
     }
 
     /**
@@ -111,25 +109,25 @@ export class Things extends Section<FullScreenPokemon> {
                 });
             },
             1,
-            clearTime * interval);
+            clearTime * interval
+        );
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                dx *= -1;
-                dy *= -1;
+        this.game.timeHandler.addEvent((): void => {
+            dx *= -1;
+            dy *= -1;
 
-                this.game.timeHandler.addEventInterval(
-                    (): void => {
-                        dx *= -1;
-                        dy *= -1;
-                    },
-                    interval,
-                    clearTime);
+            this.game.timeHandler.addEventInterval(
+                (): void => {
+                    dx *= -1;
+                    dy *= -1;
+                },
+                interval,
+                clearTime
+            );
 
-                if (settings.callback) {
-                    this.game.timeHandler.addEvent(settings.callback, interval * clearTime);
-                }
-            },
-            (interval / 2) | 0);
+            if (settings.callback) {
+                this.game.timeHandler.addEvent(settings.callback, interval * clearTime);
+            }
+        }, (interval / 2) | 0);
     }
 }

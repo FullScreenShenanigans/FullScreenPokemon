@@ -58,12 +58,20 @@ export class Effects extends Section<FullScreenPokemon> {
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public runMoveEffects(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
+    public runMoveEffects(
+        teamAndAction: ITeamAndAction<IMoveAction>,
+        onComplete: () => void
+    ): void {
         const queue: Queue = new Queue();
 
-        for (const effect of this.game.constants.moves.byName[teamAndAction.action.move].effects) {
-            queue.add((afterEffect: () => void): void => this.runEffect(teamAndAction, effect, afterEffect));
-            queue.add((afterEffect: () => void): void => this.runAfterEffect(teamAndAction, afterEffect));
+        for (const effect of this.game.constants.moves.byName[teamAndAction.action.move]
+            .effects) {
+            queue.add((afterEffect: () => void): void =>
+                this.runEffect(teamAndAction, effect, afterEffect)
+            );
+            queue.add((afterEffect: () => void): void =>
+                this.runAfterEffect(teamAndAction, afterEffect)
+            );
         }
 
         queue.run(onComplete);
@@ -75,7 +83,11 @@ export class Effects extends Section<FullScreenPokemon> {
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the effect is done.
      */
-    private runEffect(teamAndAction: ITeamAndAction<IMoveAction>, effect: IMoveEffect, onComplete: () => void): void {
+    private runEffect(
+        teamAndAction: ITeamAndAction<IMoveAction>,
+        effect: IMoveEffect,
+        onComplete: () => void
+    ): void {
         if (this.game.numberMaker.randomIntWithin(0, 100) > effect.probability!) {
             this.missed.run(teamAndAction, effect, onComplete);
             return;
@@ -109,7 +121,10 @@ export class Effects extends Section<FullScreenPokemon> {
      * @param teamAndAction   Team and action that was performed.
      * @param onComplete   Handler for when this is done.
      */
-    private runAfterEffect(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
+    private runAfterEffect(
+        teamAndAction: ITeamAndAction<IMoveAction>,
+        onComplete: () => void
+    ): void {
         if (teamAndAction.target.actor.statistics.health.current !== 0) {
             onComplete();
             return;
@@ -120,6 +135,7 @@ export class Effects extends Section<FullScreenPokemon> {
         battleInfo.teams[Team[teamAndAction.target.team]].selector.afterKnockout(
             battleInfo,
             teamAndAction.target.team,
-            onComplete);
+            onComplete
+        );
     }
 }

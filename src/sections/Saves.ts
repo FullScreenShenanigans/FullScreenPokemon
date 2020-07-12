@@ -40,12 +40,18 @@ export class Saves extends Section<FullScreenPokemon> {
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IStorageItems & { [i: string]: any } = this.game.itemsHolder.exportItems();
+        const oldLocalStorage: IStorageItems & {
+            [i: string]: any;
+        } = this.game.itemsHolder.exportItems();
 
-        const collectionKeys: string[] = this.game.itemsHolder.getItem(this.game.storage.names.stateCollectionKeys);
+        const collectionKeys: string[] = this.game.itemsHolder.getItem(
+            this.game.storage.names.stateCollectionKeys
+        );
         if (collectionKeys) {
             for (const collection of collectionKeys) {
-                oldLocalStorage[collection] = this.game.itemsHolder.getItem(collection as keyof IStorageItems);
+                oldLocalStorage[collection] = this.game.itemsHolder.getItem(
+                    collection as keyof IStorageItems
+                );
             }
         }
 
@@ -64,12 +70,16 @@ export class Saves extends Section<FullScreenPokemon> {
      * hasn't been saved, the data is restored under localStorage.
      */
     public checkForOldStorageData(): void {
-        if (!this.game.itemsHolder.getItem(this.game.storage.names.oldLocalStorage)
-            || this.game.itemsHolder.getItem(this.game.storage.names.gameStarted)) {
+        if (
+            !this.game.itemsHolder.getItem(this.game.storage.names.oldLocalStorage) ||
+            this.game.itemsHolder.getItem(this.game.storage.names.gameStarted)
+        ) {
             return;
         }
 
-        const oldLocalStorage = this.game.itemsHolder.getItem(this.game.storage.names.oldLocalStorage);
+        const oldLocalStorage = this.game.itemsHolder.getItem(
+            this.game.storage.names.oldLocalStorage
+        );
         if (oldLocalStorage !== undefined) {
             for (const key in oldLocalStorage) {
                 if (!oldLocalStorage.hasOwnProperty(key)) {
@@ -79,9 +89,15 @@ export class Saves extends Section<FullScreenPokemon> {
                 const prefix = this.game.stateHolder.getPrefix();
 
                 if (key.slice(0, prefix.length) === prefix) {
-                    this.game.stateHolder.setCollection(key.slice(prefix.length), oldLocalStorage[key as keyof IStorageItems]);
+                    this.game.stateHolder.setCollection(
+                        key.slice(prefix.length),
+                        oldLocalStorage[key as keyof IStorageItems]
+                    );
                 } else {
-                    this.game.itemsHolder.setItem(key as keyof IStorageItems, oldLocalStorage[key as keyof IStorageItems]);
+                    this.game.itemsHolder.setItem(
+                        key as keyof IStorageItems,
+                        oldLocalStorage[key as keyof IStorageItems]
+                    );
                 }
             }
         }
@@ -97,7 +113,10 @@ export class Saves extends Section<FullScreenPokemon> {
     public saveGame(showText: boolean = true): void {
         const ticksRecorded: number = this.game.fpsAnalyzer.getRecordedTicks();
 
-        this.game.itemsHolder.increase(this.game.storage.names.time, ticksRecorded - this.game.ticksElapsed);
+        this.game.itemsHolder.increase(
+            this.game.storage.names.time,
+            ticksRecorded - this.game.ticksElapsed
+        );
         this.game.ticksElapsed = ticksRecorded;
 
         this.saveCharacterPositions();
@@ -111,18 +130,18 @@ export class Saves extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog("GeneralText", ["Now saving..."]);
 
-        this.game.timeHandler.addEvent(
-            (): void => this.game.menuGrapher.deleteAllMenus(),
-            49);
+        this.game.timeHandler.addEvent((): void => this.game.menuGrapher.deleteAllMenus(), 49);
     }
 
     /**
      * Automatically saves the game if auto-save is enabled.
      */
     public autoSaveIfEnabled(): void {
-        if (this.game.itemsHolder.getAutoSave()
-            && !this.game.scenePlayer.getCutscene()
-            && this.game.areaSpawner.getMapName() !== "Blank") {
+        if (
+            this.game.itemsHolder.getAutoSave() &&
+            !this.game.scenePlayer.getCutscene() &&
+            this.game.areaSpawner.getMapName() !== "Blank"
+        ) {
             this.saveGame(false);
         }
     }
@@ -135,13 +154,12 @@ export class Saves extends Section<FullScreenPokemon> {
         this.saveGame();
 
         const link: HTMLAnchorElement = document.createElement("a");
-        link.setAttribute(
-            "download",
-            "FullScreenPokemon Save " + Date.now() + ".json");
+        link.setAttribute("download", "FullScreenPokemon Save " + Date.now() + ".json");
         link.setAttribute(
             "href",
-            "data:text/json;charset=utf-8," + encodeURIComponent(
-                JSON.stringify(this.game.itemsHolder.exportItems())));
+            "data:text/json;charset=utf-8," +
+                encodeURIComponent(JSON.stringify(this.game.itemsHolder.exportItems()))
+        );
 
         this.game.container.appendChild(link);
         link.click();
@@ -201,18 +219,9 @@ export class Saves extends Section<FullScreenPokemon> {
      * @param id   The ID associated with the Character.
      */
     public saveCharacterPosition(character: ICharacter, id: string): void {
-        this.game.stateHolder.addChange(
-            id,
-            "xloc",
-            (character.left + this.game.mapScreener.left));
-        this.game.stateHolder.addChange(
-            id,
-            "yloc",
-            (character.top + this.game.mapScreener.top));
-        this.game.stateHolder.addChange(
-            id,
-            "direction",
-            character.direction);
+        this.game.stateHolder.addChange(id, "xloc", character.left + this.game.mapScreener.left);
+        this.game.stateHolder.addChange(id, "yloc", character.top + this.game.mapScreener.top);
+        this.game.stateHolder.addChange(id, "direction", character.direction);
     }
 
     /**
@@ -266,7 +275,8 @@ export class Saves extends Section<FullScreenPokemon> {
             item,
             amount,
             "item",
-            "amount");
+            "amount"
+        );
     }
 
     /**
@@ -281,7 +291,8 @@ export class Saves extends Section<FullScreenPokemon> {
             item,
             amount,
             "item",
-            "amount");
+            "amount"
+        );
     }
 
     /**
@@ -294,7 +305,7 @@ export class Saves extends Section<FullScreenPokemon> {
         const pokedex: IPokedex = this.game.itemsHolder.getItem(this.game.storage.names.pokedex);
         const title: string = titleRaw.join("");
         const caught: boolean = status === PokedexListingStatus.Caught;
-        const seen: boolean = caught || (status === PokedexListingStatus.Seen);
+        const seen: boolean = caught || status === PokedexListingStatus.Seen;
         let information: IPokedexInformation = pokedex[title];
 
         if (information) {
@@ -303,8 +314,8 @@ export class Saves extends Section<FullScreenPokemon> {
                 return;
             }
 
-            information.caught = information.caught || (status >= PokedexListingStatus.Caught);
-            information.seen = information.seen || (status >= PokedexListingStatus.Seen);
+            information.caught = information.caught || status >= PokedexListingStatus.Caught;
+            information.seen = information.seen || status >= PokedexListingStatus.Seen;
         } else {
             pokedex[title] = information = {
                 caught,
@@ -325,8 +336,9 @@ export class Saves extends Section<FullScreenPokemon> {
     public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
         const pokedex: IPokedex = this.game.itemsHolder.getItem(this.game.storage.names.pokedex);
         const pokemon: { [i: string]: IPokemonListing } = this.game.constants.pokemon.byName;
-        const titlesSorted: string[] = Object.keys(pokedex)
-            .sort((a: string, b: string): number => pokemon[a].number - pokemon[b].number);
+        const titlesSorted: string[] = Object.keys(pokedex).sort(
+            (a: string, b: string): number => pokemon[a].number - pokemon[b].number
+        );
         let i: number;
 
         if (!titlesSorted.length) {
@@ -342,7 +354,11 @@ export class Saves extends Section<FullScreenPokemon> {
         for (i = 0; i < titlesSorted.length - 1; i += 1) {
             ordered.push(pokedex[titlesSorted[i]]);
 
-            for (let j: number = pokemon[titlesSorted[i]].number - 1; j < pokemon[titlesSorted[i + 1]].number - 2; j += 1) {
+            for (
+                let j: number = pokemon[titlesSorted[i]].number - 1;
+                j < pokemon[titlesSorted[i + 1]].number - 2;
+                j += 1
+            ) {
                 ordered.push(undefined);
             }
         }

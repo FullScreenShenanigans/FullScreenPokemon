@@ -23,23 +23,28 @@ export class Player extends Section<FullScreenPokemon> implements ITeamAnimation
     /**
      * Shared animations for teams switching Pokemon.
      */
-    @factory((container: Player) => new Switching(container.game, {
-        enter: {
-            team: Team.player,
-            getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
-                const player: IThing = battleInfo.things.player;
-                const menu: IMenu = container.game.menuGrapher.getMenu("GeneralText") as IMenu;
+    @factory(
+        (container: Player) =>
+            new Switching(container.game, {
+                enter: {
+                    team: Team.player,
+                    getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
+                        const player: IThing = battleInfo.things.player;
+                        const menu: IMenu = container.game.menuGrapher.getMenu(
+                            "GeneralText"
+                        ) as IMenu;
 
-                return menu.left - player.width / 2;
-            },
-            getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
-                battleInfo.teams.player.selectedActor.title.join("") + "Back",
-            getSmokeLeft: (battleInfo: IBattleInfo): number =>
-                battleInfo.things.menu.left + 32,
-            getSmokeTop: (battleInfo: IBattleInfo): number =>
-                battleInfo.things.menu.bottom - 32,
-        },
-    }))
+                        return menu.left - player.width / 2;
+                    },
+                    getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
+                        battleInfo.teams.player.selectedActor.title.join("") + "Back",
+                    getSmokeLeft: (battleInfo: IBattleInfo): number =>
+                        battleInfo.things.menu.left + 32,
+                    getSmokeTop: (battleInfo: IBattleInfo): number =>
+                        battleInfo.things.menu.bottom - 32,
+                },
+            })
+    )
     public readonly switching: Switching;
 
     /**

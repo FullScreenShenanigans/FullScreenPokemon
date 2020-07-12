@@ -15,9 +15,7 @@ export class Health extends Section<FullScreenPokemon> {
      * @param battlerName   Which battler to add the display for.
      */
     public addPokemonHealth(pokemon: IPokemon, team: Team): void {
-        const menu: string = team === Team.player
-            ? "BattlePlayerHealth"
-            : "BattleOpponentHealth";
+        const menu: string = team === Team.player ? "BattlePlayerHealth" : "BattleOpponentHealth";
 
         this.game.menuGrapher.createMenu(menu);
         this.game.menuGrapher.createMenu(menu + "Title");
@@ -40,11 +38,17 @@ export class Health extends Section<FullScreenPokemon> {
      * @param onComplete   Handler for when this is done.
      * @remarks This doesn't change the actor's statistic.
      */
-    public animatePokemonHealthBar(team: Team, from: number, to: number, onComplete: () => void): void {
+    public animatePokemonHealthBar(
+        team: Team,
+        from: number,
+        to: number,
+        onComplete: () => void
+    ): void {
         const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        const statistic: IStatistic = battleInfo.teams[Team[team]].selectedActor.statistics.health;
+        const statistic: IStatistic =
+            battleInfo.teams[Team[team]].selectedActor.statistics.health;
         const normal: number = statistic.normal;
-        const delta: number = (to - from) > 0 ? 1 : -1;
+        const delta: number = to - from > 0 ? 1 : -1;
         const repeats: number = Math.abs(to - from);
         let current: number = statistic.current;
 
@@ -54,9 +58,10 @@ export class Health extends Section<FullScreenPokemon> {
                 this.setPokemonHealthBar(team, { current, normal });
             },
             2,
-            repeats);
+            repeats
+        );
 
-        this.game.timeHandler.addEvent(onComplete, (repeats * 2) + 35);
+        this.game.timeHandler.addEvent(onComplete, repeats * 2 + 35);
     }
 
     /**
@@ -69,9 +74,10 @@ export class Health extends Section<FullScreenPokemon> {
         const nameUpper: string = team === Team.player ? "Player" : "Opponent";
         const bar: IThing = this.game.utilities.getExistingThingById("HPBarFill" + nameUpper);
         const barWidth: number = this.game.equations.widthHealthBar(100, health);
-        const healthDialog: string = this.game.utilities.makeDigit(health.current, 3, "\t")
-            + "/"
-            + this.game.utilities.makeDigit(health.normal, 3, "\t");
+        const healthDialog: string =
+            this.game.utilities.makeDigit(health.current, 3, "\t") +
+            "/" +
+            this.game.utilities.makeDigit(health.normal, 3, "\t");
 
         if (team === Team.player) {
             const menuNumbers: string = "Battle" + nameUpper + "HealthNumbers";

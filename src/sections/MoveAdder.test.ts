@@ -170,7 +170,8 @@ describe("moveAdder", () => {
                     { title: "Bide", remaining: 10, uses: 10 },
                     { title: "Bite", remaining: 10, uses: 10 },
                     { title: "Bubble", remaining: 10, uses: 10 },
-                    { title: "Roar", remaining: 10, uses: 10 }],
+                    { title: "Roar", remaining: 10, uses: 10 },
+                ],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -205,7 +206,8 @@ describe("moveAdder", () => {
                     { title: "Bide", remaining: 10, uses: 10 },
                     { title: "Bite", remaining: 10, uses: 10 },
                     { title: "Bubble", remaining: 10, uses: 10 },
-                    { title: "Roar", remaining: 10, uses: 10 }],
+                    { title: "Roar", remaining: 10, uses: 10 },
+                ],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -240,7 +242,8 @@ describe("moveAdder", () => {
                     { title: "Bide", remaining: 10, uses: 10 },
                     { title: "Bite", remaining: 10, uses: 10 },
                     { title: "Bubble", remaining: 10, uses: 10 },
-                    { title: "Roar", remaining: 10, uses: 10 }],
+                    { title: "Roar", remaining: 10, uses: 10 },
+                ],
             });
             const peck: IMove = {
                 title: "Peck",
@@ -277,7 +280,8 @@ describe("moveAdder", () => {
                     { title: "Bide", remaining: 10, uses: 10 },
                     { title: "Bite", remaining: 10, uses: 10 },
                     { title: "Bubble", remaining: 10, uses: 10 },
-                    { title: "Roar", remaining: 10, uses: 10 }],
+                    { title: "Roar", remaining: 10, uses: 10 },
+                ],
             });
             const peck: IMove = {
                 title: "Peck",

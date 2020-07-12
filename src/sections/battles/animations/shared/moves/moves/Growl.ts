@@ -10,30 +10,34 @@ export class Growl extends Move {
     /**
      * Starting x-position for notes.
      */
-    private readonly noteStartX: number = this.teamAndAction.source.team === Team.player
-        ? this.menu.left + this.attackerThing.width / 2
-        : this.menu.right - this.attackerThing.width / 2;
+    private readonly noteStartX: number =
+        this.teamAndAction.source.team === Team.player
+            ? this.menu.left + this.attackerThing.width / 2
+            : this.menu.right - this.attackerThing.width / 2;
 
     /**
      * Starting y-position for notes.
      */
-    private readonly noteStartY: number = this.teamAndAction.source.team === Team.player
-        ? this.menu.bottom - this.attackerThing.height
-        : this.menu.top + this.attackerThing.height;
+    private readonly noteStartY: number =
+        this.teamAndAction.source.team === Team.player
+            ? this.menu.bottom - this.attackerThing.height
+            : this.menu.top + this.attackerThing.height;
 
     /**
      * Horizontal delta for note movements.
      */
-    private readonly noteDifferenceX: number = this.teamAndAction.source.team === Team.player
-        ? this.menu.right - this.noteStartX
-        : this.menu.left - this.noteStartX;
+    private readonly noteDifferenceX: number =
+        this.teamAndAction.source.team === Team.player
+            ? this.menu.right - this.noteStartX
+            : this.menu.left - this.noteStartX;
 
     /**
      * Vertical delta for note movements.
      */
-    private readonly noteDifferenceY: number = this.teamAndAction.source.team === Team.player
-        ? (this.menu.top + this.defenderThing.height / 2) - this.noteStartY
-        : (this.menu.bottom - this.defenderThing.height) - this.noteStartY;
+    private readonly noteDifferenceY: number =
+        this.teamAndAction.source.team === Team.player
+            ? this.menu.top + this.defenderThing.height / 2 - this.noteStartY
+            : this.menu.bottom - this.defenderThing.height - this.noteStartY;
 
     /**
      * Runs the move's animation.
@@ -49,15 +53,13 @@ export class Growl extends Move {
         this.animateNote(notes[0], 10);
         this.animateNote(notes[1], 12);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.battles.animations.things.shake({
-                    callback: onComplete,
-                    dx: 3,
-                    clearTime: 6,
-                });
-            },
-            50);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.battles.animations.things.shake({
+                callback: onComplete,
+                dx: 3,
+                clearTime: 6,
+            });
+        }, 50);
     }
 
     /**
@@ -70,17 +72,13 @@ export class Growl extends Move {
         let flip: -1 | 1 = 1;
 
         for (let i = 1; i <= 4; i += 1) {
-            this.game.timeHandler.addEvent(
-                (): void => {
-                    this.shiftNote(note, flip);
-                    flip *= -1;
-                },
-                dt * i);
+            this.game.timeHandler.addEvent((): void => {
+                this.shiftNote(note, flip);
+                flip *= -1;
+            }, dt * i);
         }
 
-        this.game.timeHandler.addEvent(
-            (): void => this.game.death.kill(note),
-            dt + 40);
+        this.game.timeHandler.addEvent((): void => this.game.death.kill(note), dt + 40);
     }
 
     /**

@@ -5,17 +5,13 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Arranges game physics quadrants.
  */
-export class Quadrants<TEightBittr extends FullScreenPokemon> extends EightBittrQuadrants<TEightBittr> {
+export class Quadrants<TEightBittr extends FullScreenPokemon> extends EightBittrQuadrants<
+    TEightBittr
+> {
     /**
      * Groups that should have their quadrants updated.
      */
-    public readonly activeGroupNames = [
-        "Character",
-        "Scenery",
-        "Solid",
-        "Terrain",
-        "Text",
-    ];
+    public readonly activeGroupNames = ["Character", "Scenery", "Solid", "Terrain", "Text"];
 
     /**
      * How many Quadrant columns there are in the game.

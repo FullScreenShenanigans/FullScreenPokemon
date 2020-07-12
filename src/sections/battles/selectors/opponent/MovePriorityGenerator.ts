@@ -33,17 +33,26 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
      * @param moves   Potential moves to use.
      * @returns Move possibilities for the potential moves.
      */
-    public generate(attackingTeam: IBattleTeam, defendingTeam: IBattleTeam, moves: IMove[]): IMovePossibility[] {
+    public generate(
+        attackingTeam: IBattleTeam,
+        defendingTeam: IBattleTeam,
+        moves: IMove[]
+    ): IMovePossibility[] {
         const possibilities: IMovePossibility[] = moves.map(
             (move: IMove): IMovePossibility => ({
                 move: move.title,
                 priority: 10,
-            }));
+            })
+        );
 
         // Modification 1: Do not use a move that only statuses if the defending Pokemon already has a status.
         if (defendingTeam.selectedActor.status && !attackingTeam.dumb) {
             for (const possibility of possibilities) {
-                if (this.game.equations.moves.moveOnlyStatuses(this.game.constants.moves.byName[possibility.move])) {
+                if (
+                    this.game.equations.moves.moveOnlyStatuses(
+                        this.game.constants.moves.byName[possibility.move]
+                    )
+                ) {
                     possibility.priority += 5;
                 }
             }
@@ -56,7 +65,8 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
                     possibility,
                     this.game.constants.battles.modifications.turnTwo,
                     defendingTeam.selectedActor,
-                    1);
+                    1
+                );
             }
         }
 
@@ -68,7 +78,8 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
                     possibility,
                     this.game.constants.battles.modifications.goodAi,
                     defendingTeam.selectedActor,
-                    1);
+                    1
+                );
             }
         }
 
@@ -90,7 +101,10 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
             return true;
         }
 
-        return team.leader.title.join("") in this.game.constants.battles.modifications.turnTwo.opponentType;
+        return (
+            team.leader.title.join("") in
+            this.game.constants.battles.modifications.turnTwo.opponentType
+        );
     }
 
     /**
@@ -108,7 +122,10 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
             return true;
         }
 
-        return team.leader.title.join("") in this.game.constants.battles.modifications.goodAi.opponentType;
+        return (
+            team.leader.title.join("") in
+            this.game.constants.battles.modifications.goodAi.opponentType
+        );
     }
 
     /**
@@ -123,7 +140,8 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
         possibility: IMovePossibility,
         modification: IBattleModification,
         target: IPokemon,
-        amount: number): void {
+        amount: number
+    ): void {
         const moveSchema: IMoveSchema = this.game.constants.moves.byName[possibility.move];
 
         for (const preference of modification.preferences) {
@@ -136,21 +154,31 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
                     break;
 
                 case "Statistic":
-                    if (this.game.equations.moves.moveChangesStatisticByAmount(moveSchema, preference[1], preference[2] as number)) {
+                    if (
+                        this.game.equations.moves.moveChangesStatisticByAmount(
+                            moveSchema,
+                            preference[1],
+                            preference[2] as number
+                        )
+                    ) {
                         possibility.priority -= amount;
                         return;
                     }
                     break;
 
                 case "Super":
-                    if (this.game.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)) {
+                    if (
+                        this.game.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)
+                    ) {
                         possibility.priority -= amount;
                         return;
                     }
                     break;
 
                 case "Weak":
-                    if (this.game.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)) {
+                    if (
+                        this.game.equations.moves.moveIsRelevantAgainst(moveSchema, target.types)
+                    ) {
                         possibility.priority += amount;
                         return;
                     }

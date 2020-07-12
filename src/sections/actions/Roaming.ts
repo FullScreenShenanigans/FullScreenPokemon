@@ -38,7 +38,9 @@ export class Roaming extends Section<FullScreenPokemon> {
 
         this.game.timeHandler.addEvent(
             (): void => this.continueRoaming(thing),
-            this.game.numberMaker.randomInt(randomRoamingMaximumFrequency) + randomRoamingMinimumTicks);
+            this.game.numberMaker.randomInt(randomRoamingMaximumFrequency) +
+                randomRoamingMinimumTicks
+        );
 
         if (!thing.walking && !thing.talking && !this.game.menuGrapher.getActiveMenu()) {
             this.takeRoamingStep(thing);
@@ -89,19 +91,31 @@ export class Roaming extends Section<FullScreenPokemon> {
     private getNextRoamingDirection(thing: IRoamingCharacter): Direction | undefined {
         const allowed: Direction[] = [];
 
-        if (thing.bordering[Direction.Top] === undefined && thing.roamingDistances.vertical !== -3) {
+        if (
+            thing.bordering[Direction.Top] === undefined &&
+            thing.roamingDistances.vertical !== -3
+        ) {
             allowed.push(Direction.Top);
         }
 
-        if (thing.bordering[Direction.Right] === undefined && thing.roamingDistances.horizontal !== 3) {
+        if (
+            thing.bordering[Direction.Right] === undefined &&
+            thing.roamingDistances.horizontal !== 3
+        ) {
             allowed.push(Direction.Right);
         }
 
-        if (thing.bordering[Direction.Bottom] === undefined && thing.roamingDistances.vertical !== 3) {
+        if (
+            thing.bordering[Direction.Bottom] === undefined &&
+            thing.roamingDistances.vertical !== 3
+        ) {
             allowed.push(Direction.Bottom);
         }
 
-        if (thing.bordering[Direction.Left] === undefined && thing.roamingDistances.horizontal !== -3) {
+        if (
+            thing.bordering[Direction.Left] === undefined &&
+            thing.roamingDistances.horizontal !== -3
+        ) {
             allowed.push(Direction.Left);
         }
 

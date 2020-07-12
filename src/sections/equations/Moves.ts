@@ -31,13 +31,21 @@ export class Moves extends Section<FullScreenPokemon> {
      * @param change   How much the statistic should be changed.
      * @returns Whether the move raises the statistic by the amount.
      */
-    public moveChangesStatisticByAmount(moveSchema: IMoveSchema, statistic: string, change: number): boolean {
+    public moveChangesStatisticByAmount(
+        moveSchema: IMoveSchema,
+        statistic: string,
+        change: number
+    ): boolean {
         for (const effect of moveSchema.effects) {
             if (effect.probability && effect.probability !== 100) {
                 continue;
             }
 
-            if (effect.type === "statistic" && effect.statistic === statistic && effect.change === change) {
+            if (
+                effect.type === "statistic" &&
+                effect.statistic === statistic &&
+                effect.change === change
+            ) {
                 return true;
             }
         }
@@ -54,7 +62,10 @@ export class Moves extends Section<FullScreenPokemon> {
      */
     public moveIsRelevantAgainst(moveSchema: IMoveSchema, types: string[]): boolean {
         for (const effect of moveSchema.effects) {
-            if (effect.type !== "damage" || (effect.probability !== undefined && effect.probability !== 100)) {
+            if (
+                effect.type !== "damage" ||
+                (effect.probability !== undefined && effect.probability !== 100)
+            ) {
                 continue;
             }
 

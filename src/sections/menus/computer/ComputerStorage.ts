@@ -10,29 +10,36 @@ export class ComputerStorage extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Accessed %%%%%%%POKEMON%%%%%%% storage system.",
-            ],
-            this.listOptions);
+            ["Accessed %%%%%%%POKEMON%%%%%%% storage system."],
+            this.listOptions
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
-    }
+    };
 
     private readonly listOptions = (): void => {
         const options = [
             {
-                callback: (): void => {/* ... */ },
+                callback: (): void => {
+                    /* ... */
+                },
                 text: "WITHDRAW PKMN",
             },
             {
-                callback: (): void => {/* ... */ },
+                callback: (): void => {
+                    /* ... */
+                },
                 text: "DEPOSIT PKMN",
             },
             {
-                callback: (): void => {/* ... */ },
+                callback: (): void => {
+                    /* ... */
+                },
                 text: "RELEASE PKMN",
             },
             {
-                callback: (): void => {/* ... */ },
+                callback: (): void => {
+                    /* ... */
+                },
                 text: "CHANGE PKMN",
             },
             {
@@ -47,7 +54,7 @@ export class ComputerStorage extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("Computer");
         this.game.menuGrapher.addMenuList("Computer", { options });
         this.game.menuGrapher.setActiveMenu("Computer");
-    }
+    };
 
     /**
      * Closes the storage menus.
@@ -57,5 +64,5 @@ export class ComputerStorage extends Section<FullScreenPokemon> {
     private readonly close = (): void => {
         this.game.menuGrapher.deleteMenu("Computer");
         this.game.menuGrapher.deleteMenu("GeneralText");
-    }
+    };
 }

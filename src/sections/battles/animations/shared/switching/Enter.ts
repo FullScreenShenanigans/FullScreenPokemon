@@ -82,7 +82,8 @@ export class Enter extends Section<FullScreenPokemon> {
     private runWithoutLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
         this.game.battles.decorations.health.addPokemonHealth(
             battleInfo.teams[Team[this.settings.team]].selectedActor,
-            this.settings.team);
+            this.settings.team
+        );
 
         onComplete();
     }
@@ -98,11 +99,9 @@ export class Enter extends Section<FullScreenPokemon> {
         const goal: number = this.settings.getLeaderSlideToGoal(battleInfo);
         const timeout = 24;
 
-        this.game.animations.sliding.slideHorizontallyAndFadeOut(
-            thing,
-            goal,
-            timeout,
-            (): void => this.poofSmoke(battleInfo, onComplete));
+        this.game.animations.sliding.slideHorizontallyAndFadeOut(thing, goal, timeout, (): void =>
+            this.poofSmoke(battleInfo, onComplete)
+        );
 
         this.game.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
@@ -111,7 +110,9 @@ export class Enter extends Section<FullScreenPokemon> {
             "GeneralText",
             battleInfo.texts.teams[Team[this.settings.team]].sendOut(
                 battleInfo.teams[Team[this.settings.team]],
-                battleInfo.teams[Team[this.settings.team]].selectedActor.title.join("")));
+                battleInfo.teams[Team[this.settings.team]].selectedActor.title.join("")
+            )
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -125,10 +126,9 @@ export class Enter extends Section<FullScreenPokemon> {
         const left: number = this.settings.getSmokeLeft(battleInfo);
         const top: number = this.settings.getSmokeTop(battleInfo);
 
-        this.game.actions.animateSmokeSmall(
-            left,
-            top,
-            (): void => this.appear(battleInfo, onComplete));
+        this.game.actions.animateSmokeSmall(left, top, (): void =>
+            this.appear(battleInfo, onComplete)
+        );
     }
 
     /**
@@ -142,11 +142,13 @@ export class Enter extends Section<FullScreenPokemon> {
 
         this.game.battles.decorations.health.addPokemonHealth(
             battleInfo.teams[Team[this.settings.team]].selectedActor,
-            this.settings.team);
+            this.settings.team
+        );
 
         this.game.battles.things.setThing(
             this.settings.team,
-            this.settings.getSelectedPokemonSprite(battleInfo));
+            this.settings.getSelectedPokemonSprite(battleInfo)
+        );
 
         onComplete();
     }

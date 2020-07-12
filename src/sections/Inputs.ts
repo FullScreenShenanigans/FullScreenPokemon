@@ -16,14 +16,14 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
      */
     public readonly aliases: IAliases = {
         // Keyboard aliases
-        left: [65, 37],     // a, left
-        right: [68, 39],     // d, right
-        up: [87, 38],     // w, up
-        down: [83, 40],     // s, down
-        a: [90, 13],     // z, enter
-        b: [88, 8],      // x, backspace
-        pause: [80, 27],     // p, escape
-        select: [17, 16],     // ctrl, shift
+        left: [65, 37], // a, left
+        right: [68, 39], // d, right
+        up: [87, 38], // w, up
+        down: [83, 40], // s, down
+        a: [90, 13], // z, enter
+        b: [88, 8], // x, backspace
+        pause: [80, 27], // p, escape
+        select: [17, 16], // ctrl, shift
         // Mouse aliases
         rightclick: [3],
     };
@@ -73,19 +73,23 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
 
         gameWindow.addEventListener(
             "keydown",
-            this.game.inputWriter.makePipe("onkeydown", "keyCode"));
+            this.game.inputWriter.makePipe("onkeydown", "keyCode")
+        );
 
         gameWindow.addEventListener(
             "keyup",
-            this.game.inputWriter.makePipe("onkeyup", "keyCode"));
+            this.game.inputWriter.makePipe("onkeyup", "keyCode")
+        );
 
         gameWindow.addEventListener(
             "mousedown",
-            this.game.inputWriter.makePipe("onmousedown", "which"));
+            this.game.inputWriter.makePipe("onmousedown", "which")
+        );
 
         gameWindow.addEventListener(
             "contextmenu",
-            this.game.inputWriter.makePipe("oncontextmenu", "", true));
+            this.game.inputWriter.makePipe("oncontextmenu", "", true)
+        );
     }
 
     /**
@@ -129,7 +133,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
 
         this.game.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Top),
-            this.inputTimeTolerance);
+            this.inputTimeTolerance
+        );
 
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onKeyDownUp);
     }
@@ -153,7 +158,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
 
         this.game.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Right),
-            this.inputTimeTolerance);
+            this.inputTimeTolerance
+        );
     }
 
     /**
@@ -175,7 +181,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
 
         this.game.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Bottom),
-            this.inputTimeTolerance);
+            this.inputTimeTolerance
+        );
 
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onKeyDownDown);
     }
@@ -199,7 +206,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
 
         this.game.timeHandler.addEvent(
             (): void => this.keyDownDirectionReal(thing as IPlayer, Direction.Left),
-            this.inputTimeTolerance);
+            this.inputTimeTolerance
+        );
 
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onKeyDownLeft);
     }
@@ -224,7 +232,8 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
                 thing.bordering[thing.direction]!.activate!.call(
                     this,
                     thing,
-                    thing.bordering[thing.direction]);
+                    thing.bordering[thing.direction]
+                );
             }
 
             if ((thing as IPlayer).keys) {
@@ -478,7 +487,10 @@ export class Inputs<TEightBittr extends FullScreenPokemon> extends EightBittrInp
             this.game.actions.animateCharacterSetDirection(thing, direction);
         }
 
-        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onKeyDownDirectionReal, direction);
+        this.game.modAttacher.fireEvent(
+            this.game.mods.eventNames.onKeyDownDirectionReal,
+            direction
+        );
     }
 
     /**

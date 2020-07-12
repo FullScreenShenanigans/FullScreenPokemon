@@ -13,7 +13,7 @@ describe("Inputs", () => {
             const { fsp } = stubBlankGame();
             const player = fsp.things.add<IPlayer>("Player");
             const solid = fsp.things.add("FenceWide");
-            const activate = solid.activate = sinon.spy();
+            const activate = (solid.activate = sinon.spy());
 
             fsp.actions.animateCharacterSetDirection(player, Direction.Top);
             fsp.physics.setMidXObj(player, solid);
@@ -32,7 +32,7 @@ describe("Inputs", () => {
             const { fsp } = stubBlankGame();
             const player = fsp.things.add<IPlayer>("Player");
             const solid = fsp.things.add("FenceWide");
-            const activate = solid.activate = sinon.spy();
+            const activate = (solid.activate = sinon.spy());
 
             fsp.actions.animateCharacterSetDirection(player, Direction.Top);
             fsp.physics.setMidXObj(player, solid);

@@ -34,25 +34,50 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 this.game.timeHandler.addEvent(
                     this.game.scenePlayer.bindRoutine("RivalInterrupts"),
-                    14);
-            },
+                    14
+                );
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         this.game.stateHolder.addChangeToCollection(
-            "Viridian City::PokeMart", "CashierDetector", "dialog", false);
+            "Viridian City::PokeMart",
+            "CashierDetector",
+            "dialog",
+            false
+        );
 
         this.game.stateHolder.addChangeToCollection(
-            "Viridian City::Land", "CrankyGrandpa", "alive", false);
+            "Viridian City::Land",
+            "CrankyGrandpa",
+            "alive",
+            false
+        );
         this.game.stateHolder.addChangeToCollection(
-            "Viridian City::Land", "CrankyGrandpaBlocker", "alive", false);
+            "Viridian City::Land",
+            "CrankyGrandpaBlocker",
+            "alive",
+            false
+        );
         this.game.stateHolder.addChangeToCollection(
-            "Viridian City::Land", "CrankyGranddaughter", "alive", false);
+            "Viridian City::Land",
+            "CrankyGranddaughter",
+            "alive",
+            false
+        );
 
         this.game.stateHolder.addChangeToCollection(
-            "Viridian City::Land", "HappyGrandpa", "alive", true);
+            "Viridian City::Land",
+            "HappyGrandpa",
+            "alive",
+            true
+        );
         this.game.stateHolder.addChangeToCollection(
-            "Viridian City::Land", "HappyGranddaughter", "alive", true);
+            "Viridian City::Land",
+            "HappyGranddaughter",
+            "alive",
+            true
+        );
     }
 
     /**
@@ -62,10 +87,8 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "%%%%%%%RIVAL%%%%%%%: Gramps!",
-            ],
-            this.game.scenePlayer.bindRoutine("RivalWalksUp"),
+            ["%%%%%%%RIVAL%%%%%%%: Gramps!"],
+            this.game.scenePlayer.bindRoutine("RivalWalksUp")
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -77,21 +100,23 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
      */
     public RivalWalksUp(settings: any): void {
         const doormat: IThing = this.game.utilities.getExistingThingById("DoormatLeft");
-        const rival: ICharacter = this.game.things.add(this.game.things.names.rival, doormat.left, doormat.top) as ICharacter;
+        const rival: ICharacter = this.game.things.add(
+            this.game.things.names.rival,
+            doormat.left,
+            doormat.top
+        ) as ICharacter;
 
         settings.rival = rival;
 
         this.game.menuGrapher.deleteMenu("GeneralText");
 
-        this.game.actions.walking.startWalkingOnPath(
-            rival,
-            [
-                {
-                    blocks: 8,
-                    direction: Direction.Top,
-                },
-                this.game.scenePlayer.bindRoutine("RivalInquires"),
-            ]);
+        this.game.actions.walking.startWalkingOnPath(rival, [
+            {
+                blocks: 8,
+                direction: Direction.Top,
+            },
+            this.game.scenePlayer.bindRoutine("RivalInquires"),
+        ]);
     }
 
     /**
@@ -101,14 +126,13 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "%%%%%%%RIVAL%%%%%%%: What did you call me for?",
-            ],
+            ["%%%%%%%RIVAL%%%%%%%: What did you call me for?"],
             (): void => {
                 this.game.timeHandler.addEvent(
                     this.game.scenePlayer.bindRoutine("OakRequests"),
-                    14);
-            },
+                    14
+                );
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -120,14 +144,14 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Oak: Oh right! I have a request of you two.",
-            ],
+            ["Oak: Oh right! I have a request of you two."],
             (): void => {
                 this.game.timeHandler.addEvent(
                     this.game.scenePlayer.bindRoutine("OakDescribesPokedex"),
-                    14);
-            });
+                    14
+                );
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -146,8 +170,10 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 this.game.timeHandler.addEvent(
                     this.game.scenePlayer.bindRoutine("OakGivesPokedex"),
-                    14);
-            });
+                    14
+                );
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -168,7 +194,8 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 this.game.timeHandler.addEvent(
                     this.game.scenePlayer.bindRoutine("OakDescribesGoal"),
-                    14);
+                    14
+                );
 
                 this.game.death.kill(bookLeft);
                 this.game.death.kill(bookRight);
@@ -177,7 +204,7 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
                 this.game.stateHolder.addChange(bookRight.id, "alive", false);
 
                 this.game.itemsHolder.setItem(this.game.storage.names.hasPokedex, true);
-            },
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -200,8 +227,9 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 this.game.timeHandler.addEvent(
                     this.game.scenePlayer.bindRoutine("RivalAccepts"),
-                    14);
-            },
+                    14
+                );
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -230,31 +258,25 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
 
                 delete settings.oak.activate;
                 settings.rival.nocollide = true;
-                this.game.actions.walking.startWalkingOnPath(
-                    settings.rival,
-                    [
-                        {
-                            blocks: 8,
-                            direction: Direction.Bottom,
-                        },
-                        (): void => {
-                            this.game.death.kill(settings.rival);
-                            this.game.mapScreener.blockInputs = false;
-                        },
-                    ]);
+                this.game.actions.walking.startWalkingOnPath(settings.rival, [
+                    {
+                        blocks: 8,
+                        direction: Direction.Bottom,
+                    },
+                    (): void => {
+                        this.game.death.kill(settings.rival);
+                        this.game.mapScreener.blockInputs = false;
+                    },
+                ]);
 
                 delete settings.oak.cutscene;
                 settings.oak.dialog = [
                     "%%%%%%%POKEMON%%%%%%% around the world wait for you, %%%%%%%PLAYER%%%%%%%!",
                 ];
 
-                this.game.stateHolder.addChange(
-                    settings.oak.id, "dialog", settings.oak.dialog,
-                );
-                this.game.stateHolder.addChange(
-                    settings.oak.id, "cutscene", undefined,
-                );
-            },
+                this.game.stateHolder.addChange(settings.oak.id, "dialog", settings.oak.dialog);
+                this.game.stateHolder.addChange(settings.oak.id, "cutscene", undefined);
+            }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }

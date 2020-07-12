@@ -16,7 +16,9 @@ export class RandomizeWildPokemonMod extends ModComponent implements IMod {
      * Mod events, keyed by name.
      */
     public readonly events: ICallbackRegister = {
-        [this.eventNames.onWildPokemonChosen]: (chosen: IWildPokemonSchema): IWildPokemonSchema => {
+        [this.eventNames.onWildPokemonChosen]: (
+            chosen: IWildPokemonSchema
+        ): IWildPokemonSchema => {
             const pokemonName: string = chosen.title.join("");
             const pokemonTypes: string[] = this.game.constants.pokemon.byName[pokemonName].types;
             const randomPokemon: string[][] = [];

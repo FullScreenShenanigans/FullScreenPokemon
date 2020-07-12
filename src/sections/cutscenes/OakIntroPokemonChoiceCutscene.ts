@@ -23,11 +23,9 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             this.game.menuGrapher.createMenu("GeneralText", {
                 deleteOnFinish: true,
             });
-            this.game.menuGrapher.addMenuDialog(
-                "GeneralText",
-                [
-                    "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!",
-                ]);
+            this.game.menuGrapher.addMenuDialog("GeneralText", [
+                "Those are %%%%%%%POKE%%%%%%% Balls. They contain %%%%%%%POKEMON%%%%%%%!",
+            ]);
             this.game.menuGrapher.setActiveMenu("GeneralText");
 
             return;
@@ -51,7 +49,8 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
                         left: 0,
                     },
                 },
-            });
+            }
+        );
     }
 
     /**
@@ -65,7 +64,11 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             "GeneralText",
             [
                 [
-                    "So! You want the " + settings.triggerer.description + " %%%%%%%POKEMON%%%%%%%, ", settings.chosen, "?",
+                    "So! You want the " +
+                        settings.triggerer.description +
+                        " %%%%%%%POKEMON%%%%%%%, ",
+                    settings.chosen,
+                    "?",
                 ],
             ],
             (): void => {
@@ -81,10 +84,12 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
                         {
                             text: "NO",
                             callback: this.game.menuGrapher.registerB,
-                        }],
+                        },
+                    ],
                 });
                 this.game.menuGrapher.setActiveMenu("Yes/No");
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -96,7 +101,8 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
     public PlayerTakesPokemon(settings: any): void {
         const oak: ICharacter = this.game.utilities.getExistingThingById("Oak") as ICharacter;
         const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
-        const dialogOak = "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
+        const dialogOak =
+            "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
         settings.oak = oak;
@@ -118,15 +124,12 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                [
-                    "%%%%%%%PLAYER%%%%%%% received a ", settings.chosen, "!",
-                ],
+                ["%%%%%%%PLAYER%%%%%%% received a ", settings.chosen, "!"],
                 "This %%%%%%%POKEMON%%%%%%% is really energetic!",
-                [
-                    "Do you want to give a nickname to ", settings.chosen, "?",
-                ],
+                ["Do you want to give a nickname to ", settings.chosen, "?"],
             ],
-            this.game.scenePlayer.bindRoutine("PlayerChoosesNickname"));
+            this.game.scenePlayer.bindRoutine("PlayerChoosesNickname")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         this.game.itemsHolder.setItem(this.game.storage.names.starter, settings.chosen);
@@ -153,15 +156,17 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             options: [
                 {
                     text: "YES",
-                    callback: (): void => this.game.menus.keyboards.openKeyboardMenu({
-                        title: settings.chosen,
-                        callback: this.game.scenePlayer.bindRoutine("PlayerSetsNickname"),
-                    }),
+                    callback: (): void =>
+                        this.game.menus.keyboards.openKeyboardMenu({
+                            title: settings.chosen,
+                            callback: this.game.scenePlayer.bindRoutine("PlayerSetsNickname"),
+                        }),
                 },
                 {
                     text: "NO",
                     callback: this.game.scenePlayer.bindRoutine("RivalWalksToPokemon"),
-                }],
+                },
+            ],
         });
         this.game.menuGrapher.setActiveMenu("Yes/No");
     }
@@ -170,8 +175,12 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * Cutscene for the player finishing the naming process.
      */
     public PlayerSetsNickname(): void {
-        const party: IPokemon[] = this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty);
-        const menu: IKeyboardResultsMenu = this.game.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const party: IPokemon[] = this.game.itemsHolder.getItem(
+            this.game.storage.names.pokemonInParty
+        );
+        const menu: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+            "KeyboardResult"
+        ) as IKeyboardResultsMenu;
         const result: string[] = menu.completeValue;
 
         party[0].nickname = result;
@@ -216,26 +225,26 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
         this.game.itemsHolder.setItem(this.game.storage.names.starterRival, starterRival);
         this.game.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        const pokeball: IPokeball = this.game.utilities.getExistingThingById("Pokeball" + starterRival.join("")) as IPokeball;
+        const pokeball: IPokeball = this.game.utilities.getExistingThingById(
+            "Pokeball" + starterRival.join("")
+        ) as IPokeball;
         settings.rivalPokeball = pokeball;
 
-        this.game.actions.walking.startWalkingOnPath(
-            rival,
-            [
-                {
-                    blocks: 2,
-                    direction: Direction.Bottom,
-                },
-                {
-                    blocks: steps,
-                    direction: Direction.Right,
-                },
-                {
-                    blocks: 1,
-                    direction: Direction.Top,
-                },
-                this.game.scenePlayer.bindRoutine("RivalTakesPokemon"),
-            ]);
+        this.game.actions.walking.startWalkingOnPath(rival, [
+            {
+                blocks: 2,
+                direction: Direction.Bottom,
+            },
+            {
+                blocks: steps,
+                direction: Direction.Right,
+            },
+            {
+                blocks: 1,
+                direction: Direction.Top,
+            },
+            this.game.scenePlayer.bindRoutine("RivalTakesPokemon"),
+        ]);
     }
 
     /**
@@ -260,16 +269,15 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             "GeneralText",
             [
                 "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
-                [
-                    "%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!",
-                ],
+                ["%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!"],
             ],
             (): void => {
                 settings.rivalPokeball.hidden = true;
                 this.game.stateHolder.addChange(settings.rivalPokeball.id, "hidden", true);
                 this.game.menuGrapher.deleteActiveMenu();
                 this.game.mapScreener.blockInputs = false;
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 }

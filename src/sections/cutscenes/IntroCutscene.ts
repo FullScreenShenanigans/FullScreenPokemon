@@ -14,9 +14,12 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public async FadeIn(settings: any): Promise<void> {
-        const oak: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.oakPortrait, {
-            opacity: 0,
-        });
+        const oak: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.oakPortrait,
+            {
+                opacity: 0,
+            }
+        );
 
         settings.oak = oak;
 
@@ -34,17 +37,16 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
         this.game.physics.setMidX(oak, this.game.mapScreener.middleX | 0);
         this.game.physics.setMidY(oak, this.game.mapScreener.middleY | 0);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.animations.fading.animateFadeAttribute(
-                    oak,
-                    "opacity",
-                    0.15,
-                    1,
-                    14,
-                    this.game.scenePlayer.bindRoutine("FirstDialog"));
-            },
-            70);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.animations.fading.animateFadeAttribute(
+                oak,
+                "opacity",
+                0.15,
+                1,
+                14,
+                this.game.scenePlayer.bindRoutine("FirstDialog")
+            );
+        }, 70);
     }
 
     /**
@@ -58,7 +60,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
                 "Hello there! \n Welcome to the world of %%%%%%%POKEMON%%%%%%%!",
                 "My name is OAK! People call me the %%%%%%%POKEMON%%%%%%% PROF!",
             ],
-            this.game.scenePlayer.bindRoutine("FirstDialogFade"),
+            this.game.scenePlayer.bindRoutine("FirstDialogFade")
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -67,44 +69,46 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene for Oak's introduction exit.
      */
     public FirstDialogFade(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.whiteSquare, {
-            width: this.game.mapScreener.width,
-            height: this.game.mapScreener.height,
-            opacity: 0,
-        });
+        const blank: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.whiteSquare,
+            {
+                width: this.game.mapScreener.width,
+                height: this.game.mapScreener.height,
+                opacity: 0,
+            }
+        );
 
         this.game.things.add(blank, 0, 0);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.animations.fading.animateFadeAttribute(
-                    blank,
-                    "opacity",
-                    0.15,
-                    1,
-                    7,
-                    this.game.scenePlayer.bindRoutine("PokemonExpo"));
-            },
-            35);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.animations.fading.animateFadeAttribute(
+                blank,
+                "opacity",
+                0.15,
+                1,
+                7,
+                this.game.scenePlayer.bindRoutine("PokemonExpo")
+            );
+        }, 35);
     }
 
     /**
      * Cutscene for transitioning Nidorino onto the screen.
      */
     public PokemonExpo(): void {
-        const pokemon: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.nidorinoFront, {
-            flipHoriz: true,
-            opacity: 0.01,
-        });
+        const pokemon: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.nidorinoFront,
+            {
+                flipHoriz: true,
+                opacity: 0.01,
+            }
+        );
 
         this.game.groupHolder.callOnAll((thing: IThing): void => {
             this.game.death.kill(thing);
         });
 
-        this.game.things.add(
-            pokemon,
-            (this.game.mapScreener.middleX + 96) | 0,
-            0);
+        this.game.things.add(pokemon, (this.game.mapScreener.middleX + 96) | 0, 0);
 
         this.game.physics.setMidY(pokemon, this.game.mapScreener.middleY);
         this.game.animations.fading.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
@@ -114,7 +118,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             -8,
             this.game.mapScreener.middleX | 0,
             1,
-            this.game.scenePlayer.bindRoutine("PokemonExplanation"));
+            this.game.scenePlayer.bindRoutine("PokemonExplanation")
+        );
     }
 
     /**
@@ -130,7 +135,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
                 "Myself...",
                 "I study %%%%%%%POKEMON%%%%%%% as a profession.",
             ],
-            this.game.scenePlayer.bindRoutine("PlayerAppear"),
+            this.game.scenePlayer.bindRoutine("PlayerAppear")
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -142,10 +147,13 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      */
     public PlayerAppear(settings: any): void {
         const middleX: number = this.game.mapScreener.middleX | 0;
-        const player: IPlayer = this.game.objectMaker.make<IPlayer>(this.game.things.names.playerPortrait, {
-            flipHoriz: true,
-            opacity: 0.01,
-        });
+        const player: IPlayer = this.game.objectMaker.make<IPlayer>(
+            this.game.things.names.playerPortrait,
+            {
+                flipHoriz: true,
+                opacity: 0.01,
+            }
+        );
 
         settings.player = player;
 
@@ -162,7 +170,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             -8,
             middleX - player.width / 2,
             1,
-            this.game.scenePlayer.bindRoutine("PlayerName"));
+            this.game.scenePlayer.bindRoutine("PlayerName")
+        );
     }
 
     /**
@@ -172,10 +181,9 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "First, what is your name?",
-            ],
-            this.game.scenePlayer.bindRoutine("PlayerSlide"));
+            ["First, what is your name?"],
+            this.game.scenePlayer.bindRoutine("PlayerSlide")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -190,7 +198,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             4,
             (this.game.mapScreener.middleX + 56) | 0,
             1,
-            this.game.scenePlayer.bindRoutine("PlayerNameOptions"));
+            this.game.scenePlayer.bindRoutine("PlayerNameOptions")
+        );
     }
 
     /**
@@ -198,17 +207,20 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      */
     public PlayerNameOptions(): void {
         const fromMenu: () => void = this.game.scenePlayer.bindRoutine("PlayerNameFromMenu");
-        const fromKeyboard: () => void = this.game.scenePlayer.bindRoutine("PlayerNameFromKeyboard");
+        const fromKeyboard: () => void = this.game.scenePlayer.bindRoutine(
+            "PlayerNameFromKeyboard"
+        );
 
         this.game.menuGrapher.createMenu("NameOptions");
         this.game.menuGrapher.addMenuList("NameOptions", {
             options: [
                 {
                     text: "NEW NAME".split(""),
-                    callback: () => this.game.menus.keyboards.openKeyboardMenu({
-                        title: "YOUR NAME?",
-                        callback: fromKeyboard,
-                    }),
+                    callback: () =>
+                        this.game.menus.keyboards.openKeyboardMenu({
+                            title: "YOUR NAME?",
+                            callback: fromKeyboard,
+                        }),
                 },
                 {
                     text: "BLUE".split(""),
@@ -221,7 +233,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
                 {
                     text: "JOHN".split(""),
                     callback: fromMenu,
-                }],
+                },
+            ],
         });
         this.game.menuGrapher.setActiveMenu("NameOptions");
     }
@@ -241,7 +254,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             -4,
             this.game.mapScreener.middleX | 0,
             1,
-            this.game.scenePlayer.bindRoutine("PlayerNameConfirm"));
+            this.game.scenePlayer.bindRoutine("PlayerNameConfirm")
+        );
     }
 
     /**
@@ -250,7 +264,9 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public PlayerNameFromKeyboard(settings: any): void {
-        settings.name = (this.game.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+        settings.name = (this.game.menuGrapher.getMenu(
+            "KeyboardResult"
+        ) as IKeyboardResultsMenu).completeValue;
 
         this.game.menuGrapher.deleteMenu("Keyboard");
         this.game.menuGrapher.deleteMenu("NameOptions");
@@ -260,7 +276,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             -4,
             this.game.mapScreener.middleX | 0,
             1,
-            this.game.scenePlayer.bindRoutine("PlayerNameConfirm"));
+            this.game.scenePlayer.bindRoutine("PlayerNameConfirm")
+        );
     }
 
     /**
@@ -276,39 +293,36 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    "Right! So your name is ".split(""),
-                    settings.name,
-                    "!".split(""),
-                ],
-            ],
-            this.game.scenePlayer.bindRoutine("PlayerNameComplete"));
+            [["Right! So your name is ".split(""), settings.name, "!".split("")]],
+            this.game.scenePlayer.bindRoutine("PlayerNameComplete")
+        );
     }
 
     /**
      * Cutscene fading the player out.
      */
     public PlayerNameComplete(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.whiteSquare, {
-            width: this.game.mapScreener.width,
-            height: this.game.mapScreener.height,
-            opacity: 0,
-        });
+        const blank: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.whiteSquare,
+            {
+                width: this.game.mapScreener.width,
+                height: this.game.mapScreener.height,
+                opacity: 0,
+            }
+        );
 
         this.game.things.add(blank, 0, 0);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.animations.fading.animateFadeAttribute(
-                    blank,
-                    "opacity",
-                    0.2,
-                    1,
-                    7,
-                    this.game.scenePlayer.bindRoutine("RivalAppear"));
-            },
-            35);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.animations.fading.animateFadeAttribute(
+                blank,
+                "opacity",
+                0.2,
+                1,
+                7,
+                this.game.scenePlayer.bindRoutine("RivalAppear")
+            );
+        }, 35);
     }
 
     /**
@@ -317,9 +331,12 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalAppear(settings: any): void {
-        const rival: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.rivalPortrait, {
-            opacity: 0,
-        });
+        const rival: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.rivalPortrait,
+            {
+                opacity: 0,
+            }
+        );
 
         settings.rival = rival;
 
@@ -336,7 +353,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             0.1,
             1,
             1,
-            this.game.scenePlayer.bindRoutine("RivalName"));
+            this.game.scenePlayer.bindRoutine("RivalName")
+        );
     }
 
     /**
@@ -350,7 +368,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
                 "This is my grand-son. He's been your rival since you were a baby.",
                 "...Erm, what is his name again?",
             ],
-            this.game.scenePlayer.bindRoutine("RivalSlide"),
+            this.game.scenePlayer.bindRoutine("RivalSlide")
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -366,7 +384,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             4,
             (this.game.mapScreener.middleX + 56) | 0,
             1,
-            this.game.scenePlayer.bindRoutine("RivalNameOptions"));
+            this.game.scenePlayer.bindRoutine("RivalNameOptions")
+        );
     }
 
     /**
@@ -374,17 +393,20 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      */
     public RivalNameOptions(): void {
         const fromMenu: () => void = this.game.scenePlayer.bindRoutine("RivalNameFromMenu");
-        const fromKeyboard: () => void = this.game.scenePlayer.bindRoutine("RivalNameFromKeyboard");
+        const fromKeyboard: () => void = this.game.scenePlayer.bindRoutine(
+            "RivalNameFromKeyboard"
+        );
 
         this.game.menuGrapher.createMenu("NameOptions");
         this.game.menuGrapher.addMenuList("NameOptions", {
             options: [
                 {
                     text: "NEW NAME",
-                    callback: (): void => this.game.menus.keyboards.openKeyboardMenu({
-                        title: "RIVAL's NAME?",
-                        callback: fromKeyboard,
-                    }),
+                    callback: (): void =>
+                        this.game.menus.keyboards.openKeyboardMenu({
+                            title: "RIVAL's NAME?",
+                            callback: fromKeyboard,
+                        }),
                 },
                 {
                     text: "RED".split(""),
@@ -397,7 +419,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
                 {
                     text: "JACK".split(""),
                     callback: fromMenu,
-                }],
+                },
+            ],
         });
         this.game.menuGrapher.setActiveMenu("NameOptions");
     }
@@ -417,7 +440,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             -4,
             this.game.mapScreener.middleX | 0,
             1,
-            this.game.scenePlayer.bindRoutine("RivalNameConfirm"));
+            this.game.scenePlayer.bindRoutine("RivalNameConfirm")
+        );
     }
 
     /**
@@ -426,7 +450,9 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalNameFromKeyboard(settings: any): void {
-        settings.name = (this.game.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu).completeValue;
+        settings.name = (this.game.menuGrapher.getMenu(
+            "KeyboardResult"
+        ) as IKeyboardResultsMenu).completeValue;
 
         this.game.menuGrapher.deleteMenu("Keyboard");
         this.game.menuGrapher.deleteMenu("NameOptions");
@@ -436,7 +462,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             -4,
             this.game.mapScreener.middleX | 0,
             1,
-            this.game.scenePlayer.bindRoutine("RivalNameConfirm"));
+            this.game.scenePlayer.bindRoutine("RivalNameConfirm")
+        );
     }
 
     /**
@@ -450,12 +477,9 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                [
-                    "That's right! I remember now! His name is ", settings.name, "!",
-                ],
-            ],
-            this.game.scenePlayer.bindRoutine("RivalNameComplete"));
+            [["That's right! I remember now! His name is ", settings.name, "!"]],
+            this.game.scenePlayer.bindRoutine("RivalNameComplete")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -463,25 +487,27 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene fading the rival out.
      */
     public RivalNameComplete(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.whiteSquare, {
-            width: this.game.mapScreener.width,
-            height: this.game.mapScreener.height,
-            opacity: 0,
-        });
+        const blank: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.whiteSquare,
+            {
+                width: this.game.mapScreener.width,
+                height: this.game.mapScreener.height,
+                opacity: 0,
+            }
+        );
 
         this.game.things.add(blank, 0, 0);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.animations.fading.animateFadeAttribute(
-                    blank,
-                    "opacity",
-                    0.2,
-                    1,
-                    7,
-                    this.game.scenePlayer.bindRoutine("LastDialogAppear"));
-            },
-            35);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.animations.fading.animateFadeAttribute(
+                blank,
+                "opacity",
+                0.2,
+                1,
+                7,
+                this.game.scenePlayer.bindRoutine("LastDialogAppear")
+            );
+        }, 35);
     }
 
     /**
@@ -490,10 +516,13 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public LastDialogAppear(settings: any): void {
-        const portrait: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.playerPortrait, {
-            flipHoriz: true,
-            opacity: 0,
-        });
+        const portrait: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.playerPortrait,
+            {
+                flipHoriz: true,
+                opacity: 0,
+            }
+        );
 
         settings.portrait = portrait;
 
@@ -511,7 +540,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             0.1,
             1,
             1,
-            this.game.scenePlayer.bindRoutine("LastDialog"));
+            this.game.scenePlayer.bindRoutine("LastDialog")
+        );
     }
 
     /**
@@ -526,7 +556,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
                 "Your very own %%%%%%%POKEMON%%%%%%% legend is about to unfold!",
                 "A world of dreams and adventures with %%%%%%%POKEMON%%%%%%% awaits! Let's go!",
             ],
-            this.game.scenePlayer.bindRoutine("ShrinkPlayer"));
+            this.game.scenePlayer.bindRoutine("ShrinkPlayer")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -536,63 +567,63 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public ShrinkPlayer(settings: any): void {
-        const silhouetteLarge: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.playerSilhouetteLarge);
-        const silhouetteSmall: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.playerSilhouetteSmall);
-        const player: IPlayer = this.game.objectMaker.make<IPlayer>(this.game.things.names.player);
+        const silhouetteLarge: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.playerSilhouetteLarge
+        );
+        const silhouetteSmall: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.playerSilhouetteSmall
+        );
+        const player: IPlayer = this.game.objectMaker.make<IPlayer>(
+            this.game.things.names.player
+        );
         const timeDelay = 49;
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.things.add(silhouetteLarge);
-                this.game.physics.setMidObj(silhouetteLarge, settings.portrait);
-                this.game.death.kill(settings.portrait);
-            },
-            timeDelay);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.things.add(silhouetteLarge);
+            this.game.physics.setMidObj(silhouetteLarge, settings.portrait);
+            this.game.death.kill(settings.portrait);
+        }, timeDelay);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.things.add(silhouetteSmall);
-                this.game.physics.setMidObj(silhouetteSmall, silhouetteLarge);
-                this.game.death.kill(silhouetteLarge);
-            },
-            timeDelay * 2);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.things.add(silhouetteSmall);
+            this.game.physics.setMidObj(silhouetteSmall, silhouetteLarge);
+            this.game.death.kill(silhouetteLarge);
+        }, timeDelay * 2);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.things.add(player);
-                this.game.physics.setMidObj(player, silhouetteSmall);
-                this.game.death.kill(silhouetteSmall);
-            },
-            timeDelay * 3);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.things.add(player);
+            this.game.physics.setMidObj(player, silhouetteSmall);
+            this.game.death.kill(silhouetteSmall);
+        }, timeDelay * 3);
 
-        this.game.timeHandler.addEvent(
-            this.game.scenePlayer.bindRoutine("FadeOut"),
-            timeDelay);
+        this.game.timeHandler.addEvent(this.game.scenePlayer.bindRoutine("FadeOut"), timeDelay);
     }
 
     /**
      * Cutscene for completing the introduction and fading it out.
      */
     public FadeOut(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(this.game.things.names.whiteSquare, {
-            width: this.game.mapScreener.width,
-            height: this.game.mapScreener.height,
-            opacity: 0,
-        });
+        const blank: IThing = this.game.objectMaker.make<IThing>(
+            this.game.things.names.whiteSquare,
+            {
+                width: this.game.mapScreener.width,
+                height: this.game.mapScreener.height,
+                opacity: 0,
+            }
+        );
 
         this.game.things.add(blank, 0, 0);
 
-        this.game.timeHandler.addEvent(
-            (): void => {
-                this.game.animations.fading.animateFadeAttribute(
-                    blank,
-                    "opacity",
-                    0.2,
-                    1,
-                    7,
-                    this.game.scenePlayer.bindRoutine("Finish"));
-            },
-            35);
+        this.game.timeHandler.addEvent((): void => {
+            this.game.animations.fading.animateFadeAttribute(
+                blank,
+                "opacity",
+                0.2,
+                1,
+                7,
+                this.game.scenePlayer.bindRoutine("Finish")
+            );
+        }, 35);
     }
 
     /**

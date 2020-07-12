@@ -18,10 +18,9 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Hi there! \n May I help you?",
-            ],
-            this.game.scenePlayer.bindRoutine("Options"));
+            ["Hi there! \n May I help you?"],
+            this.game.scenePlayer.bindRoutine("Options")
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -62,28 +61,27 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
      * @todo Add constants for all items, for display names
      */
     public BuyMenu(settings: any): void {
-        const options: any[] = settings.triggerer.items.map(
-            (reference: any): any => {
-                const text: string = reference.item.toUpperCase();
-                const cost: number = reference.cost;
+        const options: any[] = settings.triggerer.items.map((reference: any): any => {
+            const text: string = reference.item.toUpperCase();
+            const cost: number = reference.cost;
 
-                return {
-                    text,
-                    textsFloating: [{
+            return {
+                text,
+                textsFloating: [
+                    {
                         text: "$" + cost,
                         x: 42 - String(cost).length * 3.5,
                         y: 4,
-                    }],
-                    callback: this.game.scenePlayer.bindRoutine(
-                        "SelectAmount",
-                        {
-                            reference,
-                            amount: 1,
-                            cost,
-                        }),
+                    },
+                ],
+                callback: this.game.scenePlayer.bindRoutine("SelectAmount", {
                     reference,
-                };
-            });
+                    amount: 1,
+                    cost,
+                }),
+                reference,
+            };
+        });
 
         options.push({
             text: "CANCEL",
@@ -93,21 +91,15 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
         });
-        this.game.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                "Take your time.",
-            ],
-            (): void => {
-                this.game.menuGrapher.createMenu("ShopItems", {
-                    backMenu: "Buy/Sell",
-                });
-                this.game.menuGrapher.addMenuList("ShopItems", {
-                    options,
-                });
-                this.game.menuGrapher.setActiveMenu("ShopItems");
-            },
-        );
+        this.game.menuGrapher.addMenuDialog("GeneralText", ["Take your time."], (): void => {
+            this.game.menuGrapher.createMenu("ShopItems", {
+                backMenu: "Buy/Sell",
+            });
+            this.game.menuGrapher.addMenuList("ShopItems", {
+                options,
+            });
+            this.game.menuGrapher.setActiveMenu("ShopItems");
+        });
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -122,8 +114,9 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         const amount: number = args.amount;
         const cost: number = args.cost;
         const costTotal: number = cost * amount;
-        const text: string = this.game.utilities.makeDigit(amount, 2)
-            + this.game.utilities.makeDigit("$" + costTotal, 8, " ");
+        const text: string =
+            this.game.utilities.makeDigit(amount, 2) +
+            this.game.utilities.makeDigit("$" + costTotal, 8, " ");
 
         this.game.menuGrapher.createMenu("ShopItemsAmount", {
             childrenSchemas: [
@@ -146,21 +139,18 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
                             top: 3.75,
                         },
                     },
-                } as IMenuWordSchema],
-            onUp: this.game.scenePlayer.bindRoutine(
-                "SelectAmount",
-                {
-                    amount: (amount === 99) ? 1 : amount + 1,
-                    cost,
-                    reference,
-                }),
-            onDown: this.game.scenePlayer.bindRoutine(
-                "SelectAmount",
-                {
-                    amount: (amount === 1) ? 99 : amount - 1,
-                    cost,
-                    reference,
-                }),
+                } as IMenuWordSchema,
+            ],
+            onUp: this.game.scenePlayer.bindRoutine("SelectAmount", {
+                amount: amount === 99 ? 1 : amount + 1,
+                cost,
+                reference,
+            }),
+            onDown: this.game.scenePlayer.bindRoutine("SelectAmount", {
+                amount: amount === 1 ? 99 : amount - 1,
+                cost,
+                reference,
+            }),
             callback: this.game.scenePlayer.bindRoutine("ConfirmPurchase", args),
         });
         this.game.menuGrapher.setActiveMenu("ShopItemsAmount");
@@ -176,16 +166,14 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         const reference: any = args.reference;
         const cost: number = args.cost;
         const amount: number = args.amount;
-        const costTotal: number = args.costTotal = cost * amount;
+        const costTotal: number = (args.costTotal = cost * amount);
 
         this.game.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: true,
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?",
-            ],
+            [reference.item.toUpperCase() + "? \n That will be $" + costTotal + ". OK?"],
             (): void => {
                 this.game.menuGrapher.createMenu("Yes/No", {
                     position: {
@@ -196,27 +184,24 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
                             left: 0,
                         },
                     },
-                    onMenuDelete: this.game.scenePlayer.bindRoutine(
-                        "CancelPurchase",
-                    ),
+                    onMenuDelete: this.game.scenePlayer.bindRoutine("CancelPurchase"),
                     container: "ShopItemsAmount",
                 });
                 this.game.menuGrapher.addMenuList("Yes/No", {
                     options: [
                         {
                             text: "YES",
-                            callback: this.game.scenePlayer.bindRoutine(
-                                "TryPurchase", args),
+                            callback: this.game.scenePlayer.bindRoutine("TryPurchase", args),
                         },
                         {
                             text: "NO",
-                            callback: this.game.scenePlayer.bindRoutine(
-                                "CancelPurchase"),
+                            callback: this.game.scenePlayer.bindRoutine("CancelPurchase"),
                         },
                     ],
                 });
                 this.game.menuGrapher.setActiveMenu("Yes/No");
-            });
+            }
+        );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
 
@@ -254,10 +239,9 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Here you are! \n Thank you!",
-            ],
-            this.game.scenePlayer.bindRoutine("ContinueShopping"));
+            ["Here you are! \n Thank you!"],
+            this.game.scenePlayer.bindRoutine("ContinueShopping")
+        );
 
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -270,10 +254,8 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "You don't have enough money.",
-            ],
-            this.game.scenePlayer.bindRoutine("ContinueShopping"),
+            ["You don't have enough money."],
+            this.game.scenePlayer.bindRoutine("ContinueShopping")
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }
@@ -291,11 +273,7 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.deleteMenu("Yes/No");
 
         this.game.menuGrapher.createMenu("GeneralText");
-        this.game.menuGrapher.addMenuDialog(
-            "GeneralText",
-            [
-                "Is there anything else I can do?",
-            ]);
+        this.game.menuGrapher.addMenuDialog("GeneralText", ["Is there anything else I can do?"]);
 
         this.game.menuGrapher.setActiveMenu("Buy/Sell");
 
@@ -314,10 +292,8 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            [
-                "Thank you!",
-            ],
-            this.game.menuGrapher.deleteActiveMenu,
+            ["Thank you!"],
+            this.game.menuGrapher.deleteActiveMenu
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
     }

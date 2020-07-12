@@ -1,12 +1,12 @@
 const { shenanigans } = require("./package.json");
-const { loading } = shenanigans;
+const { loading = {} } = shenanigans;
 
 const getEntriesAndSources = () => {
     return (
         loading.entries || [
             {
-                entry: `./src/index.js`,
-                name: loading.name,
+                entry: `./lib/index.js`,
+                name: loading.name || shenanigans.name,
             },
         ]
     );
