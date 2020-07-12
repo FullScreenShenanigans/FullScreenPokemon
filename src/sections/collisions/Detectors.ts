@@ -2,7 +2,6 @@ import { Section } from "eightbittr";
 import { IMenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { Direction } from "../Constants";
 import { ICharacter, IDetector, IPlayer } from "../Things";
 
 /**
@@ -17,8 +16,7 @@ export class Detectors extends Section<FullScreenPokemon> {
      * @param other   A Character with dialog triggered by thing.
      */
     public collideCharacterDialog = (thing: IPlayer, other: ICharacter): void => {
-        let dialog: IMenuDialogRaw | IMenuDialogRaw[] | undefined = other.dialog;
-        let direction: Direction | undefined;
+        let dialog = other.dialog;
 
         if (other.cutscene) {
             this.game.scenePlayer.startCutscene(other.cutscene, {
@@ -31,7 +29,7 @@ export class Detectors extends Section<FullScreenPokemon> {
             return;
         }
 
-        direction = this.game.physics.getDirectionBetween(other, thing);
+        const direction = this.game.physics.getDirectionBetween(other, thing);
 
         if (other.dialogDirections) {
             dialog = (dialog as IMenuDialogRaw[])[direction];

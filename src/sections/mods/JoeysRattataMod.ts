@@ -17,7 +17,7 @@ export class JoeysRattataMod extends ModComponent implements IMod {
      */
     public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
-            (this.game.groupHolder.getGroup("Character") as ICharacter[])
+            this.game.groupHolder.getGroup("Character")
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
                     character.previousTitle = character.title;
@@ -27,7 +27,7 @@ export class JoeysRattataMod extends ModComponent implements IMod {
                 });
         },
         [this.eventNames.onModDisable]: (): void => {
-            (this.game.groupHolder.getGroup("Character") as ICharacter[])
+            this.game.groupHolder.getGroup("Character")
                 .filter((character: ICharacter): boolean => !!character.trainer)
                 .forEach((character: IEnemy): void => {
                     character.title = (character as any).thing = character.previousTitle!;

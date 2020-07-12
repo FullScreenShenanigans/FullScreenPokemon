@@ -67,19 +67,14 @@ export class Starting extends Section<FullScreenPokemon> {
         const { menu, opponent, player }: IBattleThings = battleInfo.things;
         const timeout = 70;
 
-        let playerX: number;
-        let opponentX: number;
-        let playerGoal: number;
-        let opponentGoal: number;
-
         // They should be visible halfway through (2 * (1 / timeout))
         this.game.animations.fading.animateFadeAttribute(player, "opacity", 2 / timeout, 1, 1);
         this.game.animations.fading.animateFadeAttribute(opponent, "opacity", 2 / timeout, 1, 1);
 
-        playerX = this.game.physics.getMidX(player);
-        opponentX = this.game.physics.getMidX(opponent);
-        playerGoal = menu.left + player.width / 2;
-        opponentGoal = menu.right - opponent.width / 2;
+        const playerX = this.game.physics.getMidX(player);
+        const opponentX = this.game.physics.getMidX(opponent);
+        const playerGoal = menu.left + player.width / 2;
+        const opponentGoal = menu.right - opponent.width / 2;
 
         this.game.animations.sliding.slideHorizontally(
             player,

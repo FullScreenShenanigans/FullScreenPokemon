@@ -23,7 +23,7 @@ export class RivalRoute22LeavesCutscene extends Section<FullScreenPokemon> {
      * Cutscene for the rival leaving after being defeated.
      */
     public Walking(): void {
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
         const walkingInstructions: IWalkingInstructions = [
             {
                 blocks: 1,

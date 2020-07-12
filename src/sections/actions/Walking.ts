@@ -107,7 +107,7 @@ export class Walking extends Section<FullScreenPokemon> {
     public startWalking(
         thing: ICharacter,
         direction: Direction,
-        onContinueWalking?: Function
+        onContinueWalking?: () => void
     ): void {
         const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(thing);
 
@@ -137,7 +137,7 @@ export class Walking extends Section<FullScreenPokemon> {
     public continueWalking(
         thing: ICharacter,
         ticksPerBlock: number,
-        onContinueWalking?: Function
+        onContinueWalking?: () => void
     ): void {
         if (onContinueWalking) {
             onContinueWalking();

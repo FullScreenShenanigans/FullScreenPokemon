@@ -36,7 +36,7 @@ export class Decorations extends Section<FullScreenPokemon> {
         });
         this.game.utilities.arrayToBeginning(
             background,
-            this.game.groupHolder.getGroup("Text") as IThing[]
+            this.game.groupHolder.getGroup("Text")
         );
 
         const menu: IMenu = this.game.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
@@ -115,7 +115,7 @@ export class Decorations extends Section<FullScreenPokemon> {
      * @param thing   A placed Thing in the Text group.
      */
     public moveToBeforeBackground(thing: IThing): void {
-        const texts: IThing[] = this.game.groupHolder.getGroup("Text") as IThing[];
+        const texts: IThing[] = this.game.groupHolder.getGroup("Text");
         const background: IThing = this.game.utilities.getExistingThingById(
             Decorations.backgroundId
         );

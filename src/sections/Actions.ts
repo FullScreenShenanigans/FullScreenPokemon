@@ -74,13 +74,13 @@ export class Actions extends Section<FullScreenPokemon> {
      */
     public spawnCharacter = (thing: ICharacter): void => {
         if (thing.sight) {
-            thing.sightDetector = this.game.things.add([
+            thing.sightDetector = this.game.things.add<ISightDetector>([
                 this.game.things.names.sightDetector,
                 {
                     direction: thing.direction,
                     width: thing.sight * 8,
                 },
-            ]) as ISightDetector;
+            ]);
             thing.sightDetector.viewer = thing;
             this.animatePositionSightDetector(thing);
         }
@@ -398,7 +398,7 @@ export class Actions extends Section<FullScreenPokemon> {
      */
     public animateExclamation(
         thing: IThing,
-        timeout: number = 140,
+        timeout = 140,
         callback?: () => void
     ): IThing {
         const exclamation: IThing = this.game.things.add(this.game.things.names.exclamation);

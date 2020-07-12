@@ -80,8 +80,8 @@ export class Keyboards extends Section<FullScreenPokemon> {
 
         const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
         const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
-        const onComplete: () => void = settings.callback || (() => {});
-        const lowercase: boolean = !!settings.lowercase;
+        const onComplete: () => void = settings.callback || (() => { });
+        const lowercase = !!settings.lowercase;
         const letters: string[] = lowercase
             ? this.game.constants.keysLowercase
             : this.game.constants.keysUppercase;
@@ -169,9 +169,9 @@ export class Keyboards extends Section<FullScreenPokemon> {
      * Switches the keyboard menu's case.
      */
     protected switchKeyboardCase(): void {
-        const menuKeyboard: IMenu = this.game.menuGrapher.getMenu("Keyboard") as IMenu;
-        const menuKeys: IListMenu = this.game.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
-        const menuResults: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+        const menuKeyboard = this.game.menuGrapher.getMenu("Keyboard") as IMenu;
+        const menuKeys = this.game.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const menuResults = this.game.menuGrapher.getMenu(
             "KeyboardResult"
         ) as IKeyboardResultsMenu;
 

@@ -228,8 +228,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public WalkToTable(settings: any): void {
-        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak");
+        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
         const appearanceDelay: number = this.game.equations.walkingTicksPerBlock(oak) * 6;
 
         settings.oak = oak;

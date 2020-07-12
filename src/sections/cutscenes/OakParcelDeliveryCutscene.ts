@@ -99,12 +99,12 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksUp(settings: any): void {
-        const doormat: IThing = this.game.utilities.getExistingThingById("DoormatLeft");
-        const rival: ICharacter = this.game.things.add(
+        const doormat = this.game.utilities.getExistingThingById("DoormatLeft");
+        const rival = this.game.things.add<ICharacter>(
             this.game.things.names.rival,
             doormat.left,
             doormat.top
-        ) as ICharacter;
+        );
 
         settings.rival = rival;
 

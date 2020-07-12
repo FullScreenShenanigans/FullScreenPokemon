@@ -626,13 +626,13 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                     case "beginning":
                         this.game.utilities.arrayToBeginning(
                             thing,
-                            this.game.groupHolder.getGroup(thing.groupType) as IThing[]
+                            this.game.groupHolder.getGroup(thing.groupType)
                         );
                         break;
                     case "end":
                         this.game.utilities.arrayToEnd(
                             thing,
-                            this.game.groupHolder.getGroup(thing.groupType) as IThing[]
+                            this.game.groupHolder.getGroup(thing.groupType)
                         );
                         break;
                     default:
@@ -655,7 +655,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      *                       applied to the Thing's position (by default, false).
      * @returns A newly created Player in the game.
      */
-    public addPlayer(left: number = 0, top: number = 0, useSavedInfo?: boolean): IPlayer {
+    public addPlayer(left = 0, top = 0, useSavedInfo?: boolean): IPlayer {
         const player: IPlayer = this.game.objectMaker.make<IPlayer>(
             this.game.things.names.player
         );
@@ -951,7 +951,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
             [this.game.things.names.areaGate, properties],
             left,
             top
-        ) as IAreaGate;
+        );
     }
 
     /**

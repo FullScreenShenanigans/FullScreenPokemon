@@ -26,8 +26,8 @@ export interface IThingsById {
  */
 export interface IThing
     extends IEightBittrThing,
-        Omit<IClassCyclrThing, "onThingAdded">,
-        IStateSaveable {
+    Omit<IClassCyclrThing, "onThingAdded">,
+    IStateSaveable {
     spriteCycleSynched: any;
     spriteCycle: any;
     flipHoriz?: boolean;
@@ -747,8 +747,8 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
      */
     public add<TThing extends IThing = IThing>(
         thingRaw: string | IThing | [string, any],
-        left: number = 0,
-        top: number = 0,
+        left = 0,
+        top = 0,
         useSavedInfo?: boolean
     ): TThing {
         const thing: TThing = super.add(thingRaw, left, top) as TThing;

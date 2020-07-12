@@ -16,7 +16,7 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public async Approach(settings: any): Promise<void> {
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
+        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 

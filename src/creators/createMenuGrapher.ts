@@ -70,7 +70,7 @@ export const createMenuGrapher = (game: FullScreenPokemon): MenuGraphr =>
                 let total = 0;
 
                 for (const i in badges) {
-                    if (badges.hasOwnProperty(i)) {
+                    if ({}.hasOwnProperty.call(badges, i)) {
                         total += Number(badges[i]);
                     }
                 }

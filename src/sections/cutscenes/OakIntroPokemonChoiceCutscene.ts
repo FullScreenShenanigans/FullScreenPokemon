@@ -65,8 +65,8 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             [
                 [
                     "So! You want the " +
-                        settings.triggerer.description +
-                        " %%%%%%%POKEMON%%%%%%%, ",
+                    settings.triggerer.description +
+                    " %%%%%%%POKEMON%%%%%%%, ",
                     settings.chosen,
                     "?",
                 ],
@@ -99,8 +99,8 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public PlayerTakesPokemon(settings: any): void {
-        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
+        const oak = this.game.utilities.getExistingThingById<ICharacter>("Oak");
+        const rival = this.game.utilities.getExistingThingById<ICharacter>("Rival");
         const dialogOak =
             "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
@@ -194,7 +194,7 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksToPokemon(settings: any): void {
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
+        const rival = this.game.utilities.getExistingThingById<ICharacter>("Rival");
         let starterRival: string[];
         let steps: number;
 
@@ -225,9 +225,9 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
         this.game.itemsHolder.setItem(this.game.storage.names.starterRival, starterRival);
         this.game.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        const pokeball: IPokeball = this.game.utilities.getExistingThingById(
+        const pokeball = this.game.utilities.getExistingThingById<IPokeball>(
             "Pokeball" + starterRival.join("")
-        ) as IPokeball;
+        );
         settings.rivalPokeball = pokeball;
 
         this.game.actions.walking.startWalkingOnPath(rival, [

@@ -120,9 +120,9 @@ export const createUserWrapprSettings = ({
     let userWrapper: UserWrappr;
 
     return {
-        createContents: (size: IAbsoluteSizeSchema, userWrapper: UserWrappr) => {
+        createContents: (size: IAbsoluteSizeSchema, newUserWrapper: UserWrappr) => {
             gameWindow.FSP = game = createGame(size);
-            userWrapper = userWrapper;
+            userWrapper = newUserWrapper;
 
             game.inputs.initializeGlobalPipes(gameWindow);
             game.gameplay.startOptions();

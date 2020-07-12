@@ -9,7 +9,7 @@ import { IThing } from "./Things";
  */
 export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittrUtilities<
     TEightBittr
-> {
+    > {
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
@@ -17,7 +17,7 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @param string   The characters to repeat.
      * @param times   How many times to repeat (by default, 1).
      */
-    public stringOf(str: string, times: number = 1): string {
+    public stringOf(str: string, times = 1): string {
         return times === 0 ? "" : new Array((times || 1) + 1).join(str);
     }
 

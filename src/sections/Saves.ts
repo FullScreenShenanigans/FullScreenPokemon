@@ -82,7 +82,7 @@ export class Saves extends Section<FullScreenPokemon> {
         );
         if (oldLocalStorage !== undefined) {
             for (const key in oldLocalStorage) {
-                if (!oldLocalStorage.hasOwnProperty(key)) {
+                if (!{}.hasOwnProperty.call(oldLocalStorage, key)) {
                     continue;
                 }
 
@@ -110,7 +110,7 @@ export class Saves extends Section<FullScreenPokemon> {
      *
      * @param showText   Whether to display a status menu (by default, false).
      */
-    public saveGame(showText: boolean = true): void {
+    public saveGame(showText?: boolean): void {
         const ticksRecorded: number = this.game.fpsAnalyzer.getRecordedTicks();
 
         this.game.itemsHolder.increase(
@@ -158,7 +158,7 @@ export class Saves extends Section<FullScreenPokemon> {
         link.setAttribute(
             "href",
             "data:text/json;charset=utf-8," +
-                encodeURIComponent(JSON.stringify(this.game.itemsHolder.exportItems()))
+            encodeURIComponent(JSON.stringify(this.game.itemsHolder.exportItems()))
         );
 
         this.game.container.appendChild(link);
@@ -186,7 +186,7 @@ export class Saves extends Section<FullScreenPokemon> {
         const prefix = this.game.stateHolder.getPrefix();
 
         for (const key in data) {
-            if (!data.hasOwnProperty(key)) {
+            if (!{}.hasOwnProperty.call(data, key)) {
                 continue;
             }
 
@@ -207,7 +207,7 @@ export class Saves extends Section<FullScreenPokemon> {
      * Saves the positions of all Characters in the game.
      */
     public saveCharacterPositions(): void {
-        for (const character of this.game.groupHolder.getGroup("Character") as ICharacter[]) {
+        for (const character of this.game.groupHolder.getGroup("Character")) {
             this.saveCharacterPosition(character, character.id);
         }
     }
@@ -269,7 +269,7 @@ export class Saves extends Section<FullScreenPokemon> {
      * @param item    Name of item being stored.
      * @param amount   How many of the item to add, if not 1.
      */
-    public addItemToBag(item: string, amount: number = 1): void {
+    public addItemToBag(item: string, amount = 1): void {
         this.game.utilities.combineArrayMembers(
             this.game.itemsHolder.getItem(this.game.storage.names.items),
             item,
@@ -285,7 +285,7 @@ export class Saves extends Section<FullScreenPokemon> {
      * @param item    Name of item being stored.
      * @param amount   How many of the item to remove, if not 1.
      */
-    public removeItemFromBag(item: string, amount: number = 1): void {
+    public removeItemFromBag(item: string, amount = 1): void {
         this.game.utilities.removeArrayMembers(
             this.game.itemsHolder.getItem(this.game.storage.names.items),
             item,

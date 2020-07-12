@@ -158,7 +158,7 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
                         this.game.equations.moves.moveChangesStatisticByAmount(
                             moveSchema,
                             preference[1],
-                            preference[2] as number
+                            preference[2]
                         )
                     ) {
                         possibility.priority -= amount;

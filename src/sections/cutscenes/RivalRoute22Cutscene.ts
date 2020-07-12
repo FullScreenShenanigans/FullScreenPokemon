@@ -19,7 +19,7 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
     public RivalEmerges(settings: any): void {
         const player: IPlayer = settings.player;
         const triggerer: ICharacter = settings.triggerer;
-        const playerUpper: number = Number(Math.abs(player.top - triggerer.top) < 4);
+        const playerUpper = Number(Math.abs(player.top - triggerer.top) < 4);
         const rival: ICharacter = this.game.objectMaker.make<ICharacter>(
             this.game.things.names.rival,
             {

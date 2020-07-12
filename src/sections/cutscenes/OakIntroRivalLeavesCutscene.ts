@@ -59,8 +59,8 @@ export class OakIntroRivalLeavesCutscene extends Section<FullScreenPokemon> {
      * Cutscene for the rival leaving the lab and Oak giving the player advice.
      */
     public Walking(): void {
-        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak") as ICharacter;
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival") as ICharacter;
+        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak");
+        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
         const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
         const walkingInstructions: IWalkingInstructions = [
             {

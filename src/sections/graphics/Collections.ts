@@ -22,7 +22,7 @@ export class Collections extends Section<FullScreenPokemon> {
         for (const thingRaw of thingsRaw) {
             const thing: IThing =
                 thingRaw.constructor === String
-                    ? this.game.utilities.getExistingThingById(thingRaw as string)
+                    ? this.game.utilities.getExistingThingById(thingRaw)
                     : (thingRaw as IThing);
 
             if (!used[thing.title]) {
@@ -52,7 +52,7 @@ export class Collections extends Section<FullScreenPokemon> {
      *          as the first Text Thing after keptThings were added.
      */
     public moveThingsBeforeBackgrounds(things: IThing[]): void {
-        const texts: IThing[] = this.game.groupHolder.getGroup("Text") as IThing[];
+        const texts: IThing[] = this.game.groupHolder.getGroup("Text");
 
         for (const thing of things) {
             texts.splice(texts.indexOf(thing), 1);
