@@ -1,24 +1,27 @@
 version: 2.1
 
+orbs:
+    puppeteer: threetreeslight/puppeteer@0.1.2
+
 references:
     default_env: &default_env
         docker:
             - image: circleci/node:14.4.0
 
-    repo_cache_key_1: &repo_cache_key_1 v3-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
-    repo_cache_key_2: &repo_cache_key_2 v3-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
-    repo_cache_key_3: &repo_cache_key_3 v3-repo-{{ checksum "yarn.lock" }}
+    yarn_cache_key_1: &yarn_cache_key_1 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
+    yarn_cache_key_2: &yarn_cache_key_2 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
+    yarn_cache_key_3: &yarn_cache_key_3 v1-repo-{{ checksum "yarn.lock" }}
 
-    restore_repo_cache: &restore_repo_cache
+    restore_yarn_cache: &restore_yarn_cache
         restore_cache:
             keys:
-                - *repo_cache_key_1
-                - *repo_cache_key_2
-                - *repo_cache_key_3
+                - *yarn_cache_key_1
+                - *yarn_cache_key_2
+                - *yarn_cache_key_3
 
-    save_repo_cache: &save_repo_cache
+    save_yarn_cache: &save_yarn_cache
         save_cache:
-            key: *repo_cache_key_1
+            key: *yarn_cache_key_1
             paths:
                 - node_modules
 
@@ -27,50 +30,46 @@ jobs:
         <<: *default_env
         steps:
             - checkout
-            - *restore_repo_cache
+            - *restore_yarn_cache
             - run: yarn --production=false --frozen-lockfile
-            - *save_repo_cache
+            - *save_yarn_cache
 
-    compile:
+    compile_and_test:
         <<: *default_env
         steps:
             - checkout
-            - *restore_repo_cache
+            - puppeteer/install
+            - *restore_yarn_cache
             - run: yarn compile
+            - run: yarn test
 
     format:
         <<: *default_env
         steps:
             - checkout
-            - *restore_repo_cache
+            - *restore_yarn_cache
             - run: yarn format
 
     lint:
         <<: *default_env
         steps:
             - checkout
-            - *restore_repo_cache
+            - *restore_yarn_cache
             - run: yarn lint
-
-    test:
-        <<: *default_env
-        steps:
-            - checkout
-            - *restore_repo_cache
-            - run: yarn test
 
     publish:
         <<: *default_env
         steps:
             - checkout
-            - *restore_repo_cache
+            - *restore_yarn_cache
+            - run: yarn compile
             - run: yarn publish:ci
 
 workflows:
     build:
         jobs:
             - checkout
-            - compile:
+            - compile_and_test:
                   requires:
                       - checkout
             - format:
@@ -79,12 +78,9 @@ workflows:
             - lint:
                   requires:
                       - checkout
-            - test:
-                  requires:
-                      - compile
             - publish:
                   filters:
                       branches:
                           only: master
                   requires:
-                      - test
+                      - compile_and_test

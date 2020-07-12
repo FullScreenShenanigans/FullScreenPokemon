@@ -10,7 +10,7 @@ import {
     IPreThing as IMapsCreatrPreThing,
     IPreThingsContainers,
 } from "mapscreatr";
-import { IMapScreenr as IEightBittrMapScreenr } from "mapscreenr";
+import { MapScreenr as EightBittrMapScreenr } from "mapscreenr";
 
 import { PalletTown } from "../creators/mapsLibrary/PalletTown";
 import { PewterCity } from "../creators/mapsLibrary/PewterCity";
@@ -31,7 +31,7 @@ import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
 /**
  * A flexible container for map attributes and viewport.
  */
-export interface IMapScreenr extends IEightBittrMapScreenr {
+export interface IMapScreenr extends EightBittrMapScreenr {
     /**
      * Which are the player is currently active in.
      *
