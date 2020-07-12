@@ -9,7 +9,7 @@ import { IThing } from "./Things";
  */
 export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittrUtilities<
     TEightBittr
-    > {
+> {
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.

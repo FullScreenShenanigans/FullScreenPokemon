@@ -65,8 +65,8 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             [
                 [
                     "So! You want the " +
-                    settings.triggerer.description +
-                    " %%%%%%%POKEMON%%%%%%%, ",
+                        settings.triggerer.description +
+                        " %%%%%%%POKEMON%%%%%%%, ",
                     settings.chosen,
                     "?",
                 ],

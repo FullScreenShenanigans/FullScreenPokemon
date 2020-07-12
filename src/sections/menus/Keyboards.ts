@@ -80,7 +80,7 @@ export class Keyboards extends Section<FullScreenPokemon> {
 
         const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
         const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
-        const onComplete: () => void = settings.callback || (() => { });
+        const onComplete: () => void = settings.callback || (() => {});
         const lowercase = !!settings.lowercase;
         const letters: string[] = lowercase
             ? this.game.constants.keysLowercase

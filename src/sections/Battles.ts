@@ -412,9 +412,7 @@ export class Battles extends Section<FullScreenPokemon> {
                 selector: "opponent",
             },
             player: {
-                actors: this.game.itemsHolder.getItem(
-                    this.game.storage.names.pokemonInParty
-                ),
+                actors: this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty),
                 leader: {
                     nickname: this.game.itemsHolder.getItem(this.game.storage.names.name),
                     title: "PlayerBack".split(""),

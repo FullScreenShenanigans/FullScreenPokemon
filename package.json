@@ -79,7 +79,17 @@
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
     "license": "MIT",
+    "lint-staged": {
+        "**/*.{css,js,json,md,ts,tsx}": [
+            "prettier --ignore-path .prettierignore --write"
+        ]
+    },
     "name": "fullscreenpokemon",
     "repository": {
         "type": "git",

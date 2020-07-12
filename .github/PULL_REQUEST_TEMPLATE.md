@@ -1,22 +1,9 @@
-<!--
-😍 Hi there! 😍
-Thanks for submitting a pull request to FullScreenPokemon! ✨
+## Overview
 
-Please fill out the following: 👇
--->
+What does this PR do? Why?
 
-### Summary
+### PR Checklist
 
-<!-- _(what does your PR do?)_ -->
-
-Fixes #_(issue number here)_
-
-<!--
-For example:
-
-    ### Summary
-
-    Stops the player from being able to walk after a battle starts.
-
-    Fixes #123
--->
+-   [ ] Fixes #
+-   [ ] I have run this code to verify it works
+-   [ ] This PR includes unit tests for the code change

@@ -34,10 +34,7 @@ export class Decorations extends Section<FullScreenPokemon> {
             id: Decorations.backgroundId,
             width: this.game.mapScreener.width,
         });
-        this.game.utilities.arrayToBeginning(
-            background,
-            this.game.groupHolder.getGroup("Text")
-        );
+        this.game.utilities.arrayToBeginning(background, this.game.groupHolder.getGroup("Text"));
 
         const menu: IMenu = this.game.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
 

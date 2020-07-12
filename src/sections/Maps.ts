@@ -947,11 +947,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 throw new Error(`Unknown direction: '${thing.direction}'.`);
         }
 
-        return this.game.things.add(
-            [this.game.things.names.areaGate, properties],
-            left,
-            top
-        );
+        return this.game.things.add([this.game.things.names.areaGate, properties], left, top);
     }
 
     /**

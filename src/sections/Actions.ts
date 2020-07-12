@@ -396,11 +396,7 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param callback   A callback for when the exclamation is removed.
      * @returns The exclamation Thing.
      */
-    public animateExclamation(
-        thing: IThing,
-        timeout = 140,
-        callback?: () => void
-    ): IThing {
+    public animateExclamation(thing: IThing, timeout = 140, callback?: () => void): IThing {
         const exclamation: IThing = this.game.things.add(this.game.things.names.exclamation);
 
         this.game.physics.setMidXObj(exclamation, thing);

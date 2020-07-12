@@ -158,7 +158,7 @@ export class Saves extends Section<FullScreenPokemon> {
         link.setAttribute(
             "href",
             "data:text/json;charset=utf-8," +
-            encodeURIComponent(JSON.stringify(this.game.itemsHolder.exportItems()))
+                encodeURIComponent(JSON.stringify(this.game.itemsHolder.exportItems()))
         );
 
         this.game.container.appendChild(link);

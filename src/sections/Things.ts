@@ -26,8 +26,8 @@ export interface IThingsById {
  */
 export interface IThing
     extends IEightBittrThing,
-    Omit<IClassCyclrThing, "onThingAdded">,
-    IStateSaveable {
+        Omit<IClassCyclrThing, "onThingAdded">,
+        IStateSaveable {
     spriteCycleSynched: any;
     spriteCycle: any;
     flipHoriz?: boolean;
