@@ -1382,6 +1382,11 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/prettier@^2.0.1":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.2.tgz#5bb52ee68d0f8efa9cc0099920e56be6cc4e37f3"
+  integrity sha512-IkVfat549ggtkZUthUzEX49562eGikhSYeVGX97SkMFn+sTZrgRewXjQ4tPKFPCykZHkX1Zfd9OoELGqKU2jJA==
+
 "@types/sinon-chai@^3.2.4":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.4.tgz#c425625681f4f8d3a43a7551a77f590ce1c49b21"
@@ -7833,11 +7838,12 @@ shebang-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-shenanigans-manager@^0.3.0:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.3.2.tgz#959e2ec5854cfd3677522e626d45a6d717b52438"
-  integrity sha512-TxcnLiC/RKl8BL8Z0gyWB3wdz6Q7uNEXpxpv2tg0ITdL83ApxmZRp8tOjm5V2AsWc/AqtKrjJQylHqMFhfGZrQ==
+shenanigans-manager@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0-beta1.tgz#676b689b13f53c7b7e61ec04306a9c7fea8ef079"
+  integrity sha512-hkHRuv6YDAGRUWE+6zO3urmFydnjPNJPPX1r7Iw7XUHsyCdgcFjBt5djnmTVbCJTLekEw5x6Im98BRbNYj4Oog==
   dependencies:
+    "@types/prettier" "^2.0.1"
     chalk "^4.1.0"
     chokidar "^3.4.0"
     glob "^7.1.6"
