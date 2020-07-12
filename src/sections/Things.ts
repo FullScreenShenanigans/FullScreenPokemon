@@ -775,7 +775,6 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         super.process(thing, title);
 
         // Sprite cycles
-        /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
             this.game.classCycler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
@@ -783,7 +782,6 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         if (cycle = thing.spriteCycleSynched) {
             this.game.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
-        /* tslint:enable */
 
         // Terrain and Scenery groups will never have collisions checked
         if (thing.groupType !== "Terrain" && thing.groupType !== "Scenery") {

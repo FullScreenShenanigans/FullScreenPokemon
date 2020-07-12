@@ -1,6 +1,5 @@
 import { IMapRaw } from "../../sections/Maps";
 
-/* tslint:disable max-line-length object-literal-sort-keys */
 
 export const PewterCity: IMapRaw = {
     name: "Pewter City",
@@ -364,4 +363,3 @@ export const PewterCity: IMapRaw = {
     },
 };
 
-/* tslint:enable max-line-length object-literal-sort-keys */

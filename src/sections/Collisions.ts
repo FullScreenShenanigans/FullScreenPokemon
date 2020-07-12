@@ -87,7 +87,6 @@ export class Collisions<TEightBittr extends FullScreenPokemon> extends EightBitt
         return (thing: ICharacter, other: IThing): boolean => {
             // If either Thing is the player, it should be the first
             if ((other as ICharacter).player && !thing.player) {
-                // tslint:disable-next-line:no-parameter-reassignment
                 [thing, other] = [other as ICharacter, thing];
             }
 

@@ -57,7 +57,6 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
     public RivalTalks(settings: any): void {
         this.game.actions.animateCharacterSetDirection(
             settings.player,
-            // tslint:disable-next-line no-unnecessary-type-assertion
             this.game.physics.getDirectionBordering(settings.player, settings.rival)!);
 
         this.game.menuGrapher.createMenu("GeneralText");

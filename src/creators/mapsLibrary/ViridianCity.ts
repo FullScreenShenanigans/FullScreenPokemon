@@ -1,6 +1,5 @@
 import { IMapRaw } from "../../sections/Maps";
 
-/* tslint:disable max-line-length object-literal-sort-keys */
 
 export const ViridianCity: IMapRaw = {
     name: "Viridian City",
@@ -316,4 +315,3 @@ export const ViridianCity: IMapRaw = {
     },
 };
 
-/* tslint:enable max-line-length object-literal-sort-keys */

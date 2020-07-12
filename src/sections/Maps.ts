@@ -676,7 +676,6 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      */
     public setMap(name: string, location?: string, noEntrance?: boolean): ILocation {
         if (!name) {
-            // tslint:disable-next-line:no-parameter-reassignment
             name = this.game.areaSpawner.getMapName();
         }
 

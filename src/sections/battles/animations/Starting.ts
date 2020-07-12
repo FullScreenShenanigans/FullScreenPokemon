@@ -29,7 +29,6 @@ export class Starting extends Section<FullScreenPokemon> {
             this.game.graphics.collections.moveThingsToText(battleInfo.keptThings);
         }
 
-        // tslint:disable-next-line no-floating-promises
         this.game.audioPlayer.play(battleInfo.theme, {
             alias: this.game.audio.aliases.theme,
             loop: true,

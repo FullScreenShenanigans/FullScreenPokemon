@@ -80,7 +80,6 @@ export class Keyboards extends Section<FullScreenPokemon> {
 
         const onKeyPress: () => void = (): void => this.addKeyboardMenuValue();
         const onBPress: () => void = (): void => this.removeKeyboardMenuValue();
-        // tslint:disable-next-line:no-empty
         const onComplete: () => void = settings.callback || (() => { });
         const lowercase: boolean = !!settings.lowercase;
         const letters: string[] = lowercase

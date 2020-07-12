@@ -1,6 +1,5 @@
 import { IMapRaw } from "../../sections/Maps";
 
-/* tslint:disable max-line-length object-literal-sort-keys */
 
 export const Route1: IMapRaw = {
     name: "Route 1",
@@ -124,4 +123,3 @@ export const Route1: IMapRaw = {
     },
 };
 
-/* tslint:enable max-line-length object-literal-sort-keys */

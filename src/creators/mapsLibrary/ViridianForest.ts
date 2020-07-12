@@ -1,6 +1,5 @@
 import { IMapRaw } from "../../sections/Maps";
 
-/* tslint:disable max-line-length object-literal-sort-keys */
 
 export const ViridianForest: IMapRaw = {
     name: "Viridian Forest",
@@ -259,4 +258,3 @@ export const ViridianForest: IMapRaw = {
     },
 };
 
-/* tslint:enable max-line-length object-literal-sort-keys */

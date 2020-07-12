@@ -1,7 +1,7 @@
 import { IGameWindow } from "eightbittr";
 import { IPipe } from "inputwritr";
 import {
-    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrappr, IUserWrapprSettings, OptionType,
+    IAbsoluteSizeSchema, IBooleanSchema, IMultiSelectSchema, IRelativeSizeSchema, IUserWrapprSettings, OptionType, UserWrappr,
 } from "userwrappr";
 
 import { IModComponentClass, Mods } from "../sections/Mods";
@@ -78,11 +78,10 @@ export const createUserWrapprSettings = ({
     /**
      * IUserWrappr instance this is creating interfaces for.
      */
-    let userWrapper: IUserWrappr;
+    let userWrapper: UserWrappr;
 
     return {
-        defaultSize: sizes[defaultSize],
-        createContents: (size: IAbsoluteSizeSchema, userWrapper: IUserWrappr) => {
+        createContents: (size: IAbsoluteSizeSchema, userWrapper: UserWrappr) => {
             gameWindow.FSP = game = createGame(size);
             userWrapper = userWrapper;
 
@@ -91,6 +90,7 @@ export const createUserWrapprSettings = ({
 
             return game.container;
         },
+        defaultSize: sizes[defaultSize],
         menus: [
             {
                 options: [

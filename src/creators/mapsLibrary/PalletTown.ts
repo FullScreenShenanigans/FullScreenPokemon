@@ -1,6 +1,5 @@
 import { IMapRaw } from "../../sections/Maps";
 
-/* tslint:disable max-line-length object-literal-sort-keys */
 
 export const PalletTown: IMapRaw = {
     name: "Pallet Town",
@@ -275,4 +274,3 @@ export const PalletTown: IMapRaw = {
     },
 };
 
-/* tslint:enable max-line-length object-literal-sort-keys */
