@@ -16,17 +16,19 @@ const createStubGameWindow = () => ({
     removeEventListener: sinon.spy(),
 });
 
-const createGame = (size: IAbsoluteSizeSchema) => stubBlankGame({
-    height: size.height,
-    width: size.width,
-}).fsp;
+const createGame = (size: IAbsoluteSizeSchema) =>
+    stubBlankGame({
+        height: size.height,
+        width: size.width,
+    }).fsp;
 
 const saveValueAs = (wrapperSettings: IUserWrapprSettings, value: string) =>
-    (wrapperSettings.menus!
-        .find((menu) => menu.title === "Options")!
-        .options
-        .find((options) => options.title === "Speed")! as ISelectSchema)
-        .saveValue(value, "1x");
+    (wrapperSettings
+        .menus!.find((menu) => menu.title === "Options")!
+        .options.find((options) => options.title === "Speed")! as ISelectSchema).saveValue(
+        value,
+        "1x"
+    );
 
 describe("InterfaceSettings", () => {
     describe("Speed", () => {

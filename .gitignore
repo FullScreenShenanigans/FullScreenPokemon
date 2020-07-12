@@ -1,18 +1,9 @@
-dist/
-docs/generated/
-test/
-node_modules/
 *.d.ts
-*.js*
-!./*.js
-!*.json
-*.html
-npm-debug.log
-debug.log
-
-# Code coverage
-coverage.json
-coverage/
-
-# Added by shenanigans-manager for maps testing
-Maps.test.ts
+*.js
+*.log
+*.map
+*.tsbuildinfo
+dist/
+lib/
+node_modules/
+test/

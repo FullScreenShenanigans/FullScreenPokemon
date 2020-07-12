@@ -1,0 +1,86 @@
+version: 2.1
+
+orbs:
+    puppeteer: threetreeslight/puppeteer@0.1.2
+
+references:
+    default_env: &default_env
+        docker:
+            - image: circleci/node:14.4.0
+
+    yarn_cache_key_1: &yarn_cache_key_1 yarn---
+    yarn_cache_key_2: &yarn_cache_key_2 yarn--
+    yarn_cache_key_3: &yarn_cache_key_3 yarn-
+
+    restore_yarn_cache: &restore_yarn_cache
+        restore_cache:
+            keys:
+                - *yarn_cache_key_1
+                - *yarn_cache_key_2
+                - *yarn_cache_key_3
+
+    save_yarn_cache: &save_yarn_cache
+        save_cache:
+            key: *yarn_cache_key_1
+            paths:
+                - node_modules
+
+jobs:
+    checkout:
+        <<: *default_env
+        steps:
+            - checkout
+            - *restore_yarn_cache
+            - run: yarn --production=false --frozen-lockfile
+            - *save_yarn_cache
+
+    compile_and_test:
+        <<: *default_env
+        steps:
+            - checkout
+            - puppeteer/install
+            - *restore_yarn_cache
+            - run: yarn compile
+            - run: yarn test
+
+    format:
+        <<: *default_env
+        steps:
+            - checkout
+            - *restore_yarn_cache
+            - run: yarn format
+
+    lint:
+        <<: *default_env
+        steps:
+            - checkout
+            - *restore_yarn_cache
+            - run: yarn lint
+
+    publish:
+        <<: *default_env
+        steps:
+            - checkout
+            - *restore_yarn_cache
+            - run: yarn compile
+            - run: yarn publish:ci
+
+workflows:
+    build:
+        jobs:
+            - checkout
+            - compile_and_test:
+                  requires:
+                      - checkout
+            - format:
+                  requires:
+                      - checkout
+            - lint:
+                  requires:
+                      - checkout
+            - publish:
+                  filters:
+                      branches:
+                          only: master
+                  requires:
+                      - compile_and_test

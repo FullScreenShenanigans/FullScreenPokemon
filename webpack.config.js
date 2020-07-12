@@ -1,35 +1,33 @@
-const glob = require("glob");
-const path = require("path");
-
-const package = require("./package.json");
+const { shenanigans } = require("./package.json");
+const { loading = {} } = shenanigans;
 
 const getEntriesAndSources = () => {
-    return package.shenanigans.entries === undefined
-        ? [
+    return (
+        loading.entries || [
             {
-                entry: `./src/index.js`,
-                name: package.shenanigans.name,
-            }
+                entry: `./lib/index.js`,
+                name: loading.name || shenanigans.name,
+            },
         ]
-        : package.shenanigans.entries;
+    );
 };
 
-const getExternals = (shenanigans) => {
+const getExternals = () => {
     const output = {};
 
-    if (shenanigans.externals === undefined) {
+    if (loading.externals === undefined) {
         return output;
     }
 
-    for (const external of shenanigans.externals) {
+    for (const external of loading.externals) {
         output[external.name] = external.name;
     }
 
     return output;
 };
 
-const externals = getExternals(package.shenanigans);
 const entriesAndSources = getEntriesAndSources();
+const externals = getExternals();
 
 const entry = {};
 
@@ -41,12 +39,27 @@ module.exports = {
     entry,
     externals,
     mode: "production",
-    output: {
-        filename: "[name].js",
-        libraryTarget: "amd",
-        path: path.join(__dirname, "dist"),
+    module: {
+        rules: [
+            {
+                test: /\.(tsx?)|(jsx?)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: require.resolve("babel-loader"),
+                    options: {
+                        rootMode: "upward-optional",
+                    },
+                },
+            },
+        ],
     },
-    performance: {
-        hints: false
-    }
+    output: {
+        filename: `[name].js`,
+        libraryTarget: "amd",
+        publicPath: "dist/",
+    },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js", ".json"],
+        symlinks: true,
+    },
 };

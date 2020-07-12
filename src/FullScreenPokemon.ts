@@ -1,58 +1,92 @@
-import { component, factory } from "babyioc";
+import { AudioPlayr, IAudioPlayrSettings } from "audioplayr";
+import { factory, member } from "babyioc";
 import { BattleMovr } from "battlemovr";
-import { EightBittr, IComponentSettings, IEightBittrConstructorSettings, IEightBittrSettings } from "eightbittr";
+import { ClassCyclr, IClassCyclrSettings } from "classcyclr";
+import {
+    EightBittr,
+    IComponentSettings,
+    IEightBittrConstructorSettings,
+    IEightBittrSettings,
+} from "eightbittr";
 import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
 import { GroupHoldr } from "groupholdr";
 import { ItemsHoldr } from "itemsholdr";
 import { MenuGraphr } from "menugraphr";
+import { IModAttachrSettings, ModAttachr, IModsItemsHoldr } from "modattachr";
+import { INumberMakrSettings, NumberMakr } from "numbermakr";
 import { ScenePlayr } from "sceneplayr";
-import { StateHoldr } from "stateholdr";
+import { StateHoldr, IStateItemsHoldr } from "stateholdr";
 
-import { Actions } from "./components/Actions";
-import { Animations } from "./components/Animations";
-import { Audio } from "./components/Audio";
-import { Battles } from "./components/Battles";
-import { Collisions } from "./components/Collisions";
-import { Constants } from "./components/Constants";
-import { Cutscenes } from "./components/Cutscenes";
-import { Cycling } from "./components/Cycling";
-import { Equations } from "./components/Equations";
-import { Evolution } from "./components/Evolution";
-import { Experience } from "./components/Experience";
-import { Fishing } from "./components/Fishing";
-import { Frames } from "./components/Frames";
-import { Gameplay } from "./components/Gameplay";
-import { Graphics } from "./components/Graphics";
-import { Groups, IGroups } from "./components/Groups";
-import { Inputs } from "./components/Inputs";
-import { Items } from "./components/Items";
-import { Maintenance } from "./components/Maintenance";
-import { IMapScreenr, Maps } from "./components/Maps";
-import { Menus } from "./components/Menus";
-import { Mods } from "./components/Mods";
-import { MoveAdder } from "./components/MoveAdder";
-import { Objects } from "./components/Objects";
-import { Physics } from "./components/Physics";
-import { Saves } from "./components/Saves";
-import { Scrolling } from "./components/Scrolling";
-import { IStorageItems, Storage } from "./components/Storage";
-import { IPlayer, Things } from "./components/Things";
-import { Timing } from "./components/Timing";
-import { Utilities } from "./components/Utilities";
+import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
+import { createClassCycler } from "./creators/createClassCycler";
 import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
 import { createMenuGrapher } from "./creators/createMenuGrapher";
+import { createModAttacher } from "./creators/createModAttacher";
+import { createNumberMaker } from "./creators/createNumberMaker";
 import { createScenePlayer } from "./creators/createScenePlayer";
 import { createStateHolder } from "./creators/createStateHolder";
+import { Actions } from "./sections/Actions";
+import { Animations } from "./sections/Animations";
+import { Audio } from "./sections/Audio";
+import { Battles } from "./sections/Battles";
+import { Collisions } from "./sections/Collisions";
+import { Constants } from "./sections/Constants";
+import { Cutscenes } from "./sections/Cutscenes";
+import { Cycling } from "./sections/Cycling";
+import { Equations } from "./sections/Equations";
+import { Evolution } from "./sections/Evolution";
+import { Experience } from "./sections/Experience";
+import { Fishing } from "./sections/Fishing";
+import { Frames } from "./sections/Frames";
+import { Gameplay } from "./sections/Gameplay";
+import { Graphics } from "./sections/Graphics";
+import { Groups, IGroups } from "./sections/Groups";
+import { Inputs } from "./sections/Inputs";
+import { Items } from "./sections/Items";
+import { Maintenance } from "./sections/Maintenance";
+import { IMapScreenr, Maps } from "./sections/Maps";
+import { Menus } from "./sections/Menus";
+import { Mods } from "./sections/Mods";
+import { MoveAdder } from "./sections/MoveAdder";
+import { Objects } from "./sections/Objects";
+import { Physics } from "./sections/Physics";
+import { Quadrants } from "./sections/Quadrants";
+import { Saves } from "./sections/Saves";
+import { Scrolling } from "./sections/Scrolling";
+import { IStorageItems, Storage } from "./sections/Storage";
+import { IPlayer, Things } from "./sections/Things";
+import { Timing } from "./sections/Timing";
+import { Utilities } from "./sections/Utilities";
 
 /**
  * Settings to initialize a new FullScreenPokemon.
  */
 export interface IFullScreenPokemonComponentSettings extends IComponentSettings {
     /**
-     * Settings for feature flags, particularly for a FlagSwappr.
+     * Setings overrides for the game's AudioPlayr.
+     */
+    audioPlayer?: Partial<IAudioPlayrSettings>;
+
+    /**
+     * Setings overrides for the game's ClassCyclr.
+     */
+    classCycler?: Partial<IClassCyclrSettings>;
+
+    /**
+     * Setings overrides for the game's FlagSwappr.
      */
     flagSwapper?: Partial<IFlagSwapprSettings<IFlags>>;
+
+    /**
+     * Setings overrides for the game's ModAttachr.
+     */
+    modAttacher?: Partial<IModAttachrSettings>;
+
+    /**
+     * Setings overrides for the game's NumberMakr.
+     */
+    numberMaker?: Partial<INumberMakrSettings>;
 }
 
 /**
@@ -76,13 +110,16 @@ export interface IFullScreenPokemonSettings extends IEightBittrSettings {
 }
 
 /**
- * A free HTML5 remake of Nintendo's original Pokemon, expanded for the modern web.
+ * HTML5 remake of the original Pokemon, expanded for modern browsers.
  */
 export class FullScreenPokemon extends EightBittr {
     /**
      * Screen and component reset settings.
      */
     public readonly settings: IFullScreenPokemonSettings;
+
+    @factory(createAudioPlayer)
+    public readonly audioPlayer: AudioPlayr;
 
     /**
      * An in-game battle management system for RPG-like battles between actors.
@@ -91,21 +128,49 @@ export class FullScreenPokemon extends EightBittr {
     public readonly battleMover: BattleMovr;
 
     /**
+     * Cycles through class names using TimeHandlr events.
+     */
+    @factory(createClassCycler)
+    public readonly classCycler: ClassCyclr;
+
+    /**
      * Gates flags behind generational gaps.
      */
     @factory(createFlagSwapper)
     public readonly flagSwapper: FlagSwappr<IFlags>;
 
     /**
-     * Cache-based wrapper around localStorage.
+     * Stores arrays of Things by their group name.
      */
-    public readonly itemsHolder: ItemsHoldr<IStorageItems>;
+    public readonly groupHolder: GroupHoldr<IGroups>;
 
     /**
-     * In-game menu and dialog management system for EightBittr.
+     * Cache-based wrapper around localStorage.
+     */
+    public readonly itemsHolder: ItemsHoldr<IStorageItems> & IModsItemsHoldr & IStateItemsHoldr;
+
+    /**
+     * A flexible container for map attributes and viewport.
+     */
+    public readonly mapScreener: IMapScreenr;
+
+    /**
+     * In-game menu and dialog management system.
      */
     @factory(createMenuGrapher)
     public readonly menuGrapher: MenuGraphr;
+
+    /**
+     * Hookups for extensible triggered mod events.
+     */
+    @factory(createModAttacher)
+    public readonly modAttacher: ModAttachr;
+
+    /**
+     * Configurable Mersenne Twister implementation.
+     */
+    @factory(createNumberMaker)
+    public readonly numberMaker: NumberMakr;
 
     /**
      * A stateful cutscene runner for jumping between scenes and their routines.
@@ -122,197 +187,193 @@ export class FullScreenPokemon extends EightBittr {
     /**
      * Actions characters may perform walking around.
      */
-    @component(Actions)
-    public readonly actions: Actions<this>;
+    @member(Actions)
+    public readonly actions: Actions;
 
     /**
      * Generic animations for Things.
      */
-    @component(Animations)
-    public readonly animations: Animations<this>;
+    @member(Animations)
+    public readonly animations: Animations;
 
     /**
      * Friendly sound aliases and names for audio.
      */
-    @component(Audio)
+    @member(Audio)
     public readonly audio: Audio<this>;
 
     /**
      * BattleMovr hooks to run trainer battles.
      */
-    @component(Battles)
-    public readonly battles: Battles<this>;
+    @member(Battles)
+    public readonly battles: Battles;
 
     /**
      * ThingHittr collision function generators.
      */
-    @component(Collisions)
+    @member(Collisions)
     public readonly collisions: Collisions<this>;
 
     /**
      * Universal game constants.
      */
-    @component(Constants)
-    public readonly constants: Constants<this>;
+    @member(Constants)
+    public readonly constants: Constants;
 
     /**
      * ScenePlayr cutscenes, keyed by name.
      */
-    @component(Cutscenes)
-    public readonly cutscenes: Cutscenes<this>;
+    @member(Cutscenes)
+    public readonly cutscenes: Cutscenes;
 
     /**
      * Starts and stop characters cycling.
      */
-    @component(Cycling)
-    public readonly cycling: Cycling<this>;
+    @member(Cycling)
+    public readonly cycling: Cycling;
 
     /**
      * Common equations.
      */
-    @component(Equations)
-    public readonly equations: Equations<this>;
+    @member(Equations)
+    public readonly equations: Equations;
 
     /**
      * Logic for what Pokemon are able to evolve into.
      */
-    @component(Evolution)
-    public readonly evolution: Evolution<this>;
+    @member(Evolution)
+    public readonly evolution: Evolution;
 
     /**
      * Calculates experience gains and level ups for Pokemon.
      */
-    @component(Experience)
-    public readonly experience: Experience<this>;
+    @member(Experience)
+    public readonly experience: Experience;
 
     /**
      * Runs the player trying to fish for Pokemon.
      */
-    @component(Fishing)
-    public readonly fishing: Fishing<this>;
+    @member(Fishing)
+    public readonly fishing: Fishing;
+
+    /**
+     * How to advance each frame of the game.
+     */
+    @member(Frames)
+    public readonly frames: Frames<this>;
 
     /**
      * Event hooks for major gameplay state changes.
      */
-    @component(Gameplay)
+    @member(Gameplay)
     public readonly gameplay: Gameplay<this>;
 
     /**
      * Changes the visual appearance of Things.
      */
-    @component(Graphics)
+    @member(Graphics)
     public readonly graphics: Graphics<this>;
 
     /**
      * Collection settings for IThing group names.
      */
-    @component(Groups)
+    @member(Groups)
     public readonly groups: Groups<this>;
-
-    /**
-     * How to advance each frame of the game.
-     */
-    @component(Frames)
-    public readonly frames: Frames<this>;
-
-    /**
-     * Stores arrays of Things by their group name.
-     */
-    public readonly groupHolder: GroupHoldr<IGroups>;
 
     /**
      * User input filtering and handling.
      */
-    @component(Inputs)
+    @member(Inputs)
     public readonly inputs: Inputs<this>;
 
     /**
      * Storage keys and value settings.
      */
-    @component(Items)
+    @member(Items)
     public readonly items: Items<this>;
 
     /**
      * Maintains Things during FrameTickr ticks.
      */
-    @component(Maintenance)
+    @member(Maintenance)
     public readonly maintenance: Maintenance<this>;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    public readonly mapScreener: IMapScreenr;
 
     /**
      * Enters and spawns map areas.
      */
-    @component(Maps)
+    @member(Maps)
     public readonly maps: Maps<this>;
 
     /**
      * Manipulates MenuGraphr menus.
      */
-    @component(Menus)
-    public readonly menus: Menus<this>;
+    @member(Menus)
+    public readonly menus: Menus;
 
     /**
      * Creates ModAttachr from mod classes.
      */
-    @component(Mods)
+    @member(Mods)
     public readonly mods: Mods<this>;
 
     /**
      * Creates MoveAdder to teach Pokemon new moves.
      */
-    @component(MoveAdder)
-    public readonly moveAdder: MoveAdder<this>;
+    @member(MoveAdder)
+    public readonly moveAdder: MoveAdder;
 
     /**
      * Raw ObjectMakr factory settings.
      */
-    @component(Objects)
+    @member(Objects)
     public readonly objects: Objects<this>;
+
+    /**
+     * Arranges game physics quadrants.
+     */
+    @member(Quadrants)
+    public readonly quadrants: Quadrants<this>;
 
     /**
      * Physics functions to move Things around.
      */
-    @component(Physics)
+    @member(Physics)
     public readonly physics: Physics<this>;
 
     /**
      * Saves and load game data.
      */
-    @component(Saves)
-    public readonly saves: Saves<this>;
+    @member(Saves)
+    public readonly saves: Saves;
 
     /**
      * Moves the screen and Things in it.
      */
-    @component(Scrolling)
+    @member(Scrolling)
     public readonly scrolling: Scrolling<this>;
 
     /**
      * Settings for storing items in ItemsHoldrs.
      */
-    @component(Storage)
-    public readonly storage: Storage<this>;
+    @member(Storage)
+    public readonly storage: Storage;
 
     /**
      * Adds and processes new Things into the game.
      */
-    @component(Things)
+    @member(Things)
     public readonly things: Things<this>;
 
     /**
      * Timing constants for delayed events.
      */
-    @component(Timing)
+    @member(Timing)
     public readonly timing: Timing<this>;
 
     /**
      * Miscellaneous utility functions.
      */
-    @component(Utilities)
+    @member(Utilities)
     public readonly utilities: Utilities<this>;
 
     /**

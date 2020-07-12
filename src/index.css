@@ -1,6 +1,7 @@
 /* General elements */
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
 }
@@ -9,7 +10,7 @@ body {
     background: black;
     color: #fafafa;
     overflow-x: hidden;
-	overflow-y: scroll;
+    overflow-y: scroll;
 }
 
 header {
@@ -37,11 +38,10 @@ h1 {
     text-align: center;
 }
 
-
 /* General animations */
 
 .hoverable {
-    opacity: .84;
+    opacity: 0.84;
     transition: 140ms opacity;
 }
 
@@ -49,15 +49,12 @@ h1 {
     opacity: 1;
 }
 
-
-
 /* Game section */
 
 section#game {
     min-height: 210px;
     margin-bottom: 35px;
 }
-
 
 /* Text sections */
 
@@ -73,7 +70,7 @@ section.section-text {
     color: #cfc;
 }
 
-@media(max-width: 350px) {
+@media (max-width: 350px) {
     section.section-text {
         padding: 14px 7px;
     }
@@ -81,8 +78,7 @@ section.section-text {
 
 @font-face {
     font-family: "Press Start";
-    src:
-        url("theme/fonts/pressstart2p-webfont.eot?#iefix") format("embedded-opentype"),
+    src: url("theme/fonts/pressstart2p-webfont.eot?#iefix") format("embedded-opentype"),
         url("theme/fonts/pressstart2p-webfont.woff") format("woff"),
         url("theme/fonts/pressstart2p-webfont.ttf") format("truetype"),
         url("theme/fonts/pressstart2p-webfont.svg") format("svg");

@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
+        "baseUrl": "./src",
         "declaration": true,
+        "declarationMap": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "jsx": "react",
@@ -13,18 +15,16 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "outDir": "./lib",
         "pretty": true,
+        "rootDir": "./src",
+        "skipLibCheck": true,
+        "sourceMap": true,
         "strict": true,
         "strictFunctionTypes": false,
         "strictPropertyInitialization": false,
-        "target": "es5"
+        "target": "es2015"
     },
-    "exclude": [
-        "dist",
-        "node_modules"
-    ],
-    "include": [
-        "./src/**/*.ts",
-        "./src/**/*.tsx"
-    ]
+    "exclude": ["**/*.d.ts", "**/lib"],
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

@@ -1,11 +1,11 @@
+import { createClock } from "@sinonjs/fake-timers";
 import { AudioElementSound } from "audioplayr";
 import { IEightBittrConstructorSettings } from "eightbittr";
 import { createStorage } from "itemsholdr";
-import * as lolex from "lolex";
 import * as sinon from "sinon";
 
-import { IMenu } from "./components/Menus";
-import { IPlayer } from "./components/Things";
+import { IMenu } from "./sections/Menus";
+import { IPlayer } from "./sections/Things";
 import { FullScreenPokemon } from "./FullScreenPokemon";
 
 export interface IStubFullScreenPokemonSettings extends Partial<IEightBittrConstructorSettings> {
@@ -28,7 +28,7 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
         ...settings,
     };
 
-    const clock = lolex.createClock();
+    const clock = createClock();
     const prefix = `${new Date().getTime()}`;
     const storage = createStorage();
     const fsp = new FullScreenPokemon({
@@ -42,11 +42,9 @@ export const stubFullScreenPokemon = (settings: IStubFullScreenPokemonSettings =
                     cancelFrame: clock.clearTimeout,
                     getTimestamp: () => clock.now,
                     requestFrame: (callback) =>
-                        clock.setTimeout(
-                            () => {
-                                callback(clock.now);
-                            },
-                            1),
+                        clock.setTimeout(() => {
+                            callback(clock.now);
+                        }, 1),
                 },
             },
             itemsHolder: { prefix, storage },

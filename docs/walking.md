@@ -7,18 +7,16 @@ Each "step" on that path must be either an instruction with the number of `block
 You can manually trigger a character to talk along a path using `FSP.walking.startWalkingOnPath`:
 
 ```typescript
-FSP.walking.startWalkingOnPath(
-    FSP.players[0],
-    [
-        {
-            blocks: 1,
-            direction: 2,
-        },
-        () => ({
-            blocks: 4,
-            direction: 3,
-        }),
-    ]);
+FSP.walking.startWalkingOnPath(FSP.players[0], [
+    {
+        blocks: 1,
+        direction: 2,
+    },
+    () => ({
+        blocks: 4,
+        direction: 3,
+    }),
+]);
 ```
 
 ### Following
@@ -46,9 +44,9 @@ See `IAreaWildPokemonOptionGroups`.
 
 When a character collides with a `Grass` thing, several changes happen to the character:
 
-* The grass is stored as a member of the character.
-* The character's height is reduced.
-* The character is given a "shadow" that appears to be the character's body partially hidden by grass.
+-   The grass is stored as a member of the character.
+-   The character's height is reduced.
+-   The character is given a "shadow" that appears to be the character's body partially hidden by grass.
 
 Once the character is no longer bording the grass, those changes are undone.
 
