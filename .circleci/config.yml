@@ -1,12 +1,9 @@
 version: 2.1
 
-orbs:
-    puppeteer: threetreeslight/puppeteer@0.1.2
-
 references:
     default_env: &default_env
         docker:
-            - image: circleci/node:14.4.0
+            - image: cimg/node:16.7-browsers
 
     yarn_cache_key_1: &yarn_cache_key_1 yarn---
     yarn_cache_key_2: &yarn_cache_key_2 yarn--

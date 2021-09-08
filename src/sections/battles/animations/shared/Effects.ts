@@ -109,9 +109,6 @@ export class Effects extends Section<FullScreenPokemon> {
             case "switch":
                 this.switching.run(teamAndAction, effect, onComplete);
                 return;
-
-            default:
-                throw new Error(`Unknown effect type: '${(effect as MoveEffect).type}'.`);
         }
     }
 

@@ -13,7 +13,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      *
      * @param settings   Settings used for the cutscene.
      */
-    public async FadeIn(settings: any): Promise<void> {
+    public FadeIn(settings: any) {
         const oak: Actor = this.game.objectMaker.make<Actor>(this.game.actors.names.oakPortrait, {
             opacity: 0,
         });
