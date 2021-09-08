@@ -7,13 +7,13 @@ describe("EntranceAnimations", () => {
         it("defaults player position to (0, 0) when not previously saved", () => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const zeroCorner = fsp.things.add(fsp.things.names.grass, 0, 0);
+            const zeroCorner = fsp.actors.add(fsp.actors.names.grass, 0, 0);
 
             // Act
             fsp.maps.entranceAnimations.resume();
 
             // Assert
-            expect(fsp.groupHolder.getThing("player")).to.deep.include({
+            expect(fsp.groupHolder.getActor("player")).to.deep.include({
                 left: zeroCorner.left,
                 top: zeroCorner.top,
             });
@@ -24,7 +24,7 @@ describe("EntranceAnimations", () => {
             const xloc = 40;
             const yloc = 24;
             const { fsp } = stubBlankGame();
-            const zeroCorner = fsp.things.add(fsp.things.names.grass, 0, 0);
+            const zeroCorner = fsp.actors.add(fsp.actors.names.grass, 0, 0);
 
             fsp.stateHolder.addChange("player", "xloc", xloc);
             fsp.stateHolder.addChange("player", "yloc", yloc);
@@ -34,7 +34,7 @@ describe("EntranceAnimations", () => {
             fsp.maps.entranceAnimations.resume();
 
             // Assert
-            expect(fsp.groupHolder.getThing("player")).to.deep.include({
+            expect(fsp.groupHolder.getActor("player")).to.deep.include({
                 left: zeroCorner.left + xloc,
                 top: zeroCorner.top + yloc,
             });

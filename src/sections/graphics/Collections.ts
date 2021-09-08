@@ -1,73 +1,73 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IThing } from "../Things";
+import { Actor } from "../Actors";
 
 /**
- * Collects Things to change visuals en masse.
+ * Collects Actors to change visuals en masse.
  */
 export class Collections extends Section<FullScreenPokemon> {
     /**
-     * Collects all unique Things that should be kept on top of battle intro animations.
+     * Collects all unique Actors that should be kept on top of battle intro animations.
      *
-     * @param thingsRaw   Titles of and/or references to Things that should be kept.
-     * @returns The unique Things that will be kept.
+     * @param actorsRaw   Titles of and/or references to Actors that should be kept.
+     * @returns The unique Actors that will be kept.
      */
-    public collectBattleKeptThings(thingsRaw: (string | IThing)[]): IThing[] {
-        const things: IThing[] = [this.game.players[0]];
-        const used: { [i: string]: IThing } = {
+    public collectBattleKeptActors(actorsRaw: (string | Actor)[]): Actor[] {
+        const actors: Actor[] = [this.game.players[0]];
+        const used: { [i: string]: Actor } = {
             [this.game.players[0].title]: this.game.players[0],
         };
 
-        for (const thingRaw of thingsRaw) {
-            const thing: IThing =
-                thingRaw.constructor === String
-                    ? this.game.utilities.getExistingThingById(thingRaw)
-                    : (thingRaw as IThing);
+        for (const actorRaw of actorsRaw) {
+            const actor: Actor =
+                actorRaw.constructor === String
+                    ? this.game.utilities.getExistingActorById(actorRaw)
+                    : (actorRaw as Actor);
 
-            if (!used[thing.title]) {
-                used[thing.title] = thing;
-                things.push(thing);
+            if (!used[actor.title]) {
+                used[actor.title] = actor;
+                actors.push(actor);
             }
         }
 
-        return things;
+        return actors;
     }
 
     /**
-     * Moves all kept Things in a battle to the Text group for animations.
+     * Moves all kept Actors in a battle to the Text group for animations.
      *
-     * @param keptThings    Things that should be visible above text animations.
+     * @param keptActors    Actors that should be visible above text animations.
      */
-    public moveThingsToText(things: IThing[]): void {
-        for (const thing of things) {
-            this.game.groupHolder.switchGroup(thing, thing.groupType, "Text");
+    public moveActorsToText(actors: Actor[]): void {
+        for (const actor of actors) {
+            this.game.groupHolder.switchGroup(actor, actor.groupType, "Text");
         }
     }
 
     /**
-     * Moves kept Things
+     * Moves kept Actors
      *
      * @remarks This is necessary because animations may put backgrounds
-     *          as the first Text Thing after keptThings were added.
+     *          as the first Text Actor after keptActors were added.
      */
-    public moveThingsBeforeBackgrounds(things: IThing[]): void {
-        const texts: IThing[] = this.game.groupHolder.getGroup("Text");
+    public moveActorsBeforeBackgrounds(actors: Actor[]): void {
+        const texts: Actor[] = this.game.groupHolder.getGroup("Text");
 
-        for (const thing of things) {
-            texts.splice(texts.indexOf(thing), 1);
-            texts.splice(0, 0, thing);
+        for (const actor of actors) {
+            texts.splice(texts.indexOf(actor), 1);
+            texts.splice(0, 0, actor);
         }
     }
 
     /**
-     * Moves all kept Things in a battle back to their original groups.
+     * Moves all kept Actors in a battle back to their original groups.
      *
-     * @param keptThings    Things that should be visible above text animations.
+     * @param keptActors    Actors that should be visible above text animations.
      */
-    public moveThingsFromText(things: IThing[]): void {
-        for (const keptThing of things) {
-            this.game.groupHolder.switchGroup(keptThing, "Text", keptThing.groupType);
+    public moveActorsFromText(actors: Actor[]): void {
+        for (const keptActor of actors) {
+            this.game.groupHolder.switchGroup(keptActor, "Text", keptActor.groupType);
         }
     }
 }

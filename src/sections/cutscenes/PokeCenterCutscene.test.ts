@@ -3,8 +3,8 @@ import { expect } from "chai";
 
 import { FullScreenPokemon } from "../..";
 import { stubBlankGame } from "../../fakes.test";
-import { IPokemon } from "../Battles";
-import { ICharacter, IThing } from "../Things";
+import { Pokemon } from "../Battles";
+import { Character, Actor } from "../Actors";
 
 /**
  * Sets up a game in PokeCenter with the player being asked to heal their Pokemon.
@@ -13,19 +13,19 @@ const stubBlankGameWithNurseAndMachineAfterWelcome = () => {
     const { fsp, player, ...extras } = stubBlankGame({
         automaticallyAdvanceMenus: true,
     });
-    const firstPokemonInParty: IPokemon = fsp.equations.createPokemon({
+    const firstPokemonInParty: Pokemon = fsp.equations.createPokemon({
         level: 77,
         title: "METAPOD".split(""),
     });
-    const nurse = fsp.objectMaker.make<ICharacter>("Nurse", {
+    const nurse = fsp.objectMaker.make<Character>("Nurse", {
         id: "Nurse",
     });
-    const machine = fsp.objectMaker.make<IThing>("HealingMachine", {
+    const machine = fsp.objectMaker.make<Actor>("HealingMachine", {
         id: "HealingMachine",
     });
 
-    fsp.things.add(machine, nurse.right, nurse.top);
-    fsp.things.add(nurse, player.right, player.top);
+    fsp.actors.add(machine, nurse.right, nurse.top);
+    fsp.actors.add(nurse, player.right, player.top);
 
     fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [firstPokemonInParty]);
 

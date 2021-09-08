@@ -1,8 +1,8 @@
-import { IMove, IStatistic } from "battlemovr";
+import { Move, Statistic } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
+import { Pokemon } from "../Battles";
 
 export class ItemEffects extends Section<FullScreenPokemon> {
     /**
@@ -11,7 +11,7 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param move   The move whose PP is being modified.
      * @param amount   The amount of PP that is being restored.
      */
-    public addPP(move: IMove, amount: number) {
+    public addPP(move: Move, amount: number) {
         if (amount < 0) {
             throw new Error("PP decrements aren't allowed.");
         }
@@ -24,7 +24,7 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      *
      * @param statistic   The statistic that is being modified.
      */
-    private increaseBattleStat(statistic: IStatistic) {
+    private increaseBattleStat(statistic: Statistic) {
         statistic.current = Math.min(
             statistic.normal * 4,
             statistic.normal / 2 + statistic.current
@@ -38,8 +38,8 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param statistic   The stat that is being modified by the item.
      * @param type   The string representing the stat name.
      */
-    public useXItem(pokemon: IPokemon, statistic: IStatistic, type: string) {
-        //TODO: Implement X Accuracy
+    public useXItem(pokemon: Pokemon, statistic: Statistic, type: string) {
+        //TODO: implement X Accuracy
         //https://github.com/FullScreenShenanigans/FullScreenPokemon/issues/657
 
         this.game.menuGrapher.createMenu("GeneralText", {
@@ -64,7 +64,7 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param pokemon   An in-game Pokemon to revive.
      * @param percentage   The percentage of health restored by the revive (use 50% for Revive, 100% for Max Revive).
      */
-    private revivePokemon(pokemon: IPokemon, percentage: number): void {
+    private revivePokemon(pokemon: Pokemon, percentage: number): void {
         if (percentage < 0 || percentage > 1) {
             throw new Error("Invalid percentage value.");
         }
@@ -86,7 +86,7 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param pokemon   An in-game Pokemon to revive.
      * @param percentage   The percentage of health restored by the revive (use 50% for Revive, 100% for Max Revive).
      */
-    public useRevive(pokemon: IPokemon, percentage: number) {
+    public useRevive(pokemon: Pokemon, percentage: number) {
         this.game.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
@@ -106,7 +106,7 @@ export class ItemEffects extends Section<FullScreenPokemon> {
      * @param pokemon   A Pokemon that you're capturing.
      * @returns Whether the Pokemon was added to your party or not.
      */
-    public capturePokemon(pokemon: IPokemon): boolean {
+    public capturePokemon(pokemon: Pokemon): boolean {
         if (this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty).length >= 6) {
             return false;
         }

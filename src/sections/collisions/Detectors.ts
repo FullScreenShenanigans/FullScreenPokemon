@@ -1,26 +1,26 @@
 import { Section } from "eightbittr";
-import { IMenuDialogRaw } from "menugraphr";
+import { MenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { ICharacter, IDetector, IPlayer } from "../Things";
+import { Character, Detector, Player } from "../Actors";
 
 /**
- * Handlers for collisions with Detector Things.
+ * Handlers for collisions with Detector Actors.
  */
 export class Detectors extends Section<FullScreenPokemon> {
     /**
      * Collision callback for a Player and a dialog-containing Character. The
      * dialog is started if it exists, as with a cutscene from other.
      *
-     * @param thing   A Player triggering other.
-     * @param other   A Character with dialog triggered by thing.
+     * @param actor   A Player triggering other.
+     * @param other   A Character with dialog triggered by actor.
      */
-    public collideCharacterDialog = (thing: IPlayer, other: ICharacter): void => {
+    public collideCharacterDialog = (actor: Player, other: Character): void => {
         let dialog = other.dialog;
 
         if (other.cutscene) {
             this.game.scenePlayer.startCutscene(other.cutscene, {
-                thing,
+                actor,
                 triggerer: other,
             });
         }
@@ -29,16 +29,16 @@ export class Detectors extends Section<FullScreenPokemon> {
             return;
         }
 
-        const direction = this.game.physics.getDirectionBetween(other, thing);
+        const direction = this.game.physics.getDirectionBetween(other, actor);
 
         if (other.dialogDirections) {
-            dialog = (dialog as IMenuDialogRaw[])[direction];
+            dialog = (dialog as MenuDialogRaw[])[direction];
             if (!dialog) {
                 return;
             }
         }
 
-        thing.talking = true;
+        actor.talking = true;
         other.talking = true;
 
         if (!this.game.menuGrapher.getActiveMenu()) {
@@ -47,7 +47,7 @@ export class Detectors extends Section<FullScreenPokemon> {
             });
             this.game.menuGrapher.setActiveMenu("GeneralText");
             this.game.menuGrapher.addMenuDialog("GeneralText", dialog, (): void =>
-                this.game.actions.animateCharacterDialogFinish(thing, other)
+                this.game.actions.animateCharacterDialogFinish(actor, other)
             );
         }
 
@@ -60,22 +60,22 @@ export class Detectors extends Section<FullScreenPokemon> {
      * Collision callback for a Character and a CollisionDetector. Only Players may
      * trigger the detector, which has to be active to do anything.
      *
-     * @param thing   A Character triggering other.
-     * @param other   A Detector triggered by thing.
-     * @returns Whether to override normal positioning logic in hitCharacterThing.
+     * @param actor   A Character triggering other.
+     * @param other   A Detector triggered by actor.
+     * @returns Whether to override normal positioning logic in hitCharacterActor.
      */
-    public collideCollisionDetector = (thing: IPlayer, other: IDetector): boolean => {
-        if (!thing.player) {
+    public collideCollisionDetector = (actor: Player, other: Detector): boolean => {
+        if (!actor.player) {
             return false;
         }
 
         if (other.active) {
-            if (!other.requireOverlap || this.game.physics.isThingWithinOther(thing, other)) {
+            if (!other.requireOverlap || this.game.physics.isActorWithinOther(actor, other)) {
                 if (
                     typeof other.requireDirection !== "undefined" &&
-                    !thing.keys[other.requireDirection] &&
-                    !thing.allowDirectionAsKeys &&
-                    thing.direction !== other.requireDirection
+                    !actor.keys[other.requireDirection] &&
+                    !actor.allowDirectionAsKeys &&
+                    actor.direction !== other.requireDirection
                 ) {
                     return false;
                 }
@@ -88,14 +88,14 @@ export class Detectors extends Section<FullScreenPokemon> {
                     throw new Error("No activate callback for collision detector.");
                 }
 
-                other.activate.call(this.game.actions, thing, other);
+                other.activate.call(this.game.actions, actor, other);
             }
 
             return true;
         }
 
-        // If the thing is moving towards the triggerer, it's now active
-        if (thing.direction === this.game.physics.getDirectionBordering(thing, other)) {
+        // If the actor is moving towards the triggerer, it's now active
+        if (actor.direction === this.game.physics.getDirectionBordering(actor, other)) {
             other.active = true;
             return true;
         }

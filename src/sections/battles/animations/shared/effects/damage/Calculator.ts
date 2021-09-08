@@ -1,9 +1,9 @@
-import { IDamageEffect, IMoveAction, ITeamAndAction } from "battlemovr";
+import { DamageEffect, MoveAction, TeamAndAction } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../../FullScreenPokemon";
-import { IPokemon } from "../../../../../Battles";
-import { IMoveSchema } from "../../../../../constants/Moves";
+import { Pokemon } from "../../../../../Battles";
+import { MoveSchema } from "../../../../../constants/Moves";
 
 /**
  * Calculates damage dealt from battle moves.
@@ -21,8 +21,8 @@ export class Calculator extends Section<FullScreenPokemon> {
      * @remarks Todo: Factor in spec differences from burns, etc.
      */
     public calculateDamage(
-        teamAndAction: ITeamAndAction<IMoveAction>,
-        effect: IDamageEffect
+        teamAndAction: TeamAndAction<MoveAction>,
+        effect: DamageEffect
     ): number {
         const base: number = effect.damage;
 
@@ -30,8 +30,8 @@ export class Calculator extends Section<FullScreenPokemon> {
             return teamAndAction.target.actor.statistics.health.current;
         }
 
-        const attacker: IPokemon = teamAndAction.source.actor as IPokemon;
-        const defender: IPokemon = teamAndAction.target.actor as IPokemon;
+        const attacker: Pokemon = teamAndAction.source.actor as Pokemon;
+        const defender: Pokemon = teamAndAction.target.actor as Pokemon;
         const critical: boolean = this.isCriticalHit(teamAndAction.action.move, attacker);
         const level: number = attacker.level * Number(critical);
         const attack: number = attacker.statistics.attack.current;
@@ -62,8 +62,8 @@ export class Calculator extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/Damage#Damage_formula
      * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
      */
-    public getDamageModifier(move: string, attacker: IPokemon, defender: IPokemon): number {
-        const moveSchema: IMoveSchema = this.game.constants.moves.byName[move];
+    public getDamageModifier(move: string, attacker: Pokemon, defender: Pokemon): number {
+        const moveSchema: MoveSchema = this.game.constants.moves.byName[move];
         const stab: number = attacker.types.indexOf(moveSchema.type) !== -1 ? 1.5 : 1;
         const type: number = this.getTypeEffectiveness(move, defender);
 
@@ -78,7 +78,7 @@ export class Calculator extends Section<FullScreenPokemon> {
      * @returns A damage modifier, as a multiplication constant.
      * @see http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart#Generation_I
      */
-    public getTypeEffectiveness(move: string, defender: IPokemon): number {
+    public getTypeEffectiveness(move: string, defender: Pokemon): number {
         const defenderTypes: string[] = this.game.constants.pokemon.byName[
             defender.title.join("")
         ].types;
@@ -104,8 +104,8 @@ export class Calculator extends Section<FullScreenPokemon> {
      * @returns Whether the move should be a critical hit.
      * @see http://bulbapedia.bulbagarden.net/wiki/Critical_hit
      */
-    public isCriticalHit(move: string, attacker: IPokemon): boolean {
-        const moveInfo: IMoveSchema = this.game.constants.moves.byName[move];
+    public isCriticalHit(move: string, attacker: Pokemon): boolean {
+        const moveInfo: MoveSchema = this.game.constants.moves.byName[move];
         const baseSpeed: number = this.game.constants.pokemon.byName[attacker.title.join("")]
             .speed;
         let denominator = 512;

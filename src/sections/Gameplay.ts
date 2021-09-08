@@ -2,19 +2,19 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-interface IDataMouseEvent extends MouseEvent {
+interface DataMouseEvent extends MouseEvent {
     dataTransfer: DataTransfer;
 }
 
 /**
  * Event hooks for major gameplay state changes.
  */
-export class Gameplay<TEightBittr extends FullScreenPokemon> extends Section<TEightBittr> {
+export class Gameplay extends Section<FullScreenPokemon> {
     /**
      * Sets the map to Blank and displays the StartOptions menu.
      */
     public startOptions(): void {
-        const options: any[] = [
+        const options = [
             {
                 text: "NEW GAME",
                 callback: (): void => this.startIntro(),
@@ -76,7 +76,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends Section<TEi
     public loadFile(): void {
         const dummy: HTMLInputElement = this.game.utilities.createElement("input", {
             type: "file",
-            onchange: (event: IDataMouseEvent): void => {
+            onchange: (event: DataMouseEvent): void => {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -93,7 +93,7 @@ export class Gameplay<TEightBittr extends FullScreenPokemon> extends Section<TEi
                     }
 
                     this.game.saves.loadRawData(currentTarget.result);
-                    delete reader.onloadend;
+                    delete (reader as any).onloadend;
                 };
                 reader.readAsText(file);
             },

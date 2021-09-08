@@ -1,12 +1,12 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
-import { IThing } from "../Things";
+import { Actor } from "../Actors";
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow the trainer to walk through walls.
  */
-export class WalkThroughWallsMod extends ModComponent implements IMod {
+export class WalkThroughWallsMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -15,12 +15,12 @@ export class WalkThroughWallsMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events: CallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.game.objectMaker.getPrototypeOf<IThing>("Solid").collide = (): boolean => true;
+            this.game.objectMaker.getPrototypeOf<Actor>("Solid").collide = (): boolean => true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            this.game.objectMaker.getPrototypeOf<IThing>("Solid").collide = (): boolean => false;
+            this.game.objectMaker.getPrototypeOf<Actor>("Solid").collide = (): boolean => false;
         },
     };
 }

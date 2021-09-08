@@ -1,9 +1,9 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IWalkingInstructions } from "../actions/Walking";
+import { WalkingInstructions } from "../actions/Walking";
 import { Direction } from "../Constants";
-import { ICharacter } from "../Things";
+import { Character } from "../Actors";
 
 /**
  * RivalRoute22Leaves cutscene routines.
@@ -23,8 +23,8 @@ export class RivalRoute22LeavesCutscene extends Section<FullScreenPokemon> {
      * Cutscene for the rival leaving after being defeated.
      */
     public Walking(): void {
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
-        const walkingInstructions: IWalkingInstructions = [
+        const rival: Character = this.game.utilities.getExistingActorById("Rival");
+        const walkingInstructions: WalkingInstructions = [
             {
                 blocks: 1,
                 direction: Direction.Top,

@@ -1,10 +1,10 @@
-import { IMoveAction, IMoveEffect, ITeamAndAction, Team } from "battlemovr";
+import { MoveAction, MoveEffect, TeamAndAction, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../../../Battles";
-import { IMenu } from "../../../../Menus";
-import { IThing } from "../../../../Things";
+import { BattleInfo, Pokemon } from "../../../../Battles";
+import { Menu } from "../../../../Menus";
+import { Actor } from "../../../../Actors";
 
 /**
  * Runs a battle move.
@@ -13,27 +13,27 @@ export class Move extends Section<FullScreenPokemon> {
     /**
      * Team and move being performed.
      */
-    protected readonly teamAndAction: ITeamAndAction<IMoveAction>;
+    protected readonly teamAndAction: TeamAndAction<MoveAction>;
 
     /**
      * Pokemon being targeted.
      */
-    protected readonly attacker: IPokemon;
+    protected readonly attacker: Pokemon;
 
     /**
-     * Visually attaching Thing.
+     * Visually attaching Actor.
      */
-    protected readonly attackerThing: IThing;
+    protected readonly attackerActor: Actor;
 
     /**
      * Pokemon using the move.
      */
-    protected readonly defender: IPokemon;
+    protected readonly defender: Pokemon;
 
     /**
-     * Visually defending Thing being attacked.
+     * Visually defending Actor being attacked.
      */
-    protected readonly defenderThing: IThing;
+    protected readonly defenderActor: Actor;
 
     /**
      * Movement direction from the attacker to the defender.
@@ -43,7 +43,7 @@ export class Move extends Section<FullScreenPokemon> {
     /**
      * Battle display menu.
      */
-    protected readonly menu: IMenu;
+    protected readonly menu: Menu;
 
     /**
      * Initializes a new instance of the Move class.
@@ -51,27 +51,24 @@ export class Move extends Section<FullScreenPokemon> {
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param teamAndAction   Team and move being performed.
      */
-    public constructor(
-        eightBitter: FullScreenPokemon,
-        teamAndAction: ITeamAndAction<IMoveAction>
-    ) {
+    public constructor(eightBitter: FullScreenPokemon, teamAndAction: TeamAndAction<MoveAction>) {
         super(eightBitter);
 
         this.teamAndAction = teamAndAction;
 
-        const battleInfo: IBattleInfo = eightBitter.battleMover.getBattleInfo() as IBattleInfo;
-        this.attacker = battleInfo.teams[Team[teamAndAction.source.team]].selectedActor;
-        this.attackerThing = battleInfo.things[Team[teamAndAction.source.team]];
-        this.defender = battleInfo.teams[Team[teamAndAction.target.team]].selectedActor;
-        this.defenderThing = battleInfo.things[Team[teamAndAction.target.team]];
-        this.direction = this.teamAndAction.source.team === Team.opponent ? -1 : 1;
-        this.menu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
+        const battleInfo: BattleInfo = eightBitter.battleMover.getBattleInfo() as BattleInfo;
+        this.attacker = battleInfo.teams[TeamId[teamAndAction.source.team]].selectedActor;
+        this.attackerActor = battleInfo.actors[TeamId[teamAndAction.source.team]];
+        this.defender = battleInfo.teams[TeamId[teamAndAction.target.team]].selectedActor;
+        this.defenderActor = battleInfo.actors[TeamId[teamAndAction.target.team]];
+        this.direction = this.teamAndAction.source.team === TeamId.opponent ? -1 : 1;
+        this.menu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as Menu;
     }
 
     /**
      * @returns Effects running this move will cause.
      */
-    public getEffects(): IMoveEffect[] {
+    public getEffects(): MoveEffect[] {
         return this.game.constants.moves.byName[this.teamAndAction.action.move].effects;
     }
 

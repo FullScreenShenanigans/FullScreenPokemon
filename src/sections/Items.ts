@@ -8,7 +8,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Storage keys and value settings.
  */
-export class Items<TEightBittr extends FullScreenPokemon> extends EightBittrItems<TEightBittr> {
+export class Items<Game extends FullScreenPokemon> extends EightBittrItems<Game> {
     /**
      * Prefix to add before keys in storage.
      */

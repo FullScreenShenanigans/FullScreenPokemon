@@ -1,12 +1,12 @@
-import { BattleOutcome, IUnderEachTeam } from "battlemovr";
-import { IMenuDialogRaw } from "menugraphr";
+import { BattleOutcome, UnderEachTeam } from "battlemovr";
+import { MenuDialogRaw } from "menugraphr";
 
-import { IBattleTeam } from "../../Battles";
+import { BattleTeam } from "../../Battles";
 
 /**
  * Texts for the player attempting to flee a battle.
  */
-export interface IFleeTextGenerators {
+export interface FleeTextGenerators {
     /**
      * Text for the player failing to flee a battle.
      */
@@ -26,11 +26,11 @@ export interface IFleeTextGenerators {
  * @param move   Name of the move.
  * @returns Text for the Pokemon using the move.
  */
-export type IMoveTextGenerator = (
-    team: IBattleTeam,
+export type MoveTextGenerator = (
+    team: BattleTeam,
     pokemon: string,
     move: string
-) => IMenuDialogRaw;
+) => MenuDialogRaw;
 
 /**
  * Generates text for a Pokemon being retracted.
@@ -39,7 +39,7 @@ export type IMoveTextGenerator = (
  * @param pokemon   Name of the Pokemon being retracted.
  * @returns Text for the Pokemon being retracted.
  */
-export type IRetractTextGenerator = (team: IBattleTeam, pokemon: string) => IMenuDialogRaw;
+export type RetractTextGenerator = (team: BattleTeam, pokemon: string) => MenuDialogRaw;
 
 /**
  * Generates text for a Pokemon being sent out.
@@ -48,7 +48,7 @@ export type IRetractTextGenerator = (team: IBattleTeam, pokemon: string) => IMen
  * @param pokemon   Name of the Pokemon being sent out.
  * @returns Text for the Pokemon being sent out.
  */
-export type ISendOutTextGenerator = (team: IBattleTeam, pokemon: string) => IMenuDialogRaw;
+export type SendOutTextGenerator = (team: BattleTeam, pokemon: string) => MenuDialogRaw;
 
 /**
  * Generates text for a team winning a battle.
@@ -57,7 +57,7 @@ export type ISendOutTextGenerator = (team: IBattleTeam, pokemon: string) => IMen
  * @param loser   Losing team.
  * @returns Text for the victor winning a battle.
  */
-export type IVictoryTextGenerator = (victor: IBattleTeam, loser: IBattleTeam) => IMenuDialogRaw;
+export type VictoryTextGenerator = (victor: BattleTeam, loser: BattleTeam) => MenuDialogRaw;
 
 /**
  * Generates text for a battle starting.
@@ -65,7 +65,7 @@ export type IVictoryTextGenerator = (victor: IBattleTeam, loser: IBattleTeam) =>
  * @param team   Team starting a battle.
  * @returns Text for the team starting a battle.
  */
-export type ITextStartGenerator = (team: IBattleTeam) => IMenuDialogRaw;
+export type TextStartGenerator = (team: BattleTeam) => MenuDialogRaw;
 
 /**
  * Generates text for a battle concluding.
@@ -73,92 +73,92 @@ export type ITextStartGenerator = (team: IBattleTeam) => IMenuDialogRaw;
  * @param outcome   Why the battle finished.
  * @returns Text for the battle concluding.
  */
-export type IBattleOutcomeTextGenerator = (outcome: BattleOutcome) => IMenuDialogRaw;
+export type BattleOutcomeTextGenerator = (outcome: BattleOutcome) => MenuDialogRaw;
 
 /**
  * Generators for a battle concluding, keyed by outcome descriptor.
  */
-export interface IBattleOutcomeTextGenerators {
-    [i: number /* BattleOutcome */]: IBattleOutcomeTextGenerator;
+export interface BattleOutcomeTextGenerators {
+    [i: number /* BattleOutcome */]: BattleOutcomeTextGenerator;
 }
 
 /**
  * Texts a team uses in battle.
  */
-export interface ITeamsTexts {
+export interface TeamsTexts {
     /**
      * Text for a Pokemon using a move.
      */
-    move: IMoveTextGenerator;
+    move: MoveTextGenerator;
 
     /**
      * Text for a trainer retracting a Pokemon.
      */
-    retract: IRetractTextGenerator;
+    retract: RetractTextGenerator;
 
     /**
      * Text for a trainer sending out a Pokemon.
      */
-    sendOut: ISendOutTextGenerator;
+    sendOut: SendOutTextGenerator;
 }
 /**
  * Optional texts to display in battle menus.
  */
-export interface IPartialTextGenerators {
+export interface PartialTextGenerators {
     /**
      * Text to display after a battle victory when in the real world again.
      */
-    afterBattle?(): IMenuDialogRaw;
+    afterBattle?(): MenuDialogRaw;
 
     /**
      * Texts for the player attempting to flee the battle.
      */
-    flee?: Partial<IFleeTextGenerators>;
+    flee?: Partial<FleeTextGenerators>;
 
     /**
      * Text generators for the outcome of the battle.
      */
-    outcomes?: IBattleOutcomeTextGenerators;
+    outcomes?: BattleOutcomeTextGenerators;
 
     /**
      * Text for when the battle starts. The opponent's name is between the strings.
      */
-    start?: Partial<ITextStartGenerator>;
+    start?: Partial<TextStartGenerator>;
 
     /**
      * Texts specific to each team.
      */
-    teams?: IUnderEachTeam<Partial<ITeamsTexts>>;
+    teams?: UnderEachTeam<Partial<TeamsTexts>>;
 }
 
 /**
  * Texts to display in battle menus.
  */
-export interface IBattleTextGenerators extends IPartialTextGenerators {
+export interface BattleTextGenerators extends PartialTextGenerators {
     /**
      * Texts for the player attempting to flee the battle.
      */
-    flee: IFleeTextGenerators;
+    flee: FleeTextGenerators;
 
     /**
      * Text generators for the outcome of the battle.
      */
-    outcomes: IBattleOutcomeTextGenerators;
+    outcomes: BattleOutcomeTextGenerators;
 
     /**
      * Text for when the battle starts. The opponent's name is between the strings.
      */
-    start: ITextStartGenerator;
+    start: TextStartGenerator;
 
     /**
      * Texts specific to each team.
      */
-    teams: IUnderEachTeam<ITeamsTexts>;
+    teams: UnderEachTeam<TeamsTexts>;
 
     /**
      * Text to display after a battle victory when in the real world again.
      */
-    afterBattle?(): IMenuDialogRaw;
+    afterBattle?(): MenuDialogRaw;
 }
 
 /**
@@ -168,7 +168,7 @@ export class Texts {
     /**
      * Default options for battle texts.
      */
-    public readonly defaultBattleTexts: IBattleTextGenerators = {
+    public readonly defaultBattleTexts: BattleTextGenerators = {
         flee: {
             fail: (): string => "Can't escape!",
             success: (): string => "Got away safely!",
@@ -176,17 +176,17 @@ export class Texts {
         outcomes: {},
         teams: {
             player: {
-                move: (_team: IBattleTeam, pokemon: string, move: string): string =>
+                move: (_team: BattleTeam, pokemon: string, move: string): string =>
                     `${pokemon} used ${move}!`,
-                retract: (_team: IBattleTeam, pokemon: string): string =>
+                retract: (_team: BattleTeam, pokemon: string): string =>
                     `${pokemon}, enough! Come back!`,
-                sendOut: (_team: IBattleTeam, pokemon: string): string => `Go, ${pokemon}!`,
+                sendOut: (_team: BattleTeam, pokemon: string): string => `Go, ${pokemon}!`,
             },
             opponent: {
-                move: (_team: IBattleTeam, pokemon: string, move: string): string =>
+                move: (_team: BattleTeam, pokemon: string, move: string): string =>
                     `ENEMY ${pokemon} used ${move}!`,
                 retract: (): string => "wat",
-                sendOut: (team: IBattleTeam, pokemon: string): string => {
+                sendOut: (team: BattleTeam, pokemon: string): string => {
                     let text = ` sent out ${pokemon}!`;
 
                     if (team.leader) {
@@ -197,7 +197,7 @@ export class Texts {
                 },
             },
         },
-        start: (team: IBattleTeam): string =>
+        start: (team: BattleTeam): string =>
             team.leader
                 ? `${team.leader.nickname.join("")} wants to fight!`
                 : `WILD ${team.actors[0].title.join("")} appeared!`,

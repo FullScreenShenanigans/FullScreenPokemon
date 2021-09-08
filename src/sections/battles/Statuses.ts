@@ -1,4 +1,4 @@
 /**
  * Titles of status effects that may be applied.
  */
-export type IStatus = "frozen" | "paralyzed" | "poison" | "sleep";
+export type Status = "frozen" | "paralyzed" | "poison" | "sleep";

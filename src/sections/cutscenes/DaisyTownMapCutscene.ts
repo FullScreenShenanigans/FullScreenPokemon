@@ -1,7 +1,7 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { ICharacter, IThing } from "../Things";
+import { Character, Actor } from "../Actors";
 
 /**
  * DaisyTownMap cutscene routines.
@@ -26,8 +26,8 @@ export class DaisyTownMapCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public ReceiveMap(settings: any): void {
-        const book: IThing = this.game.utilities.getExistingThingById("Book");
-        const daisy: ICharacter = settings.triggerer;
+        const book: Actor = this.game.utilities.getExistingActorById("Book");
+        const daisy: Character = settings.triggerer;
 
         this.game.death.kill(book);
         this.game.stateHolder.addChange(book.id, "alive", false);

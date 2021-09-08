@@ -1,6 +1,6 @@
 import { member } from "babyioc";
 import { Section } from "eightbittr";
-import { IMenuDialogRaw } from "menugraphr";
+import { MenuDialogRaw } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -9,29 +9,29 @@ import { Grass } from "./actions/Grass";
 import { Ledges } from "./actions/Ledges";
 import { Roaming } from "./actions/Roaming";
 import { Walking } from "./actions/Walking";
-import { IPokemon } from "./Battles";
+import { Pokemon } from "./Battles";
 import { Direction } from "./Constants";
-import { IHMMoveSchema } from "./constants/Moves";
-import { IArea, IMap } from "./Maps";
-import { IDialog, IDialogOptions } from "./Menus";
+import { HMMoveSchema } from "./constants/Moves";
+import { Area, Map } from "./Maps";
+import { Dialog, DialogOptions } from "./Menus";
 import {
-    IAreaGate,
-    IAreaSpawner,
-    ICharacter,
-    IDetector,
-    IEnemy,
-    IGymDetector,
-    IHMCharacter,
-    IMenuTriggerer,
-    IPlayer,
-    IPokeball,
-    IRoamingCharacter,
-    ISightDetector,
-    IThemeDetector,
-    IThing,
-    ITransporter,
-    ITransportSchema,
-} from "./Things";
+    Actor,
+    AreaGate,
+    AreaSpawner,
+    Character,
+    Detector,
+    Enemy,
+    GymDetector,
+    HMCharacter,
+    MenuTriggerer,
+    Player,
+    Pokeball,
+    RoamingCharacter,
+    SightDetector,
+    ThemeDetector,
+    Transporter,
+    TransportSchema,
+} from "./Actors";
 
 /**
  * Actions characters may perform walking around.
@@ -70,24 +70,24 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Spawning callback for Characters. Sight and roaming are accounted for.
      *
-     * @param thing   A newly placed Character.
+     * @param actor   A newly placed Character.
      */
-    public spawnCharacter = (thing: ICharacter): void => {
-        if (thing.sight) {
-            thing.sightDetector = this.game.things.add<ISightDetector>([
-                this.game.things.names.sightDetector,
+    public spawnCharacter = (actor: Character): void => {
+        if (actor.sight) {
+            actor.sightDetector = this.game.actors.add<SightDetector>([
+                this.game.actors.names.sightDetector,
                 {
-                    direction: thing.direction,
-                    width: thing.sight * 8,
+                    direction: actor.direction,
+                    width: actor.sight * 8,
                 },
             ]);
-            thing.sightDetector.viewer = thing;
-            this.animatePositionSightDetector(thing);
+            actor.sightDetector.viewer = actor;
+            this.animatePositionSightDetector(actor);
         }
 
-        if (thing.roaming) {
+        if (actor.roaming) {
             this.game.timeHandler.addEvent(
-                (): void => this.roaming.startRoaming(thing as IRoamingCharacter),
+                (): void => this.roaming.startRoaming(actor as RoamingCharacter),
                 this.game.numberMaker.randomInt(70)
             );
         }
@@ -96,10 +96,10 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Collision callback for a Player and a Pokeball it's interacting with.
      *
-     * @param thing   A Player interacting with other.
-     * @param other   A Pokeball being interacted with by thing.
+     * @param actor   A Player interacting with other.
+     * @param other   A Pokeball being interacted with by actor.
      */
-    public activatePokeball = (thing: IPlayer, other: IPokeball): void => {
+    public activatePokeball = (actor: Player, other: Pokeball): void => {
         switch (other.action) {
             case "item":
                 if (!other.item) {
@@ -127,7 +127,7 @@ export class Actions extends Section<FullScreenPokemon> {
                 }
 
                 this.game.scenePlayer.startCutscene(other.cutscene, {
-                    player: thing,
+                    player: actor,
                     triggerer: other,
                 });
                 if (other.routine) {
@@ -181,12 +181,12 @@ export class Actions extends Section<FullScreenPokemon> {
      * Activates a WindowDetector by immediately starting its cycle of
      * checking whether it's in-frame to activate.
      *
-     * @param thing   A newly placed WindowDetector.
+     * @param actor   A newly placed WindowDetector.
      */
-    public spawnWindowDetector = (thing: IDetector): void => {
-        if (!this.checkWindowDetector(thing)) {
+    public spawnWindowDetector = (actor: Detector): void => {
+        if (!this.checkWindowDetector(actor)) {
             this.game.timeHandler.addEventInterval(
-                (): boolean => this.checkWindowDetector(thing),
+                (): boolean => this.checkWindowDetector(actor),
                 7,
                 Infinity
             );
@@ -196,15 +196,15 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Freezes a Character to start a dialog.
      *
-     * @param thing   A Player to freeze.
+     * @param actor   A Player to freeze.
      */
-    public animatePlayerDialogFreeze(thing: IPlayer): void {
-        this.walking.animateCharacterPreventWalking(thing);
-        this.game.classCycler.cancelClassCycle(thing, "walking");
+    public animatePlayerDialogFreeze(actor: Player): void {
+        this.walking.animateCharacterPreventWalking(actor);
+        this.game.classCycler.cancelClassCycle(actor, "walking");
 
-        if (thing.walkingFlipping) {
-            this.game.timeHandler.cancelEvent(thing.walkingFlipping);
-            thing.walkingFlipping = undefined;
+        if (actor.walkingFlipping) {
+            this.game.timeHandler.cancelEvent(actor.walkingFlipping);
+            actor.walkingFlipping = undefined;
         }
     }
 
@@ -212,10 +212,10 @@ export class Actions extends Section<FullScreenPokemon> {
      * Freezes a Character and starts a battle with an enemy.
      *
      * @param _   A Character about to start a battle with other.
-     * @param other   An enemy about to battle thing.
+     * @param other   An enemy about to battle actor.
      */
-    public animateTrainerBattleStart(thing: ICharacter, other: IEnemy): void {
-        console.log("should start battle", thing, other);
+    public animateTrainerBattleStart(actor: Character, other: Enemy): void {
+        console.log("should start battle", actor, other);
         // const battleName: string = other.battleName || other.title;
         // const battleSprite: string = other.battleSprite || battleName;
 
@@ -228,7 +228,7 @@ export class Actions extends Section<FullScreenPokemon> {
         //             hasActors: true,
         //             reward: other.reward,
         //             actors: other.actors.map(
-        //                 (schema: IWildPokemonSchema): IPokemon => {
+        //                 (schema: WildPokemonSchema): Pokemon => {
         //                     return this.game.equations.createPokemon(schema);
         //                 })
         //         }
@@ -244,71 +244,71 @@ export class Actions extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Creates and positions a set of four Things around a point.
+     * Creates and positions a set of four Actors around a point.
      *
      * @param x   The horizontal value of the point.
      * @param y   The vertical value of the point.
-     * @param title   A title for each Thing to create.
-     * @param settings   Additional settings for each Thing.
-     * @param groupType   Which group to move the Things into, if any.
-     * @returns The four created Things.
+     * @param title   A title for each Actor to create.
+     * @param settings   Additional settings for each Actor.
+     * @param groupType   Which group to move the Actors into, if any.
+     * @returns The four created Actors.
      */
-    public animateThingCorners(
+    public animateActorCorners(
         x: number,
         y: number,
         title: string,
         settings: any,
         groupType?: string
-    ): [IThing, IThing, IThing, IThing] {
-        const things: IThing[] = [];
+    ): [Actor, Actor, Actor, Actor] {
+        const actors: Actor[] = [];
 
         for (let i = 0; i < 4; i += 1) {
-            things.push(this.game.things.add([title, settings]));
+            actors.push(this.game.actors.add([title, settings]));
         }
 
         if (groupType) {
-            for (const thing of things) {
-                this.game.groupHolder.switchGroup(thing, thing.groupType, groupType);
+            for (const actor of actors) {
+                this.game.groupHolder.switchGroup(actor, actor.groupType, groupType);
             }
         }
 
-        this.game.physics.setLeft(things[0], x);
-        this.game.physics.setLeft(things[1], x);
+        this.game.physics.setLeft(actors[0], x);
+        this.game.physics.setLeft(actors[1], x);
 
-        this.game.physics.setRight(things[2], x);
-        this.game.physics.setRight(things[3], x);
+        this.game.physics.setRight(actors[2], x);
+        this.game.physics.setRight(actors[3], x);
 
-        this.game.physics.setBottom(things[0], y);
-        this.game.physics.setBottom(things[3], y);
+        this.game.physics.setBottom(actors[0], y);
+        this.game.physics.setBottom(actors[3], y);
 
-        this.game.physics.setTop(things[1], y);
-        this.game.physics.setTop(things[2], y);
+        this.game.physics.setTop(actors[1], y);
+        this.game.physics.setTop(actors[2], y);
 
-        this.game.graphics.flipping.flipHoriz(things[0]);
-        this.game.graphics.flipping.flipHoriz(things[1]);
+        this.game.graphics.flipping.flipHoriz(actors[0]);
+        this.game.graphics.flipping.flipHoriz(actors[1]);
 
-        this.game.graphics.flipping.flipVert(things[1]);
-        this.game.graphics.flipping.flipVert(things[2]);
+        this.game.graphics.flipping.flipVert(actors[1]);
+        this.game.graphics.flipping.flipVert(actors[2]);
 
-        return things as [IThing, IThing, IThing, IThing];
+        return actors as [Actor, Actor, Actor, Actor];
     }
 
     /**
-     * Moves a set of four Things away from a point.
+     * Moves a set of four Actors away from a point.
      *
-     * @param things   The four Things to move.
-     * @param amount   How far to move each Thing horizontally and vertically.
+     * @param actors   The four Actors to move.
+     * @param amount   How far to move each Actor horizontally and vertically.
      */
-    public animateExpandCorners(things: [IThing, IThing, IThing, IThing], amount: number): void {
-        this.game.physics.shiftHoriz(things[0], amount);
-        this.game.physics.shiftHoriz(things[1], amount);
-        this.game.physics.shiftHoriz(things[2], -amount);
-        this.game.physics.shiftHoriz(things[3], -amount);
+    public animateExpandCorners(actors: [Actor, Actor, Actor, Actor], amount: number): void {
+        this.game.physics.shiftHoriz(actors[0], amount);
+        this.game.physics.shiftHoriz(actors[1], amount);
+        this.game.physics.shiftHoriz(actors[2], -amount);
+        this.game.physics.shiftHoriz(actors[3], -amount);
 
-        this.game.physics.shiftVert(things[0], -amount);
-        this.game.physics.shiftVert(things[1], amount);
-        this.game.physics.shiftVert(things[2], amount);
-        this.game.physics.shiftVert(things[3], -amount);
+        this.game.physics.shiftVert(actors[0], -amount);
+        this.game.physics.shiftVert(actors[1], amount);
+        this.game.physics.shiftVert(actors[2], amount);
+        this.game.physics.shiftVert(actors[3], -amount);
     }
 
     /**
@@ -318,12 +318,12 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
      */
-    public animateSmokeSmall(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: IThing[] = this.animateThingCorners(x, y, "SmokeSmall", undefined, "Text");
+    public animateSmokeSmall(x: number, y: number, callback: (actor: Actor) => void): void {
+        const actors: Actor[] = this.animateActorCorners(x, y, "SmokeSmall", undefined, "Text");
 
         this.game.timeHandler.addEvent((): void => {
-            for (const thing of things) {
-                this.game.death.kill(thing);
+            for (const actor of actors) {
+                this.game.death.kill(actor);
             }
         }, 7);
 
@@ -337,8 +337,8 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
      */
-    public animateSmokeMedium(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(
+    public animateSmokeMedium(x: number, y: number, callback: (actor: Actor) => void): void {
+        const actors: [Actor, Actor, Actor, Actor] = this.animateActorCorners(
             x,
             y,
             "SmokeMedium",
@@ -346,11 +346,11 @@ export class Actions extends Section<FullScreenPokemon> {
             "Text"
         );
 
-        this.game.timeHandler.addEvent((): void => this.animateExpandCorners(things, 4), 7);
+        this.game.timeHandler.addEvent((): void => this.animateExpandCorners(actors, 4), 7);
 
         this.game.timeHandler.addEvent((): void => {
-            for (const thing of things) {
-                this.game.death.kill(thing);
+            for (const actor of actors) {
+                this.game.death.kill(actor);
             }
         }, 14);
 
@@ -364,8 +364,8 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param y   The vertical location of the point.
      * @param callback   A callback for when the animation is done.
      */
-    public animateSmokeLarge(x: number, y: number, callback: (thing: IThing) => void): void {
-        const things: [IThing, IThing, IThing, IThing] = this.animateThingCorners(
+    public animateSmokeLarge(x: number, y: number, callback: (actor: Actor) => void): void {
+        const actors: [Actor, Actor, Actor, Actor] = this.animateActorCorners(
             x,
             y,
             "SmokeLarge",
@@ -373,13 +373,13 @@ export class Actions extends Section<FullScreenPokemon> {
             "Text"
         );
 
-        this.animateExpandCorners(things, 10);
+        this.animateExpandCorners(actors, 10);
 
-        this.game.timeHandler.addEvent((): void => this.animateExpandCorners(things, 8), 7);
+        this.game.timeHandler.addEvent((): void => this.animateExpandCorners(actors, 8), 7);
 
         this.game.timeHandler.addEvent((): void => {
-            for (const thing of things) {
-                this.game.death.kill(thing);
+            for (const actor of actors) {
+                this.game.death.kill(actor);
             }
         }, 21);
 
@@ -389,18 +389,18 @@ export class Actions extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Animates an exclamation mark above a Thing.
+     * Animates an exclamation mark above An Actor.
      *
-     * @param thing   A Thing to show the exclamation over.
+     * @param actor   An Actor to show the exclamation over.
      * @param timeout   How long to keep the exclamation (by default, 140).
      * @param callback   A callback for when the exclamation is removed.
-     * @returns The exclamation Thing.
+     * @returns The exclamation Actor.
      */
-    public animateExclamation(thing: IThing, timeout = 140, callback?: () => void): IThing {
-        const exclamation: IThing = this.game.things.add(this.game.things.names.exclamation);
+    public animateExclamation(actor: Actor, timeout = 140, callback?: () => void): Actor {
+        const exclamation: Actor = this.game.actors.add(this.game.actors.names.exclamation);
 
-        this.game.physics.setMidXObj(exclamation, thing);
-        this.game.physics.setBottom(exclamation, thing.top);
+        this.game.physics.setMidXObj(exclamation, actor);
+        this.game.physics.setBottom(exclamation, actor.top);
 
         this.game.timeHandler.addEvent((): void => this.game.death.kill(exclamation), timeout);
 
@@ -412,21 +412,21 @@ export class Actions extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Sets a Thing facing a particular direction.
+     * Sets An Actor facing a particular direction.
      *
-     * @param thing   An in-game Thing.
-     * @param direction   A direction for thing to face.
+     * @param actor   An in-game Actor.
+     * @param direction   A direction for actor to face.
      * @todo Add more logic here for better performance.
      */
-    public animateCharacterSetDirection(thing: IThing, direction: Direction): void {
-        thing.direction = direction;
+    public animateCharacterSetDirection(actor: Actor, direction: Direction): void {
+        actor.direction = direction;
 
         if (direction % 2 === 1) {
-            this.game.graphics.flipping.unflipHoriz(thing);
+            this.game.graphics.flipping.unflipHoriz(actor);
         }
 
         this.game.graphics.classes.removeClasses(
-            thing,
+            actor,
             this.game.constants.directionClasses[Direction.Top],
             this.game.constants.directionClasses[Direction.Right],
             this.game.constants.directionClasses[Direction.Bottom],
@@ -434,64 +434,64 @@ export class Actions extends Section<FullScreenPokemon> {
         );
 
         this.game.graphics.classes.addClass(
-            thing,
+            actor,
             this.game.constants.directionClasses[direction]
         );
 
         if (direction === Direction.Right) {
-            this.game.graphics.flipping.flipHoriz(thing);
+            this.game.graphics.flipping.flipHoriz(actor);
             this.game.graphics.classes.addClass(
-                thing,
+                actor,
                 this.game.constants.directionClasses[Direction.Left]
             );
         }
     }
 
     /**
-     * Sets a Thing facing a random direction.
+     * Sets An Actor facing a random direction.
      *
-     * @param thing   An in-game Thing.
+     * @param actor   An in-game Actor.
      */
-    public animateCharacterSetDirectionRandom(thing: IThing): void {
-        this.animateCharacterSetDirection(thing, this.game.numberMaker.randomIntWithin(0, 3));
+    public animateCharacterSetDirectionRandom(actor: Actor): void {
+        this.animateCharacterSetDirection(actor, this.game.numberMaker.randomIntWithin(0, 3));
     }
 
     /**
      * Positions a Character's detector in front of it as its sight.
      *
-     * @param thing   A Character that should be able to see.
+     * @param actor   A Character that should be able to see.
      */
-    public animatePositionSightDetector(thing: ICharacter): void {
-        const detector: ISightDetector = thing.sightDetector!;
-        const direction: Direction = thing.direction;
+    public animatePositionSightDetector(actor: Character): void {
+        const detector: SightDetector = actor.sightDetector!;
+        const direction: Direction = actor.direction;
 
         if (detector.direction !== direction) {
-            if (thing.direction % 2 === 0) {
-                this.game.physics.setWidth(detector, thing.width);
-                this.game.physics.setHeight(detector, thing.sight! * 8);
+            if (actor.direction % 2 === 0) {
+                this.game.physics.setWidth(detector, actor.width);
+                this.game.physics.setHeight(detector, actor.sight! * 8);
             } else {
-                this.game.physics.setWidth(detector, thing.sight! * 8);
-                this.game.physics.setHeight(detector, thing.height);
+                this.game.physics.setWidth(detector, actor.sight! * 8);
+                this.game.physics.setHeight(detector, actor.height);
             }
             detector.direction = direction;
         }
 
         switch (direction) {
             case 0:
-                this.game.physics.setBottom(detector, thing.top);
-                this.game.physics.setMidXObj(detector, thing);
+                this.game.physics.setBottom(detector, actor.top);
+                this.game.physics.setMidXObj(detector, actor);
                 break;
             case 1:
-                this.game.physics.setLeft(detector, thing.right);
-                this.game.physics.setMidYObj(detector, thing);
+                this.game.physics.setLeft(detector, actor.right);
+                this.game.physics.setMidYObj(detector, actor);
                 break;
             case 2:
-                this.game.physics.setTop(detector, thing.bottom);
-                this.game.physics.setMidXObj(detector, thing);
+                this.game.physics.setTop(detector, actor.bottom);
+                this.game.physics.setMidXObj(detector, actor);
                 break;
             case 3:
-                this.game.physics.setRight(detector, thing.left);
-                this.game.physics.setMidYObj(detector, thing);
+                this.game.physics.setRight(detector, actor.left);
+                this.game.physics.setMidYObj(detector, actor);
                 break;
             default:
                 throw new Error("Unknown direction: " + direction + ".");
@@ -502,13 +502,13 @@ export class Actions extends Section<FullScreenPokemon> {
      * Animates the various logic pieces for finishing a dialog, such as pushes,
      * gifts, options, and battle starting or disabling.
      *
-     * @param thing   A Player that's finished talking to other.
-     * @param other   A Character that thing has finished talking to.
+     * @param actor   A Player that's finished talking to other.
+     * @param other   A Character that actor has finished talking to.
      */
-    public animateCharacterDialogFinish(thing: IPlayer, other: ICharacter): void {
+    public animateCharacterDialogFinish(actor: Player, other: Character): void {
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onDialogFinish, other);
 
-        thing.talking = false;
+        actor.talking = false;
         other.talking = false;
 
         if (other.directionPreferred) {
@@ -517,12 +517,12 @@ export class Actions extends Section<FullScreenPokemon> {
 
         if (other.transport) {
             other.active = true;
-            this.activateTransporter(thing, other as any);
+            this.activateTransporter(actor, other as any);
             return;
         }
 
         if (other.pushSteps) {
-            this.walking.startWalkingOnPath(thing, other.pushSteps);
+            this.walking.startWalkingOnPath(actor, other.pushSteps);
         }
 
         if (other.gift) {
@@ -532,7 +532,7 @@ export class Actions extends Section<FullScreenPokemon> {
             this.game.menuGrapher.addMenuDialog(
                 "GeneralText",
                 "%%%%%%%PLAYER%%%%%%% got " + other.gift.toUpperCase() + "!",
-                (): void => this.animateCharacterDialogFinish(thing, other)
+                (): void => this.animateCharacterDialogFinish(actor, other)
             );
             this.game.menuGrapher.setActiveMenu("GeneralText");
 
@@ -552,10 +552,10 @@ export class Actions extends Section<FullScreenPokemon> {
         }
 
         if (other.dialogOptions) {
-            this.animateCharacterDialogOptions(thing, other, other.dialogOptions);
-        } else if (other.trainer && !(other as IEnemy).alreadyBattled) {
-            this.animateTrainerBattleStart(thing, other as IEnemy);
-            (other as IEnemy).alreadyBattled = true;
+            this.animateCharacterDialogOptions(actor, other, other.dialogOptions);
+        } else if (other.trainer && !(other as Enemy).alreadyBattled) {
+            this.animateTrainerBattleStart(actor, other as Enemy);
+            (other as Enemy).alreadyBattled = true;
             this.game.stateHolder.addChange(other.id, "alreadyBattled", true);
         }
 
@@ -578,40 +578,36 @@ export class Actions extends Section<FullScreenPokemon> {
      * Displays a yes/no options menu for after a dialog has completed.
      *
      *
-     * @param thing   A Player that's finished talking to other.
-     * @param other   A Character that thing has finished talking to.
+     * @param actor   A Player that's finished talking to other.
+     * @param other   A Character that actor has finished talking to.
      * @param dialog   The dialog settings that just finished.
      */
-    public animateCharacterDialogOptions(
-        thing: IPlayer,
-        other: ICharacter,
-        dialog: IDialog
-    ): void {
+    public animateCharacterDialogOptions(actor: Player, other: Character, dialog: Dialog): void {
         if (!dialog.options) {
             throw new Error("Dialog should have .options.");
         }
 
-        const options: IDialogOptions = dialog.options;
-        const generateCallback = (callbackDialog: string | IDialog): (() => void) | undefined => {
+        const options: DialogOptions = dialog.options;
+        const generateCallback = (callbackDialog: string | Dialog): (() => void) | undefined => {
             if (!callbackDialog) {
                 return undefined;
             }
 
             let callback: (...args: any[]) => void;
-            let words: IMenuDialogRaw;
+            let words: MenuDialogRaw;
 
-            if (callbackDialog.constructor === Object && (callbackDialog as IDialog).options) {
-                words = (callbackDialog as IDialog).words;
+            if (callbackDialog.constructor === Object && (callbackDialog as Dialog).options) {
+                words = (callbackDialog as Dialog).words;
                 callback = (): void => {
-                    this.animateCharacterDialogOptions(thing, other, callbackDialog as IDialog);
+                    this.animateCharacterDialogOptions(actor, other, callbackDialog as Dialog);
                 };
             } else {
-                words = (callbackDialog as IDialog).words || (callbackDialog as string);
-                if ((callbackDialog as IDialog).cutscene) {
+                words = (callbackDialog as Dialog).words || (callbackDialog as string);
+                if ((callbackDialog as Dialog).cutscene) {
                     callback = this.game.scenePlayer.bindCutscene(
-                        (callbackDialog as IDialog).cutscene!,
+                        (callbackDialog as Dialog).cutscene!,
                         {
-                            player: thing,
+                            player: actor,
                             tirggerer: other,
                         }
                     );
@@ -655,16 +651,16 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Activates a Detector to trigger a cutscene and/or routine.
      *
-     * @param thing   A Player triggering other.
-     * @param other   A Detector triggered by thing.
+     * @param actor   A Player triggering other.
+     * @param other   A Detector triggered by actor.
      */
-    public activateCutsceneTriggerer = (thing: IPlayer, other: IDetector): void => {
-        if (other.removed || thing.collidedTrigger === other) {
+    public activateCutsceneTriggerer = (actor: Player, other: Detector): void => {
+        if (other.removed || actor.collidedTrigger === other) {
             return;
         }
 
-        thing.collidedTrigger = other;
-        this.animatePlayerDialogFreeze(thing);
+        actor.collidedTrigger = other;
+        this.animatePlayerDialogFreeze(actor);
 
         if (!other.keepAlive) {
             if (other.id.indexOf("Anonymous") !== -1) {
@@ -677,7 +673,7 @@ export class Actions extends Section<FullScreenPokemon> {
 
         if (other.cutscene) {
             this.game.scenePlayer.startCutscene(other.cutscene, {
-                player: thing,
+                player: actor,
                 triggerer: other,
             });
         }
@@ -690,12 +686,12 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Activates a Detector to play an audio theme.
      *
-     * @param thing   A Player triggering other.
-     * @param other   A Detector triggered by thing.
+     * @param actor   A Player triggering other.
+     * @param other   A Detector triggered by actor.
      */
-    public activateThemePlayer = async (thing: IPlayer, other: IThemeDetector): Promise<void> => {
+    public activateThemePlayer = async (actor: Player, other: ThemeDetector): Promise<void> => {
         if (
-            !thing.player ||
+            !actor.player ||
             this.game.audioPlayer.hasSound(this.game.audio.aliases.theme, other.theme)
         ) {
             return;
@@ -710,21 +706,21 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Activates a Detector to play a cutscene, and potentially a dialog.
      *
-     * @param thing   A Player triggering other.
-     * @param other   A Detector triggered by thing.
+     * @param actor   A Player triggering other.
+     * @param other   A Detector triggered by actor.
      */
-    public activateCutsceneResponder(thing: ICharacter, other: IDetector): void {
-        if (!thing.player || other.removed) {
+    public activateCutsceneResponder(actor: Character, other: Detector): void {
+        if (!actor.player || other.removed) {
             return;
         }
 
         if (other.dialog) {
-            this.activateMenuTriggerer(thing, other);
+            this.activateMenuTriggerer(actor, other);
             return;
         }
 
         this.game.scenePlayer.startCutscene(other.cutscene!, {
-            player: thing,
+            player: actor,
             triggerer: other,
         });
     }
@@ -732,11 +728,11 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Activates a Detector to open a menu, and potentially a dialog.
      *
-     * @param thing   A Character triggering other.
-     * @param other   A Detector triggered by thing.
+     * @param actor   A Character triggering other.
+     * @param other   A Detector triggered by actor.
      */
-    public activateMenuTriggerer = (thing: ICharacter, other: IMenuTriggerer): void => {
-        if (other.removed || thing.collidedTrigger === other) {
+    public activateMenuTriggerer = (actor: Character, other: MenuTriggerer): void => {
+        if (other.removed || actor.collidedTrigger === other) {
             return;
         }
 
@@ -745,10 +741,10 @@ export class Actions extends Section<FullScreenPokemon> {
         }
 
         const name: string = other.menu || "GeneralText";
-        const dialog: IMenuDialogRaw | IMenuDialogRaw[] = other.dialog;
+        const dialog: MenuDialogRaw | MenuDialogRaw[] = other.dialog;
 
-        thing.collidedTrigger = other;
-        this.walking.animateCharacterPreventWalking(thing);
+        actor.collidedTrigger = other;
+        this.walking.animateCharacterPreventWalking(actor);
 
         if (!other.keepAlive) {
             this.game.death.kill(other);
@@ -762,13 +758,13 @@ export class Actions extends Section<FullScreenPokemon> {
             this.game.menuGrapher.addMenuDialog(name, dialog, (): void => {
                 const complete: () => void = (): void => {
                     this.game.mapScreener.blockInputs = false;
-                    delete thing.collidedTrigger;
+                    delete actor.collidedTrigger;
                 };
 
                 this.game.menuGrapher.deleteMenu("GeneralText");
 
                 if (other.pushSteps) {
-                    this.walking.startWalkingOnPath(thing, [...other.pushSteps, complete]);
+                    this.walking.startWalkingOnPath(actor, [...other.pushSteps, complete]);
                 } else {
                     complete();
                 }
@@ -782,10 +778,10 @@ export class Actions extends Section<FullScreenPokemon> {
      * Activates a Character's sight detector for when another Character walks
      * into it.
      *
-     * @param thing   A Character triggering other.
-     * @param other   A sight detector being triggered by thing.
+     * @param actor   A Character triggering other.
+     * @param other   A sight detector being triggered by actor.
      */
-    public activateSightDetector = (thing: ICharacter, other: ISightDetector): void => {
+    public activateSightDetector = (actor: Character, other: SightDetector): void => {
         if (other.viewer.talking) {
             return;
         }
@@ -796,22 +792,22 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.mapScreener.blockInputs = true;
 
         this.game.scenePlayer.startCutscene("TrainerSpotted", {
-            player: thing,
+            player: actor,
             sightDetector: other,
             triggerer: other.viewer,
         });
     };
 
     /**
-     * Activation callback for level transports (any Thing with a .transport
+     * Activation callback for level transports (any Actor with a .transport
      * attribute). Depending on the transport, either the map or location are
      * shifted to it.
      *
-     * @param thing   A Character attempting to enter other.
-     * @param other   A transporter being entered by thing.
+     * @param actor   A Character attempting to enter other.
+     * @param other   A transporter being entered by actor.
      */
-    public activateTransporter = (thing: ICharacter, other: ITransporter): void => {
-        if (!thing.player || !other.active) {
+    public activateTransporter = (actor: Character, other: Transporter): void => {
+        if (!actor.player || !other.active) {
             return;
         }
 
@@ -819,7 +815,7 @@ export class Actions extends Section<FullScreenPokemon> {
             throw new Error("No transport given to activateTransporter");
         }
 
-        const transport: ITransportSchema = other.transport as ITransportSchema;
+        const transport: TransportSchema = other.transport as TransportSchema;
         let callback: () => void;
 
         if (typeof transport === "string") {
@@ -850,11 +846,11 @@ export class Actions extends Section<FullScreenPokemon> {
      * Activation trigger for a gym statue. If the Player is looking up at it,
      * it speaks the status of the gym leader.
      *
-     * @param thing   A Player activating other.
-     * @param other   A gym statue being activated by thing.
+     * @param actor   A Player activating other.
+     * @param other   A gym statue being activated by actor.
      */
-    public activateGymStatue = (thing: ICharacter, other: IGymDetector): void => {
-        if (thing.direction !== 0) {
+    public activateGymStatue = (actor: Character, other: GymDetector): void => {
+        if (actor.direction !== 0) {
             return;
         }
 
@@ -878,12 +874,12 @@ export class Actions extends Section<FullScreenPokemon> {
      * Calls an HMCharacter's partyActivate Function when the Player activates the HMCharacter.
      *
      * @param player   The Player.
-     * @param thing   The Solid to be affected.
+     * @param actor   The Solid to be affected.
      */
-    public activateHMCharacter = (player: IPlayer, thing: IHMCharacter): void => {
+    public activateHMCharacter = (player: Player, actor: HMCharacter): void => {
         if (
-            thing.requiredBadge &&
-            !this.game.itemsHolder.getItem(this.game.storage.names.badges)[thing.requiredBadge]
+            actor.requiredBadge &&
+            !this.game.itemsHolder.getItem(this.game.storage.names.badges)[actor.requiredBadge]
         ) {
             return;
         }
@@ -892,8 +888,8 @@ export class Actions extends Section<FullScreenPokemon> {
             this.game.storage.names.pokemonInParty
         )) {
             for (const move of pokemon.moves) {
-                if (move.title === thing.moveName) {
-                    thing.moveCallback(player, pokemon);
+                if (move.title === actor.moveName) {
+                    actor.moveCallback(player, pokemon);
                     return;
                 }
             }
@@ -903,111 +899,111 @@ export class Actions extends Section<FullScreenPokemon> {
     /**
      * Activates a Spawner by calling its .activate.
      *
-     * @param thing   A newly placed Spawner.
+     * @param actor   A newly placed Spawner.
      */
-    public activateSpawner = (thing: IDetector): void => {
-        if (!thing.activate) {
+    public activateSpawner = (actor: Detector): void => {
+        if (!actor.activate) {
             throw new Error("Spawner should have .activate.");
         }
 
-        thing.activate.call(this, thing);
+        actor.activate.call(this, actor);
     };
 
     /**
      * Checks if a WindowDetector is within frame, and activates it if so.
      *
-     * @param thing   An in-game WindowDetector.
+     * @param actor   An in-game WindowDetector.
      */
-    public checkWindowDetector(thing: IDetector): boolean {
+    public checkWindowDetector(actor: Detector): boolean {
         if (
-            thing.bottom < 0 ||
-            thing.left > this.game.mapScreener.width ||
-            thing.top > this.game.mapScreener.height ||
-            thing.right < 0
+            actor.bottom < 0 ||
+            actor.left > this.game.mapScreener.width ||
+            actor.top > this.game.mapScreener.height ||
+            actor.right < 0
         ) {
             return false;
         }
 
-        if (!thing.activate) {
+        if (!actor.activate) {
             throw new Error("WindowDetector should have .activate.");
         }
 
-        thing.activate.call(this, thing);
-        this.game.death.kill(thing);
+        actor.activate.call(this, actor);
+        this.game.death.kill(actor);
         return true;
     }
 
     /**
-     * Activates an IAreaSpawner. If it's for a different Area than the current,
+     * Activates an AreaSpawner. If it's for a different Area than the current,
      * that area is spawned in the appropriate direction.
      *
-     * @param thing   An IAreaSpawner to activate.
+     * @param actor   An AreaSpawner to activate.
      */
-    public spawnAreaSpawner = (thing: IAreaSpawner): void => {
-        const map: IMap = this.game.areaSpawner.getMap(thing.map) as IMap;
-        const area: IArea = map.areas[thing.area];
+    public spawnAreaSpawner = (actor: AreaSpawner): void => {
+        const map: Map = this.game.areaSpawner.getMap(actor.map) as Map;
+        const area: Area = map.areas[actor.area];
 
         if (area === this.game.areaSpawner.getArea()) {
-            this.game.death.kill(thing);
+            this.game.death.kill(actor);
             return;
         }
 
         if (
             area.spawnedBy &&
-            area.spawnedBy === (this.game.areaSpawner.getArea() as IArea).spawnedBy
+            area.spawnedBy === (this.game.areaSpawner.getArea() as Area).spawnedBy
         ) {
-            this.game.death.kill(thing);
+            this.game.death.kill(actor);
             return;
         }
 
-        area.spawnedBy = (this.game.areaSpawner.getArea() as IArea).spawnedBy;
+        area.spawnedBy = (this.game.areaSpawner.getArea() as Area).spawnedBy;
 
-        this.game.maps.activateAreaSpawner(thing, area);
+        this.game.maps.activateAreaSpawner(actor, area);
     };
 
     /**
      * Activation callback for an AreaGate. The Player is marked to now spawn
      * in the new Map and Area.
      *
-     * @param thing   A Character walking to other.
+     * @param actor   A Character walking to other.
      * @param other   An AreaGate potentially being triggered.
      */
-    public activateAreaGate = (thing: ICharacter, other: IAreaGate): void => {
-        if (!thing.player || !thing.walking || thing.direction !== other.direction) {
+    public activateAreaGate = (actor: Character, other: AreaGate): void => {
+        if (!actor.player || !actor.walking || actor.direction !== other.direction) {
             return;
         }
 
-        const area: IArea = this.game.areaSpawner.getMap(other.map).areas[other.area] as IArea;
+        const area: Area = this.game.areaSpawner.getMap(other.map).areas[other.area] as Area;
         let areaOffsetX: number;
         let areaOffsetY: number;
 
-        switch (thing.direction) {
+        switch (actor.direction) {
             case Direction.Top:
-                areaOffsetX = thing.left - other.left;
-                areaOffsetY = area.height! - thing.height;
+                areaOffsetX = actor.left - other.left;
+                areaOffsetY = area.height! - actor.height;
                 break;
 
             case Direction.Right:
                 areaOffsetX = 0;
-                areaOffsetY = thing.top - other.top;
+                areaOffsetY = actor.top - other.top;
                 break;
 
             case Direction.Bottom:
-                areaOffsetX = thing.left - other.left;
+                areaOffsetX = actor.left - other.left;
                 areaOffsetY = 0;
                 break;
 
             case Direction.Left:
-                areaOffsetX = area.width! - thing.width;
-                areaOffsetY = thing.top - other.top;
+                areaOffsetX = area.width! - actor.width;
+                areaOffsetY = actor.top - other.top;
                 break;
 
             default:
-                throw new Error(`Unknown direction: '${thing.direction}'.`);
+                throw new Error(`Unknown direction: '${actor.direction}'.`);
         }
 
-        const screenOffsetX: number = areaOffsetX - thing.left;
-        const screenOffsetY: number = areaOffsetY - thing.top;
+        const screenOffsetX: number = areaOffsetX - actor.left;
+        const screenOffsetY: number = areaOffsetY - actor.top;
 
         this.game.mapScreener.top = screenOffsetY;
         this.game.mapScreener.right = screenOffsetX + this.game.mapScreener.width;
@@ -1015,7 +1011,7 @@ export class Actions extends Section<FullScreenPokemon> {
         this.game.mapScreener.left = screenOffsetX;
         this.game.mapScreener.activeArea = this.game.areaSpawner.getMap().areas[
             other.area
-        ] as IArea;
+        ] as Area;
 
         this.game.itemsHolder.setItem(this.game.storage.names.map, other.map);
         this.game.itemsHolder.setItem(this.game.storage.names.area, other.area);
@@ -1036,16 +1032,12 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param pokemon   The Pokemon using the move.
      * @param move   The move being used.
      * @todo Add context for what happens if player is not bordering the correct HMCharacter.
-     * @todo Refactor to give borderedThing a .hmActivate property.
+     * @todo Refactor to give borderedActor a .hmActivate property.
      */
-    public partyActivateCheckThing(
-        player: IPlayer,
-        pokemon: IPokemon,
-        move: IHMMoveSchema
-    ): void {
-        const borderedThing: IThing | undefined = player.bordering[player.direction];
+    public partyActivateCheckActor(player: Player, pokemon: Pokemon, move: HMMoveSchema): void {
+        const borderedActor: Actor | undefined = player.bordering[player.direction];
 
-        if (borderedThing && borderedThing.title.indexOf(move.characterName!) !== -1) {
+        if (borderedActor && borderedActor.title.indexOf(move.characterName!) !== -1) {
             move.partyActivate!(player, pokemon);
         }
     }
@@ -1056,7 +1048,7 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param player   The Player.
      * @todo Add an animation for what happens when the CuttableTree is cut.
      */
-    public partyActivateCut = (player: IPlayer): void => {
+    public partyActivateCut = (player: Player): void => {
         this.game.menuGrapher.deleteAllMenus();
         this.game.menus.pause.close();
         this.game.death.kill(player.bordering[player.direction]!);
@@ -1068,14 +1060,14 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param player   The Player.
      * @todo Verify the exact speed, sound, and distance.
      */
-    public partyActivateStrength = (player: IPlayer): void => {
-        const boulder: IHMCharacter = player.bordering[player.direction] as IHMCharacter;
+    public partyActivateStrength = (player: Player): void => {
+        const boulder: HMCharacter = player.bordering[player.direction] as HMCharacter;
 
         this.game.menuGrapher.deleteAllMenus();
         this.game.menus.pause.close();
 
         if (
-            !this.game.thingHitter.checkHitForThings(player as any, boulder as any) ||
+            !this.game.actorHitter.checkHitForActors(player as any, boulder as any) ||
             boulder.bordering[player.direction] !== undefined
         ) {
             return;
@@ -1122,7 +1114,7 @@ export class Actions extends Section<FullScreenPokemon> {
      * @param player   The Player.
      * @todo Add the dialogue for when the Player starts surfing.
      */
-    public partyActivateSurf = (player: IPlayer): void => {
+    public partyActivateSurf = (player: Player): void => {
         this.game.menuGrapher.deleteAllMenus();
         this.game.menus.pause.close();
 

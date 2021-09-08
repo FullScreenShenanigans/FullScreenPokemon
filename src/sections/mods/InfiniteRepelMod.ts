@@ -1,11 +1,11 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to prevent the player from encountering any wild Pokemon.
  */
-export class InfiniteRepelMod extends ModComponent implements IMod {
+export class InfiniteRepelMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -14,7 +14,7 @@ export class InfiniteRepelMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events: CallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
             this.game.actions.walking.encounters.choices.getWildEncounterPokemonOptions = () =>
                 undefined;

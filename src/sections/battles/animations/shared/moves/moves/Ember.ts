@@ -1,4 +1,4 @@
-import { IThing } from "../../../../../Things";
+import { Actor } from "../../../../../Actors";
 import { Move } from "../Move";
 
 /**
@@ -15,14 +15,14 @@ export class Ember extends Move {
         let yPosition: number;
 
         if (this.direction === 1) {
-            xPositions[0] = this.menu.left + (this.attackerThing.width * 3 + 4);
+            xPositions[0] = this.menu.left + (this.attackerActor.width * 3 + 4);
             xPositions[1] = xPositions[0] + (this.menu.left + xPositions[0]) / 30;
             xPositions[2] = xPositions[0] + (this.menu.left + xPositions[0]) / 60;
-            yPosition = this.menu.bottom - (this.attackerThing.height * 2 - 4);
+            yPosition = this.menu.bottom - (this.attackerActor.height * 2 - 4);
         } else {
             // These positions are incorrect and need to be updated. See issue #327
-            xPositions[0] = this.menu.right - this.attackerThing.width / 2;
-            yPosition = this.menu.top + this.attackerThing.height;
+            xPositions[0] = this.menu.right - this.attackerActor.width / 2;
+            yPosition = this.menu.top + this.attackerActor.height;
         }
 
         for (let i = 0; i < 3; i += 1) {
@@ -32,7 +32,7 @@ export class Ember extends Move {
         }
 
         this.game.timeHandler.addEvent((): void => {
-            this.game.battles.animations.things.shake({
+            this.game.battles.animations.actors.shake({
                 callback,
                 clearTime: 4,
                 dx: 3,
@@ -57,15 +57,15 @@ export class Ember extends Move {
     /**
      * Creates a flickering ember.
      *
-     * @param title   Title of the ember's Thing.
+     * @param title   Title of the ember's Actor.
      */
     private createEmber(title: "EmberSmall" | "EmberLarge", x: number, y: number): void {
-        const ember: IThing = this.game.objectMaker.make<IThing>(title);
+        const ember: Actor = this.game.objectMaker.make<Actor>(title);
 
-        this.game.things.add(ember, x + 4, y + 12);
-        this.game.battles.animations.things.flicker({
+        this.game.actors.add(ember, x + 4, y + 12);
+        this.game.battles.animations.actors.flicker({
             callback: (): void => this.game.death.kill(ember),
-            thing: ember,
+            actor: ember,
         });
     }
 }

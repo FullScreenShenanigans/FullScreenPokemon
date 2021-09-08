@@ -1,12 +1,12 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
-import { IEnemy } from "../../sections/Things";
+import { Enemy } from "../../sections/Actors";
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow battling enemy trainers again.
  */
-export class RepeatTrainersMod extends ModComponent implements IMod {
+export class RepeatTrainersMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -15,8 +15,8 @@ export class RepeatTrainersMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
-        [this.eventNames.onDialogFinish]: (other: IEnemy): void => {
+    public readonly events: CallbackRegister = {
+        [this.eventNames.onDialogFinish]: (other: Enemy): void => {
             if (other.trainer) {
                 other.alreadyBattled = false;
             }

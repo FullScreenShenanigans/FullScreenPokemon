@@ -1,14 +1,14 @@
 import { member } from "babyioc";
 import {
-    IActor,
-    IBattleInfo as IBattleInfoBase,
-    IOnBattleComplete,
-    IStatistic,
-    IStatistics,
-    ITeamBase,
-    ITeamDescriptor,
-    IUnderEachTeam,
-    Team,
+    Actor as BattleMovrActor,
+    BattleInfo as BattleInfoBase,
+    OnBattleComplete,
+    Statistic,
+    Statistics,
+    TeamBase,
+    TeamDescriptor,
+    UnderEachTeam,
+    TeamId,
 } from "battlemovr";
 import { Section } from "eightbittr";
 
@@ -18,17 +18,17 @@ import { ActionsOrderer } from "./battles/ActionsOrderer";
 import { Animations } from "./battles/Animations";
 import { Decorations } from "./battles/Decorations";
 import { Selectors } from "./battles/Selectors";
-import { IStatus } from "./battles/Statuses";
-import { Things } from "./battles/Things";
-import { IBattleTextGenerators, IPartialTextGenerators } from "./constants/battles/Texts";
-import { IMenu } from "./Menus";
-import { IStateSaveable } from "./Saves";
-import { IThing } from "./Things";
+import { Status } from "./battles/Statuses";
+import { Actors } from "./battles/Actors";
+import { BattleTextGenerators, PartialTextGenerators } from "./constants/battles/Texts";
+import { Menu } from "./Menus";
+import { StateSaveable } from "./Saves";
+import { Actor } from "./Actors";
 
 /**
  * Party Pokemon that can participate in battles.
  */
-export interface IPokemon extends IActor, IStateSaveable {
+export interface Pokemon extends BattleMovrActor, StateSaveable {
     /**
      * How many experience points the actor has.
      */
@@ -42,7 +42,7 @@ export interface IPokemon extends IActor, IStateSaveable {
     /**
      * Accumulated effort value points.
      */
-    ev: IValuePoints;
+    ev: ValuePoints;
 
     /**
      * Item held by the actor.
@@ -52,7 +52,7 @@ export interface IPokemon extends IActor, IStateSaveable {
     /**
      * Accumulated individual value points.
      */
-    iv: IValuePoints;
+    iv: ValuePoints;
 
     /**
      * How likely a critical hit is from this Pokemon.
@@ -62,12 +62,12 @@ export interface IPokemon extends IActor, IStateSaveable {
     /**
      * Battle attribute statistics.
      */
-    statistics: IPokemonStatistics;
+    statistics: PokemonStatistics;
 
     /**
      * Any current status effect.
      */
-    status?: IStatus;
+    status?: Status;
 
     /**
      * What types this Pokemon is, such as "Water".
@@ -78,7 +78,7 @@ export interface IPokemon extends IActor, IStateSaveable {
 /**
  * Effort or individual value points for a Pokemon.
  */
-export interface IValuePoints {
+export interface ValuePoints {
     /**
      * Attack value points.
      */
@@ -108,32 +108,32 @@ export interface IValuePoints {
 /**
  * Statistics for a Pokemon.
  */
-export interface IPokemonStatistics extends IStatistics {
+export interface PokemonStatistics extends Statistics {
     /**
      * The Pokemon's attack.
      */
-    attack: IStatistic;
+    attack: Statistic;
 
     /**
      * The pokemon's defense.
      */
-    defense: IStatistic;
+    defense: Statistic;
 
     /**
      * The Pokemon's special.
      */
-    special: IStatistic;
+    special: Statistic;
 
     /**
      * The Pokemon's speed.
      */
-    speed: IStatistic;
+    speed: Statistic;
 }
 
 /**
  * An enemy team attacking the player.
  */
-export interface IEnemyTeam extends ITeamDescriptor {
+export interface EnemyTeam extends TeamDescriptor {
     /**
      * A badge to gift when defeated.
      */
@@ -166,28 +166,28 @@ export interface IEnemyTeam extends ITeamDescriptor {
 }
 
 /**
- * Things displayed in a battle.
+ * Actors displayed in a battle.
  */
-export interface IBattleThings extends IUnderEachTeam<IThing> {
+export interface BattleActors extends UnderEachTeam<Actor> {
     /**
-     * Solid background color behind everything.
+     * Solid background color behind everyactor.
      */
-    background: IThing;
+    background: Actor;
 
     /**
      * Menu surrounding the battle area.
      */
-    menu: IMenu;
+    menu: Menu;
 }
 
 /**
  * Battle options specific to FullScreenPokemon.
  */
-export interface IPokemonBattleOptions {
+export interface PokemonBattleOptions {
     /**
      * Texts to display in menus.
      */
-    texts: IBattleTextGenerators;
+    texts: BattleTextGenerators;
 
     /**
      * Audio theme to play during the battle.
@@ -195,29 +195,29 @@ export interface IPokemonBattleOptions {
     theme: string;
 
     /**
-     * Things displayed in the battle.
+     * Actors displayed in the battle.
      */
-    things: IBattleThings;
+    actors: BattleActors;
 }
 
 /**
  * Minimum options to start a new battle.
  */
-export interface IPartialBattleOptions {
+export interface PartialBattleOptions {
     /**
      * Whether the battle should advance its menus automatically.
      */
     automaticMenus?: boolean;
 
     /**
-     * Things that should be visible above the starting animation.
+     * Actors that should be visible above the starting animation.
      */
-    keptThings?: IThing[];
+    keptActors?: Actor[];
 
     /**
      * Callback for when the battle is complete.
      */
-    onComplete?: IOnBattleComplete;
+    onComplete?: OnBattleComplete;
 
     /**
      * Transition name to start with, if not a random one.
@@ -227,14 +227,14 @@ export interface IPartialBattleOptions {
     /**
      * Opposing teams in the battle.
      */
-    teams?: Partial<IUnderEachTeam<Partial<ITeamDescriptor>>> & {
-        opponent?: Partial<IEnemyTeam>;
+    teams?: Partial<UnderEachTeam<Partial<TeamDescriptor>>> & {
+        opponent?: Partial<EnemyTeam>;
     };
 
     /**
      * Texts to display in menus.
      */
-    texts?: Partial<IPartialTextGenerators>;
+    texts?: Partial<PartialTextGenerators>;
 
     /**
      * Audio theme to be played after the battle is done.
@@ -245,39 +245,39 @@ export interface IPartialBattleOptions {
 /**
  * Complete options to start a new battle.
  */
-export interface IBattleOptions extends IPartialBattleOptions {
+export interface BattleOptions extends PartialBattleOptions {
     /**
      * Callback for when the battle is complete.
      */
-    onComplete: IOnBattleComplete;
+    onComplete: OnBattleComplete;
 
     /**
      * Opposing teams in the battle.
      */
-    teams: IUnderEachTeam<ITeamDescriptor>;
+    teams: UnderEachTeam<TeamDescriptor>;
 }
 
 /**
  * Common attributes for teams of Pokemon.
  */
-export interface IBattleTeam extends ITeamBase, IEnemyTeam {
+export interface BattleTeam extends TeamBase, EnemyTeam {
     /**
      * Pokemon that will fight.
      */
-    actors: IPokemon[];
+    actors: Pokemon[];
 
     /**
      * The currently selected Pokemon.
      */
-    selectedActor: IPokemon;
+    selectedActor: Pokemon;
 }
 
 /**
  * Information on an in-progress battle.
  */
-export type IBattleInfo = IBattleInfoBase &
-    IBattleOptions &
-    IPokemonBattleOptions & {
+export type BattleInfo = BattleInfoBase &
+    BattleOptions &
+    PokemonBattleOptions & {
         /**
          * How many times the player has failed to flee.
          */
@@ -286,7 +286,7 @@ export type IBattleInfo = IBattleInfoBase &
         /**
          * Opposing teams in the battle.
          */
-        teams: IUnderEachTeam<IBattleTeam>;
+        teams: UnderEachTeam<BattleTeam>;
     };
 
 /**
@@ -306,7 +306,7 @@ export class Battles extends Section<FullScreenPokemon> {
     public readonly animations: Animations;
 
     /**
-     * Places decorative in-battle Things.
+     * Places decorative in-battle Actors.
      */
     @member(Decorations)
     public readonly decorations: Decorations;
@@ -318,18 +318,18 @@ export class Battles extends Section<FullScreenPokemon> {
     public readonly selectors: Selectors;
 
     /**
-     * Sets Things visually representing each team.
+     * Sets Actors visually representing each team.
      */
-    @member(Things)
-    public readonly things: Things;
+    @member(Actors)
+    public readonly actors: Actors;
 
     /**
      * Starts a new battle.
      *
      * @param partialBattleOptions   Options to start the battle.
      */
-    public startBattle(partialBattleOptions: IPartialBattleOptions): void {
-        const battleOptions: IBattleOptions = this.fillOutBattleOptions(partialBattleOptions);
+    public startBattle(partialBattleOptions: PartialBattleOptions): void {
+        const battleOptions: BattleOptions = this.fillOutBattleOptions(partialBattleOptions);
 
         this.game.battleMover.startBattle(battleOptions);
     }
@@ -339,7 +339,7 @@ export class Battles extends Section<FullScreenPokemon> {
      *
      * @param pokemon   An in-game Pokemon to heal.
      */
-    public healPokemon(pokemon: IPokemon): void {
+    public healPokemon(pokemon: Pokemon): void {
         for (const statisticName of this.game.constants.pokemon.statisticNames) {
             pokemon.statistics[statisticName].current = pokemon.statistics[statisticName].normal;
         }
@@ -382,12 +382,12 @@ export class Battles extends Section<FullScreenPokemon> {
     /**
      * Checks whether a team is allowed to flee (not facing a trainer).
      *
-     * @param team   A team in battle.
+     * @param teamId   A team in battle.
      * @returns Whether the team can flee.
      */
-    public canTeamAttemptFlee(team: Team): boolean {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        return !(team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent)
+    public canTeamAttemptFlee(teamId: TeamId): boolean {
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
+        return !(teamId === TeamId.opponent ? battleInfo.teams.player : battleInfo.teams.opponent)
             .leader;
     }
 
@@ -397,8 +397,8 @@ export class Battles extends Section<FullScreenPokemon> {
      * @param partialBattleOptions   Partial options to start a battle.
      * @returns Completed options to start a battle.
      */
-    private fillOutBattleOptions(partialBattleOptions: IPartialBattleOptions): IBattleOptions {
-        const texts: IBattleTextGenerators = this.game.utilities.proliferate(
+    private fillOutBattleOptions(partialBattleOptions: PartialBattleOptions): BattleOptions {
+        const texts: BattleTextGenerators = this.game.utilities.proliferate(
             {},
             {
                 ...this.game.constants.battles.texts.defaultBattleTexts,
@@ -406,7 +406,7 @@ export class Battles extends Section<FullScreenPokemon> {
             }
         );
 
-        const teams: IUnderEachTeam<ITeamDescriptor> = {
+        const teams: UnderEachTeam<TeamDescriptor> = {
             opponent: {
                 actors: [],
                 selector: "opponent",
@@ -426,7 +426,7 @@ export class Battles extends Section<FullScreenPokemon> {
                 teams.opponent = {
                     ...teams.opponent,
                     ...partialBattleOptions.teams.opponent,
-                } as ITeamDescriptor;
+                } as TeamDescriptor;
             }
 
             if (partialBattleOptions.teams.player) {
@@ -447,6 +447,6 @@ export class Battles extends Section<FullScreenPokemon> {
             teams,
             texts,
             theme: "Battle Trainer",
-        } as IBattleOptions;
+        } as BattleOptions;
     }
 }

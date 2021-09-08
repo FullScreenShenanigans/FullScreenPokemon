@@ -1,11 +1,11 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make the player move really quickly.
  */
-export class SpeedRunningMod extends ModComponent implements IMod {
+export class SpeedRunningMod extends ModComponent implements Mod {
     /**
      * Class name for the player's prototype.
      */
@@ -19,7 +19,7 @@ export class SpeedRunningMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events: CallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
             const stats: any = this.game.objectMaker.getPrototypeOf(
                 SpeedRunningMod.playerClassName

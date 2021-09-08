@@ -1,53 +1,53 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IThing } from "../Things";
+import { Actor } from "../Actors";
 
 /**
- * Visually flips Things.
+ * Visually flips Actors.
  */
 export class Flipping extends Section<FullScreenPokemon> {
     /**
-     * Marks a Thing as being flipped horizontally by setting its .flipHoriz
+     * Marks An Actor as being flipped horizontally by setting its .flipHoriz
      * attribute to true and giving it a "flipped" class.
      *
-     * @param thing
+     * @param actor
      */
-    public flipHoriz(thing: IThing): void {
-        thing.flipHoriz = true;
-        this.game.graphics.classes.addClass(thing, "flipped");
+    public flipHoriz(actor: Actor): void {
+        actor.flipHoriz = true;
+        this.game.graphics.classes.addClass(actor, "flipped");
     }
 
     /**
-     * Marks a Thing as being flipped vertically by setting its .flipVert
+     * Marks An Actor as being flipped vertically by setting its .flipVert
      * attribute to true and giving it a "flipped" class.
      *
-     * @param thing
+     * @param actor
      */
-    public flipVert(thing: IThing): void {
-        thing.flipVert = true;
-        this.game.graphics.classes.addClass(thing, "flip-vert");
+    public flipVert(actor: Actor): void {
+        actor.flipVert = true;
+        this.game.graphics.classes.addClass(actor, "flip-vert");
     }
 
     /**
-     * Marks a Thing as not being flipped horizontally by setting its .flipHoriz
+     * Marks An Actor as not being flipped horizontally by setting its .flipHoriz
      * attribute to false and giving it a "flipped" class.
      *
-     * @param thing
+     * @param actor
      */
-    public unflipHoriz(thing: IThing): void {
-        thing.flipHoriz = false;
-        this.game.graphics.classes.removeClass(thing, "flipped");
+    public unflipHoriz(actor: Actor): void {
+        actor.flipHoriz = false;
+        this.game.graphics.classes.removeClass(actor, "flipped");
     }
 
     /**
-     * Marks a Thing as not being flipped vertically by setting its .flipVert
+     * Marks An Actor as not being flipped vertically by setting its .flipVert
      * attribute to true and giving it a "flipped" class.
      *
-     * @param thing
+     * @param actor
      */
-    public unflipVert(thing: IThing): void {
-        thing.flipVert = false;
-        this.game.graphics.classes.removeClass(thing, "flip-vert");
+    public unflipVert(actor: Actor): void {
+        actor.flipVert = false;
+        this.game.graphics.classes.removeClass(actor, "flip-vert");
     }
 }

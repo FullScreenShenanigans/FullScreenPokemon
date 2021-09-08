@@ -2,13 +2,13 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 
 import { stubBlankGame } from "../../fakes.test";
-import { IListMenu } from "../Menus";
+import { ListMenu } from "../Menus";
 
-import { IInventoryListing, IItemMenuSettings } from "./Items";
+import { InventoryListing, ItemMenuSettings } from "./Items";
 
 describe("Items", () => {
     describe("open", () => {
-        const settings: IItemMenuSettings = {
+        const settings: ItemMenuSettings = {
             onUse: sinon.spy(),
             onToss: sinon.spy(),
         };
@@ -21,7 +21,7 @@ describe("Items", () => {
             fsp.menus.items.open(settings);
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.be.deep.equal(["CANCEL"]);
@@ -30,7 +30,7 @@ describe("Items", () => {
         it("displays item names and CANCEL when the player has items", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const items: IInventoryListing[] = [
+            const items: InventoryListing[] = [
                 {
                     amount: 1,
                     item: "FIRST",
@@ -45,7 +45,7 @@ describe("Items", () => {
             fsp.menus.items.open({ items, ...settings });
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.be.deep.equal(["FIRST", "SECOND", "CANCEL"]);
@@ -54,7 +54,7 @@ describe("Items", () => {
         it("uses stored items item when no item listings are provided", () => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const items: IInventoryListing[] = [
+            const items: InventoryListing[] = [
                 {
                     amount: 1,
                     item: "FIRST",
@@ -71,7 +71,7 @@ describe("Items", () => {
             fsp.menus.items.open(settings);
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.be.deep.equal(["FIRST", "SECOND", "CANCEL"]);
@@ -80,7 +80,7 @@ describe("Items", () => {
         it("opens an item's menu when that item is selected", () => {
             // Arrange
             const { fsp, player } = stubBlankGame();
-            const items: IInventoryListing[] = [
+            const items: InventoryListing[] = [
                 {
                     amount: 1,
                     item: "FIRST",
@@ -122,7 +122,7 @@ describe("Items", () => {
             fsp.menus.items.openItem(listing, settings);
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.be.deep.equal(["USE", "TOSS"]);
@@ -142,7 +142,7 @@ describe("Items", () => {
             fsp.menus.items.openItem(listing, settings);
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.be.deep.equal(["USE", "TOSS", "GIVE"]);

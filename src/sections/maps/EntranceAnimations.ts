@@ -2,7 +2,7 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
-import { ILocation } from "../Maps";
+import { Location } from "../Maps";
 
 /**
  * Map entrance animations.
@@ -22,7 +22,7 @@ export class EntranceAnimations extends Section<FullScreenPokemon> {
      *
      * @param location   Location within the Map being entered.
      */
-    public readonly normal = (location: ILocation): void => {
+    public readonly normal = (location: Location): void => {
         this.game.maps.addPlayer(location.xloc || 0, location.yloc || 0);
 
         this.game.actions.animateCharacterSetDirection(

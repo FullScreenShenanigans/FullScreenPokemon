@@ -1,14 +1,14 @@
 import { member } from "babyioc";
 import { Maps as EightBittrMaps } from "eightbittr";
 import {
-    IArea as IMapsCreatrIArea,
-    IAreaRaw as IMapsCreatrAreaRaw,
-    ILocation as IMapsCreatrLocation,
-    ILocationRaw as IMapsCreatrLocationRaw,
-    IMap as IMapsCreatrIMap,
-    IMapRaw as IMapsCreatrIMapRaw,
-    IPreThing as IMapsCreatrPreThing,
-    IPreThingsContainers,
+    Area as MapsCreatrArea,
+    AreaRaw as MapsCreatrAreaRaw,
+    Location as MapsCreatrLocation,
+    LocationRaw as MapsCreatrLocationRaw,
+    Map as MapsCreatrMap,
+    MapRaw as MapsCreatrMapRaw,
+    PreActorLike as MapsCreatrPreActorLike,
+    PreActorsContainers,
 } from "mapscreatr";
 import { MapScreenr as EightBittrMapScreenr } from "mapscreenr";
 
@@ -25,19 +25,19 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 import { Direction } from "./Constants";
 import { EntranceAnimations } from "./maps/EntranceAnimations";
 import { MapMacros } from "./maps/MapMacros";
-import { IStateSaveable } from "./Saves";
-import { IAreaGate, IAreaSpawner, IPlayer, IThing } from "./Things";
+import { StateSaveable } from "./Saves";
+import { AreaGate, AreaSpawner, Player, Actor } from "./Actors";
 
 /**
  * A flexible container for map attributes and viewport.
  */
-export interface IMapScreenr extends EightBittrMapScreenr {
+export interface MapScreenr extends EightBittrMapScreenr {
     /**
      * Which are the player is currently active in.
      *
      * @todo Consider moving this into EightBittr core.
      */
-    activeArea: IArea;
+    activeArea: Area;
 
     /**
      * Whether user inputs should be ignored.
@@ -64,9 +64,9 @@ export interface IMapScreenr extends EightBittrMapScreenr {
         allowCycling?: boolean;
 
         /**
-         * The current size of the area Things are placed in.
+         * The current size of the areAn Actors are placed in.
          */
-        boundaries: IAreaBoundaries;
+        boundaries: AreaBoundaries;
 
         /**
          * What form of scrolling is currently capable on the screen.
@@ -78,13 +78,13 @@ export interface IMapScreenr extends EightBittrMapScreenr {
 /**
  * A raw JSON-friendly description of a map.
  */
-export interface IMapRaw extends IMapsCreatrIMapRaw {
+export interface MapRaw extends MapsCreatrMapRaw {
     /**
      * A listing of areas in the Map, keyed by name.
      */
     areas: {
-        [i: number]: IAreaRaw;
-        [i: string]: IAreaRaw;
+        [i: number]: AreaRaw;
+        [i: string]: AreaRaw;
     };
 
     /**
@@ -96,8 +96,8 @@ export interface IMapRaw extends IMapsCreatrIMapRaw {
      * Descriptions of locations in the map.
      */
     locations: {
-        [i: number]: ILocationRaw;
-        [i: string]: ILocationRaw;
+        [i: number]: LocationRaw;
+        [i: string]: LocationRaw;
     };
 
     /**
@@ -114,13 +114,13 @@ export interface IMapRaw extends IMapsCreatrIMapRaw {
 /**
  * A Map parsed from its raw JSON-friendly description.
  */
-export interface IMap extends IStateSaveable, IMapsCreatrIMap {
+export interface Map extends StateSaveable, MapsCreatrMap {
     /**
      * A listing of areas in the Map, keyed by name.
      */
     areas: {
-        [i: string]: IArea;
-        [i: number]: IArea;
+        [i: string]: Area;
+        [i: number]: Area;
     };
 
     /**
@@ -147,7 +147,7 @@ export interface IMap extends IStateSaveable, IMapsCreatrIMap {
 /**
  * A raw JSON-friendly description of a map area.
  */
-export interface IAreaRaw extends IMapsCreatrAreaRaw {
+export interface AreaRaw extends MapsCreatrAreaRaw {
     /**
      * Whether the Area allows bicycling.
      */
@@ -161,7 +161,7 @@ export interface IAreaRaw extends IMapsCreatrAreaRaw {
     };
 
     /**
-     * What background to display behind all Things.
+     * What background to display behind all Actors.
      */
     background?: string;
 
@@ -190,32 +190,32 @@ export interface IAreaRaw extends IMapsCreatrAreaRaw {
     /**
      * Wild Pokemon that may appear in this Area.
      */
-    wildPokemon?: IAreaWildPokemonOptionGroups;
+    wildPokemon?: AreaWildPokemonOptionGroups;
 }
 
 /**
  * An Area parsed from a raw JSON-friendly Area description.
  */
-export interface IArea extends IAreaRaw, IStateSaveable, IMapsCreatrIArea {
+export interface Area extends AreaRaw, StateSaveable, MapsCreatrArea {
     /**
      * Whether the Area allows bicycling.
      */
     allowCycling: boolean;
 
     /**
-     * What background to display behind all Things.
+     * What background to display behind all Actors.
      */
     background: string;
 
     /**
-     * In-game boundaries of all placed Things.
+     * In-game boundaries of all placed Actors.
      */
-    boundaries: IAreaBoundaries;
+    boundaries: AreaBoundaries;
 
     /**
      * The Map this Area is within.
      */
-    map: IMap;
+    map: Map;
 
     /**
      * Whether this Area has been spawned.
@@ -225,7 +225,7 @@ export interface IArea extends IAreaRaw, IStateSaveable, IMapsCreatrIArea {
     /**
      * Which Map spawned this Area and when.
      */
-    spawnedBy: IAreaSpawnedBy;
+    spawnedBy: AreaSpawnedBy;
 
     /**
      * Whether the Player has encountered a Pokemon in this area's grass.
@@ -235,13 +235,13 @@ export interface IArea extends IAreaRaw, IStateSaveable, IMapsCreatrIArea {
     /**
      * Wild Pokemon that may appear in this Area.
      */
-    wildPokemon?: IAreaWildPokemonOptionGroups;
+    wildPokemon?: AreaWildPokemonOptionGroups;
 }
 
 /**
- * A description of how an Area has been stretched by its placed Things.
+ * A description of how an Area has been stretched by its placed Actors.
  */
-export interface IAreaBoundaries {
+export interface AreaBoundaries {
     /**
      * How wide the Area is.
      */
@@ -276,7 +276,7 @@ export interface IAreaBoundaries {
 /**
  * A description of which Map spawned an Area and when.
  */
-export interface IAreaSpawnedBy {
+export interface AreaSpawnedBy {
     /**
      * The name of the Map that spawned the Area.
      */
@@ -291,32 +291,32 @@ export interface IAreaSpawnedBy {
 /**
  * Types of Pokemon that may appear in an Area, keyed by terrain type, such as "grass".
  */
-export interface IAreaWildPokemonOptionGroups {
+export interface AreaWildPokemonOptionGroups {
     /**
      * Types of Pokemon that may appear in grass.
      */
-    grass?: IWildPokemonSchema[];
+    grass?: WildPokemonSchema[];
 
     /**
      * Types of Pokemon that may appear while fishing.
      */
-    fishing?: IWildFishingPokemon;
+    fishing?: WildFishingPokemon;
 
     /**
      * Types of Pokemon that may appear while surfing.
      */
-    surfing?: IWildPokemonSchema[];
+    surfing?: WildPokemonSchema[];
 
     /**
      * Types of Pokemon that may appear while walking.
      */
-    walking?: IWildPokemonSchema[];
+    walking?: WildPokemonSchema[];
 }
 
 /**
  * A description of a type of Pokemon that may appear in an Area.
  */
-export interface IWildPokemonSchemaBase {
+export interface WildPokemonSchemaBase {
     /**
      * The type of Pokemon.
      */
@@ -336,7 +336,7 @@ export interface IWildPokemonSchemaBase {
 /**
  * A wild Pokemon description with only one possible level.
  */
-export interface IWildPokemonSchemaWithLevel extends IWildPokemonSchemaBase {
+export interface WildPokemonSchemaWithLevel extends WildPokemonSchemaBase {
     /**
      * What level the Pokemon may be.
      */
@@ -346,19 +346,19 @@ export interface IWildPokemonSchemaWithLevel extends IWildPokemonSchemaBase {
 /**
  * A wild Pokemon description with multiple possible levels.
  */
-export interface IWildPokemonSchemaWithLevels extends IWildPokemonSchemaBase {
+export interface WildPokemonSchemaWithLevels extends WildPokemonSchemaBase {
     /**
      * What levels the Pokemon may be.
      */
     levels: number[];
 }
 
-export type IWildPokemonSchema = IWildPokemonSchemaWithLevel | IWildPokemonSchemaWithLevels;
+export type WildPokemonSchema = WildPokemonSchemaWithLevel | WildPokemonSchemaWithLevels;
 
 /**
  * A raw JSON-friendly description of a location.
  */
-export interface ILocationRaw extends IMapsCreatrLocationRaw {
+export interface LocationRaw extends MapsCreatrLocationRaw {
     /**
      * A cutscene to immediately start upon entering.
      */
@@ -398,11 +398,11 @@ export interface ILocationRaw extends IMapsCreatrLocationRaw {
 /**
  * A Location parsed from a raw JSON-friendly Map description.
  */
-export interface ILocation extends IStateSaveable, IMapsCreatrLocation {
+export interface Location extends StateSaveable, MapsCreatrLocation {
     /**
      * The Area this Location is a part of.
      */
-    area: IArea;
+    area: Area;
 
     /**
      * A cutscene to immediately start upon entering.
@@ -443,36 +443,36 @@ export interface ILocation extends IStateSaveable, IMapsCreatrLocation {
 /**
  * The types of Pokemon that can be caught with different rods.
  */
-export interface IWildFishingPokemon {
+export interface WildFishingPokemon {
     /**
      * The Pokemon that can be caught using an Old Rod.
      */
-    old?: IWildPokemonSchema[];
+    old?: WildPokemonSchema[];
 
     /**
      * The Pokemon that can be caught using a Good Rod.
      */
-    good?: IWildPokemonSchema[];
+    good?: WildPokemonSchema[];
 
     /**
      * The Pokemon that can be caught using a Super Rod.
      */
-    super?: IWildPokemonSchema[];
+    super?: WildPokemonSchema[];
 }
 
 /**
- * A position holder around an in-game Thing.
+ * A position holder around an in-game Actor.
  */
-export interface IPreThing extends IMapsCreatrPreThing {
+export interface PreActorLike extends MapsCreatrPreActorLike {
     /**
      * A starting direction to face (by default, up).
      */
     direction?: number;
 
     /**
-     * The in-game Thing.
+     * The in-game Actor.
      */
-    thing: IThing;
+    actor: Actor;
 
     /**
      * The raw x-location from the Area's creation command.
@@ -485,12 +485,12 @@ export interface IPreThing extends IMapsCreatrPreThing {
     y: number;
 
     /**
-     * How wide the Thing should be.
+     * How wide the Actor should be.
      */
     width?: number;
 
     /**
-     * How tall the Thing should be.
+     * How tall the Actor should be.
      */
     height: number;
 }
@@ -498,18 +498,18 @@ export interface IPreThing extends IMapsCreatrPreThing {
 /**
  * Enters and spawns map areas.
  */
-export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<TEightBittr> {
+export class Maps<Game extends FullScreenPokemon> extends EightBittrMaps<Game> {
     /**
      * Map entrance animations.
      */
     @member(EntranceAnimations)
-    public readonly entranceAnimations: EntranceAnimations;
+    public readonly entranceAnimations!: EntranceAnimations;
 
     /**
      * Map creation macros.
      */
     @member(MapMacros)
-    public readonly mapMacros: MapMacros;
+    public readonly mapMacros!: MapMacros;
 
     /**
      * Entrance Functions that may be used as the openings for Locations.
@@ -574,13 +574,13 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
     public readonly screenAttributes = ["allowCycling"];
 
     /**
-     * Processes additional Thing attributes. For each attribute the Area's
+     * Processes additional Actor attributes. For each attribute the Area's
      * class says it may have, if it has it, the attribute value proliferated
      * onto the Area.
      *
      * @param area The Area being processed.
      */
-    public areaProcess = (area: IArea): void => {
+    public areaProcess = (area: Area): void => {
         const attributes: { [i: string]: any } | undefined = area.attributes;
         if (!attributes) {
             return;
@@ -594,45 +594,45 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
     };
 
     /**
-     * Adds a Thing via addPreThing based on the specifications in a PreThing.
+     * Adds An Actor via addPreActor based on the specifications in a PreActor.
      * This is done relative to MapScreener.left and MapScreener.top.
      *
-     * @param prething   A PreThing whose Thing is to be added to the game.
+     * @param preactor   A PreActor whose Actor is to be added to the game.
      */
-    public addPreThing = (prething: IPreThing): void => {
-        const thing: IThing = prething.thing;
-        const position: string = prething.position || thing.position;
+    public addPreActor = (preactor: PreActorLike): void => {
+        const actor: Actor = preactor.actor;
+        const position: string = preactor.position || actor.position;
 
-        if (thing.spawned) {
+        if (actor.spawned) {
             return;
         }
-        thing.spawned = true;
+        actor.spawned = true;
 
-        thing.areaName = thing.areaName || this.game.areaSpawner.getAreaName();
-        thing.mapName = thing.mapName || this.game.areaSpawner.getMapName();
+        actor.areaName = actor.areaName || this.game.areaSpawner.getAreaName();
+        actor.mapName = actor.mapName || this.game.areaSpawner.getMapName();
 
-        this.game.things.add(
-            thing,
-            prething.left - this.game.mapScreener.left,
-            prething.top - this.game.mapScreener.top,
+        this.game.actors.add(
+            actor,
+            preactor.left - this.game.mapScreener.left,
+            preactor.top - this.game.mapScreener.top,
             true
         );
 
-        // Either the prething or thing, in that order, may request to be in the
+        // Either the preactor or actor, in that order, may request to be in the
         // front or back of the container
         if (position) {
             this.game.timeHandler.addEvent((): void => {
                 switch (position) {
                     case "beginning":
                         this.game.utilities.arrayToBeginning(
-                            thing,
-                            this.game.groupHolder.getGroup(thing.groupType)
+                            actor,
+                            this.game.groupHolder.getGroup(actor.groupType)
                         );
                         break;
                     case "end":
                         this.game.utilities.arrayToEnd(
-                            thing,
-                            this.game.groupHolder.getGroup(thing.groupType)
+                            actor,
+                            this.game.groupHolder.getGroup(actor.groupType)
                         );
                         break;
                     default:
@@ -641,35 +641,33 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
             });
         }
 
-        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onAddPreThing, prething);
+        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onAddPreActor, preactor);
     };
 
     /**
-     * Adds a new Player Thing to the game and sets it as eightBitter.player. Any
+     * Adds a new Player Actor to the game and sets it as eightBitter.player. Any
      * required additional settings (namely keys, power/size, and swimming) are
      * applied here.
      *
-     * @param left   A left edge to place the Thing at (by default, 0).
-     * @param bottom   A top to place the Thing upon (by default, 0).
+     * @param left   A left edge to place the Actor at (by default, 0).
+     * @param bottom   A top to place the Actor upon (by default, 0).
      * @param useSavedInfo   Whether an Area's saved info in StateHolder should be
-     *                       applied to the Thing's position (by default, false).
+     *                       applied to the Actor's position (by default, false).
      * @returns A newly created Player in the game.
      */
-    public addPlayer(left = 0, top = 0, useSavedInfo?: boolean): IPlayer {
-        const player: IPlayer = this.game.objectMaker.make<IPlayer>(
-            this.game.things.names.player
-        );
+    public addPlayer(left = 0, top = 0, useSavedInfo?: boolean): Player {
+        const player: Player = this.game.objectMaker.make<Player>(this.game.actors.names.player);
         player.keys = player.getKeys();
 
         this.game.players[0] = player;
-        this.game.things.add(player, left || 0, top || 0, useSavedInfo);
+        this.game.actors.add(player, left || 0, top || 0, useSavedInfo);
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onAddPlayer, player);
 
         return player;
     }
 
     /**
-     * Sets the game state to a new Map, resetting all Things and inputs in the
+     * Sets the game state to a new Map, resetting all Actors and inputs in the
      * process. The mod events are fired.
      *
      * @param name   The name of the Map.
@@ -678,12 +676,12 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      *                      be skipped (by default, false).
      * @remarks Most of the work here is done by setLocation.
      */
-    public setMap(name: string, location?: string, noEntrance?: boolean): ILocation {
+    public setMap(name: string, location?: string, noEntrance?: boolean): Location {
         if (!name) {
             name = this.game.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.game.areaSpawner.setMap(name) as IMap;
+        const map: Map = this.game.areaSpawner.setMap(name) as Map;
 
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onPreSetMap, map);
         this.game.numberMaker.resetFromSeed(map.seed);
@@ -694,7 +692,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
 
     /**
      * Sets the game state to a Location within the current map, resetting all
-     * Things, inputs, the current Area, PixelRender, and MapScreener in the
+     * Actors, inputs, the current Area, PixelRender, and MapScreener in the
      * process. The Location's entry Function is called to bring a new Player
      * into the game if specified. The mod events are fired.
      *
@@ -703,7 +701,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      * @todo Separate external module logic to their equivalent components then
      *       pass them as an onPreSetLocation/onSetLocation here to reduce dependencies.
      */
-    public setLocation(name: string, noEntrance?: boolean): ILocation {
+    public setLocation(name: string, noEntrance?: boolean): Location {
         this.game.groupHolder.clear();
         this.game.mapScreener.clearScreen();
         this.game.menuGrapher.deleteAllMenus();
@@ -712,7 +710,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
         this.game.areaSpawner.setLocation(name);
         this.game.mapScreener.setVariables();
 
-        const location: ILocation = this.game.areaSpawner.getLocation(name) as ILocation;
+        const location: Location = this.game.areaSpawner.getLocation(name) as Location;
         location.area.spawnedBy = {
             name,
             timestamp: new Date().getTime(),
@@ -720,9 +718,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
 
         this.game.mapScreener.activeArea = location.area;
         this.game.modAttacher.fireEvent(this.game.mods.eventNames.onPreSetLocation, location);
-        this.game.pixelDrawer.setBackground(
-            (this.game.areaSpawner.getArea() as IArea).background
-        );
+        this.game.pixelDrawer.setBackground((this.game.areaSpawner.getArea() as Area).background);
 
         if (location.area.map.name !== "Blank") {
             this.game.itemsHolder.setItem(this.game.storage.names.map, location.area.map.name);
@@ -769,67 +765,67 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
     }
 
     /**
-     * Analyzes a PreThing to be placed in one of the
+     * Analyzes a PreActor to be placed in one of the
      * cardinal directions of the current Map's boundaries
      * (just outside of the current Area).
      *
-     * @param prething   A PreThing whose Thing is to be added to the game.
+     * @param preactor   A PreActor whose Actor is to be added to the game.
      * @param direction   The cardinal direction the Character is facing.
      * @remarks Direction is taken in by the .forEach call as the index.
      */
-    public addAfter = (prething: IPreThing, direction: Direction): void => {
-        const prethings: any = this.game.areaSpawner.getPreThings();
-        const area: IArea = this.game.areaSpawner.getArea() as IArea;
-        const map: IMap = this.game.areaSpawner.getMap() as IMap;
-        const boundaries: IAreaBoundaries = this.game.areaSpawner.getArea()
-            .boundaries as IAreaBoundaries;
+    public addAfter = (preactor: PreActorLike, direction: Direction): void => {
+        const preactors: any = this.game.areaSpawner.getPreActors();
+        const area: Area = this.game.areaSpawner.getArea() as Area;
+        const map: Map = this.game.areaSpawner.getMap() as Map;
+        const boundaries: AreaBoundaries = this.game.areaSpawner.getArea()
+            .boundaries as AreaBoundaries;
 
-        prething.direction = direction;
+        preactor.direction = direction;
         switch (direction) {
             case Direction.Top:
-                prething.x = boundaries.left;
-                prething.y = boundaries.top - 32;
-                prething.width = boundaries.right - boundaries.left;
+                preactor.x = boundaries.left;
+                preactor.y = boundaries.top - 32;
+                preactor.width = boundaries.right - boundaries.left;
                 break;
 
             case Direction.Right:
-                prething.x = boundaries.right;
-                prething.y = boundaries.top;
-                prething.height = boundaries.bottom - boundaries.top;
+                preactor.x = boundaries.right;
+                preactor.y = boundaries.top;
+                preactor.height = boundaries.bottom - boundaries.top;
                 break;
 
             case Direction.Bottom:
-                prething.x = boundaries.left;
-                prething.y = boundaries.bottom;
-                prething.width = boundaries.right - boundaries.left;
+                preactor.x = boundaries.left;
+                preactor.y = boundaries.bottom;
+                preactor.width = boundaries.right - boundaries.left;
                 break;
 
             case Direction.Left:
-                prething.x = boundaries.left - 32;
-                prething.y = boundaries.top;
-                prething.height = boundaries.bottom - boundaries.top;
+                preactor.x = boundaries.left - 32;
+                preactor.y = boundaries.top;
+                preactor.height = boundaries.bottom - boundaries.top;
                 break;
 
             default:
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
 
-        this.game.mapsCreator.analyzePreSwitch(prething, prethings, area, map);
+        this.game.mapsCreator.analyzePreSwitch(preactor, preactors, area, map);
     };
 
     /**
-     * Runs an areaSpawner to place its Area's Things in the map.
+     * Runs an areaSpawner to place its Area's Actors in the map.
      *
-     * @param thing   An in-game areaSpawner.
-     * @param area   The Area associated with thing.
+     * @param actor   An in-game areaSpawner.
+     * @param area   The Area associated with actor.
      */
-    public activateAreaSpawner(thing: IAreaSpawner, area: IArea): void {
-        const direction: Direction = thing.direction;
-        const areaCurrent: IArea = this.game.areaSpawner.getArea() as IArea;
-        const mapCurrent: IMap = this.game.areaSpawner.getMap() as IMap;
-        const prethingsCurrent: IPreThingsContainers = this.game.areaSpawner.getPreThings();
-        let left: number = thing.left + this.game.mapScreener.left;
-        let top: number = thing.top + this.game.mapScreener.top;
+    public activateAreaSpawner(actor: AreaSpawner, area: Area): void {
+        const direction: Direction = actor.direction;
+        const areaCurrent: Area = this.game.areaSpawner.getArea() as Area;
+        const mapCurrent: Map = this.game.areaSpawner.getMap() as Map;
+        const preactorsCurrent: PreActorsContainers = this.game.areaSpawner.getPreActors();
+        let left: number = actor.left + this.game.mapScreener.left;
+        let top: number = actor.top + this.game.mapScreener.top;
 
         switch (direction) {
             case Direction.Top:
@@ -837,11 +833,11 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 break;
 
             case Direction.Right:
-                left += thing.width;
+                left += actor.width;
                 break;
 
             case Direction.Bottom:
-                top += thing.height;
+                top += actor.height;
                 break;
 
             case Direction.Left:
@@ -852,8 +848,8 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 throw new Error(`Unknown direction: '${direction}'.`);
         }
 
-        const x: number = left + (thing.offsetX || 0);
-        const y: number = top + (thing.offsetY || 0);
+        const x: number = left + (actor.offsetX || 0);
+        const y: number = top + (actor.offsetY || 0);
 
         this.game.scrolling.expandMapBoundariesForArea(area, x, y);
 
@@ -878,7 +874,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
 
             this.game.mapsCreator.analyzePreSwitch(
                 command,
-                prethingsCurrent,
+                preactorsCurrent,
                 areaCurrent,
                 mapCurrent
             );
@@ -891,40 +887,35 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
             this.game.quadsKeeper.bottom,
             this.game.quadsKeeper.left
         );
-        this.game.maps.addAreaGate(thing, area, x, y);
+        this.game.maps.addAreaGate(actor, area, x, y);
 
         area.spawned = true;
-        this.game.death.kill(thing);
+        this.game.death.kill(actor);
     }
 
     /**
      * Adds an AreaGate on top of an areaSpawner.
      *
-     * @param thing   An areaSpawner that should have a gate.
+     * @param actor   An areaSpawner that should have a gate.
      * @param area   The Area to spawn into.
      * @param offsetX   Horizontal spawning offset for the Area.
      * @param offsetY   Vertical spawning offset for the Area.
      * @returns The added AreaGate.
      */
-    public addAreaGate(
-        thing: IAreaGate,
-        area: IArea,
-        offsetX: number,
-        offsetY: number
-    ): IAreaGate {
+    public addAreaGate(actor: AreaGate, area: Area, offsetX: number, offsetY: number): AreaGate {
         const properties: any = {
-            area: thing.area,
+            area: actor.area,
             areaOffsetX: offsetX,
             areaOffsetY: offsetY,
-            direction: thing.direction,
+            direction: actor.direction,
             height: 8,
-            map: thing.map,
+            map: actor.map,
             width: 8,
         };
-        let left: number = thing.left;
-        let top: number = thing.top;
+        let left: number = actor.left;
+        let top: number = actor.top;
 
-        switch (thing.direction) {
+        switch (actor.direction) {
             case Direction.Top:
                 top -= this.game.constants.blockSize;
                 properties.width = area.width;
@@ -944,10 +935,10 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
                 break;
 
             default:
-                throw new Error(`Unknown direction: '${thing.direction}'.`);
+                throw new Error(`Unknown direction: '${actor.direction}'.`);
         }
 
-        return this.game.things.add([this.game.things.names.areaGate, properties], left, top);
+        return this.game.actors.add([this.game.actors.names.areaGate, properties], left, top);
     }
 
     /**
@@ -955,7 +946,7 @@ export class Maps<TEightBittr extends FullScreenPokemon> extends EightBittrMaps<
      *
      * @param area   Area to store changes within.
      */
-    public setStateCollection(area: IArea): void {
+    public setStateCollection(area: Area): void {
         this.game.stateHolder.setCollection(`${area.map.name}::${area.name}`);
     }
 }

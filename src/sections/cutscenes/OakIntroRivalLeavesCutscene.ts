@@ -1,9 +1,9 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IWalkingInstructions } from "../actions/Walking";
+import { WalkingInstructions } from "../actions/Walking";
 import { Direction } from "../Constants";
-import { ICharacter } from "../Things";
+import { Character } from "../Actors";
 
 /**
  * OakIntroRivalLeaves cutscene routines.
@@ -59,10 +59,10 @@ export class OakIntroRivalLeavesCutscene extends Section<FullScreenPokemon> {
      * Cutscene for the rival leaving the lab and Oak giving the player advice.
      */
     public Walking(): void {
-        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak");
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
+        const oak: Character = this.game.utilities.getExistingActorById("Oak");
+        const rival: Character = this.game.utilities.getExistingActorById("Rival");
         const isRight: boolean = Math.abs(oak.left - rival.left) < 4;
-        const walkingInstructions: IWalkingInstructions = [
+        const walkingInstructions: WalkingInstructions = [
             {
                 blocks: 1,
                 direction: isRight ? Direction.Left : Direction.Right,

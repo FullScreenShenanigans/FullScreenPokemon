@@ -1,6 +1,6 @@
 import { member } from "babyioc";
 import { Section } from "eightbittr";
-import * as imenugraphr from "menugraphr";
+import * as menugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -13,12 +13,12 @@ import { Pokedex } from "./menus/Pokedex";
 import { Pokemon } from "./menus/Pokemon";
 import { Save } from "./menus/Save";
 import { TownMap } from "./menus/TownMap";
-import { IThing } from "./Things";
+import { Actor } from "./Actors";
 
 /**
  * A description of a simple general text dialog to start.
  */
-export interface IDialog {
+export interface Dialog {
     /**
      * An optional cutscene to start after the dialog.
      */
@@ -27,33 +27,33 @@ export interface IDialog {
     /**
      * Options for a yes or no dialog menu with callbacks after the dialog.
      */
-    options?: IDialogOptions;
+    options?: DialogOptions;
 
     /**
      * The actual text to display in the dialog.
      */
-    words: imenugraphr.IMenuDialogRaw;
+    words: menugraphr.MenuDialogRaw;
 }
 
 /**
  * Dialog settings for a yes or no menu after a dialog.
  */
-export interface IDialogOptions {
+export interface DialogOptions {
     /**
      * What to display after the "Yes" option is activated.
      */
-    Yes: string | IDialog;
+    Yes: string | Dialog;
 
     /**
      * What to display after the "No" option is activated.
      */
-    No: string | IDialog;
+    No: string | Dialog;
 }
 
 /**
  * General attributes for all menus.
  */
-export interface IMenuBase extends imenugraphr.IMenuBase {
+export interface MenuBase extends menugraphr.MenuBase {
     /**
      * Whether this has the dirty visual background.
      */
@@ -83,7 +83,7 @@ export interface IMenuBase extends imenugraphr.IMenuBase {
 /**
  * A schema to specify creating a menu.
  */
-export interface IMenuSchema extends imenugraphr.IMenuSchema {
+export interface MenuSchema extends menugraphr.MenuSchema {
     /**
      * Whether the menu should be hidden.
      */
@@ -91,13 +91,13 @@ export interface IMenuSchema extends imenugraphr.IMenuSchema {
 }
 
 /**
- * A Menu Thing.
+ * A Menu Actor.
  */
-export interface IMenu extends IMenuBase, IThing {
+export interface Menu extends MenuBase, Actor {
     /**
-     * Children Things attached to the Menu.
+     * Children Actors attached to the Menu.
      */
-    children: IThing[];
+    children: Actor[];
 
     /**
      * How tall this is.
@@ -121,9 +121,9 @@ export interface IMenu extends IMenuBase, IThing {
 }
 
 /**
- * A ListMenu Thing.
+ * A ListMenu Actor.
  */
-export interface IListMenu extends IMenu, imenugraphr.IListMenuBase {}
+export interface ListMenu extends Menu, menugraphr.ListMenuBase {}
 
 /**
  * Manipulates MenuGraphr menus.

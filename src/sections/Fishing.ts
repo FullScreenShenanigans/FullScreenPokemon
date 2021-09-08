@@ -2,10 +2,10 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IPokemon } from "./Battles";
-import { IItemSchema, IRod } from "./constants/Items";
-import { IArea, IMap, IWildPokemonSchema } from "./Maps";
-import { IPlayer } from "./Things";
+import { Pokemon } from "./Battles";
+import { ItemSchema, Rod } from "./constants/Items";
+import { Area, Map, WildPokemonSchema } from "./Maps";
+import { Player } from "./Actors";
 
 /**
  * Runs the player trying to fish for Pokemon.
@@ -17,7 +17,7 @@ export class Fishing extends Section<FullScreenPokemon> {
      * @param player   A Player to start fishing.
      * @param rod   The rod that will be used to fish.
      */
-    public startFishing(player: IPlayer, item: IItemSchema): void {
+    public startFishing(player: Player, item: ItemSchema): void {
         if (
             player.bordering[player.direction] === undefined ||
             player.bordering[player.direction]!.title.indexOf("WaterEdge") === -1
@@ -26,7 +26,7 @@ export class Fishing extends Section<FullScreenPokemon> {
             return;
         }
 
-        const rod: IRod = item as IRod;
+        const rod = item as Rod;
 
         this.game.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
@@ -58,12 +58,12 @@ export class Fishing extends Section<FullScreenPokemon> {
      * @param player   A Player who landed the fish.
      * @param rod   The rod that will be used to fish.
      */
-    private playerLandedFish(player: IPlayer, rod: IRod): void {
-        const currentMap: IMap = this.game.areaSpawner.getMap(player.mapName) as IMap;
-        const currentArea: IArea = currentMap.areas[player.bordering[player.direction]!.areaName];
-        const options: IWildPokemonSchema[] = currentArea.wildPokemon!.fishing![rod.type]!;
-        const chosen: IWildPokemonSchema = this.game.equations.chooseRandomWildPokemon(options);
-        const chosenPokemon: IPokemon = this.game.equations.createPokemon(chosen);
+    private playerLandedFish(player: Player, rod: Rod): void {
+        const currentMap: Map = this.game.areaSpawner.getMap(player.mapName) as Map;
+        const currentArea: Area = currentMap.areas[player.bordering[player.direction]!.areaName];
+        const options: WildPokemonSchema[] = currentArea.wildPokemon!.fishing![rod.type]!;
+        const chosen: WildPokemonSchema = this.game.equations.chooseRandomWildPokemon(options);
+        const chosenPokemon: Pokemon = this.game.equations.createPokemon(chosen);
 
         this.game.timeHandler.addEvent((): void => {
             this.game.menuGrapher.createMenu("GeneralText", {
@@ -97,7 +97,7 @@ export class Fishing extends Section<FullScreenPokemon> {
      *
      * @param player   A Player who does not land a fish.
      */
-    public playerFailedLandingFish(player: IPlayer): void {
+    public playerFailedLandingFish(player: Player): void {
         this.game.menuGrapher.deleteActiveMenu();
         this.game.menus.displayMessage("rekt");
         this.game.graphics.classes.removeClass(player, "fishing");

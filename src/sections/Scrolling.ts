@@ -1,7 +1,7 @@
 import { Scrolling as EightBittrScrolling } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IArea, IAreaBoundaries } from "./Maps";
+import { Area, AreaBoundaries } from "./Maps";
 
 /**
  * What direction(s) the screen may scroll from player movement.
@@ -29,11 +29,9 @@ export enum Scrollability {
 }
 
 /**
- * Moves the screen and Things in it.
+ * Moves the screen and Actors in it.
  */
-export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittrScrolling<
-    TEightBittr
-> {
+export class Scrolling<Game extends FullScreenPokemon> extends EightBittrScrolling<Game> {
     /**
      * Centers the current view of the Map based on scrollability.
      */
@@ -69,7 +67,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
      * the Area.
      */
     public centerMapScreenHorizontally(): void {
-        const boundaries: IAreaBoundaries = this.game.mapScreener.variables.boundaries;
+        const boundaries: AreaBoundaries = this.game.mapScreener.variables.boundaries;
         const difference: number = this.game.mapScreener.width - boundaries.width;
 
         if (difference > 0) {
@@ -82,7 +80,7 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
      * the Area.
      */
     public centerMapScreenVertically(): void {
-        const boundaries: IAreaBoundaries = this.game.mapScreener.variables.boundaries;
+        const boundaries: AreaBoundaries = this.game.mapScreener.variables.boundaries;
         const difference: number = this.game.mapScreener.height - boundaries.height;
 
         this.scrollWindow(0, difference / -2);
@@ -117,8 +115,8 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
      *
      * @returns The boundaries of the current Area.
      */
-    public getAreaBoundariesReal = (): IAreaBoundaries => {
-        const area: IArea = this.game.areaSpawner.getArea() as IArea;
+    public getAreaBoundariesReal = (): AreaBoundaries => {
+        const area: Area = this.game.areaSpawner.getArea() as Area;
 
         if (!area) {
             return {
@@ -147,12 +145,12 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
      * @returns The direction(s) that are scrollable.
      */
     public getScreenScrollability = (): Scrollability => {
-        const area: IArea = this.game.areaSpawner.getArea() as IArea;
+        const area: Area = this.game.areaSpawner.getArea() as Area;
         if (!area) {
             return Scrollability.None;
         }
 
-        const boundaries: IAreaBoundaries = area.boundaries;
+        const boundaries: AreaBoundaries = area.boundaries;
         const width: number = boundaries.right - boundaries.left;
         const height: number = boundaries.bottom - boundaries.top;
 
@@ -210,13 +208,10 @@ export class Scrolling<TEightBittr extends FullScreenPokemon> extends EightBittr
     /**
      * Expands the MapScreener boundaries for a newly added Area.
      *
-     * @param _area   The newly added Area.
-     * @param _x   The x-location of the expansion.
-     * @param _y   The y-location of the expansion.
      * @todo For now, this assumes any Area with an added Area is outdoors (which
      *       hasn't been shown to be incorrect yet).
      */
-    public expandMapBoundariesForArea(_area: IArea, _dx: number, _dy: number): void {
+    public expandMapBoundariesForArea(_area: Area, _dx: number, _dy: number): void {
         this.game.mapScreener.variables.scrollability = Scrollability.Both;
     }
 

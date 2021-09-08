@@ -2,14 +2,14 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IPokemon } from "./Battles";
+import { Pokemon } from "./Battles";
 import {
-    IPokemonEvolution,
-    IPokemonEvolutionByItem,
-    IPokemonEvolutionByLevel,
-    IPokemonEvolutionByStats,
-    IPokemonEvolutionByTrade,
-    IPokemonEvolutionRequirement,
+    PokemonEvolution,
+    PokemonEvolutionByItem,
+    PokemonEvolutionByLevel,
+    PokemonEvolutionByStats,
+    PokemonEvolutionByTrade,
+    PokemonEvolutionRequirement,
 } from "./constants/Pokemon";
 
 /**
@@ -18,7 +18,7 @@ import {
  * @type ModifierType   What type of modifier is being used.
  * @type RequirementType   What type of requirement is being used.
  */
-export interface IRequirementHandlerArgs<ModifierType, RequirementType> {
+export interface RequirementHandlerArgs<ModifierType, RequirementType> {
     /**
      * Modifiers for this evolution.
      */
@@ -27,7 +27,7 @@ export interface IRequirementHandlerArgs<ModifierType, RequirementType> {
     /**
      * Pokemon to evolve.
      */
-    pokemon: IPokemon;
+    pokemon: Pokemon;
 
     /**
      * Requirement for evolution.
@@ -38,12 +38,12 @@ export interface IRequirementHandlerArgs<ModifierType, RequirementType> {
 /**
  * The modifiers necessary for a pokemon's evolution.
  */
-export type IEvolutionModifier = ITradeModifier | IItemModifier;
+export type EvolutionModifier = TradeModifier | ItemModifier;
 
 /**
  * Modifier to indicate a pokemon has just been traded.
  */
-export interface ITradeModifier {
+export interface TradeModifier {
     /**
      * The type of modifier.
      */
@@ -53,7 +53,7 @@ export interface ITradeModifier {
 /**
  * Modifier to indicate an item is being used.
  */
-export interface IItemModifier {
+export interface ItemModifier {
     /**
      * The type of modifier.
      */
@@ -68,15 +68,15 @@ export interface IItemModifier {
 /**
  * Handles different methods of evolution, keyed by requirement type.
  */
-export interface IRequirementHandlers {
-    [i: string]: IRequirementHandler;
+export interface RequirementHandlers {
+    [i: string]: RequirementHandler;
 }
 
 /**
  * Handler that takes in a pokemon and the requirements for its evolution, and outputs if it is eligible to evolve.
  */
-export type IRequirementHandler = (
-    args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionRequirement>
+export type RequirementHandler = (
+    args: RequirementHandlerArgs<EvolutionModifier, PokemonEvolutionRequirement>
 ) => boolean;
 
 /**
@@ -86,20 +86,18 @@ export class Evolution extends Section<FullScreenPokemon> {
     /**
      * Holds evolution requirement checks, keyed by the method of evolution.
      */
-    private readonly requirementHandlers: IRequirementHandlers = {
+    private readonly requirementHandlers: RequirementHandlers = {
         level: (
-            args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByLevel>
+            args: RequirementHandlerArgs<EvolutionModifier, PokemonEvolutionByLevel>
         ): boolean => args.pokemon.level >= args.requirement.level,
-        item: (
-            args: IRequirementHandlerArgs<IItemModifier, IPokemonEvolutionByItem>
-        ): boolean => {
+        item: (args: RequirementHandlerArgs<ItemModifier, PokemonEvolutionByItem>): boolean => {
             if (args.modifier) {
                 return args.requirement.item === args.modifier.item.join("");
             }
             return false;
         },
         trade: (
-            args: IRequirementHandlerArgs<ITradeModifier, IPokemonEvolutionByTrade>
+            args: RequirementHandlerArgs<TradeModifier, PokemonEvolutionByTrade>
         ): boolean => {
             if (args.modifier) {
                 return args.modifier.type === "trade";
@@ -113,7 +111,7 @@ export class Evolution extends Section<FullScreenPokemon> {
         // Time of day does not seem to be implemented yet (#441)
         time: (): boolean => false,
         stats: (
-            args: IRequirementHandlerArgs<IEvolutionModifier, IPokemonEvolutionByStats>
+            args: RequirementHandlerArgs<EvolutionModifier, PokemonEvolutionByStats>
         ): boolean => {
             const difference: number =
                 args.pokemon.statistics[args.requirement.greaterStat].normal -
@@ -133,11 +131,8 @@ export class Evolution extends Section<FullScreenPokemon> {
      * @param modifier   Modifier for specific situations such as trade.
      * @returns The name of the pokemon it should evolve into, or undefined if it should not evolve.
      */
-    public checkEvolutions(
-        pokemon: IPokemon,
-        modifier?: IEvolutionModifier
-    ): string[] | undefined {
-        const evolutions: IPokemonEvolution[] | undefined = this.game.constants.pokemon.byName[
+    public checkEvolutions(pokemon: Pokemon, modifier?: EvolutionModifier): string[] | undefined {
+        const evolutions: PokemonEvolution[] | undefined = this.game.constants.pokemon.byName[
             pokemon.title.join("")
         ].evolutions;
         if (!evolutions) {
@@ -159,7 +154,7 @@ export class Evolution extends Section<FullScreenPokemon> {
      * @param pokemon   The pokemon in the party to evolve.
      * @param evolvedForm   The pokemon it should become.
      */
-    public evolve(pokemon: IPokemon, evolvedForm: string[]): void {
+    public evolve(pokemon: Pokemon, evolvedForm: string[]): void {
         pokemon.title = evolvedForm;
         pokemon.statistics = this.game.equations.newPokemonStatistics(
             pokemon.title,
@@ -179,9 +174,9 @@ export class Evolution extends Section<FullScreenPokemon> {
      * @returns Whether the Pokemon meets the requirements to evolve.
      */
     private checkEvolution(
-        pokemon: IPokemon,
-        evolution: IPokemonEvolution,
-        modifier?: IEvolutionModifier
+        pokemon: Pokemon,
+        evolution: PokemonEvolution,
+        modifier?: EvolutionModifier
     ): boolean {
         for (const requirement of evolution.requirements) {
             if (!this.requirementHandlers[requirement.method]) {

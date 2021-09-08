@@ -8,9 +8,9 @@ export class ModEventNames {
     public readonly onAddPlayer = "onAddPlayer";
 
     /*
-     * Key for the event when a PreThing is added.
+     * Key for the event when a PreActor is added.
      */
-    public readonly onAddPreThing = "onAddPreThing";
+    public readonly onAddPreActor = "onAddPreActor";
 
     /*
      * Key for the event when a battle finishes.
@@ -153,7 +153,7 @@ export class ModEventNames {
     public readonly onKeyUpUp = "onKeyUpUp";
 
     /**
-     * Key for the event when a Thing is deleted.
+     * Key for the event when An Actor is deleted.
      */
     public readonly onKill = "onKill";
 

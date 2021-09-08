@@ -4,7 +4,7 @@ The main file that handles Pokemon creation is [`Equations.ts`](../src/sections/
 `Equations.ts` includes functions for choosing random wild Pokemon and for creating the actual Pokemon object.
 It also facilitates the creating of a wild Pokemon by preparing parameters then calling creation of the Pokemon object.
 
-A newly created Pokemon's member types can be found in [`Battles.ts`](../src/sections/Battles.ts) under the `IPokemon` interface.
+A newly created Pokemon's member types can be found in [`Battles.ts`](../src/sections/Battles.ts) under the `Pokemon` interface.
 
 ### Equations
 
@@ -20,11 +20,11 @@ Pass into the `newPokemon` function from `Equations.ts` an object of type `INewP
 ```javascript
 const pokemonTitle: string[] = "CHARMANDER".split("");
 const pokemonLevel: number = 10;
-const pokemon: IPokemon = FSP.equations.newPokemon({
+const pokemon: Pokemon = FSP.equations.newPokemon({
     level: pokemonLevel,
     title: pokemonTitle,
 });
-const pokemon: IPokemon = FSP.equations.newPokemon({
+const pokemon: Pokemon = FSP.equations.newPokemon({
     item: "Potion".split(""),
     level: pokemonLevel,
     moves: [
@@ -43,13 +43,13 @@ const pokemon: IPokemon = FSP.equations.newPokemon({
 The steps for creating a Pokemon in a wild Pokemon encounter are:
 
 1. The `chooseWildPokemonForBattle` function is run.
-   The grass `IMap` and `IArea` determine which wild Pokemon can be encountered by looking at the current location which is an object labeled `areas` that includes an object `wildPokemon` that holds what Pokemon can be found along with appearance rates.
+   The grass `Map` and `Area` determine which wild Pokemon can be encountered by looking at the current location which is an object labeled `areas` that includes an object `wildPokemon` that holds what Pokemon can be found along with appearance rates.
 2. After selecting a valid wild Pokemon that can be encountered `chooseRandomWildPokemon` is called and chooses a Pokemon from the list of valid Pokemon based on the chance of encountering that wild Pokemon.
 3. Next, `createPokemon` is called which sets up an object of type `INewPokemon` containing information on the level and title of the chosen Pokemon.
 4. `newPokemon` is called creating and returning the wild encountered Pokemon.
 
 ```javascript
-const options: IWildPokemonSchema[] = [
+const options: WildPokemonSchema[] = [
     {
         title: "CHARMANDER".split(""),
         level: 10,
@@ -70,6 +70,6 @@ const options: IWildPokemonSchema[] = [
 ];
 
 // Chosen has a 75% chance of being a Squirtle and 25% chance of being a Charmander.
-const chosen: IWildPokemonSchema = fsp.equations.chooseRandomWildPokemon(options);
+const chosen: WildPokemonSchema = fsp.equations.chooseRandomWildPokemon(options);
 const chosenPokemon = fsp.equations.createPokemon(chosen);
 ```

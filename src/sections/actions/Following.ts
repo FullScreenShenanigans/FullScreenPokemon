@@ -2,7 +2,7 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
-import { ICharacter } from "../Things";
+import { Character } from "../Actors";
 
 /**
  * Sets characters following each other.
@@ -14,7 +14,7 @@ export class Following extends Section<FullScreenPokemon> {
      * @param follow   The following Character.
      * @param lead   The leading Character.
      */
-    public startFollowing(follow: ICharacter, lead: ICharacter): void {
+    public startFollowing(follow: Character, lead: Character): void {
         const direction: Direction | undefined = this.game.physics.getDirectionBordering(
             follow,
             lead
@@ -55,7 +55,7 @@ export class Following extends Section<FullScreenPokemon> {
      * @param follow   The following Character.
      * @param direction   What direction to walk in next.
      */
-    public continueFollowing(follow: ICharacter, direction: Direction): void {
+    public continueFollowing(follow: Character, direction: Direction): void {
         follow.wantsToWalk = true;
         follow.nextDirection = direction;
     }
@@ -65,7 +65,7 @@ export class Following extends Section<FullScreenPokemon> {
      *
      * @param follow   The following Character.
      */
-    public pauseFollowing(follow: ICharacter): void {
+    public pauseFollowing(follow: Character): void {
         follow.wantsToWalk = false;
     }
 
@@ -75,7 +75,7 @@ export class Following extends Section<FullScreenPokemon> {
      * @param follow   The following Character.
      * @param lead   The leading Character.
      */
-    public stopFollowing(follow: ICharacter, lead: ICharacter): void {
+    public stopFollowing(follow: Character, lead: Character): void {
         lead.follower = undefined;
         follow.following = undefined;
     }

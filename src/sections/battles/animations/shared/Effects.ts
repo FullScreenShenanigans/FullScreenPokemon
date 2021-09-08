@@ -1,9 +1,9 @@
 import { member } from "babyioc";
-import { IMoveAction, IMoveEffect, ITeamAndAction, Queue, Team } from "battlemovr";
+import { MoveAction, MoveEffect, TeamAndAction, Queue, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleInfo } from "../../../Battles";
+import { BattleInfo } from "../../../Battles";
 
 import { Damage } from "./effects/Damage";
 import { Missed } from "./effects/Missed";
@@ -59,7 +59,7 @@ export class Effects extends Section<FullScreenPokemon> {
      * @param onComplete   Callback for when the action is done.
      */
     public runMoveEffects(
-        teamAndAction: ITeamAndAction<IMoveAction>,
+        teamAndAction: TeamAndAction<MoveAction>,
         onComplete: () => void
     ): void {
         const queue: Queue = new Queue();
@@ -84,8 +84,8 @@ export class Effects extends Section<FullScreenPokemon> {
      * @param onComplete   Callback for when the effect is done.
      */
     private runEffect(
-        teamAndAction: ITeamAndAction<IMoveAction>,
-        effect: IMoveEffect,
+        teamAndAction: TeamAndAction<MoveAction>,
+        effect: MoveEffect,
         onComplete: () => void
     ): void {
         if (this.game.numberMaker.randomIntWithin(0, 100) > effect.probability!) {
@@ -111,7 +111,7 @@ export class Effects extends Section<FullScreenPokemon> {
                 return;
 
             default:
-                throw new Error(`Unknown effect type: '${(effect as IMoveEffect).type}'.`);
+                throw new Error(`Unknown effect type: '${(effect as MoveEffect).type}'.`);
         }
     }
 
@@ -122,7 +122,7 @@ export class Effects extends Section<FullScreenPokemon> {
      * @param onComplete   Handler for when this is done.
      */
     private runAfterEffect(
-        teamAndAction: ITeamAndAction<IMoveAction>,
+        teamAndAction: TeamAndAction<MoveAction>,
         onComplete: () => void
     ): void {
         if (teamAndAction.target.actor.statistics.health.current !== 0) {
@@ -130,9 +130,9 @@ export class Effects extends Section<FullScreenPokemon> {
             return;
         }
 
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
 
-        battleInfo.teams[Team[teamAndAction.target.team]].selector.afterKnockout(
+        battleInfo.teams[TeamId[teamAndAction.target.team]].selector.afterKnockout(
             battleInfo,
             teamAndAction.target.team,
             onComplete

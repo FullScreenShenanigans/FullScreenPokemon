@@ -1,4 +1,4 @@
-import { IMoveAction, IMoveEffect, ITeamAndAction } from "battlemovr";
+import { MoveAction, MoveEffect, TeamAndAction } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
@@ -15,8 +15,8 @@ export class Statuses extends Section<FullScreenPokemon> {
      * @param onComplete   Handler for when this is done.
      */
     public run(
-        teamAndAction: ITeamAndAction<IMoveAction>,
-        effect: IMoveEffect,
+        teamAndAction: TeamAndAction<MoveAction>,
+        effect: MoveEffect,
         onComplete: () => void
     ): void {
         console.log("Status!", teamAndAction, effect);

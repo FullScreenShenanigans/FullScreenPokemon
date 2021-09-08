@@ -1,15 +1,15 @@
 import { Section } from "eightbittr";
 
-import { IPokemon } from "../../sections/Battles";
+import { Pokemon } from "../../sections/Battles";
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IMenuSchema } from "../Menus";
+import { MenuSchema } from "../Menus";
 
 /**
  * A single item's listing in an inventory.
  *
  * @todo When items get their own component(s), move this there.
  */
-export interface IInventoryListing {
+export interface InventoryListing {
     /**
      * Quantity the item.
      */
@@ -26,27 +26,27 @@ export interface IInventoryListing {
  *
  * @param listing   A selected item listing.
  */
-export type IOnListingSelect = (listing: IInventoryListing) => void;
+export type OnListingSelect = (listing: InventoryListing) => void;
 
 /**
  * Settings to open an individual item's menu.
  */
-export interface IItemMenuSettings extends IMenuSchema {
+export interface ItemMenuSettings extends MenuSchema {
     /**
      * Callback for when an item should be tossed.
      */
-    onToss?: IOnListingSelect;
+    onToss?: OnListingSelect;
 
     /**
      * Callback for when an item should be used.
      */
-    onUse?: IOnListingSelect;
+    onUse?: OnListingSelect;
 }
 
 /**
  * Settings to open the items menu.
  */
-export interface IItemsMenuSettings extends IItemMenuSettings {
+export interface ItemsMenuSettings extends ItemMenuSettings {
     /**
      * Whether selecting an item should go directly to choosing a target.
      */
@@ -55,7 +55,7 @@ export interface IItemsMenuSettings extends IItemMenuSettings {
     /**
      * Items to display, if not the player's inventory.
      */
-    items?: IInventoryListing[];
+    items?: InventoryListing[];
 }
 
 /**
@@ -67,10 +67,10 @@ export class Items extends Section<FullScreenPokemon> {
      *
      * @param settings   Custom attributes to apply to the menu.
      */
-    public open(settings: IItemsMenuSettings): void {
-        const listings: IInventoryListing[] =
+    public open(settings: ItemsMenuSettings): void {
+        const listings: InventoryListing[] =
             settings.items || this.game.itemsHolder.getItem(this.game.storage.names.items);
-        const options: any[] = listings.map((listing: IInventoryListing): any => ({
+        const options: any[] = listings.map((listing: InventoryListing): any => ({
             text: listing.item,
             callback: (): void => this.openItem(listing, settings),
             textsFloating: [
@@ -105,7 +105,7 @@ export class Items extends Section<FullScreenPokemon> {
      * @param listing   Item listing being displayed.
      * @param settings   Custom attributes to apply to the menu.
      */
-    public openItem(listing: IInventoryListing, settings: IItemMenuSettings): void {
+    public openItem(listing: InventoryListing, settings: ItemMenuSettings): void {
         const options = [
             {
                 callback: (): void => {
@@ -132,13 +132,13 @@ export class Items extends Section<FullScreenPokemon> {
         if (this.game.flagSwapper.flags.heldItems) {
             options.push({
                 callback: (): void => {
-                    const partyPokemon: IPokemon[] = this.game.itemsHolder.getItem(
+                    const partyPokemon: Pokemon[] = this.game.itemsHolder.getItem(
                         this.game.storage.names.pokemonInParty
                     );
                     const chosenPokemon = partyPokemon[0];
                     chosenPokemon.item = listing.item.split("");
                     listing.amount = listing.amount - 1;
-                    console.log("Something visual should happen when an item is given...");
+                    console.log("Someactor visual should happen when an item is given...");
                 },
                 text: "GIVE",
             });

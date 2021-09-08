@@ -5,7 +5,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Generation-specific flags.
  */
-export interface IFlags {
+export interface Flags {
     /**
      * Whether HM moves can be activated by pressing the A key.
      */
@@ -17,7 +17,7 @@ export interface IFlags {
     readonly heldItems: boolean;
 }
 
-export const createFlagSwapper = (fsp: FullScreenPokemon): FlagSwappr<IFlags> =>
+export const createFlagSwapper = (fsp: FullScreenPokemon): FlagSwappr<Flags> =>
     new FlagSwappr({
         generation: "I",
         generations: {

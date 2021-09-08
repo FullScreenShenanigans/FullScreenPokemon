@@ -1,11 +1,11 @@
 import { factory, member } from "babyioc";
-import { ITeamAnimations, Team } from "battlemovr";
+import { TeamAnimations, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo } from "../../Battles";
-import { IMenu } from "../../Menus";
-import { IThing } from "../../Things";
+import { BattleInfo } from "../../Battles";
+import { Menu } from "../../Menus";
+import { Actor } from "../../Actors";
 
 import { Actions } from "./shared/Actions";
 import { Switching } from "./shared/Switching";
@@ -13,7 +13,7 @@ import { Switching } from "./shared/Switching";
 /**
  * Animations for player battle events.
  */
-export class Player extends Section<FullScreenPokemon> implements ITeamAnimations {
+export class Player extends Section<FullScreenPokemon> implements TeamAnimations {
     /**
      * Shared animations for team actions.
      */
@@ -27,21 +27,21 @@ export class Player extends Section<FullScreenPokemon> implements ITeamAnimation
         (container: Player) =>
             new Switching(container.game, {
                 enter: {
-                    team: Team.player,
-                    getLeaderSlideToGoal: (battleInfo: IBattleInfo): number => {
-                        const player: IThing = battleInfo.things.player;
-                        const menu: IMenu = container.game.menuGrapher.getMenu(
+                    team: TeamId.player,
+                    getLeaderSlideToGoal: (battleInfo: BattleInfo): number => {
+                        const player: Actor = battleInfo.actors.player;
+                        const menu: Menu = container.game.menuGrapher.getMenu(
                             "GeneralText"
-                        ) as IMenu;
+                        ) as Menu;
 
                         return menu.left - player.width / 2;
                     },
-                    getSelectedPokemonSprite: (battleInfo: IBattleInfo): string =>
+                    getSelectedPokemonSprite: (battleInfo: BattleInfo): string =>
                         battleInfo.teams.player.selectedActor.title.join("") + "Back",
-                    getSmokeLeft: (battleInfo: IBattleInfo): number =>
-                        battleInfo.things.menu.left + 32,
-                    getSmokeTop: (battleInfo: IBattleInfo): number =>
-                        battleInfo.things.menu.bottom - 32,
+                    getSmokeLeft: (battleInfo: BattleInfo): number =>
+                        battleInfo.actors.menu.left + 32,
+                    getSmokeTop: (battleInfo: BattleInfo): number =>
+                        battleInfo.actors.menu.bottom - 32,
                 },
             })
     )

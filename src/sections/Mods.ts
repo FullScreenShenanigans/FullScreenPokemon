@@ -1,5 +1,5 @@
 import { Section } from "eightbittr";
-import { IMod } from "modattachr";
+import { Mod } from "modattachr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -21,7 +21,7 @@ import { WalkThroughWallsMod } from "./mods/WalkThroughWallsMod";
 /**
  * Class for a mod component.
  */
-export interface IModComponentClass {
+export interface ModComponentClass {
     /**
      * Name of the mod.
      */
@@ -33,11 +33,11 @@ export interface IModComponentClass {
 /**
  * Stores mod classes to create a ModAttachr.
  */
-export class Mods<TEightBittr extends FullScreenPokemon> extends Section<TEightBittr> {
+export class Mods extends Section<FullScreenPokemon> {
     /**
      * Classes for known mods.
      */
-    public static readonly modClasses: IModComponentClass[] = [
+    public static readonly modClasses: ModComponentClass[] = [
         BlindTrainersMod,
         InfiniteRepelMod,
         JoeysRattataMod,
@@ -60,12 +60,12 @@ export class Mods<TEightBittr extends FullScreenPokemon> extends Section<TEightB
     /**
      * Known mods, keyed by mod name.
      */
-    public readonly modsByName: Record<string, IMod> = {};
+    public readonly modsByName: Record<string, Mod> = {};
 
     /**
      * General schemas for known mods, including names and events.
      */
-    public readonly mods: IMod[] = Mods.modClasses.map(
+    public readonly mods: Mod[] = Mods.modClasses.map(
         (modClass) =>
             (this.modsByName[modClass.modName] = new modClass(this.game, this.eventNames))
     );

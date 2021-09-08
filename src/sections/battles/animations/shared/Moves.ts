@@ -1,9 +1,9 @@
-import { IMoveAction, ITeamAndAction, Team } from "battlemovr";
+import { MoveAction, TeamAndAction, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleInfo } from "../../../Battles";
-import { IMovesBag } from "./moves/MovesBag";
+import { BattleInfo } from "../../../Battles";
+import { MovesBag } from "./moves/MovesBag";
 
 /**
  * Announces and launches battle move animations.
@@ -12,7 +12,7 @@ export class Moves extends Section<FullScreenPokemon> {
     /**
      * Battle move runners, keyed by move name.
      */
-    private readonly movesBag: IMovesBag;
+    private readonly movesBag: MovesBag;
 
     /**
      * Initializes a new instance of the Moves class.
@@ -20,7 +20,7 @@ export class Moves extends Section<FullScreenPokemon> {
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param movesBag   Battle move runners, keyed by move name.
      */
-    public constructor(eightBitter: FullScreenPokemon, movesBag: IMovesBag) {
+    public constructor(eightBitter: FullScreenPokemon, movesBag: MovesBag) {
         super(eightBitter);
 
         this.movesBag = movesBag;
@@ -34,8 +34,8 @@ export class Moves extends Section<FullScreenPokemon> {
      * @param target   Team whose Pokemon is being targeted.
      * @param callback   Callback for when the move is done.
      */
-    public playMove(teamAndAction: ITeamAndAction<IMoveAction>, callback: () => void): void {
-        const battleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+    public playMove(teamAndAction: TeamAndAction<MoveAction>, callback: () => void): void {
+        const battleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
         const animatorType =
             this.movesBag[teamAndAction.action.move.toUpperCase()] || this.movesBag.default;
         const animator = new animatorType(this.game, teamAndAction);
@@ -43,9 +43,9 @@ export class Moves extends Section<FullScreenPokemon> {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            battleInfo.texts.teams[Team[teamAndAction.source.team]].move(
-                battleInfo.teams[Team[teamAndAction.source.team]],
-                battleInfo.teams[Team[teamAndAction.source.team]].selectedActor.title.join(""),
+            battleInfo.texts.teams[TeamId[teamAndAction.source.team]].move(
+                battleInfo.teams[TeamId[teamAndAction.source.team]],
+                battleInfo.teams[TeamId[teamAndAction.source.team]].selectedActor.title.join(""),
                 teamAndAction.action.move
             ),
             (): void => animator.runAnimation(callback)

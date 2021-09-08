@@ -1,12 +1,12 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
-import { IWildPokemonSchema } from "../Maps";
+import { WildPokemonSchema } from "../Maps";
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod that randomizes Pokemon encounters based on the original wild Pokemon's type(s).
  */
-export class RandomizeWildPokemonMod extends ModComponent implements IMod {
+export class RandomizeWildPokemonMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -15,10 +15,8 @@ export class RandomizeWildPokemonMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
-        [this.eventNames.onWildPokemonChosen]: (
-            chosen: IWildPokemonSchema
-        ): IWildPokemonSchema => {
+    public readonly events: CallbackRegister = {
+        [this.eventNames.onWildPokemonChosen]: (chosen: WildPokemonSchema): WildPokemonSchema => {
             const pokemonName: string = chosen.title.join("");
             const pokemonTypes: string[] = this.game.constants.pokemon.byName[pokemonName].types;
             const randomPokemon: string[][] = [];

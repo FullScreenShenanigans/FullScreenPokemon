@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../../fakes.test";
-import { IPokemon } from "../Battles";
 
 import { ItemEffects } from "./ItemEffects";
 
@@ -10,7 +9,7 @@ describe("ItemEffects", () => {
         it("adds a first Pokemon to your party when your party has no Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
             });
@@ -28,7 +27,7 @@ describe("ItemEffects", () => {
         it("adds a second Pokemon to your party when your party has one Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
             });
@@ -47,7 +46,7 @@ describe("ItemEffects", () => {
         it("adds a third Pokemon to your party when your party has two Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
             });
@@ -66,11 +65,11 @@ describe("ItemEffects", () => {
         it("does not add a new Pokemon to your party when your party has six Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const squirtle: IPokemon = fsp.equations.newPokemon({
+            const squirtle = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
             });
-            const charmander: IPokemon = fsp.equations.newPokemon({
+            const charmander = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });
@@ -93,7 +92,7 @@ describe("ItemEffects", () => {
         it("returns true when it successfully adds a Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
             });
@@ -109,11 +108,11 @@ describe("ItemEffects", () => {
         it("returns false when it doesn't successfully add a Pokemon", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const squirtle: IPokemon = fsp.equations.newPokemon({
+            const squirtle = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
             });
-            const charmander: IPokemon = fsp.equations.newPokemon({
+            const charmander = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });

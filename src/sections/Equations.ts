@@ -1,15 +1,15 @@
 import { member } from "babyioc";
-import { IMove, IStatistic } from "battlemovr";
+import { Move, Statistic } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IPokemon, IPokemonStatistics, IValuePoints } from "./Battles";
-import { IBattleBall } from "./constants/Items";
-import { INewPokemon, IPokemonListing, IPokemonMoveListing } from "./constants/Pokemon";
+import { Pokemon, PokemonStatistics, ValuePoints } from "./Battles";
+import { BattleBall } from "./constants/Items";
+import { NewPokemon, PokemonListing, PokemonMoveListing } from "./constants/Pokemon";
 import { Moves } from "./equations/Moves";
-import { IWildPokemonSchema, IWildPokemonSchemaWithLevel } from "./Maps";
-import { ICharacter, IGrass } from "./Things";
+import { WildPokemonSchema, WildPokemonSchemaWithLevel } from "./Maps";
+import { Character, Grass } from "./Actors";
 
 /**
  * Gets whether a wild Pokemon schema has only one possible level.
@@ -18,8 +18,8 @@ import { ICharacter, IGrass } from "./Things";
  * @returns Whether the schema has only one possible level.
  */
 const isWildPokemonSchemaForLevel = (
-    schema: IWildPokemonSchema
-): schema is IWildPokemonSchemaWithLevel => "level" in schema;
+    schema: WildPokemonSchema
+): schema is WildPokemonSchemaWithLevel => "level" in schema;
 
 /**
  * Common equations.
@@ -34,11 +34,11 @@ export class Equations extends Section<FullScreenPokemon> {
     /**
      * Calculates how many game ticks it will take for a Character to traverse a block.
      *
-     * @param thing   A walking Character.
-     * @returns how many game ticks it will take for thing to traverse a block.
+     * @param actor   A walking Character.
+     * @returns how many game ticks it will take for actor to traverse a block.
      */
-    public walkingTicksPerBlock(thing: ICharacter): number {
-        return 32 / thing.speed;
+    public walkingTicksPerBlock(actor: Character): number {
+        return 32 / actor.speed;
     }
 
     /**
@@ -47,7 +47,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @param pokemon   A group of Pokemon.
      * @returns The average level of the Pokemon.
      */
-    public averageLevel(pokemon: IPokemon[]): number {
+    public averageLevel(pokemon: Pokemon[]): number {
         let average = 0;
 
         for (const actor of pokemon) {
@@ -63,7 +63,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @param options   Wild pokemon schemas.
      * @returns The average level from among the schemas.
      */
-    public averageLevelWildPokemon(options: IWildPokemonSchema[]): number {
+    public averageLevelWildPokemon(options: WildPokemonSchema[]): number {
         let average = 0;
 
         for (const wildPokemonSchema of options) {
@@ -90,7 +90,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @param options   Potential Pokemon schemas to choose from.
      * @returns One of the potential Pokemon schemas at random.
      */
-    public chooseRandomWildPokemon(options: IWildPokemonSchema[]): IWildPokemonSchema {
+    public chooseRandomWildPokemon(options: WildPokemonSchema[]): WildPokemonSchema {
         const choice: number = this.game.numberMaker.random();
         let sum = 0;
 
@@ -110,7 +110,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @param schema   A description of the Pokemon.
      * @returns A newly created Pokemon.
      */
-    public createPokemon(schema: IWildPokemonSchema): IPokemon {
+    public createPokemon(schema: WildPokemonSchema): Pokemon {
         const level: number = isWildPokemonSchemaForLevel(schema)
             ? schema.level
             : this.game.numberMaker.randomArrayMember(schema.levels);
@@ -134,9 +134,9 @@ export class Equations extends Section<FullScreenPokemon> {
      *             from the newPokemonEVs equation).
      * @returns A newly created Pokemon.
      */
-    public newPokemon(chosenInfo: INewPokemon): IPokemon {
-        const ev: IValuePoints = this.newPokemonEVs();
-        const iv: IValuePoints = this.newPokemonIVs();
+    public newPokemon(chosenInfo: NewPokemon): Pokemon {
+        const ev: ValuePoints = this.newPokemonEVs();
+        const iv: ValuePoints = this.newPokemonIVs();
 
         this.game.modAttacher.fireEvent("onNewPokemonCreation", chosenInfo);
 
@@ -173,40 +173,40 @@ export class Equations extends Section<FullScreenPokemon> {
     public newPokemonStatistics(
         title: string[],
         level: number,
-        ev: IValuePoints,
-        iv: IValuePoints
-    ): IPokemonStatistics {
-        const schema: IPokemonListing = this.game.constants.pokemon.byName[title.join("")];
+        ev: ValuePoints,
+        iv: ValuePoints
+    ): PokemonStatistics {
+        const schema: PokemonListing = this.game.constants.pokemon.byName[title.join("")];
 
-        const attack: IStatistic = this.pokemonStatistic(
+        const attack: Statistic = this.pokemonStatistic(
             "attack",
             schema.attack,
             level,
             ev.attack,
             iv.attack
         );
-        const defense: IStatistic = this.pokemonStatistic(
+        const defense: Statistic = this.pokemonStatistic(
             "defense",
             schema.defense,
             level,
             ev.defense,
             iv.defense
         );
-        const health: IStatistic = this.pokemonStatistic(
+        const health: Statistic = this.pokemonStatistic(
             "health",
             schema.health,
             level,
             ev.health,
             iv.health
         );
-        const special: IStatistic = this.pokemonStatistic(
+        const special: Statistic = this.pokemonStatistic(
             "special",
             schema.special,
             level,
             ev.special,
             iv.special
         );
-        const speed: IStatistic = this.pokemonStatistic(
+        const speed: Statistic = this.pokemonStatistic(
             "speed",
             schema.speed,
             level,
@@ -225,13 +225,13 @@ export class Equations extends Section<FullScreenPokemon> {
      * @returns The default moves of the Pokemon.
      * @see http://bulbapedia.bulbagarden.net/wiki/XXXXXXX_(Pok%C3%A9mon)/Generation_I_learnset
      */
-    public newPokemonMoves(title: string[], level: number): IMove[] {
-        const possibilities: IPokemonMoveListing[] = this.game.constants.pokemon.byName[
+    public newPokemonMoves(title: string[], level: number): Move[] {
+        const possibilities: PokemonMoveListing[] = this.game.constants.pokemon.byName[
             title.join("")
         ].moves.natural;
-        const output: IMove[] = [];
-        let move: IPokemonMoveListing;
-        let newMove: IMove;
+        const output: Move[] = [];
+        let move: PokemonMoveListing;
+        let newMove: Move;
         let end: number;
 
         for (end = 0; end < possibilities.length; end += 1) {
@@ -261,7 +261,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @see http://bulbapedia.bulbagarden.net/wiki/Individual_values
      * @todo Implement the bit procedure for health.
      */
-    public newPokemonIVs(): IValuePoints {
+    public newPokemonIVs(): ValuePoints {
         return {
             attack: this.game.numberMaker.randomIntWithin(0, 15),
             defense: this.game.numberMaker.randomIntWithin(0, 15),
@@ -276,7 +276,7 @@ export class Equations extends Section<FullScreenPokemon> {
      *
      * @returns A blank set of EV points.
      */
-    public newPokemonEVs(): IValuePoints {
+    public newPokemonEVs(): ValuePoints {
         return {
             attack: 0,
             defense: 0,
@@ -299,12 +299,12 @@ export class Equations extends Section<FullScreenPokemon> {
      * @remarks Note: the page mentions rounding errors...
      */
     public pokemonStatistic(
-        statistic: keyof IPokemonStatistics,
+        statistic: keyof PokemonStatistics,
         base: number,
         level: number,
         ev: number,
         iv: number
-    ): IStatistic {
+    ): Statistic {
         const normal: number = this.pokemonStatisticNormal(statistic, base, level, ev, iv);
 
         return {
@@ -326,7 +326,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @remarks Note: the page mentions rounding errors...
      */
     public pokemonStatisticNormal(
-        statistic: keyof IPokemonStatistics,
+        statistic: keyof PokemonStatistics,
         base: number,
         level: number,
         ev: number,
@@ -353,11 +353,11 @@ export class Equations extends Section<FullScreenPokemon> {
     /**
      * Determines whether a wild encounter should occur when walking through grass.
      *
-     * @param grass   The grass Thing being walked through.
+     * @param grass   The grass Actor being walked through.
      * @returns Whether a wild encounter should occur.
      * @see http://bulbapedia.bulbagarden.net/wiki/Tall_grass
      */
-    public doesGrassEncounterHappen(grass: IGrass): boolean {
+    public doesGrassEncounterHappen(grass: Grass): boolean {
         return this.game.numberMaker.randomBooleanFraction(grass.rarity, 187.5);
     }
 
@@ -369,7 +369,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @returns Whether the Pokemon may be caught.
      * @see http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
      */
-    public canCatchPokemon(pokemon: IPokemon, ball: IBattleBall): boolean {
+    public canCatchPokemon(pokemon: Pokemon, ball: BattleBall): boolean {
         // 1. If a Master Ball is used, the Pokemon is caught.
         if (ball.type === "Master") {
             return true;
@@ -430,7 +430,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @returns How many times the ball should shake.
      * @see http://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
      */
-    public numBallShakes(pokemon: IPokemon, ball: IBattleBall): number {
+    public numBallShakes(pokemon: Pokemon, ball: BattleBall): number {
         // 1. Calculate d.
         const catchRate: number | undefined = this.game.constants.pokemon.byName[
             pokemon.title.join("")
@@ -487,7 +487,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @param types   The types to check.
      * @returns Whether the Pokemon's types includes any of the given types.
      */
-    public pokemonMatchesTypes(pokemon: IPokemon, types: string[]): boolean {
+    public pokemonMatchesTypes(pokemon: Pokemon, types: string[]): boolean {
         for (const type of types) {
             if (pokemon.types.indexOf(type) !== -1) {
                 return true;
@@ -508,7 +508,7 @@ export class Equations extends Section<FullScreenPokemon> {
      *          required to reach that level when caught, as will Pokémon hatched from Eggs.
      */
     public experienceStarting(title: string[], level: number): number {
-        const reference: IPokemonListing = this.game.constants.pokemon.byName[title.join("")];
+        const reference: PokemonListing = this.game.constants.pokemon.byName[title.join("")];
 
         // TODO: remove defaulting to mediumFast
         switch (reference.experienceType) {
@@ -531,7 +531,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @remarks This will need to be changed to accomodate rewarding multiple Pokemon.
      * @see http://bulbapedia.bulbagarden.net/wiki/Experience#Gain_formula
      */
-    public experienceGained(player: any /* IBattler */, opponent: any /* IBattler */): number {
+    public experienceGained(player: any /* Battler */, opponent: any /* Battler */): number {
         // a is equal to 1 if the fainted Pokemon is wild, or 1.5 if the fainted Pokemon is owned by a Trainer
         const a: number = opponent.category === "Trainer" ? 1.5 : 1;
 
@@ -558,7 +558,7 @@ export class Equations extends Section<FullScreenPokemon> {
      * @param statistic   Statistic for the displayed health.
      * @returns How wide the health bar should be.
      */
-    public widthHealthBar(widthFullBar: number, statistic: IStatistic): number {
+    public widthHealthBar(widthFullBar: number, statistic: Statistic): number {
         return ((widthFullBar - 4) * statistic.current) / statistic.normal;
     }
 }

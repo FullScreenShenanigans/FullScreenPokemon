@@ -4,8 +4,8 @@ import { expect } from "chai";
 import { FullScreenPokemon } from "..";
 import { stubBlankGame } from "../fakes.test";
 
-import { IBattleTeam, IPokemon } from "./Battles";
-import { IPlayer } from "./Things";
+import { BattleTeam, Pokemon } from "./Battles";
+import { Player } from "./Actors";
 
 const createGame = () => {
     const { clock, fsp, player } = stubBlankGame({
@@ -24,7 +24,7 @@ const createGame = () => {
         ],
     });
 
-    const enemyPokemon: IPokemon = fsp.equations.newPokemon({
+    const enemyPokemon: Pokemon = fsp.equations.newPokemon({
         level: 3,
         title: "PIDGEY".split(""),
         moves: [
@@ -41,8 +41,8 @@ const createGame = () => {
 
 const processBattle = (
     fsp: FullScreenPokemon,
-    enemyPokemon: IPokemon,
-    player: IPlayer,
+    enemyPokemon: Pokemon,
+    player: Player,
     clock: Clock
 ) => {
     fsp.battles.startBattle({
@@ -52,7 +52,7 @@ const processBattle = (
             },
         },
         texts: {
-            start: (team: IBattleTeam): string =>
+            start: (team: BattleTeam): string =>
                 `Wild ${team.selectedActor.nickname.join("")} appeared!`,
         },
     });

@@ -1,23 +1,21 @@
-import { IThingMaintainer, Maintenance as EightBittrMaintenance } from "eightbittr";
+import { ActorMaintainer, Maintenance as EightBittrMaintenance } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { Scrollability } from "./Scrolling";
-import { ICharacter, IPlayer } from "./Things";
+import { Character, Player } from "./Actors";
 
 /**
- * Maintains Things during FrameTickr frames.
+ * Maintains Actors during FrameTickr frames.
  */
-export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBittrMaintenance<
-    TEightBittr
-> {
+export class Maintenance<Game extends FullScreenPokemon> extends EightBittrMaintenance<Game> {
     /**
      * Maintenance for all active Characters. Walking, grass maintenance, alive
      * checking, and quadrant maintenance are performed.
      *
-     * @param characters   The Characters group of Things.
+     * @param characters   The Characters group of Actors.
      */
-    public readonly maintainCharacter = (character: ICharacter): void => {
+    public readonly maintainCharacter = (character: Character): void => {
         this.game.physics.shiftCharacter(character);
 
         if (
@@ -46,9 +44,9 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
      * Maintenance for a Player. The screen is scrolled according to the global
      * MapScreener.scrollability.
      *
-     * @param player   An in-game Player Thing.
+     * @param player   An in-game Player Actor.
      */
-    public readonly maintainPlayer = (player: IPlayer): void => {
+    public readonly maintainPlayer = (player: Player): void => {
         if (!player || player.removed) {
             return;
         }
@@ -77,7 +75,7 @@ export class Maintenance<TEightBittr extends FullScreenPokemon> extends EightBit
     /**
      * Group type names along with their tick maintenance functions.
      */
-    public readonly maintainers: [string, IThingMaintainer][] = [
+    public readonly maintainers: [string, ActorMaintainer][] = [
         ["Character", this.maintainCharacter],
     ];
 }

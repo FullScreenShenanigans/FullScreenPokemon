@@ -1,6 +1,6 @@
-import { Team } from "battlemovr";
+import { TeamId } from "battlemovr";
 
-import { IThing } from "../../../../../Things";
+import { Actor } from "../../../../../Actors";
 import { Move } from "../Move";
 
 /**
@@ -11,23 +11,23 @@ export class Growl extends Move {
      * Starting x-position for notes.
      */
     private readonly noteStartX: number =
-        this.teamAndAction.source.team === Team.player
-            ? this.menu.left + this.attackerThing.width / 2
-            : this.menu.right - this.attackerThing.width / 2;
+        this.teamAndAction.source.team === TeamId.player
+            ? this.menu.left + this.attackerActor.width / 2
+            : this.menu.right - this.attackerActor.width / 2;
 
     /**
      * Starting y-position for notes.
      */
     private readonly noteStartY: number =
-        this.teamAndAction.source.team === Team.player
-            ? this.menu.bottom - this.attackerThing.height
-            : this.menu.top + this.attackerThing.height;
+        this.teamAndAction.source.team === TeamId.player
+            ? this.menu.bottom - this.attackerActor.height
+            : this.menu.top + this.attackerActor.height;
 
     /**
      * Horizontal delta for note movements.
      */
     private readonly noteDifferenceX: number =
-        this.teamAndAction.source.team === Team.player
+        this.teamAndAction.source.team === TeamId.player
             ? this.menu.right - this.noteStartX
             : this.menu.left - this.noteStartX;
 
@@ -35,9 +35,9 @@ export class Growl extends Move {
      * Vertical delta for note movements.
      */
     private readonly noteDifferenceY: number =
-        this.teamAndAction.source.team === Team.player
-            ? this.menu.top + this.defenderThing.height / 2 - this.noteStartY
-            : this.menu.bottom - this.defenderThing.height - this.noteStartY;
+        this.teamAndAction.source.team === TeamId.player
+            ? this.menu.top + this.defenderActor.height / 2 - this.noteStartY
+            : this.menu.bottom - this.defenderActor.height - this.noteStartY;
 
     /**
      * Runs the move's animation.
@@ -45,16 +45,16 @@ export class Growl extends Move {
      * @param onComplete   Callback for when the animation is done.
      */
     public runAnimation(onComplete: () => void): void {
-        const notes: [IThing, IThing] = [
-            this.game.objectMaker.make<IThing>(this.game.things.names.note),
-            this.game.objectMaker.make<IThing>(this.game.things.names.note),
+        const notes: [Actor, Actor] = [
+            this.game.objectMaker.make<Actor>(this.game.actors.names.note),
+            this.game.objectMaker.make<Actor>(this.game.actors.names.note),
         ];
 
         this.animateNote(notes[0], 10);
         this.animateNote(notes[1], 12);
 
         this.game.timeHandler.addEvent((): void => {
-            this.game.battles.animations.things.shake({
+            this.game.battles.animations.actors.shake({
                 callback: onComplete,
                 dx: 3,
                 clearTime: 6,
@@ -65,10 +65,10 @@ export class Growl extends Move {
     /**
      * Schedules a note's animations.
      *
-     * @param note   A note Thing.
+     * @param note   A note Actor.
      * @param dt   Time delay between changes.
      */
-    private animateNote(note: IThing, dt: number): void {
+    private animateNote(note: Actor, dt: number): void {
         let flip: -1 | 1 = 1;
 
         for (let i = 1; i <= 4; i += 1) {
@@ -84,10 +84,10 @@ export class Growl extends Move {
     /**
      * Shifts a note.
      *
-     * @param note   A note Thing.
+     * @param note   A note Actor.
      * @param flip   Whether it's flipped.
      */
-    private shiftNote(note: IThing, flip: -1 | 1): void {
+    private shiftNote(note: Actor, flip: -1 | 1): void {
         this.game.physics.shiftHoriz(note, this.noteDifferenceX / 4);
 
         if (flip === 1) {

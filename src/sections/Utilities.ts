@@ -2,14 +2,12 @@ import { Utilities as EightBittrUtilities } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IThing } from "./Things";
+import { Actor } from "./Actors";
 
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittrUtilities<
-    TEightBittr
-> {
+export class Utilities<Game extends FullScreenPokemon> extends EightBittrUtilities<Game> {
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
@@ -27,11 +25,11 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
      *
      * @param number   The original Number being padded.
      * @param size   How many digits the output must contain.
-     * @param [prefix]   A prefix to repeat for padding (by default, "0").
+     * @param prefix   A prefix to repeat for padding (by default, "0").
      * @example makeDigit(7, 3); // '007'
      * @example makeDigit(7, 3, 1); // '117'
      */
-    public makeDigit(num: number | string, size: number, prefix?: any): string {
+    public makeDigit(num: number | string, size: number, prefix?: number | string): string {
         return (
             this.stringOf(
                 prefix ? prefix.toString() : "0",
@@ -103,13 +101,13 @@ export class Utilities<TEightBittr extends FullScreenPokemon> extends EightBittr
     }
 
     /**
-     * Gets a Thing known to exist by its ID.
+     * Gets An Actor known to exist by its ID.
      *
-     * @template TThing   Type of Thing to retrieve.
-     * @param id   ID of a Thing.
-     * @returns Thing under the ID.
+     * @template TActor   Type of Actor to retrieve.
+     * @param id   ID of An Actor.
+     * @returns Actor under the ID.
      */
-    public getExistingThingById<TThing extends IThing = IThing>(id: string): TThing {
-        return this.game.groupHolder.getThing(id) as TThing;
+    public getExistingActorById<TActor extends Actor = Actor>(id: string): TActor {
+        return this.game.groupHolder.getActor<TActor>(id)!;
     }
 }

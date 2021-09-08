@@ -1,9 +1,9 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IWalkingInstructions } from "../actions/Walking";
+import { WalkingInstructions } from "../actions/Walking";
 import { Direction } from "../Constants";
-import { ICharacter, IThing } from "../Things";
+import { Character, Actor } from "../Actors";
 
 /**
  * OakIntro cutscene routines.
@@ -74,16 +74,13 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public Catchup(settings: any): void {
-        const door: IThing = this.game.utilities.getExistingThingById("Oak's Lab Door");
-        const oak: ICharacter = this.game.objectMaker.make<ICharacter>(
-            this.game.things.names.oak,
-            {
-                outerOk: true,
-                nocollide: true,
-            }
-        );
+        const door: Actor = this.game.utilities.getExistingActorById("Oak's Lab Door");
+        const oak: Character = this.game.objectMaker.make<Character>(this.game.actors.names.oak, {
+            outerOk: true,
+            nocollide: true,
+        });
         const isToLeft: boolean = this.game.players[0].bordering[Direction.Left] !== undefined;
-        const walkingInstructions: IWalkingInstructions = [
+        const walkingInstructions: WalkingInstructions = [
             {
                 blocks: 1,
                 direction: Direction.Bottom,
@@ -132,7 +129,7 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
         settings.oak = oak;
         settings.isToLeft = isToLeft;
 
-        this.game.things.add(oak, door.left, door.top);
+        this.game.actors.add(oak, door.left, door.top);
         this.game.actions.walking.startWalkingOnPath(oak, walkingInstructions);
     }
 
@@ -159,7 +156,7 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public FollowToLab(settings: any): void {
-        const walkingInstructions: IWalkingInstructions = [
+        const walkingInstructions: WalkingInstructions = [
             {
                 blocks: 5,
                 direction: Direction.Bottom,
@@ -228,8 +225,8 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public WalkToTable(settings: any): void {
-        const oak: ICharacter = this.game.utilities.getExistingThingById("Oak");
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
+        const oak: Character = this.game.utilities.getExistingActorById("Oak");
+        const rival: Character = this.game.utilities.getExistingActorById("Rival");
         const appearanceDelay: number = this.game.equations.walkingTicksPerBlock(oak) * 6;
 
         settings.oak = oak;
@@ -352,7 +349,7 @@ export class OakIntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public OakRespondsToProtest(settings: any): void {
-        const blocker: IThing = this.game.utilities.getExistingThingById("OakBlocker");
+        const blocker: Actor = this.game.utilities.getExistingActorById("OakBlocker");
         const timeout = 21;
 
         settings.player.nocollide = false;

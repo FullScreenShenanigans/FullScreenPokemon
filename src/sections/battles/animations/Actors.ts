@@ -1,12 +1,12 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IThing } from "../../Things";
+import { Actor } from "../../Actors";
 
 /**
  * Settings for a flicker animation.
  */
-export interface IFlickerSettings {
+export interface FlickerSettings {
     /**
      * Handler for when this is done.
      */
@@ -23,15 +23,15 @@ export interface IFlickerSettings {
     interval?: number;
 
     /**
-     * A Thing to flicker.
+     * An Actor to flicker.
      */
-    thing: IThing;
+    actor: Actor;
 }
 
 /**
  * Settings for a shake animation.
  */
-export interface IShakeSettings {
+export interface ShakeSettings {
     /**
      * Handler for when this is done.
      */
@@ -59,31 +59,31 @@ export interface IShakeSettings {
 }
 
 /**
- * Thing animations for battles.
+ * Actor animations for battles.
  */
-export class Things extends Section<FullScreenPokemon> {
+export class Actors extends Section<FullScreenPokemon> {
     /**
-     * Animates a "flicker" effect on a Thing by repeatedly toggling its hidden
+     * Animates a "flicker" effect on An Actor by repeatedly toggling its hidden
      * flag for a little while.
      *
      * @param settings   Settings for the flicker effect.
      */
-    public flicker(settings: IFlickerSettings): void {
+    public flicker(settings: FlickerSettings): void {
         const clearTime: number = settings.clearTime || 49;
         const interval: number = settings.interval || 2;
 
-        settings.thing.flickering = true;
+        settings.actor.flickering = true;
 
         this.game.timeHandler.addEventInterval(
             (): void => {
-                settings.thing.hidden = !settings.thing.hidden;
+                settings.actor.hidden = !settings.actor.hidden;
             },
             interval,
             clearTime || 49
         );
 
         this.game.timeHandler.addEvent((): void => {
-            settings.thing.flickering = settings.thing.hidden = false;
+            settings.actor.flickering = settings.actor.hidden = false;
 
             if (settings.callback) {
                 settings.callback();
@@ -92,11 +92,11 @@ export class Things extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Shakes all Things on the screen for a little bit.
+     * Shakes all Actors on the screen for a little bit.
      *
      * @param Settings for the shake animation.
      */
-    public shake(settings: IShakeSettings): void {
+    public shake(settings: ShakeSettings): void {
         const clearTime: number = settings.clearTime || 8;
         const interval: number = settings.interval || 8;
         let dx = 0;
@@ -104,8 +104,8 @@ export class Things extends Section<FullScreenPokemon> {
 
         this.game.timeHandler.addEventInterval(
             (): void => {
-                this.game.groupHolder.callOnAll((thing: IThing) => {
-                    this.game.physics.shiftBoth(thing, dx, dy);
+                this.game.groupHolder.callOnAll((actor: Actor) => {
+                    this.game.physics.shiftBoth(actor, dx, dy);
                 });
             },
             1,

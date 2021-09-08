@@ -4,10 +4,10 @@ import { expect } from "chai";
 import { FullScreenPokemon } from "../";
 import { stubBlankGame } from "../fakes.test";
 
-import { IBattleTeam, IPokemon } from "./Battles";
-import { IPlayer } from "./Things";
+import { BattleTeam, Pokemon } from "./Battles";
+import { Player } from "./Actors";
 
-const skipBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer): void => {
+const skipBattle = (clock: Clock, fsp: FullScreenPokemon, player: Player): void => {
     fsp.inputs.keyDownA(player);
     clock.tick(2000);
     fsp.inputs.keyDownA(player);
@@ -22,9 +22,9 @@ const skipBattle = (clock: Clock, fsp: FullScreenPokemon, player: IPlayer): void
 const startBattle = (
     clock: Clock,
     fsp: FullScreenPokemon,
-    player: IPlayer,
-    enemyPokemon: IPokemon,
-    charmander: IPokemon
+    player: Player,
+    enemyPokemon: Pokemon,
+    charmander: Pokemon
 ) => {
     fsp.battles.startBattle({
         teams: {
@@ -33,7 +33,7 @@ const startBattle = (
             },
         },
         texts: {
-            start: (team: IBattleTeam): string =>
+            start: (team: BattleTeam): string =>
                 `Wild ${team.selectedActor.nickname.join("")} appeared!`,
         },
     });
@@ -61,7 +61,7 @@ const createGame = (charmanderLevel: number) => {
 
     fsp.itemsHolder.setItem(fsp.storage.names.pokemonInParty, [charmander]);
 
-    const enemyPokemon: IPokemon = fsp.equations.newPokemon({
+    const enemyPokemon: Pokemon = fsp.equations.newPokemon({
         level: 1,
         title: "PIDGEY".split(""),
         moves: [
@@ -81,7 +81,7 @@ describe("Experience", () => {
         it("levels a Pokemon up", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });
@@ -98,7 +98,7 @@ describe("Experience", () => {
         it("increases a Pokemon's experience", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });
@@ -113,7 +113,7 @@ describe("Experience", () => {
         it("doesn't level up a pokemon when it doesn't gain enough experience to do so", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });
@@ -128,7 +128,7 @@ describe("Experience", () => {
         it("returns false when a Pokemon doesn't level up", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });
@@ -143,7 +143,7 @@ describe("Experience", () => {
         it("levels up a pokemon when it gains enough experience to do so", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });
@@ -158,7 +158,7 @@ describe("Experience", () => {
         it("returns true when a Pokemon levels up", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "CHARMANDER".split(""),
             });

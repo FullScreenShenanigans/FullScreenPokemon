@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
-import { IAbsoluteSizeSchema, ISelectSchema, IUserWrapprSettings, UserWrappr } from "userwrappr";
+import { AbsoluteSizeSchema, SelectSchema, UserWrapprSettings, UserWrappr } from "userwrappr";
 
 import { stubBlankGame } from "../fakes.test";
 import { FullScreenPokemon } from "../FullScreenPokemon";
@@ -16,16 +16,16 @@ const createStubGameWindow = () => ({
     removeEventListener: sinon.spy(),
 });
 
-const createGame = (size: IAbsoluteSizeSchema) =>
+const createGame = (size: AbsoluteSizeSchema) =>
     stubBlankGame({
         height: size.height,
         width: size.width,
     }).fsp;
 
-const saveValueAs = (wrapperSettings: IUserWrapprSettings, value: string) =>
+const saveValueAs = (wrapperSettings: UserWrapprSettings, value: string) =>
     (wrapperSettings
         .menus!.find((menu) => menu.title === "Options")!
-        .options.find((options) => options.title === "Speed")! as ISelectSchema).saveValue(
+        .options.find((options) => options.title === "Speed")! as SelectSchema).saveValue(
         value,
         "1x"
     );

@@ -1,4 +1,4 @@
-import { IScenePlayrSettings, ScenePlayr } from "sceneplayr";
+import { ScenePlayrSettings, ScenePlayr } from "sceneplayr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
@@ -70,4 +70,4 @@ export const createScenePlayer = (fsp: FullScreenPokemon): ScenePlayr =>
             },
         },
         scope: fsp.cutscenes,
-    } as any) as IScenePlayrSettings);
+    } as any) as ScenePlayrSettings);

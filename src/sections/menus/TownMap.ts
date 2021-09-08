@@ -1,7 +1,7 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IMenuSchema } from "../Menus";
+import { MenuSchema } from "../Menus";
 
 /**
  * Opens and animates displays on the Town Map menu.
@@ -22,14 +22,14 @@ export class TownMap extends Section<FullScreenPokemon> {
      *
      * @param settings   Custom attributes to apply to the menu.
      */
-    public readonly open = (settings?: IMenuSchema): void => {
+    public readonly open = (settings?: MenuSchema): void => {
         const playerPosition: number[] = TownMap.townMapLocations["Pallet Town"];
         const playerSize: any = this.game.objectMaker.getPrototypeOf("Player");
 
         this.game.menuGrapher.createMenu("Town Map", settings);
-        this.game.menuGrapher.createMenuThing("Town Map Inside", {
-            type: "thing",
-            thing: "Player",
+        this.game.menuGrapher.createMenuActor("Town Map Inside", {
+            type: "actor",
+            actor: "Player",
             args: {
                 nocollide: true,
             },

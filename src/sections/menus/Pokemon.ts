@@ -1,43 +1,43 @@
-import { IMove } from "battlemovr";
+import { Move } from "battlemovr";
 import { Section } from "eightbittr";
-import { IMenuSchemaPosition, IMenuSchemaSize, IMenuWordSchema } from "menugraphr";
+import { MenuSchemaPosition, MenuSchemaSize, MenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
-import { IHMMoveSchema } from "../constants/Moves";
-import { IPokemonListing } from "../constants/Pokemon";
-import { IMenuSchema } from "../Menus";
+import { Pokemon as BattlePokemon } from "../Battles";
+import { HMMoveSchema } from "../constants/Moves";
+import { PokemonListing } from "../constants/Pokemon";
+import { MenuSchema } from "../Menus";
 
 /**
  * Callback for switching a Pokemon.
  *
  * @param pokemon   A selected Pokemon.
  */
-export type IOnPokemonSwitch = (pokemon: IPokemon) => void;
+export type OnPokemonSwitch = (pokemon: BattlePokemon) => void;
 
 /**
  * Settings to open the items menu.
  */
-export interface IPartyMenuSettings extends IMenuSchema {
+export interface PartyMenuSettings extends MenuSchema {
     /**
      * Callback for when a Pokemon should be switched.
      */
-    onSwitch: IOnPokemonSwitch;
+    onSwitch: OnPokemonSwitch;
 
     /**
      * Pokemon to display, if not the player's party.
      */
-    pokemon?: IPokemon[];
+    pokemon?: BattlePokemon[];
 }
 
 /**
  * Settings to open the LevelUpStats menu for a Pokemon.
  */
-export interface ILevelUpStatsMenuSettings {
+export interface LevelUpStatsMenuSettings {
     /**
      * The Pokemon to display the statistics for.
      */
-    pokemon: IPokemon;
+    pokemon: BattlePokemon;
 
     /**
      * A menu container for LevelUpStats.
@@ -52,12 +52,12 @@ export interface ILevelUpStatsMenuSettings {
     /**
      * How to position the menu within its container.
      */
-    position?: IMenuSchemaPosition;
+    position?: MenuSchemaPosition;
 
     /**
      * How to size the menu.
      */
-    size?: IMenuSchemaSize;
+    size?: MenuSchemaSize;
 
     /**
      * A horizontal offset for the menu.
@@ -84,14 +84,14 @@ export class Pokemon extends Section<FullScreenPokemon> {
      *
      * @param settings   Custom attributes to apply to the menu.
      */
-    public openPartyMenu(settings: IPartyMenuSettings): void {
-        const listings: IPokemon[] =
+    public openPartyMenu(settings: PartyMenuSettings): void {
+        const listings: BattlePokemon[] =
             settings.pokemon ||
             this.game.itemsHolder.getItem(this.game.storage.names.pokemonInParty);
 
         this.game.menuGrapher.createMenu("Pokemon", settings);
         this.game.menuGrapher.addMenuList("Pokemon", {
-            options: listings.map((listing: IPokemon): any => {
+            options: listings.map((listing): any => {
                 const title: string = listing.title.join("");
                 const sprite: string =
                     this.game.constants.pokemon.byName[title].sprite + "Pokemon";
@@ -108,9 +108,9 @@ export class Pokemon extends Section<FullScreenPokemon> {
                             pokemon: listing,
                             onSwitch: (): void => settings.onSwitch(listing),
                         }),
-                    things: [
+                    actors: [
                         {
-                            thing: sprite,
+                            actor: sprite,
                             position: {
                                 offset: {
                                     left: 16,
@@ -119,7 +119,7 @@ export class Pokemon extends Section<FullScreenPokemon> {
                             },
                         },
                         {
-                            thing: "CharLevel",
+                            actor: "CharLevel",
                             position: {
                                 offset: {
                                     left: 194,
@@ -128,7 +128,7 @@ export class Pokemon extends Section<FullScreenPokemon> {
                             },
                         },
                         {
-                            thing: "CharHP",
+                            actor: "CharHP",
                             position: {
                                 offset: {
                                     left: 66,
@@ -137,7 +137,7 @@ export class Pokemon extends Section<FullScreenPokemon> {
                             },
                         },
                         {
-                            thing: "HPBar",
+                            actor: "HPBar",
                             args: {
                                 width: barWidth,
                             },
@@ -149,7 +149,7 @@ export class Pokemon extends Section<FullScreenPokemon> {
                             },
                         },
                         {
-                            thing: "LightGraySquare",
+                            actor: "LightGraySquare",
                             args: {
                                 width: Math.max(health, 1),
                                 height: 4,
@@ -191,16 +191,16 @@ export class Pokemon extends Section<FullScreenPokemon> {
      */
     public openPokemonMenuContext(settings: any): void {
         const badges = this.game.itemsHolder.getItem(this.game.storage.names.badges);
-        const moves: IMove[] = settings.pokemon.moves;
+        const moves: Move[] = settings.pokemon.moves;
         const options: any[] = [];
 
         for (const action of moves) {
-            const move: IHMMoveSchema = this.game.constants.moves.byName[action.title];
+            const move: HMMoveSchema = this.game.constants.moves.byName[action.title];
             if (move.partyActivate && move.requiredBadge && badges[move.requiredBadge]) {
                 options.push({
                     text: action.title.toUpperCase(),
                     callback: (): void => {
-                        this.game.actions.partyActivateCheckThing(
+                        this.game.actions.partyActivateCheckActor(
                             this.game.players[0],
                             settings.pokemon,
                             move
@@ -239,7 +239,7 @@ export class Pokemon extends Section<FullScreenPokemon> {
      *
      * @param pokemon   A Pokemon to show statistics of.
      */
-    private getStatus(pokemon: IPokemon): string {
+    private getStatus(pokemon: BattlePokemon): string {
         const status = pokemon.status;
         return status === undefined ? "OK" : Pokemon.statusTranslate[status];
     }
@@ -249,10 +249,8 @@ export class Pokemon extends Section<FullScreenPokemon> {
      *
      * @param pokemon   A Pokemon to show statistics of.
      */
-    public openPokemonMenuStats(pokemon: IPokemon): void {
-        const schema: IPokemonListing = this.game.constants.pokemon.byName[
-            pokemon.title.join("")
-        ];
+    public openPokemonMenuStats(pokemon: BattlePokemon): void {
+        const schema: PokemonListing = this.game.constants.pokemon.byName[pokemon.title.join("")];
         const barWidth = 100;
         const health: number = this.game.equations.widthHealthBar(
             barWidth,
@@ -301,9 +299,9 @@ export class Pokemon extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog("PokemonMenuStatsID", "31425");
         this.game.menuGrapher.addMenuDialog("PokemonMenuStatsOT", ["%%%%%%%PLAYER%%%%%%%"]);
 
-        this.game.menuGrapher.createMenuThing("PokemonMenuStatsHPBar", {
-            type: "thing",
-            thing: "LightGraySquare",
+        this.game.menuGrapher.createMenuActor("PokemonMenuStatsHPBar", {
+            type: "actor",
+            actor: "LightGraySquare",
             position: {
                 offset: {
                     top: 2,
@@ -317,9 +315,9 @@ export class Pokemon extends Section<FullScreenPokemon> {
             },
         });
 
-        this.game.menuGrapher.createMenuThing("PokemonMenuStats", {
-            type: "thing",
-            thing: pokemon.title.join("") + "Front",
+        this.game.menuGrapher.createMenuActor("PokemonMenuStats", {
+            type: "actor",
+            actor: pokemon.title.join("") + "Front",
             args: {
                 flipHoriz: true,
             },
@@ -340,13 +338,13 @@ export class Pokemon extends Section<FullScreenPokemon> {
      *
      * @param settings   Settings to open the menu.
      */
-    private addPrimaryStats(settings: ILevelUpStatsMenuSettings): void {
+    private addPrimaryStats(settings: LevelUpStatsMenuSettings): void {
         const { pokemon } = settings;
         const statistics = this.game.constants.pokemon.statisticNamesDisplayed.slice();
         const numStatistics = statistics.length;
         const textXOffset = settings.textXOffset || 32;
-        const menuSchema: IMenuSchema = {
-            callback: (): void => this.game.menuGrapher.deleteMenu("LevelUpStats"),
+        const menuSchema: MenuSchema = {
+            callback: () => this.game.menuGrapher.deleteMenu("LevelUpStats"),
             onMenuDelete: settings.onMenuDelete,
             position: settings.position || {
                 horizontal: "center",
@@ -364,7 +362,7 @@ export class Pokemon extends Section<FullScreenPokemon> {
         }
 
         menuSchema.childrenSchemas = statistics.map(
-            (text: string, i: number): IMenuWordSchema => {
+            (text: string, i: number): MenuWordSchema => {
                 if (i < numStatistics) {
                     top = i * 32 + 16;
                     left = textXOffset;
@@ -402,12 +400,12 @@ export class Pokemon extends Section<FullScreenPokemon> {
      *
      * @param pokemon   The Pokemon to open the menu for.
      */
-    private addSecondaryStats(pokemon: IPokemon): void {
+    private addSecondaryStats(pokemon: BattlePokemon): void {
         const experienceRemaining: number = this.game.equations.experienceStarting(
             pokemon.title,
             pokemon.level + 1
         );
-        const options: any[] = pokemon.moves.map((move: IMove): any => {
+        const options: any[] = pokemon.moves.map((move: Move): any => {
             const text: any[] = [" "];
             const output: any = { text };
 

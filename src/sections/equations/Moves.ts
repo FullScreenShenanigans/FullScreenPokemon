@@ -1,19 +1,19 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IMoveSchema } from "../constants/Moves";
+import { MoveSchema } from "../constants/Moves";
 
 /**
  * Equations for battle moves.
  */
 export class Moves extends Section<FullScreenPokemon> {
     /**
-     * Checks whether a move only has a status effect (does no damage, or nothing).
+     * Checks whether a move only has a status effect (does no damage, or noactor).
      *
      * @param move   Schema for a move.
      * @returns Whether the moves has only a status effect primarily.
      */
-    public moveOnlyStatuses(moveSchema: IMoveSchema): boolean {
+    public moveOnlyStatuses(moveSchema: MoveSchema): boolean {
         for (const effect of moveSchema.effects) {
             if (effect.type === "damage") {
                 return false;
@@ -32,7 +32,7 @@ export class Moves extends Section<FullScreenPokemon> {
      * @returns Whether the move raises the statistic by the amount.
      */
     public moveChangesStatisticByAmount(
-        moveSchema: IMoveSchema,
+        moveSchema: MoveSchema,
         statistic: string,
         change: number
     ): boolean {
@@ -60,7 +60,7 @@ export class Moves extends Section<FullScreenPokemon> {
      * @param types   Set of Pokemon types.
      * @returns Whether the move is primarily effective against the types.
      */
-    public moveIsRelevantAgainst(moveSchema: IMoveSchema, types: string[]): boolean {
+    public moveIsRelevantAgainst(moveSchema: MoveSchema, types: string[]): boolean {
         for (const effect of moveSchema.effects) {
             if (
                 effect.type !== "damage" ||

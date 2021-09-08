@@ -1,15 +1,15 @@
-import { IMove } from "battlemovr";
+import { Move } from "battlemovr";
 import { expect } from "chai";
 
 import { stubBlankGame } from "../fakes.test";
 
-import { IPokemon } from "./Battles";
+import { Pokemon } from "./Battles";
 
 describe("moveAdder", () => {
     it("adds a new move to a Pokemon's moveset when the move index is valid", (): void => {
         // Arrange
         const { fsp } = stubBlankGame();
-        const pokemon: IPokemon = fsp.equations.newPokemon({
+        const pokemon: Pokemon = fsp.equations.newPokemon({
             level: 5,
             title: "SQUIRTLE".split(""),
             moves: [
@@ -20,7 +20,7 @@ describe("moveAdder", () => {
                 },
             ],
         });
-        const peck: IMove = {
+        const peck: Move = {
             title: "Peck",
             remaining: 10,
             uses: 10,
@@ -36,7 +36,7 @@ describe("moveAdder", () => {
     it("replaces an old move with a new one in a Pokemon's moveset when the move index is valid", (): void => {
         // Arrange
         const { fsp } = stubBlankGame();
-        const pokemon: IPokemon = fsp.equations.newPokemon({
+        const pokemon: Pokemon = fsp.equations.newPokemon({
             level: 5,
             title: "SQUIRTLE".split(""),
             moves: [
@@ -47,7 +47,7 @@ describe("moveAdder", () => {
                 },
             ],
         });
-        const peck: IMove = {
+        const peck: Move = {
             title: "Peck",
             remaining: 10,
             uses: 10,
@@ -63,11 +63,11 @@ describe("moveAdder", () => {
     it("does not add a move when a negative move index is given", (): void => {
         // Arrange
         const { fsp } = stubBlankGame();
-        const pokemon: IPokemon = fsp.equations.newPokemon({
+        const pokemon: Pokemon = fsp.equations.newPokemon({
             level: 5,
             title: "SQUIRTLE".split(""),
         });
-        const peck: IMove = {
+        const peck: Move = {
             title: "Peck",
             remaining: 10,
             uses: 10,
@@ -83,11 +83,11 @@ describe("moveAdder", () => {
     it("does not add a move when given move index is larger than the 4 allotted moveslots per Pokemon", (): void => {
         // Arrange
         const { fsp } = stubBlankGame();
-        const pokemon: IPokemon = fsp.equations.newPokemon({
+        const pokemon: Pokemon = fsp.equations.newPokemon({
             level: 5,
             title: "SQUIRTLE".split(""),
         });
-        const peck: IMove = {
+        const peck: Move = {
             title: "Peck",
             remaining: 10,
             uses: 10,
@@ -103,16 +103,16 @@ describe("moveAdder", () => {
     it("does not add a move when the Pokemon already knows the move in another moveslot", (): void => {
         // Arrange
         const { fsp } = stubBlankGame();
-        const pokemon: IPokemon = fsp.equations.newPokemon({
+        const pokemon: Pokemon = fsp.equations.newPokemon({
             level: 5,
             title: "SQUIRTLE".split(""),
         });
-        const peck: IMove = {
+        const peck: Move = {
             title: "Peck",
             remaining: 10,
             uses: 10,
         };
-        const bite: IMove = {
+        const bite: Move = {
             title: "Bite",
             remaining: 10,
             uses: 10,
@@ -134,7 +134,7 @@ describe("moveAdder", () => {
                 automaticallyAdvanceMenus: true,
             });
 
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
@@ -145,7 +145,7 @@ describe("moveAdder", () => {
                     },
                 ],
             });
-            const peck: IMove = {
+            const peck: Move = {
                 title: "Peck",
                 remaining: 10,
                 uses: 10,
@@ -163,7 +163,7 @@ describe("moveAdder", () => {
             const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
@@ -173,7 +173,7 @@ describe("moveAdder", () => {
                     { title: "Roar", remaining: 10, uses: 10 },
                 ],
             });
-            const peck: IMove = {
+            const peck: Move = {
                 title: "Peck",
                 remaining: 10,
                 uses: 10,
@@ -199,7 +199,7 @@ describe("moveAdder", () => {
             const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
@@ -209,7 +209,7 @@ describe("moveAdder", () => {
                     { title: "Roar", remaining: 10, uses: 10 },
                 ],
             });
-            const peck: IMove = {
+            const peck: Move = {
                 title: "Peck",
                 remaining: 10,
                 uses: 10,
@@ -235,7 +235,7 @@ describe("moveAdder", () => {
             const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
@@ -245,7 +245,7 @@ describe("moveAdder", () => {
                     { title: "Roar", remaining: 10, uses: 10 },
                 ],
             });
-            const peck: IMove = {
+            const peck: Move = {
                 title: "Peck",
                 remaining: 10,
                 uses: 10,
@@ -273,7 +273,7 @@ describe("moveAdder", () => {
             const { fsp, player } = stubBlankGame({
                 automaticallyAdvanceMenus: true,
             });
-            const pokemon: IPokemon = fsp.equations.newPokemon({
+            const pokemon: Pokemon = fsp.equations.newPokemon({
                 level: 5,
                 title: "SQUIRTLE".split(""),
                 moves: [
@@ -283,7 +283,7 @@ describe("moveAdder", () => {
                     { title: "Roar", remaining: 10, uses: 10 },
                 ],
             });
-            const peck: IMove = {
+            const peck: Move = {
                 title: "Peck",
                 remaining: 10,
                 uses: 10,

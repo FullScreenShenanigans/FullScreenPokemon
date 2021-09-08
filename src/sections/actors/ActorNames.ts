@@ -1,7 +1,7 @@
 /**
- * Stores known names of Things.
+ * Stores known names of Actors.
  */
-export class ThingNames {
+export class ActorNames {
     public readonly areaGate = "AreaGate";
     public readonly bubbleLarge = "BubbleLarge";
     public readonly bubbleSmall = "BubbleSmall";

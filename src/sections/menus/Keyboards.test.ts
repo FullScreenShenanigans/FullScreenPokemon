@@ -4,7 +4,7 @@ import * as sinon from "sinon";
 
 import { stubBlankGame } from "../../fakes.test";
 
-import { IKeyboardResultsMenu } from "./Keyboards";
+import { KeyboardResultsMenu } from "./Keyboards";
 
 describe("Keyboards", () => {
     it("doesn't call callback before ED is pressed", (): void => {
@@ -60,7 +60,7 @@ describe("Keyboards", () => {
         fsp.menuGrapher.registerA();
 
         // Assert
-        const menu = fsp.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menu = fsp.menuGrapher.getMenu("KeyboardResult") as KeyboardResultsMenu;
         expect(menu.completeValue).to.be.deep.equal(["A", "B"]);
     });
 
@@ -87,7 +87,7 @@ describe("Keyboards", () => {
         fsp.menuGrapher.registerA();
 
         // Assert
-        const menu = fsp.menuGrapher.getMenu("KeyboardResult") as IKeyboardResultsMenu;
+        const menu = fsp.menuGrapher.getMenu("KeyboardResult") as KeyboardResultsMenu;
         expect(menu.completeValue).to.be.deep.equal(["A", "b"]);
     });
 });

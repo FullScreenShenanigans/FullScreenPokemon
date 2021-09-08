@@ -22,9 +22,9 @@ describe("Roaming", () => {
             it(`only allows a character to roam ${Direction[direction]} when the only allowed direction is ${Direction[direction]}`, () => {
                 // Arrange
                 const { clock, fsp, player } = stubBlankGame();
-                const npc = fsp.things.add(
+                const npc = fsp.actors.add(
                     [
-                        fsp.things.names.lady,
+                        fsp.actors.names.lady,
                         {
                             roaming: true,
                             roamingDirections: [direction],
@@ -51,9 +51,9 @@ describe("Roaming", () => {
             it(`doesn't allow roaming to exceed 3 steps when when the only allowed direction is ${Direction[direction]}`, () => {
                 // Arrange
                 const { clock, fsp, player } = stubBlankGame();
-                const npc = fsp.things.add(
+                const npc = fsp.actors.add(
                     [
-                        fsp.things.names.lady,
+                        fsp.actors.names.lady,
                         {
                             roaming: true,
                             roamingDirections: [direction],

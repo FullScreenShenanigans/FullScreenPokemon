@@ -1,14 +1,12 @@
 import { Objects as EightBittrObjects } from "eightbittr";
-import { IClassInheritance, IClassProperties } from "objectmakr";
+import { ClassInheritance, ClassProperties } from "objectmakr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /**
  * Raw ObjectMakr factory settings.
  */
-export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrObjects<
-    TEightBittr
-> {
+export class Objects<Game extends FullScreenPokemon> extends EightBittrObjects<Game> {
     /**
      * How properties can be mapped from an Array to indices.
      */
@@ -17,12 +15,12 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
     /**
      * A tree representing class inheritances, where keys are class names.
      */
-    public readonly inheritance: IClassInheritance = {
+    public readonly inheritance: ClassInheritance = {
         Quadrant: {},
         Map: {},
         Area: {},
         Location: {},
-        Thing: {
+        Actor: {
             Character: {
                 BirdPokemon: {},
                 Boss: {},
@@ -745,7 +743,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
     /**
      * Properties for each class.
      */
-    public readonly properties: IClassProperties = {
+    public readonly properties: ClassProperties = {
         Quadrant: {
             tolx: 0,
             toly: 0,
@@ -759,10 +757,10 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             attributes: {
                 invisibleWallBorders: {
                     afters: [
-                        { thing: "InvisibleWall", noBoundaryStretch: true },
-                        { thing: "InvisibleWall", noBoundaryStretch: true },
-                        { thing: "InvisibleWall", noBoundaryStretch: true },
-                        { thing: "InvisibleWall", noBoundaryStretch: true },
+                        { actor: "InvisibleWall", noBoundaryStretch: true },
+                        { actor: "InvisibleWall", noBoundaryStretch: true },
+                        { actor: "InvisibleWall", noBoundaryStretch: true },
+                        { actor: "InvisibleWall", noBoundaryStretch: true },
                     ],
                 },
             },
@@ -770,7 +768,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         Location: {
             entry: "Normal",
         },
-        Thing: {
+        Actor: {
             // Sizing
             width: 32,
             height: 32,
@@ -792,7 +790,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             tolBottom: 0,
             tolLeft: 0,
             // Triggered Functions
-            onMake: this.game.things.process.bind(this.game.things),
+            onMake: this.game.actors.process.bind(this.game.actors),
         },
         Character: {
             groupType: "Character",
@@ -803,7 +801,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
             direction: 2,
             offsetY: -8,
             roamingDirections: [0, 1, 2, 3],
-            onThingAdded: this.game.actions.spawnCharacter,
+            onActorAdded: this.game.actions.spawnCharacter,
             activate: this.game.collisions.detectors.collideCharacterDialog,
         },
         Buzzer: {
@@ -1044,7 +1042,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         SofaLeft: [32, 64],
         Spawner: {
             hidden: true,
-            onThingAdded: this.game.actions.activateSpawner,
+            onActorAdded: this.game.actions.activateSpawner,
         },
         AreaSpawner: {
             activate: this.game.actions.spawnAreaSpawner,
@@ -1097,7 +1095,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         },
         WindowDetector: {
             hidden: true,
-            onThingAdded: this.game.actions.spawnWindowDetector,
+            onActorAdded: this.game.actions.spawnWindowDetector,
         },
         FloorLinedHorizontal: {
             spritewidth: 2,
@@ -1229,7 +1227,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
         CharMDash: {
             attributes: {
                 blinking: {
-                    onThingAdded: (): void => console.log("HA"),
+                    onActorAdded: (): void => console.log("HA"),
                 },
             },
         },
@@ -1326,7 +1324,7 @@ export class Objects<TEightBittr extends FullScreenPokemon> extends EightBittrOb
     };
 
     /**
-     * Member name for a function on Thing instances to be called upon creation.
+     * Member name for a function on Actor instances to be called upon creation.
      */
     public readonly onMake = "onMake";
 }

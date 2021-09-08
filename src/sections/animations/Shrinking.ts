@@ -1,33 +1,33 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IThing } from "../Things";
+import { Actor } from "../Actors";
 
 /**
- * Shrinks (and expands) Things.
+ * Shrinks (and expands) Actors.
  */
 export class Shrinking extends Section<FullScreenPokemon> {
     /**
-     * Shrinks a Thing down to nothing.
+     * Shrinks An Actor down to noactor.
      *
-     * @param thing   Thing to be shrunk.
+     * @param actor   Actor to be shrunk.
      * @param onComplete   Callback for when this is done.
      */
-    public contractDown(thing: IThing, onComplete: () => void): void {
-        console.log("Todo: shrink", thing);
-        thing.opacity = 0;
+    public contractDown(actor: Actor, onComplete: () => void): void {
+        console.log("Todo: shrink", actor);
+        actor.opacity = 0;
         onComplete();
     }
 
     /**
-     * Expands a Thing from nothing to full size.
+     * Expands An Actor from noactor to full size.
      *
-     * @param thing   Thing to be expanded.
+     * @param actor   Actor to be expanded.
      * @param onComplete   Callback for when this is done.
      */
-    public expandUp(thing: IThing, onComplete: () => void): void {
-        console.log("Todo: expand", thing);
-        thing.opacity = 1;
+    public expandUp(actor: Actor, onComplete: () => void): void {
+        console.log("Todo: expand", actor);
+        actor.opacity = 1;
         onComplete();
     }
 }

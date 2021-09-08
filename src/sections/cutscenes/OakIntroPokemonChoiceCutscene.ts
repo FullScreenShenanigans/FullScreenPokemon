@@ -1,10 +1,10 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
+import { Pokemon } from "../Battles";
 import { Direction, PokedexListingStatus } from "../Constants";
-import { IKeyboardResultsMenu } from "../menus/Keyboards";
-import { ICharacter, IPokeball, IThing } from "../Things";
+import { KeyboardResultsMenu } from "../menus/Keyboards";
+import { Character, Pokeball, Actor } from "../Actors";
 
 /**
  * OakIntroPokemonChoice cutscene routines.
@@ -17,7 +17,7 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      */
     public PlayerChecksPokeball(settings: any): void {
         // If Oak is hidden, this cutscene shouldn't be starting (too early)
-        if (this.game.utilities.getExistingThingById("Oak").hidden) {
+        if (this.game.utilities.getExistingActorById("Oak").hidden) {
             this.game.scenePlayer.stopCutscene();
 
             this.game.menuGrapher.createMenu("GeneralText", {
@@ -36,7 +36,7 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
             return;
         }
 
-        const pokeball: IPokeball = settings.triggerer;
+        const pokeball: Pokeball = settings.triggerer;
         settings.chosen = pokeball.pokemon;
 
         this.game.menus.pokedex.openPokedexListing(
@@ -99,10 +99,10 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public PlayerTakesPokemon(settings: any): void {
-        const oak = this.game.utilities.getExistingThingById<ICharacter>("Oak");
-        const rival = this.game.utilities.getExistingThingById<ICharacter>("Rival");
+        const oak = this.game.utilities.getExistingActorById<Character>("Oak");
+        const rival = this.game.utilities.getExistingActorById<Character>("Rival");
         const dialogOak =
-            "Oak: If a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
+            "Oak: f a wild %%%%%%%POKEMON%%%%%%% appears, your %%%%%%%POKEMON%%%%%%% can fight against it!";
         const dialogRival = "%%%%%%%RIVAL%%%%%%%: My %%%%%%%POKEMON%%%%%%% looks a lot stronger.";
 
         settings.oak = oak;
@@ -175,12 +175,12 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * Cutscene for the player finishing the naming process.
      */
     public PlayerSetsNickname(): void {
-        const party: IPokemon[] = this.game.itemsHolder.getItem(
+        const party: Pokemon[] = this.game.itemsHolder.getItem(
             this.game.storage.names.pokemonInParty
         );
-        const menu: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+        const menu: KeyboardResultsMenu = this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu;
+        ) as KeyboardResultsMenu;
         const result: string[] = menu.completeValue;
 
         party[0].nickname = result;
@@ -194,7 +194,7 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksToPokemon(settings: any): void {
-        const rival = this.game.utilities.getExistingThingById<ICharacter>("Rival");
+        const rival = this.game.utilities.getExistingActorById<Character>("Rival");
         let starterRival: string[];
         let steps: number;
 
@@ -225,7 +225,7 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
         this.game.itemsHolder.setItem(this.game.storage.names.starterRival, starterRival);
         this.game.saves.addPokemonToPokedex(starterRival, PokedexListingStatus.Caught);
 
-        const pokeball = this.game.utilities.getExistingThingById<IPokeball>(
+        const pokeball = this.game.utilities.getExistingActorById<Pokeball>(
             "Pokeball" + starterRival.join("")
         );
         settings.rivalPokeball = pokeball;
@@ -253,8 +253,8 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalTakesPokemon(settings: any): void {
-        const oakblocker: IThing = this.game.utilities.getExistingThingById("OakBlocker");
-        const rivalblocker: IThing = this.game.utilities.getExistingThingById("RivalBlocker");
+        const oakblocker: Actor = this.game.utilities.getExistingActorById("OakBlocker");
+        const rivalblocker: Actor = this.game.utilities.getExistingActorById("RivalBlocker");
 
         this.game.menuGrapher.deleteMenu("Yes/No");
 
@@ -268,7 +268,7 @@ export class OakIntroPokemonChoiceCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [
-                "%%%%%%%RIVAL%%%%%%%: I'll take this one, then!",
+                "%%%%%%%RIVAL%%%%%%%: 'll take this one, then!",
                 ["%%%%%%%RIVAL%%%%%%% received a ", settings.rivalPokemon, "!"],
             ],
             (): void => {

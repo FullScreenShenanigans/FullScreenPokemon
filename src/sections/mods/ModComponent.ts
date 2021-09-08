@@ -1,25 +1,25 @@
 import { Section } from "eightbittr";
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IModComponentClass } from "../Mods";
+import { ModComponentClass } from "../Mods";
 import { ModEventNames } from "./EventNames";
 
 /**
  * EightBittr component for a mod.
  */
-export abstract class ModComponent extends Section<FullScreenPokemon> implements IMod {
+export abstract class ModComponent extends Section<FullScreenPokemon> implements Mod {
     /**
      * Name of the mod.
      */
     public get name(): string {
-        return (this.constructor as IModComponentClass).modName;
+        return (this.constructor as ModComponentClass).modName;
     }
 
     /**
      * Mod events, keyed by name.
      */
-    public abstract readonly events: ICallbackRegister;
+    public abstract readonly events: CallbackRegister;
 
     /**
      * Keys for mod events.

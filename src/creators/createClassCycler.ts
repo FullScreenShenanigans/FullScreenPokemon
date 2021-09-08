@@ -1,15 +1,15 @@
 import { ClassCyclr } from "classcyclr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { IThing } from "../sections/Things";
+import { Actor } from "../sections/Actors";
 
 export const createClassCycler = (game: FullScreenPokemon) =>
     new ClassCyclr({
-        classAdd: (thing: IThing, className: string) => {
-            game.graphics.classes.addClass(thing, className);
+        classAdd: (actor: Actor, className: string) => {
+            game.graphics.classes.addClass(actor, className);
         },
-        classRemove: (thing: IThing, className: string): void => {
-            game.graphics.classes.removeClass(thing, className);
+        classRemove: (actor: Actor, className: string): void => {
+            game.graphics.classes.removeClass(actor, className);
         },
         timeHandler: game.timeHandler,
         ...game.settings.components.classCycler,

@@ -2,7 +2,7 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IBattleInfo, IPokemon } from "./Battles";
+import { BattleInfo, Pokemon } from "./Battles";
 
 /**
  * Calculates experience gains and level ups for Pokemon.
@@ -13,7 +13,7 @@ export class Experience extends Section<FullScreenPokemon> {
      *
      * @param pokemon   The pokemon in the party to level up.
      */
-    public levelup(pokemon: IPokemon): void {
+    public levelup(pokemon: Pokemon): void {
         pokemon.level += 1;
         pokemon.statistics = this.game.equations.newPokemonStatistics(
             pokemon.title,
@@ -37,7 +37,7 @@ export class Experience extends Section<FullScreenPokemon> {
      * @param experience   The amount of experience to give.
      * @returns Whether the Pokemon leveled up.
      */
-    public gainExperience(pokemon: IPokemon, experience: number): boolean {
+    public gainExperience(pokemon: Pokemon, experience: number): boolean {
         pokemon.experience += experience;
         if (
             pokemon.experience >=
@@ -56,7 +56,7 @@ export class Experience extends Section<FullScreenPokemon> {
      * @param battleInfo   Information about the current battle.
      * @param onComplete   Handler for when this is done.
      */
-    public processBattleExperience(battleInfo: IBattleInfo, onComplete: () => void): void {
+    public processBattleExperience(battleInfo: BattleInfo, onComplete: () => void): void {
         const experienceToGain = this.game.equations.experienceGained(
             battleInfo.teams.player,
             battleInfo.teams.opponent
@@ -89,7 +89,7 @@ export class Experience extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon who is going to level up.
      * @param onComplete   Handler for when this is done.
      */
-    private processBattleLevelUp(pokemon: IPokemon, onComplete: () => void) {
+    private processBattleLevelUp(pokemon: Pokemon, onComplete: () => void) {
         this.game.menuGrapher.createMenu("GeneralText");
         const experienceText = [[pokemon.nickname, ` grew to level ${pokemon.level}!`]];
         let callBack = onComplete;
@@ -107,7 +107,7 @@ export class Experience extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon who is going to going to learn a move.
      * @returns Whether a Pokemon can learn a move at its current level
      */
-    private canLearnMoveAtLevel(_pokemon: IPokemon): boolean {
+    private canLearnMoveAtLevel(_pokemon: Pokemon): boolean {
         // TODO: implement this check
         return false;
     }
@@ -118,7 +118,7 @@ export class Experience extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon who is going to going to learn a move.
      * @param onComplete   Handler for when this is done.
      */
-    private learnBattleMove(_pokemon: IPokemon, onComplete: () => void) {
+    private learnBattleMove(_pokemon: Pokemon, onComplete: () => void) {
         // TODO: implement this function
         onComplete();
     }

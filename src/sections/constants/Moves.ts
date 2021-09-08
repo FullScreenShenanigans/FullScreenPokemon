@@ -1,13 +1,13 @@
-import { EffectTarget, IMoveEffect } from "battlemovr";
+import { EffectTarget, MoveEffect } from "battlemovr";
 
 import { Actions } from "../../sections/Actions";
-import { IPokemon } from "../../sections/Battles";
-import { IPlayer } from "../../sections/Things";
+import { Pokemon } from "../../sections/Battles";
+import { Player } from "../../sections/Actors";
 
 /**
  * Static information on a move's metadata and effects.
  */
-export interface IMoveSchema {
+export interface MoveSchema {
     /**
      * The accuracy of the move if it needs to hit a target, within 0 to 100.
      */
@@ -21,7 +21,7 @@ export interface IMoveSchema {
     /**
      * Effects caused by this move.
      */
-    effects: IMoveEffect[];
+    effects: MoveEffect[];
 
     /**
      * The maximum PP for the move.
@@ -42,11 +42,11 @@ export interface IMoveSchema {
 /**
  * An HM move or move that interacts with the environment.
  */
-export interface IHMMoveSchema extends IMoveSchema {
+export interface HMMoveSchema extends MoveSchema {
     /**
      * Activates a Function to perform an HM move outside of battle.
      */
-    partyActivate?(player: IPlayer, pokemon: IPokemon): void;
+    partyActivate?(player: Player, pokemon: Pokemon): void;
 
     /**
      * The HMCharacter that the move affects.
@@ -66,7 +66,7 @@ export class Moves {
     /**
      * All known Pokemon moves, keyed by English name.
      */
-    public readonly byName: { [i: string]: IMoveSchema } = {
+    public readonly byName: { [i: string]: MoveSchema } = {
         Absorb: {
             accuracy: 100,
             effects: [],
@@ -219,7 +219,7 @@ export class Moves {
             partyActivate: Actions.prototype.partyActivateCut,
             characterName: "CuttableTree",
             requiredBadge: "Cascade",
-        } as IHMMoveSchema,
+        } as HMMoveSchema,
         "Defense Curl": {
             type: "Normal",
             effects: [],
@@ -350,14 +350,14 @@ export class Moves {
             accuracy: 70,
             PP: 20,
             requiredBadge: "Boulder",
-        } as IHMMoveSchema,
+        } as HMMoveSchema,
         Fly: {
             type: "Flying",
             effects: [],
             accuracy: 95,
             PP: 15,
             requiredBadge: "Thunder",
-        } as IHMMoveSchema,
+        } as HMMoveSchema,
         "Focus Energy": {
             type: "Normal",
             effects: [],
@@ -891,7 +891,7 @@ export class Moves {
             partyActivate: Actions.prototype.partyActivateStrength,
             characterName: "StrengthBoulder",
             requiredBadge: "Rainbow",
-        } as IHMMoveSchema,
+        } as HMMoveSchema,
         "String Shot": {
             type: "Bug",
             effects: [],
@@ -940,7 +940,7 @@ export class Moves {
             partyActivate: Actions.prototype.partyActivateSurf,
             characterName: "WaterEdge",
             requiredBadge: "Soul",
-        } as IHMMoveSchema,
+        } as HMMoveSchema,
         Swift: {
             type: "Normal",
             effects: [],

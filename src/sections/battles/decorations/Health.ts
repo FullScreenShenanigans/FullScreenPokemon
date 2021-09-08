@@ -1,9 +1,9 @@
-import { IStatistic, Team } from "battlemovr";
+import { Statistic, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../Battles";
-import { IThing } from "../../Things";
+import { BattleInfo, Pokemon } from "../../Battles";
+import { Actor } from "../../Actors";
 
 /**
  * Decorations for health displays.
@@ -14,15 +14,15 @@ export class Health extends Section<FullScreenPokemon> {
      *
      * @param battlerName   Which battler to add the display for.
      */
-    public addPokemonHealth(pokemon: IPokemon, team: Team): void {
-        const menu: string = team === Team.player ? "BattlePlayerHealth" : "BattleOpponentHealth";
+    public addPokemonHealth(pokemon: Pokemon, teamId: TeamId): void {
+        const menu = teamId === TeamId.player ? "BattlePlayerHealth" : "BattleOpponentHealth";
 
         this.game.menuGrapher.createMenu(menu);
         this.game.menuGrapher.createMenu(menu + "Title");
         this.game.menuGrapher.createMenu(menu + "Level");
         this.game.menuGrapher.createMenu(menu + "Amount");
 
-        this.setPokemonHealthBar(team, pokemon.statistics.health);
+        this.setPokemonHealthBar(teamId, pokemon.statistics.health);
 
         this.game.menuGrapher.addMenuDialog(menu + "Title", [[pokemon.nickname]]);
 
@@ -32,30 +32,30 @@ export class Health extends Section<FullScreenPokemon> {
     /**
      * Slides a Pokemon's health bar to reflect changing health amounts.
      *
-     * @param team   Team whose actor's health is changing.
+     * @param teamId   Team whose actor's health is changing.
      * @param from   Original health amount.
      * @param to   New health amount.
      * @param onComplete   Handler for when this is done.
      * @remarks This doesn't change the actor's statistic.
      */
     public animatePokemonHealthBar(
-        team: Team,
+        teamId: TeamId,
         from: number,
         to: number,
         onComplete: () => void
     ): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        const statistic: IStatistic =
-            battleInfo.teams[Team[team]].selectedActor.statistics.health;
-        const normal: number = statistic.normal;
-        const delta: number = to - from > 0 ? 1 : -1;
-        const repeats: number = Math.abs(to - from);
-        let current: number = statistic.current;
+        const battleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
+        const statistic: Statistic =
+            battleInfo.teams[TeamId[teamId]].selectedActor.statistics.health;
+        const normal = statistic.normal;
+        const delta = to - from > 0 ? 1 : -1;
+        const repeats = Math.abs(to - from);
+        let current = statistic.current;
 
         this.game.timeHandler.addEventInterval(
             (): void => {
                 current += delta;
-                this.setPokemonHealthBar(team, { current, normal });
+                this.setPokemonHealthBar(teamId, { current, normal });
             },
             2,
             repeats
@@ -67,19 +67,19 @@ export class Health extends Section<FullScreenPokemon> {
     /**
      * Adds a health bar to a battle display, with an appropriate width.
      *
-     * @param team   Which team to add the display for.
+     * @param teamId   Which team to add the display for.
      * @param statistic   Health summary for the team's selected actor.
      */
-    private setPokemonHealthBar(team: Team, health: IStatistic): void {
-        const nameUpper: string = team === Team.player ? "Player" : "Opponent";
-        const bar: IThing = this.game.utilities.getExistingThingById("HPBarFill" + nameUpper);
+    private setPokemonHealthBar(teamId: TeamId, health: Statistic): void {
+        const nameUpper: string = teamId === TeamId.player ? "Player" : "Opponent";
+        const bar: Actor = this.game.utilities.getExistingActorById("HPBarFill" + nameUpper);
         const barWidth: number = this.game.equations.widthHealthBar(100, health);
         const healthDialog: string =
             this.game.utilities.makeDigit(health.current, 3, "\t") +
             "/" +
             this.game.utilities.makeDigit(health.normal, 3, "\t");
 
-        if (team === Team.player) {
+        if (teamId === TeamId.player) {
             const menuNumbers: string = "Battle" + nameUpper + "HealthNumbers";
             this.game.menuGrapher.createMenu(menuNumbers);
             this.game.menuGrapher.addMenuDialog(menuNumbers, healthDialog);

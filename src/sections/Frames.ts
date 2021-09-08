@@ -1,21 +1,21 @@
 import { Frames as EightBittrFrames } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
-import { ICharacter, IThing } from "./Things";
+import { Character, Actor } from "./Actors";
 
-export interface IFrames {
-    Character: ICharacter;
-    Scenery: IThing;
-    Solid: IThing;
-    Terrain: IThing;
-    Text: IThing;
-    [i: string]: IThing;
+export interface ActorGroups {
+    Character: Character;
+    Scenery: Actor;
+    Solid: Actor;
+    Terrain: Actor;
+    Text: Actor;
+    [i: string]: Actor;
 }
 
 /**
- * Collection settings for IThing group names.
+ * Collection settings for Actor group names.
  */
-export class Frames<TEightBittr extends FullScreenPokemon> extends EightBittrFrames<TEightBittr> {
+export class Frames<Game extends FullScreenPokemon> extends EightBittrFrames<Game> {
     // 2. Groups are updated for velocities and pruned.
     public maintain() {
         super.maintain();

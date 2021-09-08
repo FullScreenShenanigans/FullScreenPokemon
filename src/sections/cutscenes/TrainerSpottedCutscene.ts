@@ -2,7 +2,7 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
-import { ICharacter, IPlayer } from "../Things";
+import { Character, Player } from "../Actors";
 
 /**
  * TrainerSpotted cutscene routines.
@@ -28,8 +28,8 @@ export class TrainerSpottedCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public Approach(settings: any): void {
-        const player: IPlayer = settings.player;
-        const triggerer: ICharacter = settings.triggerer;
+        const player: Player = settings.player;
+        const triggerer: Character = settings.triggerer;
         const direction: Direction = triggerer.direction;
         const directionName: string = Direction[direction].toLowerCase();
         const locationTriggerer: number = (triggerer as any)[directionName];

@@ -1,42 +1,42 @@
-import { Team } from "battlemovr";
+import { TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
-import { IBattleInfo } from "../../../../Battles";
-import { IThing } from "../../../../Things";
+import { BattleInfo } from "../../../../Battles";
+import { Actor } from "../../../../Actors";
 
 /**
  * Entrance settings for animation positions and sprites.
  */
-export interface IEnterSettings {
+export interface EnterSettings {
     /**
      * Which team this is for.
      */
-    team: Team;
+    team: TeamId;
 
     /**
      * @param info   Info on the current battle.
      * @returns Where to slide a leader to on switching.
      */
-    getLeaderSlideToGoal(battleInfo: IBattleInfo): number;
+    getLeaderSlideToGoal(battleInfo: BattleInfo): number;
 
     /**
      * @param info   Info on the current battle.
      * @returns What sprite is to be used for the selected Pokemon.
      */
-    getSelectedPokemonSprite(battleInfo: IBattleInfo): string;
+    getSelectedPokemonSprite(battleInfo: BattleInfo): string;
 
     /**
      * @param info   Info on the current battle.
      * @returns Mid-left position for the smoke effect.
      */
-    getSmokeLeft(battleInfo: IBattleInfo): number;
+    getSmokeLeft(battleInfo: BattleInfo): number;
 
     /**
      * @param info   Info on the current battle.
      * @returns Mid-top position for the smoke effect.
      */
-    getSmokeTop(battleInfo: IBattleInfo): number;
+    getSmokeTop(battleInfo: BattleInfo): number;
 }
 
 /**
@@ -46,7 +46,7 @@ export class Enter extends Section<FullScreenPokemon> {
     /**
      * Entrance settings for animation positions and sprites.
      */
-    private readonly settings: IEnterSettings;
+    private readonly settings: EnterSettings;
 
     /**
      * Initializes a new instance of the Enter class.
@@ -54,7 +54,7 @@ export class Enter extends Section<FullScreenPokemon> {
      * @param eightBitter   FullScreenPokemon instance this is used for.
      * @param settings   Entrance settings for animation positions and sprites.
      */
-    public constructor(eightBitter: FullScreenPokemon, settings: IEnterSettings) {
+    public constructor(eightBitter: FullScreenPokemon, settings: EnterSettings) {
         super(eightBitter);
 
         this.settings = settings;
@@ -66,9 +66,9 @@ export class Enter extends Section<FullScreenPokemon> {
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
 
-        battleInfo.teams[Team[this.settings.team]].leader
+        battleInfo.teams[TeamId[this.settings.team]].leader
             ? this.runWithLeader(battleInfo, onComplete)
             : this.runWithoutLeader(battleInfo, onComplete);
     }
@@ -79,9 +79,9 @@ export class Enter extends Section<FullScreenPokemon> {
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private runWithoutLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
+    private runWithoutLeader(battleInfo: BattleInfo, onComplete: () => void): void {
         this.game.battles.decorations.health.addPokemonHealth(
-            battleInfo.teams[Team[this.settings.team]].selectedActor,
+            battleInfo.teams[TeamId[this.settings.team]].selectedActor,
             this.settings.team
         );
 
@@ -94,12 +94,12 @@ export class Enter extends Section<FullScreenPokemon> {
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private runWithLeader(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const thing: IThing = battleInfo.things[Team[this.settings.team]];
+    private runWithLeader(battleInfo: BattleInfo, onComplete: () => void): void {
+        const actor: Actor = battleInfo.actors[TeamId[this.settings.team]];
         const goal: number = this.settings.getLeaderSlideToGoal(battleInfo);
         const timeout = 24;
 
-        this.game.animations.sliding.slideHorizontallyAndFadeOut(thing, goal, timeout, (): void =>
+        this.game.animations.sliding.slideHorizontallyAndFadeOut(actor, goal, timeout, (): void =>
             this.poofSmoke(battleInfo, onComplete)
         );
 
@@ -108,9 +108,9 @@ export class Enter extends Section<FullScreenPokemon> {
         });
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
-            battleInfo.texts.teams[Team[this.settings.team]].sendOut(
-                battleInfo.teams[Team[this.settings.team]],
-                battleInfo.teams[Team[this.settings.team]].selectedActor.title.join("")
+            battleInfo.texts.teams[TeamId[this.settings.team]].sendOut(
+                battleInfo.teams[TeamId[this.settings.team]],
+                battleInfo.teams[TeamId[this.settings.team]].selectedActor.title.join("")
             )
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");
@@ -122,7 +122,7 @@ export class Enter extends Section<FullScreenPokemon> {
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private poofSmoke(battleInfo: IBattleInfo, onComplete: () => void): void {
+    private poofSmoke(battleInfo: BattleInfo, onComplete: () => void): void {
         const left: number = this.settings.getSmokeLeft(battleInfo);
         const top: number = this.settings.getSmokeTop(battleInfo);
 
@@ -137,15 +137,15 @@ export class Enter extends Section<FullScreenPokemon> {
      * @param battleInfo   Info on the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private appear(battleInfo: IBattleInfo, onComplete: () => void): void {
+    private appear(battleInfo: BattleInfo, onComplete: () => void): void {
         this.game.menuGrapher.createMenu("GeneralText");
 
         this.game.battles.decorations.health.addPokemonHealth(
-            battleInfo.teams[Team[this.settings.team]].selectedActor,
+            battleInfo.teams[TeamId[this.settings.team]].selectedActor,
             this.settings.team
         );
 
-        this.game.battles.things.setThing(
+        this.game.battles.actors.setActor(
             this.settings.team,
             this.settings.getSelectedPokemonSprite(battleInfo)
         );

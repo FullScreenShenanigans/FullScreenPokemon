@@ -1,16 +1,16 @@
-import { IMove } from "battlemovr";
+import { Move } from "battlemovr";
 
-import { IPokemonStatistics } from "../Battles";
+import { PokemonStatistics } from "../Battles";
 
 /**
  * Matched only by strings returned by keyof TItems.
  */
-export type IStringKeysOf<TItems> = keyof TItems & string;
+export type StringKeysOf<TItems> = keyof TItems & string;
 
 /**
  * Static information about a known Pokemon.
  */
-export interface IPokemonListing {
+export interface PokemonListing {
     /**
      * How difficult this is to catch, for the canCatchPokemon equation.
      *
@@ -51,7 +51,7 @@ export interface IPokemonListing {
     /**
      * The name of the Pokemon this evolves into. This will be refactored eventually.
      */
-    evolutions?: IPokemonEvolution[];
+    evolutions?: PokemonEvolution[];
 
     /**
      * How quickly this gains experience, as "slow", "mediumSlow", "mediumFast", or "fast".
@@ -96,33 +96,33 @@ export interface IPokemonListing {
     /**
      * Known moves this Pokemon may learn.
      */
-    moves: IPokemonMovesListing;
+    moves: PokemonMovesListing;
 }
 
 /**
  * Moves able to be learned by a Pokemon via different methods.
  */
-export interface IPokemonMovesListing {
+export interface PokemonMovesListing {
     /**
      * Moves a Pokemon may learn by leveling up.
      */
-    natural: IPokemonMoveListing[];
+    natural: PokemonMoveListing[];
 
     /**
      * Moves a Pokemon may learn by HM.
      */
-    hm: IPokemonMoveListing[];
+    hm: PokemonMoveListing[];
 
     /**
      * Moves a Pokemon may learn by TM.
      */
-    tm: IPokemonMoveListing[];
+    tm: PokemonMoveListing[];
 }
 
 /**
  * A description of a move a Pokemon may learn.
  */
-export interface IPokemonMoveListing {
+export interface PokemonMoveListing {
     /**
      * The concatenated title of the move.
      */
@@ -137,7 +137,7 @@ export interface IPokemonMoveListing {
 /**
  * Data regarding requirements for a Pokemon's evolution
  */
-export interface IPokemonEvolution {
+export interface PokemonEvolution {
     /**
      * The name of the Pokemon that this Pokemon evolves into.
      */
@@ -146,24 +146,24 @@ export interface IPokemonEvolution {
     /**
      * The requirements for the Pokemon to evolve.
      */
-    requirements: IPokemonEvolutionRequirement[];
+    requirements: PokemonEvolutionRequirement[];
 }
 
 /**
  * The requirements for a Pokemon to be able to evolve.
  */
-export type IPokemonEvolutionRequirement =
-    | IPokemonEvolutionByLevel
-    | IPokemonEvolutionByHappiness
-    | IPokemonEvolutionByTime
-    | IPokemonEvolutionByTrade
-    | IPokemonEvolutionByItem
-    | IPokemonEvolutionByStats;
+export type PokemonEvolutionRequirement =
+    | PokemonEvolutionByLevel
+    | PokemonEvolutionByHappiness
+    | PokemonEvolutionByTime
+    | PokemonEvolutionByTrade
+    | PokemonEvolutionByItem
+    | PokemonEvolutionByStats;
 
 /**
  * Requirements for a Pokemon that evolves via levelup.
  */
-export interface IPokemonEvolutionByLevel {
+export interface PokemonEvolutionByLevel {
     /**
      * The type of requirement this falls into.
      */
@@ -178,7 +178,7 @@ export interface IPokemonEvolutionByLevel {
 /**
  * Requirements for a Pokemon that evolves via happiness.
  */
-export interface IPokemonEvolutionByHappiness {
+export interface PokemonEvolutionByHappiness {
     /**
      * The type of requirement this falls into.
      */
@@ -193,7 +193,7 @@ export interface IPokemonEvolutionByHappiness {
 /**
  * Requirements for a Pokemon that evolves via time of day.
  */
-export interface IPokemonEvolutionByTime {
+export interface PokemonEvolutionByTime {
     /**
      * The type of requirement this falls into.
      */
@@ -208,7 +208,7 @@ export interface IPokemonEvolutionByTime {
 /**
  * Requirements for a Pokemon that evolves via trade.
  */
-export interface IPokemonEvolutionByTrade {
+export interface PokemonEvolutionByTrade {
     /**
      * The type of requirement this falls into.
      */
@@ -223,7 +223,7 @@ export interface IPokemonEvolutionByTrade {
 /**
  * Requirements for a Pokemon that evolves via use of item.
  */
-export interface IPokemonEvolutionByItem {
+export interface PokemonEvolutionByItem {
     /**
      * The type of requirement this falls into.
      */
@@ -238,7 +238,7 @@ export interface IPokemonEvolutionByItem {
 /**
  * Requirements for a Pokemon that evolves based on its stats.
  */
-export interface IPokemonEvolutionByStats {
+export interface PokemonEvolutionByStats {
     /**
      * The type of requirement this falls into.
      */
@@ -262,9 +262,9 @@ export interface IPokemonEvolutionByStats {
 
 /**
  * A description of a Pokemon in a player's Pokedex.
- * @todo It's not clear how this is different from IPokedexInformation.
+ * @todo It's not clear how this is different from PokedexInformation.
  */
-export interface IPokedexListing extends IPokemonListing {
+export interface PokedexListing extends PokemonListing {
     /**
      * Whether the Pokemon has been caught.
      */
@@ -283,9 +283,9 @@ export interface IPokedexListing extends IPokemonListing {
 
 /**
  * A description of a Pokemon in a player's Pokedex.
- * @todo It's not clear how this is different from IPokedexListing.
+ * @todo It's not clear how this is different from PokedexListing.
  */
-export interface IPokedexInformation {
+export interface PokedexInformation {
     /**
      * Whether the Pokemon has been caught.
      */
@@ -305,14 +305,14 @@ export interface IPokedexInformation {
 /**
  * A player's Pokedex, as a summary of seen Pokemon keyed by name.
  */
-export interface IPokedex {
-    [i: string]: IPokedexInformation;
+export interface Pokedex {
+    [i: string]: PokedexInformation;
 }
 
 /**
  * Information on new Pokemon being created.
  */
-export interface INewPokemon {
+export interface NewPokemon {
     /**
      * Items held by Pokemon.
      */
@@ -326,7 +326,7 @@ export interface INewPokemon {
     /**
      * Moves that Pokemon has.
      */
-    moves?: IMove[];
+    moves?: Move[];
 
     /**
      * Name of Pokemon.
@@ -341,7 +341,7 @@ export class Pokemon {
     /**
      * Names of all statistics Pokemon have.
      */
-    public readonly statisticNames: IStringKeysOf<IPokemonStatistics>[] = [
+    public readonly statisticNames: StringKeysOf<PokemonStatistics>[] = [
         "attack",
         "defense",
         "health",
@@ -352,7 +352,7 @@ export class Pokemon {
     /**
      * Names of Pokemon statistics to display in statistics menus.
      */
-    public readonly statisticNamesDisplayed: IStringKeysOf<IPokemonStatistics>[] = [
+    public readonly statisticNamesDisplayed: StringKeysOf<PokemonStatistics>[] = [
         "attack",
         "defense",
         "special",
@@ -362,7 +362,7 @@ export class Pokemon {
     /**
      * All known Pokemon, keyed by concatenated name.
      */
-    public readonly byName: { [i: string]: IPokemonListing } = {
+    public readonly byName: { [i: string]: PokemonListing } = {
         ABRA: {
             name: "ABRA".split(""),
             label: "Psi",
@@ -7143,7 +7143,7 @@ export class Pokemon {
             label: "Punching",
             sprite: "Water",
             info: [
-                "While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see.",
+                "While apparently doing noactor, it fires punches in lightning fast volleys that are impossible to see.",
             ],
             number: 107,
             height: ["4", "7"],
@@ -7820,7 +7820,7 @@ export class Pokemon {
             label: "Balloon",
             sprite: "Water",
             info: [
-                "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep.",
+                "When its huge eyes light up, it sings a mysteriously sooactor melody that lulls its enemies to sleep.",
             ],
             evolutions: [
                 {
@@ -8016,7 +8016,7 @@ export class Pokemon {
             label: "Lightning",
             sprite: "Water",
             info: [
-                "It accumulates negative ions in the atmosphere to blast out 10000-volt lightning bolts.",
+                "It accumulates negative Ons in the atmosphere to blast out 10000-volt lightning bolts.",
             ],
             number: 135,
             height: ["2", "7"],
