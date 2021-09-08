@@ -35,7 +35,6 @@ jobs:
         <<: *default_env
         steps:
             - checkout
-            - puppeteer/install
             - *restore_yarn_cache
             - run: yarn compile
             - run: yarn test
