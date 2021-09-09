@@ -5,16 +5,14 @@ references:
         docker:
             - image: cimg/node:16.7-browsers
 
-    yarn_cache_key_1: &yarn_cache_key_1 yarn---
-    yarn_cache_key_2: &yarn_cache_key_2 yarn--
-    yarn_cache_key_3: &yarn_cache_key_3 yarn-
+    yarn_cache_key_1: &yarn_cache_key_1 yarn-v1-{{ checksum "yarn.lock" }}
+    yarn_cache_key_2: &yarn_cache_key_2 yarn-v1-
 
     restore_yarn_cache: &restore_yarn_cache
         restore_cache:
             keys:
                 - *yarn_cache_key_1
                 - *yarn_cache_key_2
-                - *yarn_cache_key_3
 
     save_yarn_cache: &save_yarn_cache
         save_cache:
