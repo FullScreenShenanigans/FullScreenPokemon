@@ -52,7 +52,7 @@ fsp.gameplay.gameStart();
 FSP is built on top of [EightBittr](https://github.com/FullScreenShenanigans/EightBittr), a modular TypeScript game engine split across separate projects available on npm and hosted on GitHub in the [FullScreenShenanigans](https://github.com/FullScreenShenanigans) organization.
 It consists of a couple dozen core modules under this organization.
 
-See [./src/docs](https://github.com/FullScreenShenanigans/FullScreenPokemon/tree/master/docs) for documentation specific to FullScreenPokemon.
+See [./src/docs](https://github.com/FullScreenShenanigans/FullScreenPokemon/tree/main/docs) for documentation specific to FullScreenPokemon.
 
 <!-- Development -->
 
