@@ -30,7 +30,6 @@ describe("EntranceAnimations", () => {
             fsp.stateHolder.addChange("player", "yloc", yloc);
 
             // Act
-            document.body.appendChild(fsp.canvas);
             fsp.maps.entranceAnimations.resume();
 
             // Assert
