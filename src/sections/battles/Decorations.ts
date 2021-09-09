@@ -1,11 +1,11 @@
 import { member } from "babyioc";
-import { IBattleTeam } from "battlemovr";
+import { BattleTeam } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IBattleInfo, IBattleThings, IPokemon } from "../Battles";
-import { IMenu } from "../Menus";
-import { IThing } from "../Things";
+import { BattleInfo, BattleActors, Pokemon } from "../Battles";
+import { Menu } from "../Menus";
+import { Actor } from "../Actors";
 
 import { Health } from "./decorations/Health";
 /**
@@ -13,7 +13,7 @@ import { Health } from "./decorations/Health";
  */
 export class Decorations extends Section<FullScreenPokemon> {
     /**
-     * Id for the background Thing.
+     * Id for the background Actor.
      */
     private static readonly backgroundId = "BattleDecorationBackground";
 
@@ -24,28 +24,28 @@ export class Decorations extends Section<FullScreenPokemon> {
     public readonly health: Health;
 
     /**
-     * Creates the initial Things displayed in a battle.
+     * Creates the initial Actors displayed in a battle.
      *
      * @param battleInfo   Info for the current battle.
      */
-    public createInitialThings(battleInfo: IBattleInfo): IBattleThings {
-        const background: IThing = this.addThingAsText("DirtWhite", {
+    public createInitialActors(battleInfo: BattleInfo): BattleActors {
+        const background: Actor = this.addActorAsText("DirtWhite", {
             height: this.game.mapScreener.height,
             id: Decorations.backgroundId,
             width: this.game.mapScreener.width,
         });
         this.game.utilities.arrayToBeginning(background, this.game.groupHolder.getGroup("Text"));
 
-        const menu: IMenu = this.game.menuGrapher.createMenu("BattleDisplayInitial") as IMenu;
+        const menu: Menu = this.game.menuGrapher.createMenu("BattleDisplayInitial") as Menu;
 
-        const opponent: IThing = this.addThingAsText(
+        const opponent: Actor = this.addActorAsText(
             this.getInitialTitle(battleInfo.teams.opponent, "Front"),
             {
                 opacity: 0,
             }
         );
 
-        const player: IThing = this.addThingAsText(
+        const player: Actor = this.addActorAsText(
             this.getInitialTitle(battleInfo.teams.player, "Back"),
             {
                 opacity: 0,
@@ -67,7 +67,7 @@ export class Decorations extends Section<FullScreenPokemon> {
      * @param filled   How many balls are filled.
      * @param reverse   Whether to reverse the balls order.
      */
-    public addPokeballs(menu: string, team: IPokemon[], reverse?: boolean): void {
+    public addPokeballs(menu: string, team: Pokemon[], reverse?: boolean): void {
         const text: string[][] = [];
         const filled = team.length;
         for (let i = 0; i < filled; i += 1) {
@@ -92,33 +92,33 @@ export class Decorations extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Adds a new Thing and moves it to the Text group.
+     * Adds a new Actor and moves it to the Text group.
      *
-     * @param title   Title of the Thing to add.
-     * @param attributes   Any attributes for the Thing.
-     * @returns The newly created Thing.
+     * @param title   Title of the Actor to add.
+     * @param attributes   Any attributes for the Actor.
+     * @returns The newly created Actor.
      */
-    public addThingAsText(title: string, attributes: any): IThing {
-        const thing: IThing = this.game.things.add([title, attributes]);
+    public addActorAsText(title: string, attributes: any): Actor {
+        const actor: Actor = this.game.actors.add([title, attributes]);
 
-        this.game.groupHolder.switchGroup(thing, thing.groupType, "Text");
+        this.game.groupHolder.switchGroup(actor, actor.groupType, "Text");
 
-        return thing;
+        return actor;
     }
 
     /**
-     * Moves a Thing to behind all text other than the battle background.
+     * Moves An Actor to behind all text other than the battle background.
      *
-     * @param thing   A placed Thing in the Text group.
+     * @param actor   A placed Actor in the Text group.
      */
-    public moveToBeforeBackground(thing: IThing): void {
-        const texts: IThing[] = this.game.groupHolder.getGroup("Text");
-        const background: IThing = this.game.utilities.getExistingThingById(
+    public moveToBeforeBackground(actor: Actor): void {
+        const texts: Actor[] = this.game.groupHolder.getGroup("Text");
+        const background: Actor = this.game.utilities.getExistingActorById(
             Decorations.backgroundId
         );
         const backgroundIndex: number = texts.indexOf(background);
 
-        this.game.utilities.arrayToIndex(thing, texts, backgroundIndex + 1);
+        this.game.utilities.arrayToIndex(actor, texts, backgroundIndex + 1);
     }
 
     /**
@@ -128,7 +128,7 @@ export class Decorations extends Section<FullScreenPokemon> {
      * @param suffix   Direction modifier to add if the sprite is for a Pokemon.
      * @returns The initial sprite for the team.
      */
-    private getInitialTitle(team: IBattleTeam, pokemonSuffix: "Back" | "Front"): string {
+    private getInitialTitle(team: BattleTeam, pokemonSuffix: "Back" | "Front"): string {
         return team.leader
             ? team.leader.title.join("")
             : team.selectedActor.title.join("") + pokemonSuffix;

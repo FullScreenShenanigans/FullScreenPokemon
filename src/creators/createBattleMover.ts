@@ -1,14 +1,14 @@
-import { BattleMovr, IAction, ITeamAndAction, IUnderEachTeam } from "battlemovr";
+import { BattleMovr, Action, TeamAndAction, UnderEachTeam } from "battlemovr";
 
-import { IBattleInfo } from "../sections/Battles";
+import { BattleInfo } from "../sections/Battles";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 export const createBattleMover = (fsp: FullScreenPokemon) =>
     new BattleMovr({
-        actionsOrderer: (actions: IUnderEachTeam<IAction>): ITeamAndAction<any>[] =>
+        actionsOrderer: (actions: UnderEachTeam<Action>): TeamAndAction<any>[] =>
             fsp.battles.actionsOrderer.order(
                 actions,
-                fsp.battleMover.getBattleInfo() as IBattleInfo
+                fsp.battleMover.getBattleInfo() as BattleInfo
             ),
         animations: fsp.battles.animations,
         selectorFactories: {

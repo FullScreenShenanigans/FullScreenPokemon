@@ -1,13 +1,13 @@
 import { Section } from "eightbittr";
-import { ITimeEvent } from "timehandlr";
+import { TimeEvent } from "timehandlr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IThing } from "../Things";
+import { Actor } from "../Actors";
 
 /**
  * Settings for a color fade animation.
  */
-export interface IColorFadeSettings {
+export interface ColorFadeSettings {
     /**
      * What color to fade to/from (by default, "White").
      */
@@ -30,13 +30,13 @@ export interface IColorFadeSettings {
 }
 
 /**
- * Fades Things in and out.
+ * Fades Actors in and out.
  */
 export class Fading extends Section<FullScreenPokemon> {
     /**
      * Gradually changes a numeric attribute over time.
      *
-     * @param thing   A Thing whose attribute is to change.
+     * @param actor   An Actor whose attribute is to change.
      * @param attribute   The name of the attribute to change.
      * @param change   How much to change the attribute each tick.
      * @param goal   A final value for the attribute to stop at.
@@ -45,35 +45,35 @@ export class Fading extends Section<FullScreenPokemon> {
      * @returns The in-progress TimeEvent, if started.
      */
     public animateFadeAttribute(
-        thing: IThing,
+        actor: Actor,
         attribute: string,
         change: number,
         goal: number,
         speed: number,
-        onCompletion?: (thing: IThing) => void
-    ): ITimeEvent | undefined {
-        (thing as any)[attribute] += change;
+        onCompletion?: (actor: Actor) => void
+    ): TimeEvent | undefined {
+        (actor as any)[attribute] += change;
 
         if (change > 0) {
-            if ((thing as any)[attribute] >= goal) {
-                (thing as any)[attribute] = goal;
+            if ((actor as any)[attribute] >= goal) {
+                (actor as any)[attribute] = goal;
                 if (typeof onCompletion === "function") {
-                    onCompletion(thing);
+                    onCompletion(actor);
                 }
                 return undefined;
             }
         } else {
-            if ((thing as any)[attribute] <= goal) {
-                (thing as any)[attribute] = goal;
+            if ((actor as any)[attribute] <= goal) {
+                (actor as any)[attribute] = goal;
                 if (typeof onCompletion === "function") {
-                    onCompletion(thing);
+                    onCompletion(actor);
                 }
                 return undefined;
             }
         }
 
         return this.game.timeHandler.addEvent((): void => {
-            this.animateFadeAttribute(thing, attribute, change, goal, speed, onCompletion);
+            this.animateFadeAttribute(actor, attribute, change, goal, speed, onCompletion);
         }, speed);
     }
 
@@ -81,15 +81,15 @@ export class Fading extends Section<FullScreenPokemon> {
      * Fades the screen out to a solid color.
      *
      * @param settings   Settings for the animation.
-     * @returns The solid color Thing.
+     * @returns The solid color Actor.
      */
-    public animateFadeToColor(settings: IColorFadeSettings = {}): IThing {
+    public animateFadeToColor(settings: ColorFadeSettings = {}): Actor {
         const color: string = settings.color || "White";
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.game.objectMaker.make<IThing>(
-            color + this.game.things.names.square,
+        const blank: Actor = this.game.objectMaker.make<Actor>(
+            color + this.game.actors.names.square,
             {
                 width: this.game.mapScreener.width,
                 height: this.game.mapScreener.height,
@@ -97,7 +97,7 @@ export class Fading extends Section<FullScreenPokemon> {
             }
         );
 
-        this.game.things.add(blank);
+        this.game.actors.add(blank);
 
         this.animateFadeAttribute(blank, "opacity", change, 1, speed, (): void => {
             this.game.death.kill(blank);
@@ -113,15 +113,15 @@ export class Fading extends Section<FullScreenPokemon> {
      * Places a solid color over the screen and fades it out.
      *
      * @param settings   Settings for the animation.
-     * @returns The solid color Thing.
+     * @returns The solid color Actor.
      */
-    public animateFadeFromColor(settings: IColorFadeSettings = {}, ...args: any[]): IThing {
+    public animateFadeFromColor(settings: ColorFadeSettings = {}, ...args: any[]): Actor {
         const color: string = settings.color || "White";
         const callback: ((...args: any[]) => void) | undefined = settings.callback;
         const change: number = settings.change || 0.33;
         const speed: number = settings.speed || 4;
-        const blank: IThing = this.game.objectMaker.make<IThing>(
-            color + this.game.things.names.square,
+        const blank: Actor = this.game.objectMaker.make<Actor>(
+            color + this.game.actors.names.square,
             {
                 width: this.game.mapScreener.width,
                 height: this.game.mapScreener.height,
@@ -129,7 +129,7 @@ export class Fading extends Section<FullScreenPokemon> {
             }
         );
 
-        this.game.things.add(blank);
+        this.game.actors.add(blank);
 
         this.animateFadeAttribute(blank, "opacity", -change, 0, speed, (): void => {
             this.game.death.kill(blank);

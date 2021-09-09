@@ -2,8 +2,8 @@ import { BattleOutcome, Queue } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo } from "../../Battles";
-import { IBattleOutcomeTextGenerator } from "../../constants/battles/Texts";
+import { BattleInfo } from "../../Battles";
+import { BattleOutcomeTextGenerator } from "../../constants/battles/Texts";
 
 /**
  * Animations for the ends of battles.
@@ -16,10 +16,10 @@ export class Ending extends Section<FullScreenPokemon> {
      * @param onBattleComplete   Callback for when the battle is done.
      */
     public run(outcome: BattleOutcome, onBattleComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
 
         const queue: Queue = new Queue();
-        const finalTextGenerator: IBattleOutcomeTextGenerator | undefined =
+        const finalTextGenerator: BattleOutcomeTextGenerator | undefined =
             battleInfo.texts.outcomes[outcome];
 
         if (finalTextGenerator) {
@@ -64,26 +64,26 @@ export class Ending extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Disposes of visual things post-battle.
+     * Disposes of visual actors post-battle.
      *
      * @param battleInfo   Info on the ending battle.
      * @param outcome   Descriptor of what finished the battle.
      * @param onComplete   Callback for when this is done.
      */
     private finalize(
-        battleInfo: IBattleInfo,
+        battleInfo: BattleInfo,
         outcome: BattleOutcome,
         onComplete: () => void
     ): void {
         this.game.menuGrapher.deleteMenu("Battle");
         this.game.menuGrapher.deleteMenu("GeneralText");
 
-        for (const i in battleInfo.things) {
-            this.game.death.kill(battleInfo.things[i]);
+        for (const i in battleInfo.actors) {
+            this.game.death.kill(battleInfo.actors[i]);
         }
 
-        if (battleInfo.keptThings) {
-            this.game.graphics.collections.moveThingsFromText(battleInfo.keptThings);
+        if (battleInfo.keptActors) {
+            this.game.graphics.collections.moveActorsFromText(battleInfo.keptActors);
         }
 
         if (battleInfo.onComplete) {

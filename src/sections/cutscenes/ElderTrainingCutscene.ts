@@ -15,7 +15,7 @@ export class ElderTrainingCutscene extends Section<FullScreenPokemon> {
         console.log("Should start battle with", settings);
         // this.game.mapScreener.blockInputs = true;
         // this.game.battles.startBattle({
-        //     keptThings: this.game.graphics.collections.collectBattleKeptThings([settings.player, settings.triggerer]),
+        //     keptActors: this.game.graphics.collections.collectBattleKeptActors([settings.player, settings.triggerer]),
         //     battlers: {
         //         player: {
         //             name: "OLD MAN".split(""),
@@ -50,6 +50,6 @@ export class ElderTrainingCutscene extends Section<FullScreenPokemon> {
         //             (): void => this.game.menuGrapher.registerA(),
         //             timeout * 3);
         //     }
-        // } as IBattleInfo);
+        // } as BattleInfo);
     }
 }

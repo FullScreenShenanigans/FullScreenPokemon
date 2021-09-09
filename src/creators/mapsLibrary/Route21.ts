@@ -1,6 +1,6 @@
-import { IMapRaw } from "../../sections/Maps";
+import { MapRaw } from "../../sections/Maps";
 
-export const Route21: IMapRaw = {
+export const Route21: MapRaw = {
     name: "Route 21",
     locationDefault: "Temp",
     locations: {
@@ -59,9 +59,9 @@ export const Route21: IMapRaw = {
                 },
             },
             creation: [
-                { thing: "AreaSpawner", map: "Pallet Town", area: "Land", direction: 0 },
-                { thing: "DirtMedium", width: 128, height: 448 },
-                { thing: "FenceWide", width: 128 },
+                { actor: "AreaSpawner", map: "Pallet Town", area: "Land", direction: 0 },
+                { actor: "DirtMedium", width: 128, height: 448 },
+                { actor: "FenceWide", width: 128 },
                 {
                     macro: "Water",
                     x: 128,
@@ -69,13 +69,13 @@ export const Route21: IMapRaw = {
                     height: 320,
                     open: [true, false, true, false],
                 },
-                { thing: "DirtMedium", x: 256, width: 384, height: 320 },
-                { thing: "FenceWide", x: 256, width: 384 },
-                { thing: "FenceWide", x: 96, y: 32, height: 416 },
-                { thing: "FenceWide", x: 448, y: 32, height: 480 },
+                { actor: "DirtMedium", x: 256, width: 384, height: 320 },
+                { actor: "FenceWide", x: 256, width: 384 },
+                { actor: "FenceWide", x: 96, y: 32, height: 416 },
+                { actor: "FenceWide", x: 448, y: 32, height: 480 },
                 {
                     macro: "Checkered",
-                    things: ["", "Flower"],
+                    actors: ["", "Flower"],
                     x: 320,
                     y: 80,
                     xnum: 8,
@@ -83,10 +83,10 @@ export const Route21: IMapRaw = {
                     xwidth: 16,
                     yheight: 16,
                 },
-                { thing: "Grass", x: 256, y: 128, width: 192, height: 192 },
+                { actor: "Grass", x: 256, y: 128, width: 192, height: 192 },
                 {
                     macro: "Checkered",
-                    things: ["", "Flower"],
+                    actors: ["", "Flower"],
                     x: 512,
                     y: 144,
                     xnum: 4,
@@ -96,7 +96,7 @@ export const Route21: IMapRaw = {
                 },
                 {
                     macro: "Checkered",
-                    things: ["", "Flower"],
+                    actors: ["", "Flower"],
                     y: 144,
                     xnum: 4,
                     ynum: 2,
@@ -105,7 +105,7 @@ export const Route21: IMapRaw = {
                 },
                 {
                     macro: "Checkered",
-                    things: ["", "Flower"],
+                    actors: ["", "Flower"],
                     y: 208,
                     xnum: 4,
                     ynum: 2,
@@ -114,7 +114,7 @@ export const Route21: IMapRaw = {
                 },
                 {
                     macro: "Checkered",
-                    things: ["", "Flower"],
+                    actors: ["", "Flower"],
                     y: 272,
                     xnum: 4,
                     ynum: 2,
@@ -131,7 +131,7 @@ export const Route21: IMapRaw = {
                 },
                 {
                     macro: "Checkered",
-                    things: ["", "Flower"],
+                    actors: ["", "Flower"],
                     y: 336,
                     xnum: 4,
                     ynum: 2,

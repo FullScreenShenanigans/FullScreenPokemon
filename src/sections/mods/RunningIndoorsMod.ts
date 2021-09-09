@@ -1,12 +1,12 @@
-import { IMod } from "modattachr";
+import { Mod } from "modattachr";
 
-import { IArea } from "../../sections/Maps";
+import { Area } from "../../sections/Maps";
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to allow cycling indoors.
  */
-export class RunningIndoorsMod extends ModComponent implements IMod {
+export class RunningIndoorsMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -17,7 +17,7 @@ export class RunningIndoorsMod extends ModComponent implements IMod {
      */
     public readonly events = {
         [this.eventNames.onModEnable]: (): void => {
-            const area: IArea = this.game.mapScreener.activeArea;
+            const area: Area = this.game.mapScreener.activeArea;
             if (!area) {
                 return;
             }
@@ -27,7 +27,7 @@ export class RunningIndoorsMod extends ModComponent implements IMod {
             this.game.mapScreener.variables.allowCycling = true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            const area: IArea = this.game.mapScreener.activeArea;
+            const area: Area = this.game.mapScreener.activeArea;
             if (!area) {
                 return;
             }

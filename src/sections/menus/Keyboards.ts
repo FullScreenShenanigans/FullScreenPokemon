@@ -1,14 +1,14 @@
 import { Section } from "eightbittr";
-import * as imenugraphr from "menugraphr";
+import * as menugraphr from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IListMenu, IMenu, IMenuSchema } from "../Menus";
+import { ListMenu, Menu, MenuSchema } from "../Menus";
 
 /**
  * A Menu to display the results of a KeyboardKeys Menu. A set of "blank" spaces
- * are available, and filled with Text Things as keyboard characters are chosen.
+ * are available, and filled with Text Actors as keyboard characters are chosen.
  */
-export interface IKeyboardResultsMenu extends IMenu {
+export interface KeyboardResultsMenu extends Menu {
     /**
      * The complete accumulated values of text characters added, in order.
      */
@@ -28,7 +28,7 @@ export interface IKeyboardResultsMenu extends IMenu {
 /**
  * Settings to open a keyboard menu.
  */
-export interface IKeyboardMenuSettings {
+export interface KeyboardMenuSettings {
     /**
      * A callback to replace key presses.
      */
@@ -69,7 +69,7 @@ export class Keyboards extends Section<FullScreenPokemon> {
      *
      * @param settings   Settings to apply to the menu and for callbacks.
      */
-    public openKeyboardMenu(settings: IKeyboardMenuSettings = {}): void {
+    public openKeyboardMenu(settings: KeyboardMenuSettings = {}): void {
         this.closeKeyboardMenu();
 
         const completeValue: string[] = settings.value ? settings.value.slice() : [];
@@ -96,7 +96,7 @@ export class Keyboards extends Section<FullScreenPokemon> {
             onKeyPress,
             onComplete,
             ignoreB: false,
-        } as IMenuSchema);
+        } as MenuSchema);
 
         this.game.menuGrapher.addMenuDialog("KeyboardTitle", [[settings.title || ""]]);
 
@@ -115,9 +115,9 @@ export class Keyboards extends Section<FullScreenPokemon> {
         this.game.menuGrapher.getMenu("KeyboardKeys").onBPress = onBPress;
         this.game.menuGrapher.setActiveMenu("KeyboardKeys");
 
-        const menuResults: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+        const menuResults: KeyboardResultsMenu = this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu;
+        ) as KeyboardResultsMenu;
         menuResults.completeValue = completeValue;
         menuResults.displayedValue = displayedValue;
         menuResults.selectedChild = settings.selectedChild || completeValue.length;
@@ -129,10 +129,10 @@ export class Keyboards extends Section<FullScreenPokemon> {
      * Adds a value to the keyboard menu from the currently selected item.
      */
     public addKeyboardMenuValue(): void {
-        const menuResults: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+        const menuResults: KeyboardResultsMenu = this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu;
-        const menuKeys: imenugraphr.IGridCell = this.game.menuGrapher.getMenuSelectedOption(
+        ) as KeyboardResultsMenu;
+        const menuKeys: menugraphr.GridCell = this.game.menuGrapher.getMenuSelectedOption(
             "KeyboardKeys"
         );
 
@@ -151,9 +151,9 @@ export class Keyboards extends Section<FullScreenPokemon> {
      * Removes the rightmost keyboard menu value.
      */
     public removeKeyboardMenuValue(): void {
-        const menuResults: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+        const menuResults: KeyboardResultsMenu = this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu;
+        ) as KeyboardResultsMenu;
         if (menuResults.selectedChild <= 0) {
             return;
         }
@@ -169,11 +169,11 @@ export class Keyboards extends Section<FullScreenPokemon> {
      * Switches the keyboard menu's case.
      */
     protected switchKeyboardCase(): void {
-        const menuKeyboard = this.game.menuGrapher.getMenu("Keyboard") as IMenu;
-        const menuKeys = this.game.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const menuKeyboard = this.game.menuGrapher.getMenu("Keyboard") as Menu;
+        const menuKeys = this.game.menuGrapher.getMenu("KeyboardKeys") as ListMenu;
         const menuResults = this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu;
+        ) as KeyboardResultsMenu;
 
         this.openKeyboardMenu({
             ...menuKeyboard.settings,
@@ -197,9 +197,9 @@ export class Keyboards extends Section<FullScreenPokemon> {
      * Recreates the display of current results and cursor.
      */
     protected resetResultsDisplay(): void {
-        const menuResults: IKeyboardResultsMenu = this.game.menuGrapher.getMenu(
+        const menuResults: KeyboardResultsMenu = this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu;
+        ) as KeyboardResultsMenu;
         const dialog: [string][] = menuResults.displayedValue.map((text: string): [string] => [
             text,
         ]);
@@ -219,7 +219,7 @@ export class Keyboards extends Section<FullScreenPokemon> {
      *
      */
     protected moveSelectionToEnd(): void {
-        const menuKeys: IListMenu = this.game.menuGrapher.getMenu("KeyboardKeys") as IListMenu;
+        const menuKeys: ListMenu = this.game.menuGrapher.getMenu("KeyboardKeys") as ListMenu;
 
         this.game.menuGrapher.setSelectedIndex(
             "KeyboardKeys",

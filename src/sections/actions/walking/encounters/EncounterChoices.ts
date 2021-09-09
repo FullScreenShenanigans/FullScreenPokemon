@@ -1,8 +1,8 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IWildPokemonSchema } from "../../../Maps";
-import { IPlayer } from "../../../Things";
+import { WildPokemonSchema } from "../../../Maps";
+import { Player } from "../../../Actors";
 
 /**
  * Chooses wild Pokemon to encounter during walking.
@@ -11,16 +11,16 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
     /**
      * May randomly starts a wild Pokemon encounter if the player while walking.
      *
-     * @param thing   In-game Player that may encounter a wild Pokemon.
+     * @param actor   In-game Player that may encounter a wild Pokemon.
      * @returns Wild Pokemon schemas to choose from, if a battle is to start.
      */
-    public getWildEncounterPokemonOptions(thing: IPlayer): IWildPokemonSchema[] | undefined {
-        let options: IWildPokemonSchema[] | undefined = this.getGrassPokemonOptions(thing);
+    public getWildEncounterPokemonOptions(actor: Player): WildPokemonSchema[] | undefined {
+        let options: WildPokemonSchema[] | undefined = this.getGrassPokemonOptions(actor);
         if (options !== undefined) {
             return options;
         }
 
-        options = this.getSurfingPokemonOptions(thing);
+        options = this.getSurfingPokemonOptions(actor);
         if (options !== undefined) {
             return options;
         }
@@ -31,12 +31,12 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
     /**
      * Gets options for a grass battle if the player is in grass.
      *
-     * @param thing A Player in grass.
+     * @param actor A Player in grass.
      * @returns Wild Pokemon options to start battle with, if a battle should start.
      * @remarks Uses the doesGrassEncounterHappen equation internally.
      */
-    private getGrassPokemonOptions(thing: IPlayer): IWildPokemonSchema[] | undefined {
-        const { grass } = thing;
+    private getGrassPokemonOptions(actor: Player): WildPokemonSchema[] | undefined {
+        const { grass } = actor;
         if (grass === undefined) {
             return undefined;
         }
@@ -50,7 +50,7 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
             throw new Error("Grass area doesn't have any wild Pokemon options defined.");
         }
 
-        const options: IWildPokemonSchema[] | undefined = areaWildPokemon.grass;
+        const options: WildPokemonSchema[] | undefined = areaWildPokemon.grass;
         if (options === undefined) {
             throw new Error("Grass area doesn't have any wild grass Pokemon options defined.");
         }
@@ -61,11 +61,11 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
     /**
      * Gets options for a wild Pokemon battle while walking.
      *
-     * @param thing   A walking Player.
+     * @param actor   A walking Player.
      * @returns Wild Pokemon options to start battle with, if a battle should start.
      * @remarks Uses the doesWalkingEncounterHappen equation internally.
      */
-    private getWalkingPokemonOptions(): IWildPokemonSchema[] | undefined {
+    private getWalkingPokemonOptions(): WildPokemonSchema[] | undefined {
         const area = this.game.mapScreener.activeArea;
         if (
             area.wildPokemon === undefined ||
@@ -81,12 +81,12 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
     /**
      * Gets options for a wild Pokemon battle while surfing.
      *
-     * @param thing   A surfing Player.
+     * @param actor   A surfing Player.
      * @returns Wild Pokemon options to start battle with, if a battle should start.
      * @remarks Uses the doesWalkingEncounterHappen equation internally.
      */
-    private getSurfingPokemonOptions(thing: IPlayer): IWildPokemonSchema[] | undefined {
-        const { surfing } = thing;
+    private getSurfingPokemonOptions(actor: Player): WildPokemonSchema[] | undefined {
+        const { surfing } = actor;
         if (surfing === undefined || !this.game.equations.doesWalkingEncounterHappen()) {
             return undefined;
         }
@@ -96,7 +96,7 @@ export class EncounterChoices extends Section<FullScreenPokemon> {
             throw new Error("SUrfing area doesn't have any wild Pokemon options defined.");
         }
 
-        const options: IWildPokemonSchema[] | undefined = areaWildPokemon.surfing;
+        const options: WildPokemonSchema[] | undefined = areaWildPokemon.surfing;
         if (options === undefined) {
             throw new Error(
                 "SUrfing area doesn't have any wild surfing Pokemon options defined."

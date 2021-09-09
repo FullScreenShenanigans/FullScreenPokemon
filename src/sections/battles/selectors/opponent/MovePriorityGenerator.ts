@@ -1,15 +1,15 @@
-import { IMove } from "battlemovr";
+import { Move } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleTeam, IPokemon } from "../../../Battles";
-import { IBattleModification } from "../../../constants/battles/Modifications";
-import { IMoveSchema } from "../../../constants/Moves";
+import { BattleTeam, Pokemon } from "../../../Battles";
+import { BattleModification } from "../../../constants/battles/Modifications";
+import { MoveSchema } from "../../../constants/Moves";
 
 /**
  * A possible move to be chosen, with its probability.
  */
-export interface IMovePossibility {
+export interface MovePossibility {
     /**
      * The concatenated name of the move.
      */
@@ -34,12 +34,12 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
      * @returns Move possibilities for the potential moves.
      */
     public generate(
-        attackingTeam: IBattleTeam,
-        defendingTeam: IBattleTeam,
-        moves: IMove[]
-    ): IMovePossibility[] {
-        const possibilities: IMovePossibility[] = moves.map(
-            (move: IMove): IMovePossibility => ({
+        attackingTeam: BattleTeam,
+        defendingTeam: BattleTeam,
+        moves: Move[]
+    ): MovePossibility[] {
+        const possibilities: MovePossibility[] = moves.map(
+            (move: Move): MovePossibility => ({
                 move: move.title,
                 priority: 10,
             })
@@ -92,7 +92,7 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
      * @param team   A battling team.
      * @returns Whether the team is smart enough for turn two special effect moves.
      */
-    private teamKnowsSecondTurnEffects(team: IBattleTeam): boolean {
+    private teamKnowsSecondTurnEffects(team: BattleTeam): boolean {
         if (!team.leader) {
             return false;
         }
@@ -113,7 +113,7 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
      * @param team   A battling team.
      * @returns Whether the team is smart enough for super effective moves.
      */
-    private teamKnowsSuperEffectiveness(team: IBattleTeam): boolean {
+    private teamKnowsSuperEffectiveness(team: BattleTeam): boolean {
         if (!team.leader) {
             return false;
         }
@@ -137,12 +137,12 @@ export class MovePriorityGenerator extends Section<FullScreenPokemon> {
      * @param amount   How much to modify the move's priority.
      */
     private applyMoveEffectPriority(
-        possibility: IMovePossibility,
-        modification: IBattleModification,
-        target: IPokemon,
+        possibility: MovePossibility,
+        modification: BattleModification,
+        target: Pokemon,
         amount: number
     ): void {
-        const moveSchema: IMoveSchema = this.game.constants.moves.byName[possibility.move];
+        const moveSchema: MoveSchema = this.game.constants.moves.byName[possibility.move];
 
         for (const preference of modification.preferences) {
             switch (preference[0]) {

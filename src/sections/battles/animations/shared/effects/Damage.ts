@@ -1,9 +1,9 @@
 import { member } from "babyioc";
-import { IDamageEffect, IMoveAction, IStatistic, ITeamAndAction } from "battlemovr";
+import { DamageEffect, MoveAction, Statistic, TeamAndAction } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
-import { IPokemon } from "../../../../Battles";
+import { Pokemon } from "../../../../Battles";
 
 import { Calculator } from "./damage/Calculator";
 
@@ -25,11 +25,11 @@ export class Damage extends Section<FullScreenPokemon> {
      * @param onComplete   Handler for when this is done.
      */
     public run(
-        teamAndAction: ITeamAndAction<IMoveAction>,
-        effect: IDamageEffect,
+        teamAndAction: TeamAndAction<MoveAction>,
+        effect: DamageEffect,
         onComplete: () => void
     ): void {
-        const statistic: IStatistic = teamAndAction.target.actor.statistics.health;
+        const statistic: Statistic = teamAndAction.target.actor.statistics.health;
         const amount: number = this.calculator.calculateDamage(teamAndAction, effect);
 
         this.game.battles.decorations.health.animatePokemonHealthBar(
@@ -45,7 +45,7 @@ export class Damage extends Section<FullScreenPokemon> {
                 this.game.battles.animations
                     .getTeamAnimations(teamAndAction.target.team)
                     .actions.effects.fainting.run(
-                        teamAndAction.target.actor as IPokemon,
+                        teamAndAction.target.actor as Pokemon,
                         teamAndAction.target.team,
                         onComplete
                     );

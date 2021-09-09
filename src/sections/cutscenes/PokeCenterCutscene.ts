@@ -1,9 +1,9 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokemon } from "../Battles";
-import { IMap } from "../Maps";
-import { ICharacter, IThing } from "../Things";
+import { Pokemon } from "../Battles";
+import { Map } from "../Maps";
+import { Character, Actor } from "../Actors";
 
 /**
  * PokeCenter cutscene routines.
@@ -23,8 +23,8 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
      * Cutscene for a nurse's welcome at the Pokemon Center.
      */
     public readonly Welcome = (): void => {
-        const nurse = this.game.utilities.getExistingThingById<ICharacter>("Nurse");
-        const machine = this.game.utilities.getExistingThingById("HealingMachine");
+        const nurse = this.game.utilities.getExistingActorById<Character>("Nurse");
+        const machine = this.game.utilities.getExistingActorById("HealingMachine");
 
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
@@ -42,7 +42,7 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for choosing whether or not to heal Pokemon.
      */
-    private choose(machine: IThing, nurse: ICharacter): void {
+    private choose(machine: Actor, nurse: Character): void {
         this.game.menuGrapher.createMenu("Heal/Cancel", {
             killOnB: ["GeneralText"],
         });
@@ -64,7 +64,7 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
     /**
      * Cutscene for choosing to heal Pokemon.
      */
-    private chooseHeal(machine: IThing, nurse: ICharacter): void {
+    private chooseHeal(machine: Actor, nurse: Character): void {
         this.game.menuGrapher.deleteMenu("Heal/Cancel");
 
         this.game.menuGrapher.createMenu("GeneralText", {
@@ -83,11 +83,11 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
      * Cutscene for placing Pokeballs into the healing machine.
      *
      */
-    private healing(machine: IThing, nurse: ICharacter): void {
-        const party: IPokemon[] = this.game.itemsHolder.getItem(
+    private healing(machine: Actor, nurse: Character): void {
+        const party: Pokemon[] = this.game.itemsHolder.getItem(
             this.game.storage.names.pokemonInParty
         );
-        const balls: IThing[] = [];
+        const balls: Actor[] = [];
         const dt = 35;
         const left: number = machine.left + 20;
         const top: number = machine.top + 28;
@@ -98,8 +98,8 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
         this.game.timeHandler.addEventInterval(
             (): void => {
                 balls.push(
-                    this.game.things.add(
-                        this.game.things.names.healingMachineBall,
+                    this.game.actors.add(
+                        this.game.actors.names.healingMachineBall,
                         left + (i % 2) * 12,
                         top + Math.floor(i / 2) * 10
                     )
@@ -120,7 +120,7 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
      * Cutscene for Pokemon being healed in the healing machine.
      *
      */
-    private healingAction(machine: IThing, nurse: ICharacter, balls: IThing[]): void {
+    private healingAction(machine: Actor, nurse: Character, balls: Actor[]): void {
         const numFlashes = 8;
         let i = 0;
 
@@ -128,10 +128,10 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
             (): void => {
                 const changer =
                     i % 2 === 0
-                        ? (thing: IThing, className: string): void =>
-                              this.game.graphics.classes.addClass(thing, className)
-                        : (thing: IThing, className: string): void =>
-                              this.game.graphics.classes.removeClass(thing, className);
+                        ? (actor: Actor, className: string): void =>
+                              this.game.graphics.classes.addClass(actor, className)
+                        : (actor: Actor, className: string): void =>
+                              this.game.graphics.classes.removeClass(actor, className);
 
                 for (const ball of balls) {
                     changer(ball, "lit");
@@ -157,8 +157,8 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      * @param args Settings for the routine.
      */
-    private healingComplete(nurse: ICharacter, balls: IThing[]): void {
-        const party: IPokemon[] = this.game.itemsHolder.getItem(
+    private healingComplete(nurse: Character, balls: Actor[]): void {
+        const party: Pokemon[] = this.game.itemsHolder.getItem(
             this.game.storage.names.pokemonInParty
         );
 
@@ -187,7 +187,7 @@ export class PokeCenterCutscene extends Section<FullScreenPokemon> {
         this.game.menuGrapher.setActiveMenu("GeneralText");
 
         const map: string = this.game.itemsHolder.getItem(this.game.storage.names.map);
-        const mapInfo: IMap = this.game.areaSpawner.getMap() as IMap;
+        const mapInfo: Map = this.game.areaSpawner.getMap() as Map;
         const location: string | undefined = mapInfo.locationDefault;
 
         this.game.itemsHolder.setItem(this.game.storage.names.lastPokecenter, { map, location });

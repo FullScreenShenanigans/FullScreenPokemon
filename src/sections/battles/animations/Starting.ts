@@ -2,7 +2,7 @@ import { member } from "babyioc";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo, IBattleThings } from "../../Battles";
+import { BattleInfo, BattleActors } from "../../Battles";
 import { PokedexListingStatus } from "../../Constants";
 
 import { Transitions } from "./Transitions";
@@ -23,10 +23,10 @@ export class Starting extends Section<FullScreenPokemon> {
      * @param onComplete   Callback for when this is done.
      */
     public run(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
 
-        if (battleInfo.keptThings) {
-            this.game.graphics.collections.moveThingsToText(battleInfo.keptThings);
+        if (battleInfo.keptActors) {
+            this.game.graphics.collections.moveActorsToText(battleInfo.keptActors);
         }
 
         this.game.audioPlayer.play(battleInfo.theme, {
@@ -37,23 +37,23 @@ export class Starting extends Section<FullScreenPokemon> {
         this.transitions.play({
             name: battleInfo.startTransition,
             onComplete: (): void => {
-                this.setupThings(battleInfo);
+                this.setupActors(battleInfo);
                 this.runTeamEntrances(battleInfo, onComplete);
             },
         });
     }
 
     /**
-     * Sets up the initial team Things.
+     * Sets up the initial team Actors.
      *
      * @param battleInfo   Info for the current battle.
      */
-    private setupThings(battleInfo: IBattleInfo): void {
+    private setupActors(battleInfo: BattleInfo): void {
         this.game.menuGrapher.createMenu("Battle");
-        battleInfo.things = this.game.battles.decorations.createInitialThings(battleInfo);
+        battleInfo.actors = this.game.battles.decorations.createInitialActors(battleInfo);
 
-        if (battleInfo.keptThings) {
-            this.game.graphics.collections.moveThingsBeforeBackgrounds(battleInfo.keptThings);
+        if (battleInfo.keptActors) {
+            this.game.graphics.collections.moveActorsBeforeBackgrounds(battleInfo.keptActors);
         }
     }
 
@@ -63,8 +63,8 @@ export class Starting extends Section<FullScreenPokemon> {
      * @param battleInfo   Info for the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private runTeamEntrances(battleInfo: IBattleInfo, onComplete: () => void): void {
-        const { menu, opponent, player }: IBattleThings = battleInfo.things;
+    private runTeamEntrances(battleInfo: BattleInfo, onComplete: () => void): void {
+        const { menu, opponent, player }: BattleActors = battleInfo.actors;
         const timeout = 70;
 
         // They should be visible halfway through (2 * (1 / timeout))
@@ -107,7 +107,7 @@ export class Starting extends Section<FullScreenPokemon> {
      *
      * @param battleInfo   Info for the current battle.
      */
-    private showPlayerPokeballs(battleInfo: IBattleInfo): void {
+    private showPlayerPokeballs(battleInfo: BattleInfo): void {
         if (battleInfo.teams.player.leader) {
             this.game.menuGrapher.createMenu("BattlePlayerHealth");
             this.game.menuGrapher.createMenu("BattlePlayerPokeballs");
@@ -134,7 +134,7 @@ export class Starting extends Section<FullScreenPokemon> {
      * @param battleInfo   Info for the current battle.
      * @param onComplete   Callback for when this is done.
      */
-    private runOpeningText(battleInfo: IBattleInfo, onComplete: () => void): void {
+    private runOpeningText(battleInfo: BattleInfo, onComplete: () => void): void {
         this.game.menuGrapher.createMenu("GeneralText", {
             finishAutomatically: battleInfo.automaticMenus,
         });

@@ -1,11 +1,11 @@
 # Map Spawning
 
 Individual sections of the overworld are stored as separate maps under `src/creators/mapLibrary`.
-Areas register their neighbors by placing an `AreaSpawner` Thing on the border between the two areas:
+Areas register their neighbors by placing an `AreaSpawner` Actor on the border between the two areas:
 
 ```typescript
 creation: [
-    { thing: "AreaSpawner", width: 608, height: 544, map: "Route 1", area: "Land", direction: 0 },
+    { actor: "AreaSpawner", width: 608, height: 544, map: "Route 1", area: "Land", direction: 0 },
     // ...
 ],
 ```

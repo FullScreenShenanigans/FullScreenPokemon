@@ -9,7 +9,7 @@ import { SoundNames } from "./audio/SoundNames";
 /**
  * Friendly sound aliases and names for audio.
  */
-export class Audio<TEightBittr extends FullScreenPokemon> extends Section<TEightBittr> {
+export class Audio extends Section<FullScreenPokemon> {
     /**
      * Aliases for playable sounds.
      */

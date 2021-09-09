@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../../fakes.test";
-import { IListMenu } from "../Menus";
+import { ListMenu } from "../Menus";
 
 describe("Computer", () => {
     it("creates a list of PC options after the dialog when opened", () => {
@@ -15,7 +15,7 @@ describe("Computer", () => {
         fsp.menuGrapher.registerA();
 
         // Assert
-        const menu = fsp.menuGrapher.getActiveMenu() as IListMenu;
+        const menu = fsp.menuGrapher.getActiveMenu() as ListMenu;
         const options = menu.grid[0].map((option) => option.text);
         expect(options).to.be.deep.equal([
             "BILL's PC",

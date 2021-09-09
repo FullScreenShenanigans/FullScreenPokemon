@@ -1,45 +1,45 @@
 import { member } from "babyioc";
-import { ITimeCycles, IThing as IClassCyclrThing } from "classcyclr";
-import { IThing as IEightBittrThing, Things as EightBittrThings } from "eightbittr";
-import * as imenugraphr from "menugraphr";
-import * as itimehandlr from "timehandlr";
+import { TimeCycles, Actor as ClassCyclrActor } from "classcyclr";
+import { Actor as EightBittrActor, Actors as EightBittrActors } from "eightbittr";
+import * as menugraphr from "menugraphr";
+import * as timehandlr from "timehandlr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IWalkingInstructions } from "./actions/Walking";
-import { IPokemon } from "./Battles";
+import { WalkingInstructions } from "./actions/Walking";
+import { Pokemon } from "./Battles";
 import { Direction } from "./Constants";
-import { IWildPokemonSchema } from "./Maps";
-import { IDialog, IMenuSchema } from "./Menus";
-import { IStateSaveable } from "./Saves";
-import { ThingNames } from "./things/ThingNames";
+import { WildPokemonSchema } from "./Maps";
+import { Dialog, MenuSchema } from "./Menus";
+import { StateSaveable } from "./Saves";
+import { ActorNames } from "./actors/ActorNames";
 
 /**
- * Things keyed by their ids.
+ * Actors keyed by their ids.
  */
-export interface IThingsById {
-    [i: string]: IThing;
+export interface ActorsById {
+    [i: string]: Actor;
 }
 
 /**
- * An in-game Thing with size, velocity, position, and other information.
+ * An in-game Actor with size, velocity, position, and other information.
  */
-export interface IThing
-    extends IEightBittrThing,
-        Omit<IClassCyclrThing, "onThingAdded">,
-        IStateSaveable {
+export interface Actor
+    extends EightBittrActor,
+        Omit<ClassCyclrActor, "onActorAdded">,
+        StateSaveable {
     spriteCycleSynched: any;
     spriteCycle: any;
     flipHoriz?: boolean;
     flipVert?: boolean;
 
     /**
-     * What to do when a Character, commonly a Player, activates this Thing.
+     * What to do when a Character, commonly a Player, activates this Actor.
      *
      * @param activator   The Character activating this.
-     * @param activated   The Thing being activated.
+     * @param activated   The Actor being activated.
      */
-    activate?(activator: ICharacter, activated?: IThing): void;
+    activate?(activator: Character, activated?: Actor): void;
 
     /**
      * The area this was spawned by.
@@ -47,28 +47,28 @@ export interface IThing
     areaName: string;
 
     /**
-     * Things this is touching in each cardinal direction.
+     * Actors this is touching in each cardinal direction.
      */
-    bordering: [IThing | undefined, IThing | undefined, IThing | undefined, IThing | undefined];
+    bordering: [Actor | undefined, Actor | undefined, Actor | undefined, Actor | undefined];
 
     /**
-     * Whether this should be chosen over other Things if it is one of multiple
-     * potential Thing borders.
+     * Whether this should be chosen over other Actors if it is one of multiple
+     * potential Actor borders.
      */
     borderPrimary?: boolean;
 
     /**
-     * What to do when a Character collides with this Thing.
+     * What to do when a Character collides with this Actor.
      *
-     * @param thing   The Character colliding with this Thing.
-     * @param other   This thing being collided by the Character.
+     * @param actor   The Character colliding with this Actor.
+     * @param other   This actor being collided by the Character.
      */
-    collide(thing: ICharacter, other: IThing): boolean;
+    collide(actor: Character, other: Actor): boolean;
 
     /**
-     * Animation cycles set by the IClassCyclr.
+     * Animation cycles set by the ClassCyclr.
      */
-    cycles: ITimeCycles;
+    cycles: TimeCycles;
 
     /**
      * Whether this has been killed.
@@ -86,7 +86,7 @@ export interface IThing
     flickering?: boolean;
 
     /**
-     * The globally identifiable, potentially unique id of this Thing.
+     * The globally identifiable, potentially unique id of this Actor.
      */
     id: string;
 
@@ -96,7 +96,7 @@ export interface IThing
     mapName: string;
 
     /**
-     * Whether this is barred from colliding with other Things.
+     * Whether this is barred from colliding with other Actors.
      */
     nocollide?: boolean;
 
@@ -116,7 +116,7 @@ export interface IThing
     offsetY: number;
 
     /**
-     * Whether to shift this to the "beginning" or "end" of its Things group.
+     * Whether to shift this to the "beginning" or "end" of its Actors group.
      */
     position: string;
 
@@ -126,22 +126,22 @@ export interface IThing
     spawned: boolean;
 
     /**
-     * Bottom vertical tolerance for not colliding with another Thing.
+     * Bottom vertical tolerance for not colliding with another Actor.
      */
     tolBottom: number;
 
     /**
-     * Left vertical tolerance for not colliding with another Thing.
+     * Left vertical tolerance for not colliding with another Actor.
      */
     tolLeft: number;
 
     /**
-     * Right horizontal tolerance for not colliding with another Thing.
+     * Right horizontal tolerance for not colliding with another Actor.
      */
     tolRight: number;
 
     /**
-     * Top vertical tolerance for not colliding with another Thing.
+     * Top vertical tolerance for not colliding with another Actor.
      */
     tolTop: number;
 
@@ -152,19 +152,19 @@ export interface IThing
 }
 
 /**
- * A Character Thing.
- * @todo This should be separated into its sub-classes the way FSM's ICharacter is.
+ * A Character Actor.
+ * @todo This should be separated into its sub-classes the way FSM's Character is.
  */
-export interface ICharacter extends IThing {
+export interface Character extends Actor {
     /**
      * For custom triggerable Characters, whether this may be used.
      */
     active?: boolean;
 
     /**
-     * A Thing that activated this character.
+     * An Actor that activated this character.
      */
-    collidedTrigger?: IDetector;
+    collidedTrigger?: Detector;
 
     /**
      * A cutscene to activate when interacting with this Character.
@@ -175,7 +175,7 @@ export interface ICharacter extends IThing {
      * A dialog to start when activating this Character. If dialogDirections is true,
      * it will be interpreted as a separate dialog for each direction of interaction.
      */
-    dialog?: imenugraphr.IMenuDialogRaw | imenugraphr.IMenuDialogRaw[];
+    dialog?: menugraphr.MenuDialogRaw | menugraphr.MenuDialogRaw[];
 
     /**
      * Whether dialog should definitely be treated as an Array of one Dialog each direction.
@@ -186,13 +186,13 @@ export interface ICharacter extends IThing {
      * A single set of dialog (or dialog directions) to play after the primary dialog
      * is complete.
      */
-    dialogNext?: imenugraphr.IMenuDialogRaw | imenugraphr.IMenuDialogRaw[];
+    dialogNext?: menugraphr.MenuDialogRaw | menugraphr.MenuDialogRaw[];
 
     /**
      * A dialog to place after the primary dialog as a yes or no menu.
      * @todo If the need arises, this could be changed to any type of menu.
      */
-    dialogOptions?: IDialog;
+    dialogOptions?: Dialog;
 
     /**
      * A direction to always face after a dialog completes.
@@ -207,12 +207,12 @@ export interface ICharacter extends IThing {
     /**
      * A Character walking directly behind this as a follower.
      */
-    follower?: ICharacter;
+    follower?: Character;
 
     /**
      * A Character this is walking directly behind as a follower.
      */
-    following?: ICharacter;
+    following?: Character;
 
     /**
      * An item to give after a dialog is first initiated.
@@ -222,7 +222,7 @@ export interface ICharacter extends IThing {
     /**
      * A grass Scenery partially covering this while walking through a grass area.
      */
-    grass?: IGrass;
+    grass?: Grass;
 
     /**
      * A scratch variable for height, such as when behind grass.
@@ -237,7 +237,7 @@ export interface ICharacter extends IThing {
     /**
      * A ledge this is hopping over.
      */
-    ledge?: IThing;
+    ledge?: Actor;
 
     /**
      * A direction to turn to when the current walking step is done.
@@ -257,7 +257,7 @@ export interface ICharacter extends IThing {
     /**
      * Path to push the Player back on after a dialog, if any.
      */
-    pushSteps?: IWalkingInstructions;
+    pushSteps?: WalkingInstructions;
 
     /**
      * Whether this is sporadically walking in random directions.
@@ -270,14 +270,14 @@ export interface ICharacter extends IThing {
     sight?: number;
 
     /**
-     * The Detector stretching in front of this Thing as its sight.
+     * The Detector stretching in front of this Actor as its sight.
      */
-    sightDetector?: ISightDetector;
+    sightDetector?: SightDetector;
 
     /**
-     * A shadow Thing for when this is hopping a ledge.
+     * A shadow Actor for when this is hopping a ledge.
      */
-    shadow?: IThing;
+    shadow?: Actor;
 
     /**
      * How fast this moves.
@@ -312,7 +312,7 @@ export interface ICharacter extends IThing {
     /**
      * Whether this should transport an activating Character.
      */
-    transport?: string | ITransportSchema;
+    transport?: string | TransportSchema;
 
     /**
      * Where this will turn to when its current walking step is complete.
@@ -327,7 +327,7 @@ export interface ICharacter extends IThing {
     /**
      * The class cycle for flipping back and forth while walking.
      */
-    walkingFlipping?: itimehandlr.ITimeEvent;
+    walkingFlipping?: timehandlr.TimeEvent;
 
     /**
      * A direction to turn to when the current walking step is done.
@@ -338,7 +338,7 @@ export interface ICharacter extends IThing {
 /**
  * A Character able to roam in random directions.
  */
-export interface IRoamingCharacter extends ICharacter {
+export interface RoamingCharacter extends Character {
     /**
      * Whether this is roaming (always true in this type).
      */
@@ -359,13 +359,13 @@ export interface IRoamingCharacter extends ICharacter {
 }
 
 /**
- * An Enemy Thing such as a trainer or wild Pokemon.
+ * An Enemy Actor such as a trainer or wild Pokemon.
  */
-export interface IEnemy extends ICharacter {
+export interface Enemy extends Character {
     /**
      * Actors this trainer will use in battle.
      */
-    actors: IWildPokemonSchema[];
+    actors: WildPokemonSchema[];
 
     /**
      * Whether this trainer has already battled and shouldn't again.
@@ -410,23 +410,23 @@ export interface IEnemy extends ICharacter {
     /**
      * Dialog to display after defeated in battle.
      */
-    textDefeat?: imenugraphr.IMenuDialogRaw;
+    textDefeat?: menugraphr.MenuDialogRaw;
 
     /**
      * Dialog to display after the battle is over.
      */
-    textAfterBattle?: imenugraphr.IMenuDialogRaw;
+    textAfterBattle?: menugraphr.MenuDialogRaw;
 
     /**
      * Text display upon victory.
      */
-    textVictory?: imenugraphr.IMenuDialogRaw;
+    textVictory?: menugraphr.MenuDialogRaw;
 }
 
 /**
  * A Player Character.
  */
-export interface IPlayer extends ICharacter {
+export interface Player extends Character {
     /**
      * Whether Detectors this collides with should consider walking to be an indication
      * of activation. This is useful for when the Player is following but needs to trigger
@@ -442,18 +442,18 @@ export interface IPlayer extends ICharacter {
     /**
      * @returns A new descriptor container for key statuses.
      */
-    getKeys(): IPlayerKeys;
+    getKeys(): PlayerKeys;
 
     /**
      * A descriptor for a user's keys' statuses.
      */
-    keys: IPlayerKeys;
+    keys: PlayerKeys;
 }
 
 /**
  * A descriptor for a user's keys' statuses.
  */
-export interface IPlayerKeys {
+export interface PlayerKeys {
     /**
      * Whether the user is currently indicating a selection.
      */
@@ -486,9 +486,9 @@ export interface IPlayerKeys {
 }
 
 /**
- * A Grass Thing.
+ * A Grass Actor.
  */
-export interface IGrass extends IThing {
+export interface Grass extends Actor {
     /**
      * How likely this is to trigger a grass encounter in the doesGrassEncounterHappen
      * equation, as a Number in [0, 187.5].
@@ -497,9 +497,9 @@ export interface IGrass extends IThing {
 }
 
 /**
- * A Detector Thing. These are typically Solids.
+ * A Detector Actor. These are typically Solids.
  */
-export interface IDetector extends IThing {
+export interface Detector extends Actor {
     /**
      * Whether this is currently allowed to activate.
      */
@@ -508,10 +508,10 @@ export interface IDetector extends IThing {
     /**
      * A callback for when a Player activates this.
      *
-     * @param thing   The Player activating other, or other if a self-activation.
-     * @param other   The Detector being activated by thing.
+     * @param actor   The Player activating other, or other if a self-activation.
+     * @param other   The Detector being activated by actor.
      */
-    activate?(thing: IPlayer | IDetector, other?: IDetector): void;
+    activate?(actor: Player | Detector, other?: Detector): void;
 
     /**
      * A cutscene to start when this is activated.
@@ -522,7 +522,7 @@ export interface IDetector extends IThing {
      * A dialog to start when activating this Character. If an Array, it will be interpreted
      * as a separate dialog for each cardinal direction of interaction.
      */
-    dialog?: imenugraphr.IMenuDialogRaw;
+    dialog?: menugraphr.MenuDialogRaw;
 
     /**
      * Whether this shouldn't be killed after activation (by default, false).
@@ -553,7 +553,7 @@ export interface IDetector extends IThing {
 /**
  * A Solid with a partyActivate callback Function.
  */
-export interface IHMCharacter extends ICharacter {
+export interface HMCharacter extends Character {
     /**
      * The name of the move needed to interact with this HMCharacter.
      */
@@ -562,7 +562,7 @@ export interface IHMCharacter extends ICharacter {
     /**
      * The partyActivate Function used to interact with this HMCharacter.
      */
-    moveCallback(player: IPlayer, pokemon: IPokemon): void;
+    moveCallback(player: Player, pokemon: Pokemon): void;
 
     /**
      * The badge needed to activate this HMCharacter.
@@ -573,7 +573,7 @@ export interface IHMCharacter extends ICharacter {
 /**
  * A WaterEdge object.
  */
-export interface IWaterEdge extends IHMCharacter {
+export interface WaterEdge extends HMCharacter {
     /**
      * The direction the Player must go to leave the water.
      */
@@ -583,7 +583,7 @@ export interface IWaterEdge extends IHMCharacter {
 /**
  * A Detector that adds an Area into the game.
  */
-export interface IAreaSpawner extends IDetector {
+export interface AreaSpawner extends Detector {
     /**
      * The Area to add into the game.
      */
@@ -598,7 +598,7 @@ export interface IAreaSpawner extends IDetector {
 /**
  * A Detector that marks a player as spawning in a different Area.
  */
-export interface IAreaGate extends IDetector {
+export interface AreaGate extends Detector {
     /**
      * The Area to now spawn within.
      */
@@ -613,7 +613,7 @@ export interface IAreaGate extends IDetector {
 /**
  * A gym statue.
  */
-export interface IGymDetector extends IDetector {
+export interface GymDetector extends Detector {
     /**
      * The name of the gym.
      */
@@ -628,7 +628,7 @@ export interface IGymDetector extends IDetector {
 /**
  * A Detector that activates a menu dialog.
  */
-export interface IMenuTriggerer extends IDetector {
+export interface MenuTriggerer extends Detector {
     /**
      * The name of the menu, if not "GeneralText".
      */
@@ -637,28 +637,28 @@ export interface IMenuTriggerer extends IDetector {
     /**
      * Custom attributes to apply to the menu.
      */
-    menuAttributes?: IMenuSchema;
+    menuAttributes?: MenuSchema;
 
     /**
      * Path to push the Player back on after a dialog, if any.
      */
-    pushSteps?: IWalkingInstructions;
+    pushSteps?: WalkingInstructions;
 }
 
 /**
  * An Character's sight Detector.
  */
-export interface ISightDetector extends IDetector {
+export interface SightDetector extends Detector {
     /**
      * The Character using this Detector as its sight.
      */
-    viewer: ICharacter;
+    viewer: Character;
 }
 
 /**
  * A Detector to play an audio theme.
  */
-export interface IThemeDetector extends IDetector {
+export interface ThemeDetector extends Detector {
     /**
      * The audio theme to play.
      */
@@ -668,14 +668,14 @@ export interface IThemeDetector extends IDetector {
 /**
  * A detector to transport to a new area.
  */
-export interface ITransporter extends IDetector {
-    transport: string | ITransportSchema;
+export interface Transporter extends Detector {
+    transport: string | TransportSchema;
 }
 
 /**
  * A description of where to transport.
  */
-export interface ITransportSchema {
+export interface TransportSchema {
     /**
      * The name of the Map to transport to.
      */
@@ -690,7 +690,7 @@ export interface ITransportSchema {
 /**
  * A Pokeball containing some item or trigger.
  */
-export interface IPokeball extends IDetector {
+export interface Pokeball extends Detector {
     /**
      * The activation action, as "item", "cutscene", "pokedex", "dialog", or "yes/no".
      */
@@ -704,7 +704,7 @@ export interface IPokeball extends IDetector {
     /**
      * What dialog to say, if action is "dialog".
      */
-    dialog?: imenugraphr.IMenuDialogRaw;
+    dialog?: menugraphr.MenuDialogRaw;
 
     /**
      * What item to give, if action is "item".
@@ -723,76 +723,76 @@ export interface IPokeball extends IDetector {
 }
 
 /**
- * Adds and processes new Things into the game.
+ * Adds and processes new Actors into the game.
  */
-export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThings<TEightBittr> {
+export class Actors<Game extends FullScreenPokemon> extends EightBittrActors<Game> {
     /**
-     * Stores known names of Things.
+     * Stores known names of Actors.
      */
-    @member(ThingNames)
-    public readonly names: ThingNames;
+    @member(ActorNames)
+    public readonly names: ActorNames;
 
     /**
-     * Overriden Function to adds a new Thing to the game at a given position,
+     * Overriden Function to adds a new Actor to the game at a given position,
      * relative to the top left corner of the screen.
      *
-     * @param thingRaw   What type of Thing to add. This may be a String of
+     * @param actorRaw   What type of Actor to add. This may be a String of
      *                   the class title, an Array containing the String
-     *                   and an Object of settings, or an actual Thing.
-     * @param left   The horizontal point to place the Thing's left at (by
+     *                   and an Object of settings, or an actual Actor.
+     * @param left   The horizontal point to place the Actor's left at (by
      *               default, 0).
-     * @param top   The vertical point to place the Thing's top at (by default, 0).
+     * @param top   The vertical point to place the Actor's top at (by default, 0).
      * @param useSavedInfo   Whether an Area's saved info in StateHolder should be
-     *                       applied to the Thing's position (by default, false).
+     *                       applied to the Actor's position (by default, false).
      */
-    public add<TThing extends IThing = IThing>(
-        thingRaw: string | IThing | [string, any],
+    public add<TActor extends Actor = Actor>(
+        actorRaw: string | Actor | [string, any],
         left = 0,
         top = 0,
         useSavedInfo?: boolean
-    ): TThing {
-        const thing: TThing = super.add(thingRaw, left, top) as TThing;
+    ): TActor {
+        const actor: TActor = super.add(actorRaw, left, top) as TActor;
 
         if (useSavedInfo) {
-            this.applySavedPosition(thing);
+            this.applySavedPosition(actor);
         }
 
-        if (thing.id) {
-            this.game.stateHolder.applyChanges(thing.id, thing);
+        if (actor.id) {
+            this.game.stateHolder.applyChanges(actor.id, actor);
         }
 
-        if (typeof thing.direction !== "undefined") {
-            this.game.actions.animateCharacterSetDirection(thing, thing.direction);
+        if (typeof actor.direction !== "undefined") {
+            this.game.actions.animateCharacterSetDirection(actor, actor.direction);
         }
 
-        return thing;
+        return actor;
     }
 
     /**
-     * Slight addition to the parent thingProcess Function. The Thing's hit
+     * Slight addition to the parent actorProcess Function. The Actor's hit
      * check type is cached immediately, and a default id is assigned if an id
      * isn't already present.
      *
-     * @param thing   The Thing being processed.
-     * @param title   What type Thing this is (the name of the class).
+     * @param actor   The Actor being processed.
+     * @param title   What type Actor this is (the name of the class).
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
-    public process(thing: IThing, title: string): void {
-        super.process(thing, title);
+    public process(actor: Actor, title: string): void {
+        super.process(actor, title);
 
         // Sprite cycles
         let cycle: any;
-        if ((cycle = thing.spriteCycle)) {
+        if ((cycle = actor.spriteCycle)) {
             this.game.classCycler.addClassCycle(
-                thing,
+                actor,
                 cycle[0],
                 cycle[1] || undefined,
                 cycle[2] || undefined
             );
         }
-        if ((cycle = thing.spriteCycleSynched)) {
+        if ((cycle = actor.spriteCycleSynched)) {
             this.game.classCycler.addClassCycleSynched(
-                thing,
+                actor,
                 cycle[0],
                 cycle[1] || undefined,
                 cycle[2] || undefined
@@ -800,36 +800,36 @@ export class Things<TEightBittr extends FullScreenPokemon> extends EightBittrThi
         }
 
         // Terrain and Scenery groups will never have collisions checked
-        if (thing.groupType !== "Terrain" && thing.groupType !== "Scenery") {
-            thing.bordering = [undefined, undefined, undefined, undefined];
+        if (actor.groupType !== "Terrain" && actor.groupType !== "Scenery") {
+            actor.bordering = [undefined, undefined, undefined, undefined];
         }
 
-        if (typeof thing.id === "undefined") {
-            thing.id = [
+        if (typeof actor.id === "undefined") {
+            actor.id = [
                 this.game.areaSpawner.getMapName(),
                 this.game.areaSpawner.getAreaName(),
-                thing.title,
-                thing.name || "Anonymous",
+                actor.title,
+                actor.name || "Anonymous",
             ].join("::");
         }
     }
 
     /**
-     * Applies a thing's stored xloc and yloc to its position.
+     * Applies An Actor's stored xloc and yloc to its position.
      *
-     * @param thing   A Thing being placed in the game.
+     * @param actor   An Actor being placed in the game.
      */
-    public applySavedPosition(thing: IThing): void {
-        const savedInfo: any = this.game.stateHolder.getChanges(thing.id);
+    public applySavedPosition(actor: Actor): void {
+        const savedInfo: any = this.game.stateHolder.getChanges(actor.id);
         if (!savedInfo) {
             return;
         }
 
         if (savedInfo.xloc) {
-            this.game.physics.setLeft(thing, this.game.mapScreener.left + savedInfo.xloc);
+            this.game.physics.setLeft(actor, this.game.mapScreener.left + savedInfo.xloc);
         }
         if (savedInfo.yloc) {
-            this.game.physics.setTop(thing, this.game.mapScreener.top + savedInfo.yloc);
+            this.game.physics.setTop(actor, this.game.mapScreener.top + savedInfo.yloc);
         }
     }
 }

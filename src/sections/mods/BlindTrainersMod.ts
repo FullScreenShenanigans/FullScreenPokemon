@@ -1,12 +1,12 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
-import { ICharacter } from "../Things";
+import { Character } from "../Actors";
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make all enemy trainers blind.
  */
-export class BlindTrainersMod extends ModComponent implements IMod {
+export class BlindTrainersMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -15,12 +15,12 @@ export class BlindTrainersMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events: CallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
-            this.game.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = true;
+            this.game.objectMaker.getPrototypeOf<Character>("SightDetector").nocollide = true;
         },
         [this.eventNames.onModDisable]: (): void => {
-            this.game.objectMaker.getPrototypeOf<ICharacter>("SightDetector").nocollide = false;
+            this.game.objectMaker.getPrototypeOf<Character>("SightDetector").nocollide = false;
         },
     };
 }

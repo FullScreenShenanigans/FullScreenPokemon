@@ -2,10 +2,10 @@ import { BattleOutcome } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IWalkingInstructions } from "../actions/Walking";
-import { IPartialBattleOptions } from "../Battles";
+import { WalkingInstructions } from "../actions/Walking";
+import { PartialBattleOptions } from "../Battles";
 import { Direction } from "../Constants";
-import { ICharacter, IPlayer } from "../Things";
+import { Character, Player } from "../Actors";
 
 /**
  * RivalRoute22 cutscene routines.
@@ -17,18 +17,18 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalEmerges(settings: any): void {
-        const player: IPlayer = settings.player;
-        const triggerer: ICharacter = settings.triggerer;
+        const player: Player = settings.player;
+        const triggerer: Character = settings.triggerer;
         const playerUpper = Number(Math.abs(player.top - triggerer.top) < 4);
-        const rival: ICharacter = this.game.objectMaker.make<ICharacter>(
-            this.game.things.names.rival,
+        const rival: Character = this.game.objectMaker.make<Character>(
+            this.game.actors.names.rival,
             {
                 direction: 0,
                 nocollide: true,
                 opacity: 0,
             }
         );
-        const walkingInstructions: IWalkingInstructions = [
+        const walkingInstructions: WalkingInstructions = [
             {
                 blocks: 2,
                 direction: Direction.Top,
@@ -50,7 +50,7 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
         walkingInstructions.push(this.game.scenePlayer.bindRoutine("RivalTalks"));
 
         this.game.animations.fading.animateFadeAttribute(rival, "opacity", 0.2, 1, 3);
-        this.game.things.add(rival, triggerer.left - 112, triggerer.top + 96);
+        this.game.actors.add(rival, triggerer.left - 112, triggerer.top + 96);
         this.game.actions.walking.startWalkingOnPath(rival, walkingInstructions);
     }
 
@@ -89,7 +89,7 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
         const starterRival: string[] = this.game.itemsHolder.getItem(
             this.game.storage.names.starterRival
         );
-        const battleInfo: IPartialBattleOptions = {
+        const battleInfo: PartialBattleOptions = {
             onComplete: (): void => {
                 this.game.scenePlayer.startCutscene("RivalRoute22Leaves");
             },
@@ -123,7 +123,7 @@ export class RivalRoute22Cutscene extends Section<FullScreenPokemon> {
                     [BattleOutcome.playerVictory]: (): string => "Aww! You just lucked out!",
                 },
             },
-            keptThings: this.game.graphics.collections.collectBattleKeptThings([
+            keptActors: this.game.graphics.collections.collectBattleKeptActors([
                 "player",
                 "Rival",
             ]),

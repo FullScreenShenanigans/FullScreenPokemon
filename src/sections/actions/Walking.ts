@@ -3,15 +3,15 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
-import { IWildPokemonSchema } from "../Maps";
-import { ICharacter, IPlayer } from "../Things";
+import { WildPokemonSchema } from "../Maps";
+import { Character, Player } from "../Actors";
 
 import { Encounters } from "./walking/Encounters";
 
 /**
  * A single instruction on a walking path.
  */
-export interface IWalkingInstruction {
+export interface WalkingInstruction {
     /**
      * How many blocks long this should take.
      */
@@ -26,14 +26,14 @@ export interface IWalkingInstruction {
 /**
  * Generates a walking instruction for a path.
  *
- * @param thing   A Thing walking on a path.
+ * @param actor   An Actor walking on a path.
  */
-export type IWalkingInstructionGenerator = (thing: ICharacter) => IWalkingInstruction | void;
+export type WalkingInstructionGenerator = (actor: Character) => WalkingInstruction | void;
 
 /**
  * Instructions to generate a walking path.
  */
-export type IWalkingInstructions = (IWalkingInstruction | IWalkingInstructionGenerator)[];
+export type WalkingInstructions = (WalkingInstruction | WalkingInstructionGenerator)[];
 
 /**
  * Starts, continues, and stops characters walking.
@@ -48,39 +48,36 @@ export class Walking extends Section<FullScreenPokemon> {
     /**
      * Starts a Character walking on a predetermined path.
      *
-     * @param thing   The walking Character.
+     * @param actor   The walking Character.
      * @param path   A path to walk along.
      */
-    public startWalkingOnPath(thing: ICharacter, path: IWalkingInstructions): void {
+    public startWalkingOnPath(actor: Character, path: WalkingInstructions): void {
         if (!path.length) {
             throw new Error("Walking path must have instructions.");
         }
 
         let instructionIndex = 0;
-        let currentInstruction: IWalkingInstruction = this.parseWalkingInstruction(
-            path[0],
-            thing
-        );
+        let currentInstruction: WalkingInstruction = this.parseWalkingInstruction(path[0], actor);
         let remainingBlocks: number = currentInstruction.blocks;
 
         if (!remainingBlocks) {
-            this.stopWalking(thing);
+            this.stopWalking(actor);
             return;
         }
 
-        thing.nextDirection = undefined;
-        this.startWalking(thing, currentInstruction.direction, (): void => {
+        actor.nextDirection = undefined;
+        this.startWalking(actor, currentInstruction.direction, (): void => {
             remainingBlocks -= 1;
 
             while (!remainingBlocks) {
                 instructionIndex += 1;
 
                 if (instructionIndex >= path.length) {
-                    thing.wantsToWalk = false;
+                    actor.wantsToWalk = false;
 
-                    if (thing.direction !== currentInstruction.direction) {
+                    if (actor.direction !== currentInstruction.direction) {
                         this.game.actions.animateCharacterSetDirection(
-                            thing,
+                            actor,
                             currentInstruction.direction
                         );
                     }
@@ -88,41 +85,41 @@ export class Walking extends Section<FullScreenPokemon> {
                     return;
                 }
 
-                currentInstruction = this.parseWalkingInstruction(path[instructionIndex], thing);
+                currentInstruction = this.parseWalkingInstruction(path[instructionIndex], actor);
                 remainingBlocks = currentInstruction.blocks;
-                thing.nextDirection = currentInstruction.direction;
+                actor.nextDirection = currentInstruction.direction;
             }
 
-            thing.wantsToWalk = true;
+            actor.wantsToWalk = true;
         });
     }
 
     /**
      * Starts a Character walking in a direction.
      *
-     * @param thing   A Character to start walking.
+     * @param actor   A Character to start walking.
      * @param commands   Instructions on how to walk.
      * @param onContinueWalking   Callback to run before continuing walking.
      */
     public startWalking(
-        thing: ICharacter,
+        actor: Character,
         direction: Direction,
         onContinueWalking?: () => void
     ): void {
-        const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(thing);
+        const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(actor);
 
-        this.setWalkingAttributes(thing, direction);
-        this.setWalkingGraphics(thing);
+        this.setWalkingAttributes(actor, direction);
+        this.setWalkingGraphics(actor);
 
-        if (thing.follower) {
+        if (actor.follower) {
             this.startWalking(
-                thing.follower,
-                this.game.physics.getDirectionBetween(thing.follower, thing)
+                actor.follower,
+                this.game.physics.getDirectionBetween(actor.follower, actor)
             );
         }
 
         this.game.timeHandler.addEvent(
-            (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
+            (): void => this.continueWalking(actor, ticksPerBlock, onContinueWalking),
             ticksPerBlock + 1
         );
     }
@@ -130,12 +127,12 @@ export class Walking extends Section<FullScreenPokemon> {
     /**
      * Checks whether a Character should continue walking after a block.
      *
-     * @param thing   A Character to continue walking.
+     * @param actor   A Character to continue walking.
      * @param ticksPerBlock   How many ticks it takes to span a block.
      * @param onContinueWalking   Callback to run before continuing walking.
      */
     public continueWalking(
-        thing: ICharacter,
+        actor: Character,
         ticksPerBlock: number,
         onContinueWalking?: () => void
     ): void {
@@ -144,28 +141,28 @@ export class Walking extends Section<FullScreenPokemon> {
         }
 
         if (
-            !thing.wantsToWalk ||
-            (thing.player && this.tryStartWildPokemonEncounter(thing as IPlayer))
+            !actor.wantsToWalk ||
+            (actor.player && this.tryStartWildPokemonEncounter(actor as Player))
         ) {
-            this.stopWalking(thing);
+            this.stopWalking(actor);
             return;
         }
 
-        if (thing.nextDirection !== undefined) {
-            this.setWalkingAttributes(thing, thing.nextDirection);
+        if (actor.nextDirection !== undefined) {
+            this.setWalkingAttributes(actor, actor.nextDirection);
         }
 
-        if (thing.follower) {
+        if (actor.follower) {
             this.game.actions.following.continueFollowing(
-                thing.follower,
-                this.game.physics.getDirectionBetween(thing.follower, thing)
+                actor.follower,
+                this.game.physics.getDirectionBetween(actor.follower, actor)
             );
         }
 
-        this.game.physics.snapToGrid(thing);
+        this.game.physics.snapToGrid(actor);
 
         this.game.timeHandler.addEvent(
-            (): void => this.continueWalking(thing, ticksPerBlock, onContinueWalking),
+            (): void => this.continueWalking(actor, ticksPerBlock, onContinueWalking),
             ticksPerBlock
         );
     }
@@ -173,64 +170,64 @@ export class Walking extends Section<FullScreenPokemon> {
     /**
      * Stops a Character walking.
      *
-     * @param thing   A Character to start walking.
+     * @param actor   A Character to start walking.
      */
-    public stopWalking(thing: ICharacter): void {
-        thing.xvel = 0;
-        thing.yvel = 0;
-        thing.walking = false;
+    public stopWalking(actor: Character): void {
+        actor.xvel = 0;
+        actor.yvel = 0;
+        actor.walking = false;
 
-        this.game.graphics.classes.removeClasses(thing, "walking", "standing");
-        this.game.classCycler.cancelClassCycle(thing, "walking");
+        this.game.graphics.classes.removeClasses(actor, "walking", "standing");
+        this.game.classCycler.cancelClassCycle(actor, "walking");
 
-        if (thing.walkingFlipping) {
-            this.game.timeHandler.cancelEvent(thing.walkingFlipping);
-            thing.walkingFlipping = undefined;
+        if (actor.walkingFlipping) {
+            this.game.timeHandler.cancelEvent(actor.walkingFlipping);
+            actor.walkingFlipping = undefined;
         }
 
-        if (thing.follower) {
-            this.game.actions.following.pauseFollowing(thing.follower);
+        if (actor.follower) {
+            this.game.actions.following.pauseFollowing(actor.follower);
         }
 
-        if (thing.sightDetector) {
-            this.game.actions.animatePositionSightDetector(thing);
-            thing.sightDetector.nocollide = false;
+        if (actor.sightDetector) {
+            this.game.actions.animatePositionSightDetector(actor);
+            actor.sightDetector.nocollide = false;
         }
     }
 
     /**
      * Animates a Character to no longer be able to walk.
      *
-     * @param thing   A Character that shouldn't be able to walk.
+     * @param actor   A Character that shouldn't be able to walk.
      */
-    public animateCharacterPreventWalking(thing: ICharacter): void {
-        thing.xvel = thing.yvel = 0;
-        thing.wantsToWalk = false;
+    public animateCharacterPreventWalking(actor: Character): void {
+        actor.xvel = actor.yvel = 0;
+        actor.wantsToWalk = false;
 
-        if (thing.player) {
-            (thing as IPlayer).keys = (thing as IPlayer).getKeys();
+        if (actor.player) {
+            (actor as Player).keys = (actor as Player).getKeys();
             this.game.mapScreener.blockInputs = true;
         }
     }
 
     /**
      *
-     * @param thing @
+     * @param actor @
      * @returns Whether a wild Pokemon encounter was started.
      */
-    private tryStartWildPokemonEncounter(thing: IPlayer): boolean {
+    private tryStartWildPokemonEncounter(actor: Player): boolean {
         if (this.game.menuGrapher.getActiveMenu()) {
             return false;
         }
 
         const wildPokemonOptions:
-            | IWildPokemonSchema[]
-            | undefined = this.encounters.choices.getWildEncounterPokemonOptions(thing);
+            | WildPokemonSchema[]
+            | undefined = this.encounters.choices.getWildEncounterPokemonOptions(actor);
         if (wildPokemonOptions === undefined || wildPokemonOptions.length === 0) {
             return false;
         }
 
-        this.encounters.starting.startWildEncounterBattle(thing, wildPokemonOptions);
+        this.encounters.starting.startWildEncounterBattle(actor, wildPokemonOptions);
 
         return true;
     }
@@ -238,68 +235,68 @@ export class Walking extends Section<FullScreenPokemon> {
     /**
      * Sets the logical attributes of a walking Character.
      *
-     * @param thing   The walking Character.
+     * @param actor   The walking Character.
      * @param direction   What direction to walk in.
      */
-    private setWalkingAttributes(thing: ICharacter, direction: Direction): void {
-        thing.walking = true;
+    private setWalkingAttributes(actor: Character, direction: Direction): void {
+        actor.walking = true;
 
-        this.game.actions.animateCharacterSetDirection(thing, direction);
+        this.game.actions.animateCharacterSetDirection(actor, direction);
 
-        if (thing.sightDetector) {
-            thing.sightDetector.nocollide = true;
+        if (actor.sightDetector) {
+            actor.sightDetector.nocollide = true;
         }
 
         switch (direction) {
             case 0:
-                thing.xvel = 0;
-                thing.yvel = -thing.speed;
+                actor.xvel = 0;
+                actor.yvel = -actor.speed;
                 break;
 
             case 1:
-                thing.xvel = thing.speed;
-                thing.yvel = 0;
+                actor.xvel = actor.speed;
+                actor.yvel = 0;
                 break;
 
             case 2:
-                thing.xvel = 0;
-                thing.yvel = thing.speed;
+                actor.xvel = 0;
+                actor.yvel = actor.speed;
                 break;
 
             case 3:
-                thing.xvel = -thing.speed;
-                thing.yvel = 0;
+                actor.xvel = -actor.speed;
+                actor.yvel = 0;
                 break;
 
             default:
-                throw new Error("Unknown direction: " + thing.direction + ".");
+                throw new Error("Unknown direction: " + actor.direction + ".");
         }
     }
 
     /**
      * Sets the visual attributes of a walking Character.
      *
-     * @param thing   The walking Character.
+     * @param actor   The walking Character.
      */
-    private setWalkingGraphics(thing: ICharacter): void {
-        const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(thing);
+    private setWalkingGraphics(actor: Character): void {
+        const ticksPerBlock: number = this.game.equations.walkingTicksPerBlock(actor);
         const ticksPerStep: number = ticksPerBlock / 2;
 
         this.game.timeHandler.addEvent((): void => {
             this.game.classCycler.addClassCycle(
-                thing,
+                actor,
                 ["walking", "standing"],
                 "walking",
                 ticksPerStep
             );
 
-            thing.walkingFlipping = this.game.timeHandler.addEventInterval(
+            actor.walkingFlipping = this.game.timeHandler.addEventInterval(
                 (): void => {
-                    if (thing.direction % 2 === 0) {
-                        if (thing.flipHoriz) {
-                            this.game.graphics.flipping.unflipHoriz(thing);
+                    if (actor.direction % 2 === 0) {
+                        if (actor.flipHoriz) {
+                            this.game.graphics.flipping.unflipHoriz(actor);
                         } else {
-                            this.game.graphics.flipping.flipHoriz(thing);
+                            this.game.graphics.flipping.flipHoriz(actor);
                         }
                     }
                 },
@@ -313,17 +310,17 @@ export class Walking extends Section<FullScreenPokemon> {
      *
      */
     private parseWalkingInstruction(
-        instruction: IWalkingInstruction | IWalkingInstructionGenerator,
-        thing: ICharacter
-    ): IWalkingInstruction {
+        instruction: WalkingInstruction | WalkingInstructionGenerator,
+        actor: Character
+    ): WalkingInstruction {
         if (typeof instruction !== "function") {
             return instruction;
         }
 
         return (
-            instruction(thing) || {
+            instruction(actor) || {
                 blocks: 0,
-                direction: thing.direction,
+                direction: actor.direction,
             }
         );
     }

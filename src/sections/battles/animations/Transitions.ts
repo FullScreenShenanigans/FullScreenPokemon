@@ -9,7 +9,7 @@ import { Transition } from "./transitions/Transition";
 /**
  * Settings to play a transition.
  */
-export interface ITransitionSettings {
+export interface TransitionSettings {
     /**
      * Name of the transition, if not chosen at random.
      */
@@ -24,7 +24,7 @@ export interface ITransitionSettings {
 /**
  * Transition classes, keyed by name.
  */
-interface ITransitions {
+interface BattleTransitions {
     [i: string]: typeof Transition;
 }
 
@@ -35,7 +35,7 @@ export class Transitions extends Section<FullScreenPokemon> {
     /**
      * Transitions, keyed by name.
      */
-    private readonly transitions: ITransitions = {
+    private readonly transitions: BattleTransitions = {
         flash: FlashTransition,
         instant: InstantTransition,
     };
@@ -45,7 +45,7 @@ export class Transitions extends Section<FullScreenPokemon> {
      *
      * @param settings   Settings to play the transition.
      */
-    public play<TSettings extends ITransitionSettings>(settings: TSettings): void {
+    public play<TSettings extends TransitionSettings>(settings: TSettings): void {
         const name: string =
             settings.name ||
             this.game.numberMaker.randomArrayMember(Object.keys(this.transitions));

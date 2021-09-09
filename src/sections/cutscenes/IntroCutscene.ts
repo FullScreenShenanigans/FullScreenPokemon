@@ -1,8 +1,8 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IKeyboardResultsMenu } from "../menus/Keyboards";
-import { IPlayer, IThing } from "../Things";
+import { KeyboardResultsMenu } from "../menus/Keyboards";
+import { Player, Actor } from "../Actors";
 
 /**
  * Intro cutscene routines.
@@ -13,13 +13,10 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      *
      * @param settings   Settings used for the cutscene.
      */
-    public async FadeIn(settings: any): Promise<void> {
-        const oak: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.oakPortrait,
-            {
-                opacity: 0,
-            }
-        );
+    public FadeIn(settings: any) {
+        const oak: Actor = this.game.objectMaker.make<Actor>(this.game.actors.names.oakPortrait, {
+            opacity: 0,
+        });
 
         settings.oak = oak;
 
@@ -33,7 +30,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
         this.game.maps.setMap("Blank", "White");
         this.game.menuGrapher.deleteActiveMenu();
 
-        this.game.things.add(oak);
+        this.game.actors.add(oak);
         this.game.physics.setMidX(oak, this.game.mapScreener.middleX | 0);
         this.game.physics.setMidY(oak, this.game.mapScreener.middleY | 0);
 
@@ -69,8 +66,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene for Oak's introduction exit.
      */
     public FirstDialogFade(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.whiteSquare,
+        const blank: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.whiteSquare,
             {
                 width: this.game.mapScreener.width,
                 height: this.game.mapScreener.height,
@@ -78,7 +75,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             }
         );
 
-        this.game.things.add(blank, 0, 0);
+        this.game.actors.add(blank, 0, 0);
 
         this.game.timeHandler.addEvent((): void => {
             this.game.animations.fading.animateFadeAttribute(
@@ -96,19 +93,19 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene for transitioning Nidorino onto the screen.
      */
     public PokemonExpo(): void {
-        const pokemon: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.nidorinoFront,
+        const pokemon: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.nidorinoFront,
             {
                 flipHoriz: true,
                 opacity: 0.01,
             }
         );
 
-        this.game.groupHolder.callOnAll((thing: IThing): void => {
-            this.game.death.kill(thing);
+        this.game.groupHolder.callOnAll((actor: Actor): void => {
+            this.game.death.kill(actor);
         });
 
-        this.game.things.add(pokemon, (this.game.mapScreener.middleX + 96) | 0, 0);
+        this.game.actors.add(pokemon, (this.game.mapScreener.middleX + 96) | 0, 0);
 
         this.game.physics.setMidY(pokemon, this.game.mapScreener.middleY);
         this.game.animations.fading.animateFadeAttribute(pokemon, "opacity", 0.15, 1, 3);
@@ -147,8 +144,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      */
     public PlayerAppear(settings: any): void {
         const middleX: number = this.game.mapScreener.middleX | 0;
-        const player: IPlayer = this.game.objectMaker.make<IPlayer>(
-            this.game.things.names.playerPortrait,
+        const player: Player = this.game.objectMaker.make<Player>(
+            this.game.actors.names.playerPortrait,
             {
                 flipHoriz: true,
                 opacity: 0.01,
@@ -157,11 +154,11 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
 
         settings.player = player;
 
-        this.game.groupHolder.callOnAll((thing: IThing): void => {
-            this.game.death.kill(thing);
+        this.game.groupHolder.callOnAll((actor: Actor): void => {
+            this.game.death.kill(actor);
         });
 
-        this.game.things.add(player, this.game.mapScreener.middleX + 96, 0);
+        this.game.actors.add(player, this.game.mapScreener.middleX + 96, 0);
         this.game.physics.setMidY(player, this.game.mapScreener.middleY);
         this.game.animations.fading.animateFadeAttribute(player, "opacity", 0.15, 1, 3);
 
@@ -266,7 +263,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
     public PlayerNameFromKeyboard(settings: any): void {
         settings.name = (this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu).completeValue;
+        ) as KeyboardResultsMenu).completeValue;
 
         this.game.menuGrapher.deleteMenu("Keyboard");
         this.game.menuGrapher.deleteMenu("NameOptions");
@@ -302,8 +299,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene fading the player out.
      */
     public PlayerNameComplete(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.whiteSquare,
+        const blank: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.whiteSquare,
             {
                 width: this.game.mapScreener.width,
                 height: this.game.mapScreener.height,
@@ -311,7 +308,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             }
         );
 
-        this.game.things.add(blank, 0, 0);
+        this.game.actors.add(blank, 0, 0);
 
         this.game.timeHandler.addEvent((): void => {
             this.game.animations.fading.animateFadeAttribute(
@@ -331,8 +328,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalAppear(settings: any): void {
-        const rival: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.rivalPortrait,
+        const rival: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.rivalPortrait,
             {
                 opacity: 0,
             }
@@ -340,11 +337,11 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
 
         settings.rival = rival;
 
-        this.game.groupHolder.callOnAll((thing: IThing): void => {
-            this.game.death.kill(thing);
+        this.game.groupHolder.callOnAll((actor: Actor): void => {
+            this.game.death.kill(actor);
         });
 
-        this.game.things.add(rival, 0, 0);
+        this.game.actors.add(rival, 0, 0);
         this.game.physics.setMidX(rival, this.game.mapScreener.middleX | 0);
         this.game.physics.setMidY(rival, this.game.mapScreener.middleY | 0);
         this.game.animations.fading.animateFadeAttribute(
@@ -452,7 +449,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
     public RivalNameFromKeyboard(settings: any): void {
         settings.name = (this.game.menuGrapher.getMenu(
             "KeyboardResult"
-        ) as IKeyboardResultsMenu).completeValue;
+        ) as KeyboardResultsMenu).completeValue;
 
         this.game.menuGrapher.deleteMenu("Keyboard");
         this.game.menuGrapher.deleteMenu("NameOptions");
@@ -487,8 +484,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene fading the rival out.
      */
     public RivalNameComplete(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.whiteSquare,
+        const blank: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.whiteSquare,
             {
                 width: this.game.mapScreener.width,
                 height: this.game.mapScreener.height,
@@ -496,7 +493,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             }
         );
 
-        this.game.things.add(blank, 0, 0);
+        this.game.actors.add(blank, 0, 0);
 
         this.game.timeHandler.addEvent((): void => {
             this.game.animations.fading.animateFadeAttribute(
@@ -516,8 +513,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public LastDialogAppear(settings: any): void {
-        const portrait: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.playerPortrait,
+        const portrait: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.playerPortrait,
             {
                 flipHoriz: true,
                 opacity: 0,
@@ -526,11 +523,11 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
 
         settings.portrait = portrait;
 
-        this.game.groupHolder.callOnAll((thing: IThing): void => {
-            this.game.death.kill(thing);
+        this.game.groupHolder.callOnAll((actor: Actor): void => {
+            this.game.death.kill(actor);
         });
 
-        this.game.things.add(portrait, 0, 0);
+        this.game.actors.add(portrait, 0, 0);
         this.game.physics.setMidX(portrait, this.game.mapScreener.middleX | 0);
         this.game.physics.setMidY(portrait, this.game.mapScreener.middleY | 0);
 
@@ -567,31 +564,29 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public ShrinkPlayer(settings: any): void {
-        const silhouetteLarge: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.playerSilhouetteLarge
+        const silhouetteLarge: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.playerSilhouetteLarge
         );
-        const silhouetteSmall: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.playerSilhouetteSmall
+        const silhouetteSmall: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.playerSilhouetteSmall
         );
-        const player: IPlayer = this.game.objectMaker.make<IPlayer>(
-            this.game.things.names.player
-        );
+        const player: Player = this.game.objectMaker.make<Player>(this.game.actors.names.player);
         const timeDelay = 49;
 
         this.game.timeHandler.addEvent((): void => {
-            this.game.things.add(silhouetteLarge);
+            this.game.actors.add(silhouetteLarge);
             this.game.physics.setMidObj(silhouetteLarge, settings.portrait);
             this.game.death.kill(settings.portrait);
         }, timeDelay);
 
         this.game.timeHandler.addEvent((): void => {
-            this.game.things.add(silhouetteSmall);
+            this.game.actors.add(silhouetteSmall);
             this.game.physics.setMidObj(silhouetteSmall, silhouetteLarge);
             this.game.death.kill(silhouetteLarge);
         }, timeDelay * 2);
 
         this.game.timeHandler.addEvent((): void => {
-            this.game.things.add(player);
+            this.game.actors.add(player);
             this.game.physics.setMidObj(player, silhouetteSmall);
             this.game.death.kill(silhouetteSmall);
         }, timeDelay * 3);
@@ -603,8 +598,8 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
      * Cutscene for completing the introduction and fading it out.
      */
     public FadeOut(): void {
-        const blank: IThing = this.game.objectMaker.make<IThing>(
-            this.game.things.names.whiteSquare,
+        const blank: Actor = this.game.objectMaker.make<Actor>(
+            this.game.actors.names.whiteSquare,
             {
                 width: this.game.mapScreener.width,
                 height: this.game.mapScreener.height,
@@ -612,7 +607,7 @@ export class IntroCutscene extends Section<FullScreenPokemon> {
             }
         );
 
-        this.game.things.add(blank, 0, 0);
+        this.game.actors.add(blank, 0, 0);
 
         this.game.timeHandler.addEvent((): void => {
             this.game.animations.fading.animateFadeAttribute(

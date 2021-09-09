@@ -1,38 +1,38 @@
-import { IGameWindow } from "eightbittr";
-import { IPipe } from "inputwritr";
+import { GameWindow } from "eightbittr";
+import { Pipe } from "inputwritr";
 import {
-    IAbsoluteSizeSchema,
-    IBooleanSchema,
-    IMultiSelectSchema,
-    IRelativeSizeSchema,
-    IUserWrapprSettings,
+    AbsoluteSizeSchema,
+    BooleanSchema,
+    MultSelectSchema,
+    RelativeSizeSchema,
+    UserWrapprSettings,
     OptionType,
     UserWrappr,
 } from "userwrappr";
 
-import { IModComponentClass, Mods } from "../sections/Mods";
+import { ModComponentClass, Mods } from "../sections/Mods";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 /**
  * Global scope around a game, such as a DOM window.
  */
-export interface IWrappingGameWindow extends IGameWindow {
+export interface WrappingGameWindow extends GameWindow {
     /**
      * Game instance, once this has created it.
      */
     FSP?: FullScreenPokemon;
 }
 
-export interface IInterfaceSettingOverrides {
-    createGame?(size: IAbsoluteSizeSchema): FullScreenPokemon;
-    gameWindow?: IWrappingGameWindow;
+export interface InterfaceSettingOverrides {
+    createGame?(size: AbsoluteSizeSchema): FullScreenPokemon;
+    gameWindow?: WrappingGameWindow;
 }
 
 /**
  * Sizes the game is allowed to be, keyed by friendly name.
  */
-export interface IGameSizes {
-    [i: string]: IRelativeSizeSchema;
+export interface GameSizes {
+    [i: string]: RelativeSizeSchema;
 }
 
 /**
@@ -43,7 +43,7 @@ const defaultSize = "Large";
 /**
  * Sizes the game is allowed to be, keyed by friendly name.
  */
-const sizes: IGameSizes = {
+const sizes: GameSizes = {
     GameBoy: {
         width: 320,
         height: 288,
@@ -106,9 +106,9 @@ const keys: string[] = [
  * @param gameWindow   Global scope around the game interface, if not the global window.
  */
 export const createUserWrapprSettings = ({
-    createGame = (size: IAbsoluteSizeSchema) => new FullScreenPokemon(size),
+    createGame = (size: AbsoluteSizeSchema) => new FullScreenPokemon(size),
     gameWindow = window,
-}: IInterfaceSettingOverrides = {}): IUserWrapprSettings => {
+}: InterfaceSettingOverrides = {}): UserWrapprSettings => {
     /**
      * Game instance, once this has created it.
      */
@@ -120,7 +120,7 @@ export const createUserWrapprSettings = ({
     let userWrapper: UserWrappr;
 
     return {
-        createContents: (size: IAbsoluteSizeSchema, newUserWrapper: UserWrappr) => {
+        createContents: (size: AbsoluteSizeSchema, newUserWrapper: UserWrappr) => {
             gameWindow.FSP = game = createGame(size);
             userWrapper = newUserWrapper;
 
@@ -175,8 +175,8 @@ export const createUserWrapprSettings = ({
                         title: "Speed",
                         type: OptionType.Select,
                     },
-                    ((): IBooleanSchema => {
-                        let deviceMotionPipe: IPipe | undefined;
+                    ((): BooleanSchema => {
+                        let deviceMotionPipe: Pipe | undefined;
 
                         return {
                             getInitialValue: () => false,
@@ -223,9 +223,9 @@ export const createUserWrapprSettings = ({
                 title: "Options",
             },
             {
-                options: ((controls: string[]): IMultiSelectSchema[] =>
+                options: ((controls: string[]): MultSelectSchema[] =>
                     controls.map(
-                        (control: string): IMultiSelectSchema => ({
+                        (control: string): MultSelectSchema => ({
                             getInitialValue: (): string[] =>
                                 game.inputWriter.aliasConverter
                                     .getAliasAsKeyStrings(control)
@@ -243,7 +243,7 @@ export const createUserWrapprSettings = ({
             },
             {
                 options: Mods.modClasses.map(
-                    (modClass: IModComponentClass): IBooleanSchema => ({
+                    (modClass: ModComponentClass): BooleanSchema => ({
                         getInitialValue: (): boolean =>
                             !!game.mods.modsByName[modClass.modName].enabled,
                         saveValue: (value: boolean): void => {

@@ -2,7 +2,7 @@ import { BattleOutcome } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../../../Battles";
+import { BattleInfo, Pokemon } from "../../../../Battles";
 
 /**
  * Logic for whether the player may flee a battle.
@@ -27,7 +27,7 @@ export class FleeAttempt extends Section<FullScreenPokemon> {
      * Handler for the player successfully fleeing.
      */
     public succeed(): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -43,7 +43,7 @@ export class FleeAttempt extends Section<FullScreenPokemon> {
      * @param onComplete   Callback for when this is done.
      */
     public fail(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
@@ -57,9 +57,9 @@ export class FleeAttempt extends Section<FullScreenPokemon> {
      * @returns Whether the player may flee.
      */
     private canEscape(): boolean {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        const playerPokemon: IPokemon = battleInfo.teams.player.selectedActor;
-        const opponentPokemon: IPokemon = battleInfo.teams.player.selectedActor;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
+        const playerPokemon: Pokemon = battleInfo.teams.player.selectedActor;
+        const opponentPokemon: Pokemon = battleInfo.teams.player.selectedActor;
         const a: number = playerPokemon.statistics.speed.current;
         const b: number = (opponentPokemon.statistics.speed.normal / 4) % 256;
         const f: number = (a * 32) / b + battleInfo.fleeAttempts * 30;

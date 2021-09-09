@@ -1,5 +1,5 @@
 import { Section } from "eightbittr";
-import { IMenuWordSchema } from "menugraphr";
+import { MenuWordSchema } from "menugraphr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 
@@ -129,7 +129,7 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
                             top: 4.25,
                         },
                     },
-                } as IMenuWordSchema,
+                } as MenuWordSchema,
                 {
                     type: "text",
                     words: [text],
@@ -139,7 +139,7 @@ export class PokeMartCutscene extends Section<FullScreenPokemon> {
                             top: 3.75,
                         },
                     },
-                } as IMenuWordSchema,
+                } as MenuWordSchema,
             ],
             onUp: this.game.scenePlayer.bindRoutine("SelectAmount", {
                 amount: amount === 99 ? 1 : amount + 1,

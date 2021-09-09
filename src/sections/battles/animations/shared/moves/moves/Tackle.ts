@@ -1,4 +1,4 @@
-import { Team } from "battlemovr";
+import { TeamId } from "battlemovr";
 
 import { Move } from "../Move";
 
@@ -17,7 +17,7 @@ export class Tackle extends Move {
 
         this.game.timeHandler.addEventInterval(
             (): void => {
-                this.game.physics.shiftHoriz(this.attackerThing, xvel);
+                this.game.physics.shiftHoriz(this.attackerActor, xvel);
             },
             1,
             dt * 2 - 1
@@ -27,11 +27,11 @@ export class Tackle extends Move {
             xvel *= -1;
         }, dt);
 
-        if (this.teamAndAction.source.team === Team.player) {
+        if (this.teamAndAction.source.team === TeamId.player) {
             this.game.timeHandler.addEvent((): void => this.flickerDefender(callback), dt * 2);
         } else {
             this.game.timeHandler.addEvent((): void => {
-                this.game.battles.animations.things.shake({
+                this.game.battles.animations.actors.shake({
                     callback: (): void => {
                         this.flickerDefender(callback);
                     },
@@ -41,16 +41,16 @@ export class Tackle extends Move {
     }
 
     /**
-     * Flickers the defending Thing.
+     * Flickers the defending Actor.
      *
      * @param callback   Callback for when the animation is done.
      */
     private flickerDefender(callback: () => void): void {
-        this.game.battles.animations.things.flicker({
+        this.game.battles.animations.actors.flicker({
             callback,
             clearTime: 14,
             interval: 5,
-            thing: this.defenderThing,
+            actor: this.defenderActor,
         });
     }
 }

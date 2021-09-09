@@ -1,8 +1,8 @@
-import { IOnChoice, ISwitchAction, Team } from "battlemovr";
+import { OnChoice, SwitchAction, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../../../Battles";
+import { BattleInfo, Pokemon } from "../../../Battles";
 import { FleeAttempt } from "../../animations/shared/actions/FleeAttempt";
 
 /**
@@ -12,12 +12,12 @@ export class Switching extends Section<FullScreenPokemon> {
     /**
      * Offers to switch Pokemon after one is knocked out.
      *
-     * @param team   Which team is being offered to switch.
+     * @param teamId   Which team is being offered to switch.
      * @param onChoice   Callback for when this is done.
      */
-    public offerSwitch(team: Team, onComplete: () => void): void {
+    public offerSwitch(team: TeamId, onComplete: () => void): void {
         const openPokemonMenu: () => void = (): void => {
-            this.openBattlePokemonMenu(team, (action: ISwitchAction): void => {
+            this.openPokemonMenu(team, (action: SwitchAction): void => {
                 this.game.battleMover.switchSelectedActor(team, action.newActor);
                 this.game.menuGrapher.deleteMenu("Pokemon");
                 this.game.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
@@ -59,11 +59,11 @@ export class Switching extends Section<FullScreenPokemon> {
     /**
      * Opens the in-battle Pokemon menu.
      *
-     * @param team   Team opening the menu.
+     * @param teamId   Team opening the menu.
      * @param onChoice   Callback for selecting a new Pokemon.
-     * @param onClose   Callback for closing the menu if nothing is chosen.
+     * @param onClose   Callback for closing the menu if noactor is chosen.
      */
-    public openBattlePokemonMenu(team: Team, onChoice: IOnChoice, onClose?: () => void): void {
+    public openPokemonMenu(team: TeamId, onChoice: OnChoice, onClose?: () => void): void {
         this.game.menus.pokemon.openPartyMenu({
             backMenu: "BattleOptions",
             container: "Battle",
@@ -73,7 +73,7 @@ export class Switching extends Section<FullScreenPokemon> {
                     onClose();
                 }
             },
-            onSwitch: (pokemon: IPokemon): void => {
+            onSwitch: (pokemon: Pokemon): void => {
                 this.attemptSwitch(team, pokemon, (): void => {
                     onChoice({
                         newActor: pokemon,
@@ -87,14 +87,14 @@ export class Switching extends Section<FullScreenPokemon> {
     /**
      * Attempts to switch to a Pokemon.
      *
-     * @param team   Which team is attempting to switch.
+     * @param teamId   Which team is attempting to switch.
      * @param pokemon   Selected Pokemon to try to switch to.
      * @param onSuccess   Callback if the Pokemon can be switched.
      */
-    private attemptSwitch(team: Team, pokemon: IPokemon, onSuccess: () => void): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+    private attemptSwitch(team: TeamId, pokemon: Pokemon, onSuccess: () => void): void {
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
 
-        pokemon === battleInfo.teams[Team[team]].selectedActor
+        pokemon === battleInfo.teams[TeamId[team]].selectedActor
             ? this.rejectSwitch(pokemon)
             : onSuccess();
     }
@@ -104,7 +104,7 @@ export class Switching extends Section<FullScreenPokemon> {
      *
      * @param pokemon   The current Pokemon.
      */
-    private rejectSwitch(pokemon: IPokemon): void {
+    private rejectSwitch(pokemon: Pokemon): void {
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",

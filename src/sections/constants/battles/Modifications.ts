@@ -1,7 +1,7 @@
 /**
  * A modifier for battle behavior in the opponentMove equation.
  */
-export interface IBattleModification {
+export interface BattleModification {
     /**
      * What type of opponents this applies to.
      */
@@ -10,13 +10,13 @@ export interface IBattleModification {
     /**
      * Preferred move effects.
      */
-    preferences: IModificationPreference[];
+    preferences: ModificationPreference[];
 }
 
 /**
  * Move effects that are preferred.
  */
-export type IModificationPreference =
+export type ModificationPreference =
     | ["Effect", string]
     | ["Move", string]
     | ["Statistic", string, number]
@@ -30,7 +30,7 @@ export class Modifications {
     /**
      * Battle modifications for the second turn.
      */
-    public readonly turnTwo: IBattleModification = {
+    public readonly turnTwo: BattleModification = {
         opponentType: [
             "Pokemaniac",
             "Super Nerd",
@@ -67,7 +67,7 @@ export class Modifications {
     /**
      * Battle modifications for smart opponents.
      */
-    public readonly goodAi: IBattleModification = {
+    public readonly goodAi: BattleModification = {
         // http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
         opponentType: [
             "Smart",

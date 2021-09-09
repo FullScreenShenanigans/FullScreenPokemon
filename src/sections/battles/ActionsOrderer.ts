@@ -1,9 +1,9 @@
-import { IAction, ITeamAndAction, IUnderEachTeam, Team } from "battlemovr";
+import { Action, TeamAndAction, UnderEachTeam, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IBattleInfo, IPokemon } from "../Battles";
-import { IMoveSchema } from "../constants/Moves";
+import { BattleInfo, Pokemon } from "../Battles";
+import { MoveSchema } from "../constants/Moves";
 
 /**
  * Filters an action for whether it should go before another.
@@ -12,12 +12,12 @@ import { IMoveSchema } from "../constants/Moves";
  * @param b   The opposing team's action.
  * @returns Whether the action should go first.
  */
-export type IOrderFilter = (a: ITeamAndAction<any>, b: ITeamAndAction<any>) => boolean;
+export type OrderFilter = (a: TeamAndAction<any>, b: TeamAndAction<any>) => boolean;
 
 /**
  * Each battler's team and action.
  */
-type ITeamAndActionPair = [ITeamAndAction<any>, ITeamAndAction<any>];
+type TeamAndActionPair = [TeamAndAction<any>, TeamAndAction<any>];
 
 /**
  * Orders chosen actions by priority and/or speed.
@@ -33,31 +33,28 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @see https://www.dragonflycave.com/mechanics/battle#turnorder
      * @todo Account for items, statuses, etc.
      */
-    public order(
-        actions: IUnderEachTeam<IAction>,
-        battleInfo: IBattleInfo
-    ): ITeamAndAction<any>[] {
-        const unorderedActions: [ITeamAndAction<any>, ITeamAndAction<any>] = [
+    public order(actions: UnderEachTeam<Action>, battleInfo: BattleInfo): TeamAndAction<any>[] {
+        const unorderedActions: [TeamAndAction<any>, TeamAndAction<any>] = [
             {
                 action: actions.opponent,
                 source: {
                     actor: battleInfo.teams.opponent.selectedActor,
-                    team: Team.opponent,
+                    team: TeamId.opponent,
                 },
                 target: {
                     actor: battleInfo.teams.player.selectedActor,
-                    team: Team.player,
+                    team: TeamId.player,
                 },
             },
             {
                 action: actions.player,
                 source: {
                     actor: battleInfo.teams.player.selectedActor,
-                    team: Team.player,
+                    team: TeamId.player,
                 },
                 target: {
                     actor: battleInfo.teams.opponent.selectedActor,
-                    team: Team.opponent,
+                    team: TeamId.opponent,
                 },
             },
         ];
@@ -81,9 +78,9 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @returns Actions ordered by the filters.
      */
     private runFilters(
-        unorderedActions: ITeamAndActionPair,
-        ...filters: IOrderFilter[]
-    ): ITeamAndActionPair {
+        unorderedActions: TeamAndActionPair,
+        ...filters: OrderFilter[]
+    ): TeamAndActionPair {
         for (const filter of filters) {
             if (filter(unorderedActions[0], unorderedActions[1])) {
                 return unorderedActions;
@@ -103,8 +100,8 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForPlayerFleeing: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
-        a.source.team === Team.player && a.action.type === "flee";
+    private readonly filterForPlayerFleeing: OrderFilter = (a: TeamAndAction<any>): boolean =>
+        a.source.team === TeamId.player && a.action.type === "flee";
 
     /**
      * Filters an action for being a switch.
@@ -112,7 +109,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForSwitch: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForSwitch: OrderFilter = (a: TeamAndAction<any>): boolean =>
         a.action.type === "switch";
 
     /**
@@ -121,7 +118,7 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param a   A team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForItem: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForItem: OrderFilter = (a: TeamAndAction<any>): boolean =>
         a.action.type === "item";
 
     /**
@@ -131,16 +128,16 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForPriority: IOrderFilter = (
-        a: ITeamAndAction<any>,
-        b: ITeamAndAction<any>
+    private readonly filterForPriority: OrderFilter = (
+        a: TeamAndAction<any>,
+        b: TeamAndAction<any>
     ): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
 
-        const aMove: IMoveSchema = this.game.constants.moves.byName[a.action.move];
-        const bMove: IMoveSchema = this.game.constants.moves.byName[b.action.move];
+        const aMove: MoveSchema = this.game.constants.moves.byName[a.action.move];
+        const bMove: MoveSchema = this.game.constants.moves.byName[b.action.move];
 
         return aMove.priority! > bMove.priority!;
     };
@@ -152,19 +149,19 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @param b   The opposing team's action.
      * @returns Whether the action should go first.
      */
-    private readonly filterForSpeed: IOrderFilter = (
-        a: ITeamAndAction<any>,
-        b: ITeamAndAction<any>
+    private readonly filterForSpeed: OrderFilter = (
+        a: TeamAndAction<any>,
+        b: TeamAndAction<any>
     ): boolean => {
         if (a.action.type !== "move" || b.action.type !== "move") {
             return false;
         }
 
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
-        let aPokemon: IPokemon;
-        let bPokemon: IPokemon;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
+        let aPokemon: Pokemon;
+        let bPokemon: Pokemon;
 
-        if (a.source.team === Team.opponent) {
+        if (a.source.team === TeamId.opponent) {
             aPokemon = battleInfo.teams.opponent.selectedActor;
             bPokemon = battleInfo.teams.player.selectedActor;
         } else {
@@ -182,6 +179,6 @@ export class ActionsOrderer extends Section<FullScreenPokemon> {
      * @returns Whether the action should go first.
      * @remarks This is added last so player moves go before wild Pokemon fleeing.
      */
-    private readonly filterForMove: IOrderFilter = (a: ITeamAndAction<any>): boolean =>
+    private readonly filterForMove: OrderFilter = (a: TeamAndAction<any>): boolean =>
         a.action.type === "move";
 }

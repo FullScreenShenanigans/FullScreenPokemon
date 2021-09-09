@@ -1,10 +1,10 @@
-import { IMove } from "battlemovr";
+import { Move } from "battlemovr";
 import { Section } from "eightbittr";
-import { IMenuSchemaPosition } from "menugraphr";
+import { MenuSchemaPosition } from "menugraphr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IPokemon } from "./Battles";
+import { Pokemon } from "./Battles";
 
 export class MoveAdder extends Section<FullScreenPokemon> {
     /**
@@ -14,7 +14,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param move   Move that's going to be added into the moveset.
      * @param index   Position the move is going into in the Pokemon's moves.
      */
-    public addMove(pokemon: IPokemon, move: IMove, index: number) {
+    public addMove(pokemon: Pokemon, move: Move, index: number) {
         if (index < 0 || index > 3) {
             throw new Error("Invalid move parameters.");
         }
@@ -32,7 +32,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon whose moveset is being modified.
      * @param move   Move that's going to be added into the moveset.
      */
-    public startDialog(pokemon: IPokemon, move: IMove): void {
+    public startDialog(pokemon: Pokemon, move: Move): void {
         this.game.menuGrapher.deleteMenu("Yes/No");
         this.game.menuGrapher.deleteMenu("GeneralText");
 
@@ -54,7 +54,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
      */
-    private alreadyKnowsMove(pokemon: IPokemon, move: IMove): boolean {
+    private alreadyKnowsMove(pokemon: Pokemon, move: Move): boolean {
         for (const element of pokemon.moves) {
             if (element.title === move.title) {
                 this.game.menuGrapher.addMenuDialog(
@@ -78,7 +78,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
      */
-    private learnsNewMove(pokemon: IPokemon, move: IMove) {
+    private learnsNewMove(pokemon: Pokemon, move: Move) {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [[pokemon.title.join("") + " learned " + move.title.toUpperCase() + "!"]],
@@ -97,7 +97,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   The pokemon whose moveset is being modified.
      * @param move   The move that's going to be added into the moveset.
      */
-    private resolveMoveConflict(pokemon: IPokemon, move: IMove) {
+    private resolveMoveConflict(pokemon: Pokemon, move: Move) {
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [
@@ -138,21 +138,21 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon whose moveset is being modified.
      * @param move   Move that's going to be added into the moveset.
      */
-    private acceptLearnMove(pokemon: IPokemon, move: IMove) {
+    private acceptLearnMove(pokemon: Pokemon, move: Move) {
         this.game.menuGrapher.deleteMenu("Yes/No");
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
             "GeneralText",
             [["Which move should be forgotten?"]],
             (): void => {
-                const moves: IMove[] = pokemon.moves;
+                const moves: Move[] = pokemon.moves;
 
-                const options: any[] = moves.map((temp: IMove): any => ({
+                const options: any[] = moves.map((temp: Move): any => ({
                     text: temp.title.toUpperCase(),
                     callback: () => this.teachMove(pokemon, move, pokemon.moves.indexOf(temp)),
                 }));
 
-                const newPos: IMenuSchemaPosition = {
+                const newPos: MenuSchemaPosition = {
                     offset: {
                         top: -80,
                         bottom: 80,
@@ -175,7 +175,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon whose moveset is being modified.
      * @param move   Move that's going to be added into the moveset.
      */
-    private teachMove(pokemon: IPokemon, move: IMove, index: number) {
+    private teachMove(pokemon: Pokemon, move: Move, index: number) {
         this.game.menuGrapher.createMenu("GeneralText", {
             deleteOnFinish: true,
         });
@@ -203,7 +203,7 @@ export class MoveAdder extends Section<FullScreenPokemon> {
      * @param pokemon   Pokemon whose moveset is being modified.
      * @param move   Move that's going to be added into the moveset.
      */
-    private refuseLearnMove(pokemon: IPokemon, move: IMove) {
+    private refuseLearnMove(pokemon: Pokemon, move: Move) {
         this.game.menuGrapher.deleteMenu("Yes/No");
         this.game.menuGrapher.deleteMenu("GeneralText");
         this.game.menuGrapher.createMenu("GeneralText");

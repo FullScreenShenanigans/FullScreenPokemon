@@ -1,4 +1,4 @@
-import { ISelector, ISelectorFactory } from "battlemovr";
+import { Selector, SelectorFactory } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -13,10 +13,10 @@ export class Selectors extends Section<FullScreenPokemon> {
     /**
      * Generates selectors for an opponent's actions.
      */
-    public readonly opponent: ISelectorFactory = (): ISelector => new OpponentSelector(this.game);
+    public readonly opponent: SelectorFactory = (): Selector => new OpponentSelector(this.game);
 
     /**
      * Generates selectors for a player's actions.
      */
-    public readonly player: ISelectorFactory = (): ISelector => new PlayerSelector(this.game);
+    public readonly player: SelectorFactory = (): Selector => new PlayerSelector(this.game);
 }

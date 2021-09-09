@@ -1,6 +1,6 @@
 import { Direction } from "../../../../../Constants";
-import { IMenu } from "../../../../../Menus";
-import { IThing } from "../../../../../Things";
+import { Menu } from "../../../../../Menus";
+import { Actor } from "../../../../../Actors";
 import { Move } from "../Move";
 
 /**
@@ -13,31 +13,31 @@ export class Slash extends Move {
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        const differenceX: number = this.defenderThing.width / 2;
-        const lineArray: IThing[] = [];
-        const menu: IMenu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        const slashes: IThing[] = [
-            this.game.objectMaker.make<IThing>(this.game.things.names.scratchLine),
-            this.game.objectMaker.make<IThing>(this.game.things.names.scratchLine),
-            this.game.objectMaker.make<IThing>(this.game.things.names.scratchLine),
+        const differenceX: number = this.defenderActor.width / 2;
+        const lineArray: Actor[] = [];
+        const menu: Menu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as Menu;
+        const slashes: Actor[] = [
+            this.game.objectMaker.make<Actor>(this.game.actors.names.scratchLine),
+            this.game.objectMaker.make<Actor>(this.game.actors.names.scratchLine),
+            this.game.objectMaker.make<Actor>(this.game.actors.names.scratchLine),
         ];
         let startX: number;
         let startY: number;
 
         if (this.direction === Direction.Right) {
             startX = menu.right;
-            startY = menu.top + this.defenderThing.height / 2;
+            startY = menu.top + this.defenderActor.height / 2;
         } else {
-            startX = menu.left + this.defenderThing.width;
-            startY = menu.bottom - (this.defenderThing.height + 8);
+            startX = menu.left + this.defenderActor.width;
+            startY = menu.bottom - (this.defenderActor.height + 8);
         }
 
         const offset: number = slashes[0].width / 2;
-        this.game.things.add(slashes[0], startX, startY);
-        this.game.things.add(slashes[1], startX + offset * this.direction * -5, startY);
-        this.game.things.add(slashes[2], startX + offset * this.direction * -10, startY);
+        this.game.actors.add(slashes[0], startX, startY);
+        this.game.actors.add(slashes[1], startX + offset * this.direction * -5, startY);
+        this.game.actors.add(slashes[2], startX + offset * this.direction * -10, startY);
         let time = 0;
-        const explosionArray: IThing[] = [];
+        const explosionArray: Actor[] = [];
         this.game.timeHandler.addEventInterval(
             (): void => {
                 for (const slash of slashes) {
@@ -62,8 +62,8 @@ export class Slash extends Move {
                         1
                     );
 
-                    const line: IThing = this.game.things.add(
-                        this.game.things.names.scratchLine,
+                    const line: Actor = this.game.actors.add(
+                        this.game.actors.names.scratchLine,
                         left,
                         top
                     );
@@ -72,8 +72,8 @@ export class Slash extends Move {
                     }
                     lineArray.push(line);
                     if (time === 14) {
-                        const explosion = this.game.things.add(
-                            this.game.things.names.explosionSmall,
+                        const explosion = this.game.actors.add(
+                            this.game.actors.names.explosionSmall,
                             left - 18,
                             top
                         );
@@ -91,10 +91,10 @@ export class Slash extends Move {
             }
 
             for (const line of lineArray) {
-                this.game.battles.animations.things.flicker({
+                this.game.battles.animations.actors.flicker({
                     clearTime: 10,
                     interval: 2,
-                    thing: line,
+                    actor: line,
                 });
             }
             for (const explosion of explosionArray) {
@@ -105,11 +105,11 @@ export class Slash extends Move {
                 this.game.death.kill(line);
             }
 
-            this.game.battles.animations.things.flicker({
+            this.game.battles.animations.actors.flicker({
                 callback,
                 clearTime: 14,
                 interval: 5,
-                thing: this.defenderThing,
+                actor: this.defenderActor,
             });
         }, 24);
     }

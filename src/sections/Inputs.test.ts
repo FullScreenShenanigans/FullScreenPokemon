@@ -4,15 +4,15 @@ import * as sinon from "sinon";
 import { stubBlankGame } from "../fakes.test";
 
 import { Direction } from "./Constants";
-import { IPlayer } from "./Things";
+import { Player } from "./Actors";
 
 describe("Inputs", () => {
     describe("keyDownA", () => {
         it("activates an activatable solid when it's bordering the player", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const player = fsp.things.add<IPlayer>("Player");
-            const solid = fsp.things.add("FenceWide");
+            const player = fsp.actors.add<Player>("Player");
+            const solid = fsp.actors.add("FenceWide");
             const activate = (solid.activate = sinon.spy());
 
             fsp.actions.animateCharacterSetDirection(player, Direction.Top);
@@ -30,8 +30,8 @@ describe("Inputs", () => {
         it("does not activate an activatable solid when it's not bordering the player", (): void => {
             // Arrange
             const { fsp } = stubBlankGame();
-            const player = fsp.things.add<IPlayer>("Player");
-            const solid = fsp.things.add("FenceWide");
+            const player = fsp.actors.add<Player>("Player");
+            const solid = fsp.actors.add("FenceWide");
             const activate = (solid.activate = sinon.spy());
 
             fsp.actions.animateCharacterSetDirection(player, Direction.Top);

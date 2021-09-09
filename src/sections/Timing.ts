@@ -5,7 +5,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Timing constants for delayed events.
  */
-export class Timing<TEightBittr extends FullScreenPokemon> extends EightBittrTiming<TEightBittr> {
+export class Timing<Game extends FullScreenPokemon> extends EightBittrTiming<Game> {
     /**
      * Default time separation between repeated events.
      */

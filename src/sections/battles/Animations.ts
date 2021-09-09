@@ -1,5 +1,5 @@
 import { member } from "babyioc";
-import { BattleOutcome, IAnimations, Team } from "battlemovr";
+import { BattleOutcome, Animations as BattleAnimations, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
@@ -8,12 +8,12 @@ import { Ending } from "./animations/Ending";
 import { Opponent } from "./animations/Opponent";
 import { Player } from "./animations/Player";
 import { Starting } from "./animations/Starting";
-import { Things } from "./animations/Things";
+import { Actors } from "./animations/Actors";
 
 /**
  * Animations for battle events.
  */
-export class Animations extends Section<FullScreenPokemon> implements IAnimations {
+export class Animations extends Section<FullScreenPokemon> implements BattleAnimations {
     /**
      * Animations for opponent battle events.
      */
@@ -27,10 +27,10 @@ export class Animations extends Section<FullScreenPokemon> implements IAnimation
     public readonly player: Player;
 
     /**
-     * Thing animations for battles.
+     * Actor animations for battles.
      */
-    @member(Things)
-    public readonly things: Things;
+    @member(Actors)
+    public readonly actors: Actors;
 
     /**
      * Animation for a battle starting.
@@ -57,7 +57,7 @@ export class Animations extends Section<FullScreenPokemon> implements IAnimation
      * @param team   Which team's animator to retrieve.
      * @returns The team's animator.
      */
-    public getTeamAnimations(team: Team): Opponent | Player {
-        return team === Team.opponent ? this.opponent : this.player;
+    public getTeamAnimations(teamId: TeamId): Opponent | Player {
+        return teamId === TeamId.opponent ? this.opponent : this.player;
     }
 }

@@ -2,7 +2,7 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
 import { Direction } from "../Constants";
-import { ICharacter, IThing } from "../Things";
+import { Character, Actor } from "../Actors";
 
 /**
  * OakParcelDelivery cutscene routines.
@@ -14,7 +14,7 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public Greeting(settings: any): void {
-        settings.rival = this.game.utilities.getExistingThingById("Rival");
+        settings.rival = this.game.utilities.getExistingActorById("Rival");
         settings.oak = settings.triggerer;
         delete settings.oak.cutscene;
         delete settings.oak.dialog;
@@ -27,7 +27,7 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
                 "How is my old %%%%%%%POKEMON%%%%%%%?",
                 "Well, it seems to like you a lot.",
                 "You must be talented as a %%%%%%%POKEMON%%%%%%% trainer!",
-                "What? You have something for me?",
+                "What? You have someactor for me?",
                 "%%%%%%%PLAYER%%%%%%% delivered OAK's PARCEL.",
                 "Ah! This is the custom %%%%%%%POKE%%%%%%% BALL I ordered! Thank you!",
             ],
@@ -99,9 +99,9 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public RivalWalksUp(settings: any): void {
-        const doormat = this.game.utilities.getExistingThingById("DoormatLeft");
-        const rival = this.game.things.add<ICharacter>(
-            this.game.things.names.rival,
+        const doormat = this.game.utilities.getExistingActorById("DoormatLeft");
+        const rival = this.game.actors.add<Character>(
+            this.game.actors.names.rival,
             doormat.left,
             doormat.top
         );
@@ -138,7 +138,7 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
     }
 
     /**
-     * Cutscene for Oak requesting something of the player and rival.
+     * Cutscene for Oak requesting someactor of the player and rival.
      */
     public OakRequests(): void {
         this.game.menuGrapher.createMenu("GeneralText");
@@ -181,8 +181,8 @@ export class OakParcelDeliveryCutscene extends Section<FullScreenPokemon> {
      * Cutscene for Oak giving the player and rival Pokedexes.
      */
     public OakGivesPokedex(): void {
-        const bookLeft: IThing = this.game.utilities.getExistingThingById("BookLeft");
-        const bookRight: IThing = this.game.utilities.getExistingThingById("BookRight");
+        const bookLeft: Actor = this.game.utilities.getExistingActorById("BookLeft");
+        const bookRight: Actor = this.game.utilities.getExistingActorById("BookRight");
 
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(

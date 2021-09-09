@@ -13,26 +13,26 @@ import { Types } from "./constants/Types";
 /**
  * Directions mapped to their String aliases.
  */
-export interface IDirectionsToAliases {
+export interface DirectionsToAliases {
     [i: number]: string;
 }
 
 /**
  * String aliases of directions mapped to those directions.
  */
-export interface IDirectionAliases {
+export interface DirectionAliases {
     [i: string]: Direction;
 }
 
 /**
  * Direction aliases mapped to their opposites, such as "left" to "right".
  */
-export interface IDirectionOpposites {
+export interface DirectionOpposites {
     [i: string]: string;
 }
 
 /**
- * Cardinal directions a Thing may face in-game.
+ * Cardinal directions An Actor may face in-game.
  */
 export enum Direction {
     Top = 0,
@@ -205,7 +205,7 @@ export class Constants extends Section<FullScreenPokemon> {
     /**
      * Direction names, mapped to their opposites.
      */
-    public readonly directionOpposites: IDirectionOpposites = {
+    public readonly directionOpposites: DirectionOpposites = {
         Top: "Bottom",
         top: "bottom",
         Right: "Left",
@@ -219,7 +219,7 @@ export class Constants extends Section<FullScreenPokemon> {
     /**
      * Directions, keyed by their string aliases.
      */
-    public readonly directionAliases: IDirectionAliases = {
+    public readonly directionAliases: DirectionAliases = {
         top: Direction.Top,
         right: Direction.Right,
         bottom: Direction.Bottom,
@@ -229,20 +229,15 @@ export class Constants extends Section<FullScreenPokemon> {
     /**
      * String aliases of directions, keyed by the direction.
      */
-    public readonly directionsToAliases: IDirectionsToAliases = [
-        "top",
-        "right",
-        "bottom",
-        "left",
-    ];
+    public readonly directionsToAliases: DirectionsToAliases = ["top", "right", "bottom", "left"];
 
     /**
-     * Classes to add to Things facing particular directions.
+     * Classes to add to Actors facing particular directions.
      */
-    public readonly directionClasses: IDirectionsToAliases = ["up", "right", "down", "left"];
+    public readonly directionClasses: DirectionsToAliases = ["up", "right", "down", "left"];
 
     /**
      * Direction aliases for areaSpawner activations.
      */
-    public readonly directionSpawns: IDirectionsToAliases = ["yDec", "xInc", "yInc", "xInc"];
+    public readonly directionSpawns: DirectionsToAliases = ["yDec", "xInc", "yInc", "xInc"];
 }

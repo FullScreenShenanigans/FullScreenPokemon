@@ -1,17 +1,17 @@
 import { Cycling } from "../Cycling";
 import { Fishing } from "../Fishing";
-import { IThing } from "../Things";
+import { Actor } from "../Actors";
 
-export type IOnBagActivate = (thing: IThing, itemSchema: IItemSchema) => void;
+export type OnBagActivate = (actor: Actor, itemSchema: ItemSchema) => void;
 
 /**
  * A static description of an in-game item.
  */
-export interface IItemSchema {
+export interface ItemSchema {
     /**
      * Callback for when the item is used in the bag.
      */
-    bagActivate?: IOnBagActivate;
+    bagActivate?: OnBagActivate;
 
     /**
      * What category of items this falls under.
@@ -42,16 +42,16 @@ export interface IItemSchema {
 /**
  * Type identifier for a rod.
  */
-export type IRodType = "old" | "good" | "super";
+export type RodType = "old" | "good" | "super";
 
 /**
  * A type of rod that that can be used.
  */
-export interface IRod extends IItemSchema {
+export interface Rod extends ItemSchema {
     /**
      * Type of rod used.
      */
-    type: IRodType;
+    type: RodType;
 
     /**
      * Name of the rod used.
@@ -62,7 +62,7 @@ export interface IRod extends IItemSchema {
 /**
  * An in-game Pokeball item.
  */
-export interface IBattleBall extends IItemSchema {
+export interface BattleBall extends ItemSchema {
     /**
      * A maximum probability N for the canCatchPokemon equation.
      */
@@ -86,7 +86,7 @@ export class Items {
     /**
      * All known items, keyed by English name.
      */
-    public readonly byName: { [i: string]: IItemSchema } = {
+    public readonly byName: { [i: string]: ItemSchema } = {
         Antidote: {
             price: 100,
             effect: "Cures Poison",
@@ -420,7 +420,7 @@ export class Items {
             title: "Good Rod",
             type: "good",
             name: "Good Rod".split(""),
-        } as IRod,
+        } as Rod,
         "Helix Fossil": {
             effect: "Used to clone Omanyte at the Cinnabar Island Laboratory",
             category: "Key",
@@ -453,7 +453,7 @@ export class Items {
             title: "Old Rod",
             type: "old",
             name: "Old Rod".split(""),
-        } as IRod,
+        } as Rod,
         Pokeflute: {
             effect: "Awakens sleeping Pokemon",
             category: "Key",
@@ -486,7 +486,7 @@ export class Items {
             title: "Super Rod",
             type: "super",
             name: "Super Rod".split(""),
-        } as IRod,
+        } as Rod,
         "Town Map": {
             effect: "Shows your position in the Pokemon World",
             category: "Key",

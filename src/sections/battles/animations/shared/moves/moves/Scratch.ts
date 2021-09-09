@@ -1,6 +1,6 @@
 import { Direction } from "../../../../../Constants";
-import { IMenu } from "../../../../../Menus";
-import { IThing } from "../../../../../Things";
+import { Menu } from "../../../../../Menus";
+import { Actor } from "../../../../../Actors";
 import { Move } from "../Move";
 
 /**
@@ -13,33 +13,33 @@ export class Scratch extends Move {
      * @param callback   Callback for when the animation is done.
      */
     public runAnimation(callback: () => void): void {
-        const differenceX: number = this.defenderThing.width / 2;
-        const lineArray: IThing[] = [];
-        const menu: IMenu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as IMenu;
-        const scratches: IThing[] = [
-            this.game.objectMaker.make<IThing>(this.game.things.names.explosionSmall),
-            this.game.objectMaker.make<IThing>(this.game.things.names.explosionSmall),
-            this.game.objectMaker.make<IThing>(this.game.things.names.explosionSmall),
+        const differenceX: number = this.defenderActor.width / 2;
+        const lineArray: Actor[] = [];
+        const menu: Menu = this.game.menuGrapher.getMenu("BattleDisplayInitial") as Menu;
+        const scratches: Actor[] = [
+            this.game.objectMaker.make<Actor>(this.game.actors.names.explosionSmall),
+            this.game.objectMaker.make<Actor>(this.game.actors.names.explosionSmall),
+            this.game.objectMaker.make<Actor>(this.game.actors.names.explosionSmall),
         ];
         let startX: number;
         let startY: number;
 
         if (this.direction === Direction.Right) {
-            startX = menu.right - this.defenderThing.width / 2;
+            startX = menu.right - this.defenderActor.width / 2;
             startY = menu.top;
         } else {
-            startX = menu.left + this.defenderThing.width;
-            startY = menu.bottom - (this.defenderThing.height + 8);
+            startX = menu.left + this.defenderActor.width;
+            startY = menu.bottom - (this.defenderActor.height + 8);
         }
 
         const offset: number = scratches[0].width / 2;
-        this.game.things.add(scratches[0], startX, startY);
-        this.game.things.add(
+        this.game.actors.add(scratches[0], startX, startY);
+        this.game.actors.add(
             scratches[1],
             startX + offset * this.direction * -1,
             startY + offset
         );
-        this.game.things.add(
+        this.game.actors.add(
             scratches[2],
             startX + offset * this.direction * -2,
             startY + offset * 2
@@ -68,8 +68,8 @@ export class Scratch extends Move {
                         1
                     );
 
-                    const line: IThing = this.game.things.add(
-                        this.game.things.names.scratchLine,
+                    const line: Actor = this.game.actors.add(
+                        this.game.actors.names.scratchLine,
                         left,
                         top
                     );
@@ -93,11 +93,11 @@ export class Scratch extends Move {
                 this.game.death.kill(line);
             }
 
-            this.game.battles.animations.things.flicker({
+            this.game.battles.animations.actors.flicker({
                 callback,
                 clearTime: 14,
                 interval: 5,
-                thing: this.defenderThing,
+                actor: this.defenderActor,
             });
         }, 17);
     }

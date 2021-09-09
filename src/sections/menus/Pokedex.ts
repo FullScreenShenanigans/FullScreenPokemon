@@ -1,7 +1,7 @@
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPokedexInformation, IPokemonListing } from "../constants/Pokemon";
+import { PokedexInformation, PokemonListing } from "../constants/Pokemon";
 
 /**
  * Opens the Pokedex and its individual listings.
@@ -12,14 +12,14 @@ export class Pokedex extends Section<FullScreenPokemon> {
      */
     public readonly open = (): void => {
         const listings: (
-            | IPokedexInformation
+            | PokedexInformation
             | undefined
         )[] = this.game.saves.getPokedexListingsOrdered();
-        let currentListing: IPokedexInformation;
+        let currentListing: PokedexInformation;
 
         this.game.menuGrapher.createMenu("Pokedex");
         this.game.menuGrapher.addMenuList("Pokedex", {
-            options: listings.map((listing: IPokedexInformation, i: number): any => {
+            options: listings.map((listing: PokedexInformation, i: number): any => {
                 const characters: any[] = this.game.utilities.makeDigit(i + 1, 3, 0).split("");
                 const output: any = {
                     text: characters,
@@ -108,7 +108,7 @@ export class Pokedex extends Section<FullScreenPokemon> {
         callback?: (...args: any[]) => void,
         menuSettings?: any
     ): void {
-        const pokemon: IPokemonListing = this.game.constants.pokemon.byName[title.join("")];
+        const pokemon: PokemonListing = this.game.constants.pokemon.byName[title.join("")];
         const height: string[] = pokemon.height;
         const feet: string = [].slice.call(height[0]).reverse().join("");
         const inches: string = [].slice.call(height[1]).reverse().join("");
@@ -120,9 +120,9 @@ export class Pokedex extends Section<FullScreenPokemon> {
         };
 
         this.game.menuGrapher.createMenu("PokedexListing", menuSettings);
-        this.game.menuGrapher.createMenuThing("PokedexListingSprite", {
-            thing: title.join("") + "Front",
-            type: "thing",
+        this.game.menuGrapher.createMenuActor("PokedexListingSprite", {
+            actor: title.join("") + "Front",
+            type: "actor",
             args: {
                 flipHoriz: true,
             },

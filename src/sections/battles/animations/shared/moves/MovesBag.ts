@@ -13,7 +13,7 @@ import { TailWhip } from "./moves/TailWhip";
 /**
  * Battle move runners, keyed by move name.
  */
-export interface IMovesBag {
+export interface MovesBag {
     /**
      * Move for when an implementation cannot be found.
      */
@@ -25,7 +25,7 @@ export interface IMovesBag {
 /**
  * Built-in battle move runners, keyed by move name.
  */
-export const DefaultMovesBag: IMovesBag = {
+export const DefaultMovesBag: MovesBag = {
     BUBBLE: Bubble,
     EMBER: Ember,
     GROWL: Growl,

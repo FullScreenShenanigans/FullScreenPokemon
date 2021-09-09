@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { stubBlankGame } from "../../fakes.test";
-import { IListMenu } from "../Menus";
+import { ListMenu } from "../Menus";
 
 describe("Pause", () => {
     it("opens when pause is pressed", (): void => {
@@ -40,7 +40,7 @@ describe("Pause", () => {
             fsp.menus.pause.open();
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.not.include("%%%%%%%POKEMON%%%%%%%");
@@ -61,7 +61,7 @@ describe("Pause", () => {
             fsp.menus.pause.open();
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.include("%%%%%%%POKEMON%%%%%%%");
@@ -77,7 +77,7 @@ describe("Pause", () => {
             fsp.menus.pause.open();
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.not.include("%%%%%%%POKEDEX%%%%%%%");
@@ -93,7 +93,7 @@ describe("Pause", () => {
             fsp.menus.pause.open();
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.include("%%%%%%%POKEDEX%%%%%%%");

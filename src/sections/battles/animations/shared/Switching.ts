@@ -1,29 +1,29 @@
 import { member } from "babyioc";
-import { ISwitchAction, ISwitchingAnimations, ITeamAndAction, Team } from "battlemovr";
+import { SwitchAction, SwitchingAnimations, TeamAndAction, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../../FullScreenPokemon";
 import { Shrinking } from "../../../animations/Shrinking";
-import { IBattleInfo } from "../../../Battles";
+import { BattleInfo } from "../../../Battles";
 
-import { Enter, IEnterSettings } from "./switching/Enter";
+import { Enter, EnterSettings } from "./switching/Enter";
 
 /**
  * Switching settings for animation positions and sprites.
  */
-export interface ISwitchingSettings {
+export interface SwitchingSettings {
     /**
      * Entrance settings for animation positions and sprites.
      */
-    enter: IEnterSettings;
+    enter: EnterSettings;
 }
 
 /**
  * Shared animations for teams switching Pokemon.
  */
-export class Switching extends Section<FullScreenPokemon> implements ISwitchingAnimations {
+export class Switching extends Section<FullScreenPokemon> implements SwitchingAnimations {
     /**
-     * Shrinks (and expands) Things.
+     * Shrinks (and expands) Actors.
      */
     @member(Shrinking)
     public readonly shrinking: Shrinking;
@@ -31,7 +31,7 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
     /**
      * Switching settings for animation positions and sprites.
      */
-    private readonly settings: ISwitchingSettings;
+    private readonly settings: SwitchingSettings;
 
     /**
      * Initializes a new instance of the Switching class.
@@ -41,7 +41,7 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
      */
     public constructor(
         eightBitter: FullScreenPokemon | Section<FullScreenPokemon>,
-        settings: ISwitchingSettings
+        settings: SwitchingSettings
     ) {
         super(eightBitter);
 
@@ -81,10 +81,13 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when this is done.
      */
-    public switch(teamAndAction: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
+    public switch(teamAndAction: TeamAndAction<SwitchAction>, onComplete: () => void): void {
         this.game.menuGrapher.deleteMenu("Pokemon");
         this.switchOut((): void => {
-            this.game.battleMover.switchSelectedActor(Team.player, teamAndAction.action.newActor);
+            this.game.battleMover.switchSelectedActor(
+                TeamId.player,
+                teamAndAction.action.newActor
+            );
             this.enter(onComplete);
         });
     }
@@ -95,7 +98,7 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
      * @param onComplete   Callback for when this is done.
      */
     private switchOut(onComplete: () => void): void {
-        const battleInfo: IBattleInfo = this.game.battleMover.getBattleInfo() as IBattleInfo;
+        const battleInfo: BattleInfo = this.game.battleMover.getBattleInfo() as BattleInfo;
 
         this.game.menuGrapher.createMenu("GeneralText");
         this.game.menuGrapher.addMenuDialog(
@@ -105,7 +108,7 @@ export class Switching extends Section<FullScreenPokemon> implements ISwitchingA
                 battleInfo.teams.player.selectedActor.title.join("")
             ),
             (): void => {
-                this.shrinking.contractDown(battleInfo.things.player, onComplete);
+                this.shrinking.contractDown(battleInfo.actors.player, onComplete);
             }
         );
         this.game.menuGrapher.setActiveMenu("GeneralText");

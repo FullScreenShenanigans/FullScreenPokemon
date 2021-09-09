@@ -5,9 +5,7 @@ import { FullScreenPokemon } from "../FullScreenPokemon";
 /**
  * Arranges game physics quadrants.
  */
-export class Quadrants<TEightBittr extends FullScreenPokemon> extends EightBittrQuadrants<
-    TEightBittr
-> {
+export class Quadrants<Game extends FullScreenPokemon> extends EightBittrQuadrants<Game> {
     /**
      * Groups that should have their quadrants updated.
      */

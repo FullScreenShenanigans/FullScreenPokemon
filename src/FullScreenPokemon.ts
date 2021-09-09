@@ -1,26 +1,26 @@
-import { AudioPlayr, IAudioPlayrSettings } from "audioplayr";
+import { AudioPlayr, AudioPlayrSettings } from "audioplayr";
 import { factory, member } from "babyioc";
 import { BattleMovr } from "battlemovr";
-import { ClassCyclr, IClassCyclrSettings } from "classcyclr";
+import { ClassCyclr, ClassCyclrSettings } from "classcyclr";
 import {
     EightBittr,
-    IComponentSettings,
-    IEightBittrConstructorSettings,
-    IEightBittrSettings,
+    ComponentSettings,
+    EightBittrConstructorSettings,
+    EightBittrSettings,
 } from "eightbittr";
-import { FlagSwappr, IFlagSwapprSettings } from "flagswappr";
+import { FlagSwappr, FlagSwapprSettings } from "flagswappr";
 import { GroupHoldr } from "groupholdr";
 import { ItemsHoldr } from "itemsholdr";
 import { MenuGraphr } from "menugraphr";
-import { IModAttachrSettings, ModAttachr, IModsItemsHoldr } from "modattachr";
-import { INumberMakrSettings, NumberMakr } from "numbermakr";
+import { ModAttachrSettings, ModAttachr, ModsItemsHoldr } from "modattachr";
+import { NumberMakrSettings, NumberMakr } from "numbermakr";
 import { ScenePlayr } from "sceneplayr";
-import { StateHoldr, IStateItemsHoldr } from "stateholdr";
+import { StateHoldr, StateItemsHoldr } from "stateholdr";
 
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createBattleMover } from "./creators/createBattleMover";
 import { createClassCycler } from "./creators/createClassCycler";
-import { createFlagSwapper, IFlags } from "./creators/createFlagSwapper";
+import { createFlagSwapper, Flags } from "./creators/createFlagSwapper";
 import { createMenuGrapher } from "./creators/createMenuGrapher";
 import { createModAttacher } from "./creators/createModAttacher";
 import { createNumberMaker } from "./creators/createNumberMaker";
@@ -41,11 +41,11 @@ import { Fishing } from "./sections/Fishing";
 import { Frames } from "./sections/Frames";
 import { Gameplay } from "./sections/Gameplay";
 import { Graphics } from "./sections/Graphics";
-import { Groups, IGroups } from "./sections/Groups";
+import { ActorGroups, Groups } from "./sections/Groups";
 import { Inputs } from "./sections/Inputs";
 import { Items } from "./sections/Items";
 import { Maintenance } from "./sections/Maintenance";
-import { IMapScreenr, Maps } from "./sections/Maps";
+import { MapScreenr, Maps } from "./sections/Maps";
 import { Menus } from "./sections/Menus";
 import { Mods } from "./sections/Mods";
 import { MoveAdder } from "./sections/MoveAdder";
@@ -54,59 +54,59 @@ import { Physics } from "./sections/Physics";
 import { Quadrants } from "./sections/Quadrants";
 import { Saves } from "./sections/Saves";
 import { Scrolling } from "./sections/Scrolling";
-import { IStorageItems, Storage } from "./sections/Storage";
-import { IPlayer, Things } from "./sections/Things";
+import { StorageItems, Storage } from "./sections/Storage";
+import { Player, Actors } from "./sections/Actors";
 import { Timing } from "./sections/Timing";
 import { Utilities } from "./sections/Utilities";
 
 /**
  * Settings to initialize a new FullScreenPokemon.
  */
-export interface IFullScreenPokemonComponentSettings extends IComponentSettings {
+export interface FullScreenPokemonComponentSettings extends ComponentSettings {
     /**
      * Setings overrides for the game's AudioPlayr.
      */
-    audioPlayer?: Partial<IAudioPlayrSettings>;
+    audioPlayer?: Partial<AudioPlayrSettings>;
 
     /**
      * Setings overrides for the game's ClassCyclr.
      */
-    classCycler?: Partial<IClassCyclrSettings>;
+    classCycler?: Partial<ClassCyclrSettings>;
 
     /**
      * Setings overrides for the game's FlagSwappr.
      */
-    flagSwapper?: Partial<IFlagSwapprSettings<IFlags>>;
+    flagSwapper?: Partial<FlagSwapprSettings<Flags>>;
 
     /**
      * Setings overrides for the game's ModAttachr.
      */
-    modAttacher?: Partial<IModAttachrSettings>;
+    modAttacher?: Partial<ModAttachrSettings>;
 
     /**
      * Setings overrides for the game's NumberMakr.
      */
-    numberMaker?: Partial<INumberMakrSettings>;
+    numberMaker?: Partial<NumberMakrSettings>;
 }
 
 /**
  * Filled-out settings to initialize a new FullScreenPokemon.
  */
-export interface IFullScreenPokemonConstructorSettings extends IEightBittrConstructorSettings {
+export interface FullScreenPokemonConstructorSettings extends EightBittrConstructorSettings {
     /**
      * Component settings overrides.
      */
-    components?: Partial<IFullScreenPokemonComponentSettings>;
+    components?: Partial<FullScreenPokemonComponentSettings>;
 }
 
 /**
  * Settings to initialize a new FullScreenPokemon.
  */
-export interface IFullScreenPokemonSettings extends IEightBittrSettings {
+export interface FullScreenPokemonSettings extends EightBittrSettings {
     /**
      * Component settings overrides.
      */
-    components: Partial<IFullScreenPokemonComponentSettings>;
+    components: Partial<FullScreenPokemonComponentSettings>;
 }
 
 /**
@@ -116,7 +116,7 @@ export class FullScreenPokemon extends EightBittr {
     /**
      * Screen and component reset settings.
      */
-    public readonly settings: IFullScreenPokemonSettings;
+    public readonly settings: FullScreenPokemonSettings;
 
     @factory(createAudioPlayer)
     public readonly audioPlayer: AudioPlayr;
@@ -137,22 +137,22 @@ export class FullScreenPokemon extends EightBittr {
      * Gates flags behind generational gaps.
      */
     @factory(createFlagSwapper)
-    public readonly flagSwapper: FlagSwappr<IFlags>;
+    public readonly flagSwapper: FlagSwappr<Flags>;
 
     /**
-     * Stores arrays of Things by their group name.
+     * Stores arrays of Actors by their group name.
      */
-    public readonly groupHolder: GroupHoldr<IGroups>;
+    public readonly groupHolder: GroupHoldr<ActorGroups>;
 
     /**
      * Cache-based wrapper around localStorage.
      */
-    public readonly itemsHolder: ItemsHoldr<IStorageItems> & IModsItemsHoldr & IStateItemsHoldr;
+    public readonly itemsHolder: ItemsHoldr<StorageItems> & ModsItemsHoldr & StateItemsHoldr;
 
     /**
      * A flexible container for map attributes and viewport.
      */
-    public readonly mapScreener: IMapScreenr;
+    public readonly mapScreener: MapScreenr;
 
     /**
      * In-game menu and dialog management system.
@@ -191,7 +191,7 @@ export class FullScreenPokemon extends EightBittr {
     public readonly actions: Actions;
 
     /**
-     * Generic animations for Things.
+     * Generic animations for Actors.
      */
     @member(Animations)
     public readonly animations: Animations;
@@ -200,7 +200,7 @@ export class FullScreenPokemon extends EightBittr {
      * Friendly sound aliases and names for audio.
      */
     @member(Audio)
-    public readonly audio: Audio<this>;
+    public readonly audio: Audio;
 
     /**
      * BattleMovr hooks to run trainer battles.
@@ -209,7 +209,7 @@ export class FullScreenPokemon extends EightBittr {
     public readonly battles: Battles;
 
     /**
-     * ThingHittr collision function generators.
+     * ActorHittr collision function generators.
      */
     @member(Collisions)
     public readonly collisions: Collisions<this>;
@@ -266,16 +266,16 @@ export class FullScreenPokemon extends EightBittr {
      * Event hooks for major gameplay state changes.
      */
     @member(Gameplay)
-    public readonly gameplay: Gameplay<this>;
+    public readonly gameplay: Gameplay;
 
     /**
-     * Changes the visual appearance of Things.
+     * Changes the visual appearance of Actors.
      */
     @member(Graphics)
     public readonly graphics: Graphics<this>;
 
     /**
-     * Collection settings for IThing group names.
+     * Collection settings for Actor group names.
      */
     @member(Groups)
     public readonly groups: Groups<this>;
@@ -293,7 +293,7 @@ export class FullScreenPokemon extends EightBittr {
     public readonly items: Items<this>;
 
     /**
-     * Maintains Things during FrameTickr ticks.
+     * Maintains Actors during FrameTickr ticks.
      */
     @member(Maintenance)
     public readonly maintenance: Maintenance<this>;
@@ -314,7 +314,7 @@ export class FullScreenPokemon extends EightBittr {
      * Creates ModAttachr from mod classes.
      */
     @member(Mods)
-    public readonly mods: Mods<this>;
+    public readonly mods: Mods;
 
     /**
      * Creates MoveAdder to teach Pokemon new moves.
@@ -335,7 +335,7 @@ export class FullScreenPokemon extends EightBittr {
     public readonly quadrants: Quadrants<this>;
 
     /**
-     * Physics functions to move Things around.
+     * Physics functions to move Actors around.
      */
     @member(Physics)
     public readonly physics: Physics<this>;
@@ -347,7 +347,7 @@ export class FullScreenPokemon extends EightBittr {
     public readonly saves: Saves;
 
     /**
-     * Moves the screen and Things in it.
+     * Moves the screen and Actors in it.
      */
     @member(Scrolling)
     public readonly scrolling: Scrolling<this>;
@@ -359,10 +359,10 @@ export class FullScreenPokemon extends EightBittr {
     public readonly storage: Storage;
 
     /**
-     * Adds and processes new Things into the game.
+     * Adds and processes new Actors into the game.
      */
-    @member(Things)
-    public readonly things: Things<this>;
+    @member(Actors)
+    public readonly actors: Actors<this>;
 
     /**
      * Timing constants for delayed events.
@@ -381,7 +381,7 @@ export class FullScreenPokemon extends EightBittr {
      *
      * @remarks We assume nobody will try to access this before a map entrance.
      */
-    public readonly players: [IPlayer] = [undefined as any];
+    public readonly players: [Player] = [undefined as any];
 
     /**
      * Total FpsAnalyzr ticks that have elapsed since the constructor or saving.
@@ -393,7 +393,7 @@ export class FullScreenPokemon extends EightBittr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IFullScreenPokemonConstructorSettings) {
+    public constructor(settings: FullScreenPokemonConstructorSettings) {
         super(settings);
 
         this.itemsHolder.setAutoSave(this.itemsHolder.getItem(this.storage.names.autoSave));

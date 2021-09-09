@@ -1,12 +1,12 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
-import { INewPokemon } from "../constants/Pokemon";
+import { NewPokemon } from "../constants/Pokemon";
 import { ModComponent } from "./ModComponent";
 
 /**
  * Information on items and their probability of being held.
  */
-export interface IItemProbabilities {
+export interface ItemProbabilities {
     /**
      * Name of the item.
      */
@@ -21,7 +21,7 @@ export interface IItemProbabilities {
 /**
  * Mod that randomizes items found on wild Pokemon.
  */
-export class RandomHeldItemsMod extends ModComponent implements IMod {
+export class RandomHeldItemsMod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -33,7 +33,7 @@ export class RandomHeldItemsMod extends ModComponent implements IMod {
      * @remarks No need to make probabilites add to 1 as the mod will just pick no item if generated
      *          number is higher than what the probabilities add up to.
      */
-    private static readonly typeItems: { [i: string]: IItemProbabilities[] } = {
+    private static readonly typeItems: { [i: string]: ItemProbabilities[] } = {
         Normal: [
             {
                 name: "Potion",
@@ -161,8 +161,8 @@ export class RandomHeldItemsMod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
-        [this.eventNames.onNewPokemonCreation]: (chosenInfo: INewPokemon) => {
+    public readonly events: CallbackRegister = {
+        [this.eventNames.onNewPokemonCreation]: (chosenInfo: NewPokemon) => {
             const pokemonName: string = chosenInfo.title.join("");
             const pokemonType: string = this.game.constants.pokemon.byName[pokemonName].types[0];
             const chosenItem: string[] | undefined = this.randomHeldItemGenerator(pokemonType);

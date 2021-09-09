@@ -3,12 +3,12 @@ import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
-import { IPokemon } from "./Battles";
-import { IPokedex } from "./constants/Pokemon";
-import { IInventoryListing } from "./menus/Items";
+import { Pokemon } from "./Battles";
+import { Pokedex } from "./constants/Pokemon";
+import { InventoryListing } from "./menus/Items";
 import { ItemNames } from "./storage/ItemNames";
 
-export interface ILastPokecenter {
+export interface LastPokecenter {
     location: string | undefined;
     map: string;
 }
@@ -16,7 +16,7 @@ export interface ILastPokecenter {
 /**
  * Items to be held in storage.
  */
-export interface IStorageItems {
+export interface StorageItems {
     area: string;
     autoSave: boolean;
     badges: {
@@ -24,17 +24,17 @@ export interface IStorageItems {
     };
     gameStarted: boolean;
     hasPokedex: boolean;
-    items: IInventoryListing[];
-    lastPokecenter: ILastPokecenter;
+    items: InventoryListing[];
+    lastPokecenter: LastPokecenter;
     location: string | undefined;
     map: string;
     money: number;
     name: string[];
     nameRival: string[];
-    oldLocalStorage?: IStorageItems;
-    pokedex: IPokedex;
-    pokemonInParty: IPokemon[];
-    pokemonInPC: IPokemon[];
+    oldLocalStorage?: StorageItems;
+    pokedex: Pokedex;
+    pokemonInParty: Pokemon[];
+    pokemonInPC: Pokemon[];
     selectItem: string[] | undefined;
     stateCollectionKeys: string[];
     starter: string[];

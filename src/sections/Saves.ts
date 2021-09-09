@@ -3,31 +3,31 @@ import { Section } from "eightbittr";
 import { FullScreenPokemon } from "../FullScreenPokemon";
 
 import { PokedexListingStatus } from "./Constants";
-import { IPokedex, IPokedexInformation, IPokemonListing } from "./constants/Pokemon";
-import { IStorageItems } from "./Storage";
-import { ICharacter } from "./Things";
+import { Pokedex, PokedexInformation, PokemonListing } from "./constants/Pokemon";
+import { StorageItems } from "./Storage";
+import { Character } from "./Actors";
 
 /**
  * Container for holding the states of objects in the game.
  */
-export interface IStateHistory {
+export interface StateHistory {
     [i: string]: [any];
 }
 
 /**
  * An object for saving this object's state history.
  */
-export interface IStateSaveable {
+export interface StateSaveable {
     /**
      * Holds the states of an object in the game.
      */
-    state?: IStateHistory;
+    state?: StateHistory;
 }
 
 /**
  * A general description of a save file.
  */
-export interface ISaveFile {
+export interface SaveFile {
     [i: string]: any;
 }
 
@@ -40,7 +40,7 @@ export class Saves extends Section<FullScreenPokemon> {
      * upon a new game being started.
      */
     public clearSavedData(): void {
-        const oldLocalStorage: IStorageItems & {
+        const oldLocalStorage: StorageItems & {
             [i: string]: any;
         } = this.game.itemsHolder.exportItems();
 
@@ -50,13 +50,13 @@ export class Saves extends Section<FullScreenPokemon> {
         if (collectionKeys) {
             for (const collection of collectionKeys) {
                 oldLocalStorage[collection] = this.game.itemsHolder.getItem(
-                    collection as keyof IStorageItems
+                    collection as keyof StorageItems
                 );
             }
         }
 
         for (const key of Object.keys(oldLocalStorage)) {
-            this.game.itemsHolder.removeItem(key as keyof IStorageItems);
+            this.game.itemsHolder.removeItem(key as keyof StorageItems);
         }
 
         this.game.itemsHolder.clear();
@@ -91,12 +91,12 @@ export class Saves extends Section<FullScreenPokemon> {
                 if (key.slice(0, prefix.length) === prefix) {
                     this.game.stateHolder.setCollection(
                         key.slice(prefix.length),
-                        oldLocalStorage[key as keyof IStorageItems]
+                        oldLocalStorage[key as keyof StorageItems]
                     );
                 } else {
                     this.game.itemsHolder.setItem(
-                        key as keyof IStorageItems,
-                        oldLocalStorage[key as keyof IStorageItems]
+                        key as keyof StorageItems,
+                        oldLocalStorage[key as keyof StorageItems]
                     );
                 }
             }
@@ -181,7 +181,7 @@ export class Saves extends Section<FullScreenPokemon> {
      *
      * @param dataRaw   Raw data to be parsed as JSON.
      */
-    public loadSaveFile(data: ISaveFile): void {
+    public loadSaveFile(data: SaveFile): void {
         this.clearSavedData();
         const prefix = this.game.stateHolder.getPrefix();
 
@@ -194,7 +194,7 @@ export class Saves extends Section<FullScreenPokemon> {
                 const split: string[] = key.split("::");
                 this.game.stateHolder.setCollection(split[1] + "::" + split[2], data[key]);
             } else {
-                this.game.itemsHolder.setItem(key as keyof IStorageItems, data[key]);
+                this.game.itemsHolder.setItem(key as keyof StorageItems, data[key]);
             }
         }
 
@@ -218,7 +218,7 @@ export class Saves extends Section<FullScreenPokemon> {
      * @param character   An in-game Character.
      * @param id   The ID associated with the Character.
      */
-    public saveCharacterPosition(character: ICharacter, id: string): void {
+    public saveCharacterPosition(character: Character, id: string): void {
         this.game.stateHolder.addChange(id, "xloc", character.left + this.game.mapScreener.left);
         this.game.stateHolder.addChange(id, "yloc", character.top + this.game.mapScreener.top);
         this.game.stateHolder.addChange(id, "direction", character.direction);
@@ -227,40 +227,40 @@ export class Saves extends Section<FullScreenPokemon> {
     /**
      * Pushes and saves the current state of a variable to a stack.
      *
-     * @param thing   The Thing, Area, Map, or Location saving its state of a variable.
+     * @param actor   The Actor, Area, Map, or Location saving its state of a variable.
      * @param title   Name for the state being saved.
      * @param value   The values of the variable to be saved.
      */
-    public addStateHistory(thing: IStateSaveable, title: string, value: any): void {
-        if (!thing.state) {
-            thing.state = {};
+    public addStateHistory(actor: StateSaveable, title: string, value: any): void {
+        if (!actor.state) {
+            actor.state = {};
         }
 
-        const stateHistory: any[] = thing.state[title];
+        const stateHistory: any[] = actor.state[title];
         if (stateHistory) {
             stateHistory.push(value);
         } else {
-            thing.state[title] = [value];
+            actor.state[title] = [value];
         }
     }
 
     /**
      * Updates to the most recently saved state for a variable.
      *
-     * @param thing   The Thing having its state restored.
+     * @param actor   The Actor having its state restored.
      * @param title   The name of the state to restore.
      */
-    public popStateHistory(thing: IStateSaveable, title: string): void {
-        if (!thing.state) {
-            throw new Error(`State property is not defined for '${thing}'.`);
+    public popStateHistory(actor: StateSaveable, title: string): void {
+        if (!actor.state) {
+            throw new Error(`State property is not defined for '${actor}'.`);
         }
 
-        const stateHistory: any[] = thing.state[title];
+        const stateHistory: any[] = actor.state[title];
         if (!stateHistory || stateHistory.length === 0) {
             throw new Error(`No state saved for '${title}'.`);
         }
 
-        (thing as any)[title] = stateHistory.pop();
+        (actor as any)[title] = stateHistory.pop();
     }
 
     /**
@@ -302,11 +302,11 @@ export class Saves extends Section<FullScreenPokemon> {
      * @param status   Whether the Pokemon has been seen and caught.
      */
     public addPokemonToPokedex(titleRaw: string[], status: PokedexListingStatus): void {
-        const pokedex: IPokedex = this.game.itemsHolder.getItem(this.game.storage.names.pokedex);
+        const pokedex: Pokedex = this.game.itemsHolder.getItem(this.game.storage.names.pokedex);
         const title: string = titleRaw.join("");
         const caught: boolean = status === PokedexListingStatus.Caught;
         const seen: boolean = caught || status === PokedexListingStatus.Seen;
-        let information: IPokedexInformation = pokedex[title];
+        let information: PokedexInformation = pokedex[title];
 
         if (information) {
             // Skip potentially expensive storage operations if they're unnecessary
@@ -333,9 +333,9 @@ export class Saves extends Section<FullScreenPokemon> {
      *
      * @returns Pokedex listings in ascending order.
      */
-    public getPokedexListingsOrdered(): (IPokedexInformation | undefined)[] {
-        const pokedex: IPokedex = this.game.itemsHolder.getItem(this.game.storage.names.pokedex);
-        const pokemon: { [i: string]: IPokemonListing } = this.game.constants.pokemon.byName;
+    public getPokedexListingsOrdered(): (PokedexInformation | undefined)[] {
+        const pokedex: Pokedex = this.game.itemsHolder.getItem(this.game.storage.names.pokedex);
+        const pokemon: { [i: string]: PokemonListing } = this.game.constants.pokemon.byName;
         const titlesSorted: string[] = Object.keys(pokedex).sort(
             (a: string, b: string): number => pokemon[a].number - pokemon[b].number
         );
@@ -345,7 +345,7 @@ export class Saves extends Section<FullScreenPokemon> {
             return [];
         }
 
-        const ordered: (IPokedexInformation | undefined)[] = [];
+        const ordered: (PokedexInformation | undefined)[] = [];
 
         for (i = 0; i < pokemon[titlesSorted[0]].number - 1; i += 1) {
             ordered.push(undefined);

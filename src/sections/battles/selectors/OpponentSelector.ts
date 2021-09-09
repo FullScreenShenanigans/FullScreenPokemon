@@ -1,16 +1,16 @@
 import { member } from "babyioc";
-import { BattleOutcome, IOnChoice, ISelector, Team } from "battlemovr";
+import { BattleOutcome, OnChoice, Selector, TeamId } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../../FullScreenPokemon";
-import { IBattleInfo, IBattleTeam, IPokemon } from "../../Battles";
+import { BattleInfo, BattleTeam, Pokemon } from "../../Battles";
 
-import { IMovePossibility, MovePriorityGenerator } from "./opponent/MovePriorityGenerator";
+import { MovePossibility, MovePriorityGenerator } from "./opponent/MovePriorityGenerator";
 
 /**
  * Selector for an opponent's actions.
  */
-export class OpponentSelector extends Section<FullScreenPokemon> implements ISelector {
+export class OpponentSelector extends Section<FullScreenPokemon> implements Selector {
     /**
      * Determines priorities of battle move possibilities.
      */
@@ -24,17 +24,17 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when this is done.
      */
-    public afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void {
-        const newPokemon: IPokemon | undefined = battleInfo.teams[Team[team]].actors.filter(
-            (actor: IPokemon): boolean => actor.statistics.health.current !== 0
-        )[0] as IPokemon | undefined;
+    public afterKnockout(battleInfo: BattleInfo, teamId: TeamId, onComplete: () => void): void {
+        const newPokemon: Pokemon | undefined = battleInfo.teams[TeamId[teamId]].actors.filter(
+            (actor: Pokemon): boolean => actor.statistics.health.current !== 0
+        )[0] as Pokemon | undefined;
 
         if (newPokemon !== undefined) {
-            this.game.battleMover.switchSelectedActor(team, newPokemon);
-            this.game.battles.animations.getTeamAnimations(team).switching.enter(onComplete);
+            this.game.battleMover.switchSelectedActor(teamId, newPokemon);
+            this.game.battles.animations.getTeamAnimations(teamId).switching.enter(onComplete);
         } else {
             this.game.battleMover.stopBattle(
-                team === Team.opponent
+                teamId === TeamId.opponent
                     ? BattleOutcome.playerVictory
                     : BattleOutcome.opponentVictory
             );
@@ -49,11 +49,11 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
      * @see http://wiki.pokemonspeedruns.com/index.php/Pok%C3%A9mon_Red/Blue/Yellow_Trainer_AI
      * @todo Items?
      */
-    public nextAction(battleInfo: IBattleInfo, team: Team, onChoice: IOnChoice): void {
-        const attackingTeam: IBattleTeam = battleInfo.teams[Team[team]];
-        const defendingTeam: IBattleTeam =
-            team === Team.opponent ? battleInfo.teams.player : battleInfo.teams.opponent;
-        const attackingActor: IPokemon = battleInfo.teams[Team[team]].selectedActor;
+    public nextAction(battleInfo: BattleInfo, teamId: TeamId, onChoice: OnChoice): void {
+        const attackingTeam: BattleTeam = battleInfo.teams[TeamId[teamId]];
+        const defendingTeam: BattleTeam =
+            teamId === TeamId.opponent ? battleInfo.teams.player : battleInfo.teams.opponent;
+        const attackingActor: Pokemon = battleInfo.teams[TeamId[teamId]].selectedActor;
 
         // Wild Pokemon just choose randomly
         if (!attackingTeam.leader) {
@@ -65,7 +65,7 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
             return;
         }
 
-        let possibilities: IMovePossibility[] = this.movePriorityGenerator.generate(
+        let possibilities: MovePossibility[] = this.movePriorityGenerator.generate(
             attackingTeam,
             defendingTeam,
             attackingActor.moves
@@ -82,7 +82,7 @@ export class OpponentSelector extends Section<FullScreenPokemon> implements ISel
             }
 
             possibilities = possibilities.filter(
-                (possibility: IMovePossibility): boolean => possibility.priority === lowest
+                (possibility: MovePossibility): boolean => possibility.priority === lowest
             );
         }
 

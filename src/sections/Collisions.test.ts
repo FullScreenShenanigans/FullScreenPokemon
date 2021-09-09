@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { stubBlankGame } from "../fakes.test";
 
-import { ICharacter } from "./Things";
+import { Character } from "./Actors";
 
 describe("Collisions", () => {
     describe("isCharacterTouchingCharacter", () => {
@@ -18,8 +18,8 @@ describe("Collisions", () => {
             // Arrange
             const { fsp } = stubBlankGame();
             const isCharacterTouchingCharacter = fsp.collisions.generateIsCharacterTouchingCharacter();
-            const a = fsp.things.add<ICharacter>(stubCharacterType);
-            const b = fsp.things.add<ICharacter>(stubCharacterType);
+            const a = fsp.actors.add<Character>(stubCharacterType);
+            const b = fsp.actors.add<Character>(stubCharacterType);
 
             fsp.physics.setTop(b, a.bottom);
 
@@ -34,8 +34,8 @@ describe("Collisions", () => {
             // Arrange
             const { fsp } = stubBlankGame();
             const isCharacterTouchingCharacter = fsp.collisions.generateIsCharacterTouchingCharacter();
-            const a = fsp.things.add<ICharacter>(stubCharacterType);
-            const b = fsp.things.add<ICharacter>(stubCharacterType);
+            const a = fsp.actors.add<Character>(stubCharacterType);
+            const b = fsp.actors.add<Character>(stubCharacterType);
 
             fsp.physics.setTop(b, a.bottom + 28);
 
@@ -50,8 +50,8 @@ describe("Collisions", () => {
             // Arrange
             const { fsp } = stubBlankGame();
             const isCharacterTouchingCharacter = fsp.collisions.generateIsCharacterTouchingCharacter();
-            const a = fsp.things.add<ICharacter>(stubCharacterType);
-            const b = fsp.things.add<ICharacter>(stubCharacterType);
+            const a = fsp.actors.add<Character>(stubCharacterType);
+            const b = fsp.actors.add<Character>(stubCharacterType);
 
             fsp.physics.setTop(b, a.bottom);
             fsp.actions.following.startFollowing(b, a);

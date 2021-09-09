@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { stubBlankGame } from "../../../../fakes.test";
 import { Direction } from "../../../Constants";
-import { IGrass } from "../../../Things";
+import { Grass } from "../../../Actors";
 
 describe("EncounterChoices", () => {
     describe("getWildEncounterPokemonOptions", () => {
@@ -17,7 +17,7 @@ describe("EncounterChoices", () => {
                 },
             ];
 
-            player.grass = fsp.things.add<IGrass>(fsp.things.names.grass);
+            player.grass = fsp.actors.add<Grass>(fsp.actors.names.grass);
             fsp.equations.doesGrassEncounterHappen = () => true;
             fsp.mapScreener.activeArea.wildPokemon = {
                 grass: wildGrassPokemon,

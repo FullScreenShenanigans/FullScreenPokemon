@@ -2,9 +2,9 @@ import { BattleOutcome } from "battlemovr";
 import { Section } from "eightbittr";
 
 import { FullScreenPokemon } from "../../FullScreenPokemon";
-import { IPartialBattleOptions } from "../Battles";
+import { PartialBattleOptions } from "../Battles";
 import { Direction } from "../Constants";
-import { ICharacter } from "../Things";
+import { Character } from "../Actors";
 
 /**
  * OakIntroRivalBattle cutscene routines.
@@ -16,7 +16,7 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
      * @param settings   Settings used for the cutscene.
      */
     public async Approach(settings: any): Promise<void> {
-        const rival: ICharacter = this.game.utilities.getExistingThingById("Rival");
+        const rival: Character = this.game.utilities.getExistingActorById("Rival");
         const dx: number = Math.abs(settings.triggerer.left - settings.player.left);
         const further: boolean = dx < 4;
 
@@ -51,7 +51,7 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
         const starterRival: string[] = this.game.itemsHolder.getItem(
             this.game.storage.names.starterRival
         );
-        const battleInfo: IPartialBattleOptions = {
+        const battleInfo: PartialBattleOptions = {
             onComplete: (): void => {
                 this.game.scenePlayer.startCutscene("OakIntroRivalLeaves");
             },
@@ -87,7 +87,7 @@ export class OakIntroRivalBattleCutscene extends Section<FullScreenPokemon> {
                 },
             },
             // noBlackout: true,
-            keptThings: this.game.graphics.collections.collectBattleKeptThings([
+            keptActors: this.game.graphics.collections.collectBattleKeptActors([
                 "player",
                 "Rival",
             ]),

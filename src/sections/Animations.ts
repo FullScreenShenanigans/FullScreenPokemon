@@ -8,23 +8,23 @@ import { Shrinking } from "./animations/Shrinking";
 import { Sliding } from "./animations/Sliding";
 
 /**
- * Generic animations for Things.
+ * Generic animations for Actors.
  */
 export class Animations extends Section<FullScreenPokemon> {
     /**
-     * Fades Things in and out.
+     * Fades Actors in and out.
      */
     @member(Fading)
     public readonly fading: Fading;
 
     /**
-     * Shrinks (and expands) Things.
+     * Shrinks (and expands) Actors.
      */
     @member(Shrinking)
     public readonly shrinking: Shrinking;
 
     /**
-     * Slides Things across the screen.
+     * Slides Actors across the screen.
      */
     @member(Sliding)
     public readonly sliding: Sliding;

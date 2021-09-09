@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { stubBlankGame } from "../fakes.test";
 
-import { IListMenu } from "./Menus";
+import { ListMenu } from "./Menus";
 
 describe("Gameplay", () => {
     describe("startOptions", () => {
@@ -36,7 +36,7 @@ describe("Gameplay", () => {
             fsp.gameplay.startOptions();
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
 
             expect(optionTexts).to.be.deep.equal(["NEW GAME", "LOAD FILE"]);
@@ -52,7 +52,7 @@ describe("Gameplay", () => {
             fsp.gameplay.startOptions();
 
             // Assert
-            const { options } = fsp.menuGrapher.getActiveMenu() as IListMenu;
+            const { options } = fsp.menuGrapher.getActiveMenu() as ListMenu;
             const optionTexts = options.map((option) => option.text);
             expect(optionTexts).to.be.deep.equal(["CONTINUE", "NEW GAME", "LOAD FILE"]);
         });

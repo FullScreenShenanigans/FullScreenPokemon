@@ -1,11 +1,11 @@
 import { member } from "babyioc";
 import {
-    IFleeAction,
-    IItemAction,
-    IMoveAction,
-    IOnActions,
-    ISwitchAction,
-    ITeamAndAction,
+    FleeAction,
+    ItemAction,
+    MoveAction,
+    OnActions,
+    SwitchAction,
+    TeamAndAction,
 } from "battlemovr";
 import { Section } from "eightbittr";
 
@@ -19,7 +19,7 @@ import { DefaultMovesBag } from "./moves/MovesBag";
 /**
  * Shared animations for team actions.
  */
-export class Actions extends Section<FullScreenPokemon> implements IOnActions {
+export class Actions extends Section<FullScreenPokemon> implements OnActions {
     /**
      * Battle animations for move effects.
      */
@@ -32,7 +32,7 @@ export class Actions extends Section<FullScreenPokemon> implements IOnActions {
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public flee(_action: ITeamAndAction<IFleeAction>, onComplete: () => void): void {
+    public flee(_action: TeamAndAction<FleeAction>, onComplete: () => void): void {
         new FleeAttempt(this.game).attempt(onComplete);
     }
 
@@ -42,7 +42,7 @@ export class Actions extends Section<FullScreenPokemon> implements IOnActions {
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public item(action: ITeamAndAction<IItemAction>, onComplete: () => void): void {
+    public item(action: TeamAndAction<ItemAction>, onComplete: () => void): void {
         console.log("Team item action:", action);
         onComplete();
     }
@@ -53,7 +53,7 @@ export class Actions extends Section<FullScreenPokemon> implements IOnActions {
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public move(teamAndAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
+    public move(teamAndAction: TeamAndAction<MoveAction>, onComplete: () => void): void {
         new Moves(this.game, DefaultMovesBag).playMove(teamAndAction, (): void =>
             new Effects(this.game).runMoveEffects(teamAndAction, onComplete)
         );
@@ -65,7 +65,7 @@ export class Actions extends Section<FullScreenPokemon> implements IOnActions {
      * @param teamAndAction   Team and action being performed.
      * @param onComplete   Callback for when the action is done.
      */
-    public switch(action: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
+    public switch(action: TeamAndAction<SwitchAction>, onComplete: () => void): void {
         console.log("Team switch action:", action);
         onComplete();
     }

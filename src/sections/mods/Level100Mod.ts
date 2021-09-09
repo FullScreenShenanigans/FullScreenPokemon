@@ -1,11 +1,11 @@
-import { ICallbackRegister, IMod } from "modattachr";
+import { CallbackRegister, Mod } from "modattachr";
 
 import { ModComponent } from "./ModComponent";
 
 /**
  * Mod to make the trainer's Pokemon all level 100.
  */
-export class Level100Mod extends ModComponent implements IMod {
+export class Level100Mod extends ModComponent implements Mod {
     /**
      * Name of the mod.
      */
@@ -14,7 +14,7 @@ export class Level100Mod extends ModComponent implements IMod {
     /**
      * Mod events, keyed by name.
      */
-    public readonly events: ICallbackRegister = {
+    public readonly events: CallbackRegister = {
         [this.eventNames.onModEnable]: (): void => {
             for (const pokemon of this.game.itemsHolder.getItem(
                 this.game.storage.names.pokemonInParty

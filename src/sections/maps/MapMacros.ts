@@ -7,10 +7,10 @@ import { FullScreenPokemon } from "../../FullScreenPokemon";
  */
 export class MapMacros extends Section<FullScreenPokemon> {
     /**
-     * Macro Function used to create an alternating pattern of Things.
+     * Macro Function used to create an alternating pattern of Actors.
      *
      * @param reference   Settings for a Checkered macro.
-     * @returns A checkered pattern of Things.
+     * @returns A checkered pattern of Actors.
      */
     public macroCheckered = (reference: any): any[] => {
         const xStart: number = reference.x || 0;
@@ -20,8 +20,8 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const xwidth: number = reference.xwidth || 32;
         const yheight: number = reference.yheight || 32;
         const offset: number = reference.offset || 0;
-        const things: string[] = reference.things;
-        const mod: number = things.length;
+        const actors: string[] = reference.actors;
+        const mod: number = actors.length;
         const output: any[] = [];
         let y: number;
 
@@ -29,12 +29,12 @@ export class MapMacros extends Section<FullScreenPokemon> {
         for (let i = 0; i < ynum; i += 1) {
             let x: number = xStart;
             for (let j = 0; j < xnum; j += 1) {
-                const thing: string = reference.things[(i + j + offset) % mod];
-                if (thing !== "") {
+                const actor: string = reference.actors[(i + j + offset) % mod];
+                if (actor !== "") {
                     output.push({
                         x,
                         y,
-                        thing,
+                        actor,
                     });
                 }
                 x += xwidth;
@@ -59,7 +59,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const open: boolean[] = reference.open || [true, true, true, true];
         const output: any[] = [
             {
-                thing: "Water",
+                actor: "Water",
                 x,
                 y,
                 width,
@@ -69,7 +69,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (!open[0]) {
             output.push({
-                thing: "WaterEdgeTop",
+                actor: "WaterEdgeTop",
                 x,
                 y,
                 width,
@@ -78,7 +78,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (!open[1]) {
             output.push({
-                thing: "WaterEdgeRight",
+                actor: "WaterEdgeRight",
                 x: x + width - 16,
                 y: open[0] ? y : y + 16,
                 height: open[0] ? height : height - 16,
@@ -87,7 +87,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (!open[2]) {
             output.push({
-                thing: "WaterEdgeBottom",
+                actor: "WaterEdgeBottom",
                 x,
                 y: y + height - 16,
                 width,
@@ -96,7 +96,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (!open[3]) {
             output.push({
-                thing: "WaterEdgeLeft",
+                actor: "WaterEdgeLeft",
                 x,
                 y,
                 height,
@@ -121,42 +121,42 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (stories === 1) {
             output.push({
-                thing: "HouseTopRoofLeft",
+                actor: "HouseTopRoofLeft",
                 x,
                 y,
             });
             output.push({
-                thing: "HouseTopRoof",
+                actor: "HouseTopRoof",
                 x: x + 32,
                 y,
                 width: width - 64,
             });
             output.push({
-                thing: "HouseTopRoofRight",
+                actor: "HouseTopRoofRight",
                 x: x + width - 32,
                 y,
             });
             output.push({
-                thing: "HouseLeft",
+                actor: "HouseLeft",
                 x,
                 y: y + 32,
             });
             output.push({
-                thing: "HouseRight",
+                actor: "HouseRight",
                 x: x + width - 32,
                 y: y + 32,
             });
 
             if (reference.door) {
                 output.push({
-                    thing: "HouseMiddle",
+                    actor: "HouseMiddle",
                     x: x + 64,
                     y: y + 32,
                     width: width - 96,
                 });
             } else {
                 output.push({
-                    thing: "HouseMiddle",
+                    actor: "HouseMiddle",
                     x: x + 32,
                     y: y + 32,
                     width: width - 64,
@@ -164,7 +164,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
             }
         } else {
             output.push({
-                thing: "HouseTop",
+                actor: "HouseTop",
                 x,
                 y,
             });
@@ -173,12 +173,12 @@ export class MapMacros extends Section<FullScreenPokemon> {
         y += 64;
         for (let i = 1; i < stories; i += 1) {
             output.push({
-                thing: "HouseCenterLeft",
+                actor: "HouseCenterLeft",
                 x,
                 y,
             });
             output.push({
-                thing: "HouseCenterRight",
+                actor: "HouseCenterRight",
                 x: x + 64,
                 y,
                 width: width - 64,
@@ -188,7 +188,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (reference.door) {
             const door: any = {
-                thing: "Door",
+                actor: "Door",
                 x: x + 32,
                 y: y - 32,
                 requireDirection: 0,
@@ -219,18 +219,18 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const doorOffset: number = reference.doorOffset || 64;
         const output: any[] = [
             {
-                thing: "HouseLargeTopLeft",
+                actor: "HouseLargeTopLeft",
                 x,
                 y,
             },
             {
-                thing: "HouseLargeTopMiddle",
+                actor: "HouseLargeTopMiddle",
                 x: x + 32,
                 y,
                 width: width - 64,
             },
             {
-                thing: "HouseLargeTopRight",
+                actor: "HouseLargeTopRight",
                 x: x + width - 32,
                 y,
             },
@@ -239,7 +239,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
         y += 80;
         for (let i = 2; i < stories; i += 1) {
             output.push({
-                thing: "HouseLargeCenter",
+                actor: "HouseLargeCenter",
                 x,
                 y,
                 width,
@@ -247,7 +247,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
             if (reference.white) {
                 output.push({
-                    thing: "HouseWallWhitewash",
+                    actor: "HouseWallWhitewash",
                     x: reference.white.start,
                     y,
                     width: reference.white.end - reference.white.start,
@@ -260,46 +260,46 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (!reference.door) {
             output.push({
-                thing: "HouseLargeCenterLeft",
+                actor: "HouseLargeCenterLeft",
                 x,
                 y,
                 width: 64,
             });
             output.push({
-                thing: "HouseLargeCenterMiddle",
+                actor: "HouseLargeCenterMiddle",
                 x: x + 64,
                 y,
                 width: 32,
             });
             output.push({
-                thing: "HouseLargeCenterRight",
+                actor: "HouseLargeCenterRight",
                 x: x + 96,
                 y,
                 width: width - 96,
             });
         } else {
             output.push({
-                thing: "HouseLargeCenterLeft",
+                actor: "HouseLargeCenterLeft",
                 x,
                 y,
                 width: doorOffset,
             });
             output.push({
-                thing: "HouseLargeCenterMiddle",
+                actor: "HouseLargeCenterMiddle",
                 x: x + doorOffset,
                 y,
                 width: 32,
                 height: 16,
             });
             output.push({
-                thing: "HouseLargeCenterRight",
+                actor: "HouseLargeCenterRight",
                 x: x + doorOffset + 32,
                 y,
                 width: width - doorOffset - 32,
             });
             if (reference.white) {
                 output.push({
-                    thing: "HouseWallWhitewash",
+                    actor: "HouseWallWhitewash",
                     x: reference.white.start,
                     y,
                     width: reference.white.end - reference.white.start,
@@ -310,7 +310,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
             y += 64;
 
             const door: any = {
-                thing: "Door",
+                actor: "Door",
                 x: x + doorOffset,
                 y: y - 48,
                 requireDirection: 0,
@@ -357,7 +357,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 doorOffset: width - 64,
             },
             {
-                thing: "GymLabel",
+                actor: "GymLabel",
                 x: x + 64,
                 y: y + 64,
                 width: width - 128,
@@ -379,18 +379,18 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const doorOffset: number = reference.doorOffset || 32;
         const output: any[] = [
             {
-                thing: "BuildingTopLeft",
+                actor: "BuildingTopLeft",
                 x,
                 y,
             },
             {
-                thing: "BuildingTopMiddle",
+                actor: "BuildingTopMiddle",
                 x: x + 16,
                 y,
                 width: width - 32,
             },
             {
-                thing: "BuildingTopRight",
+                actor: "BuildingTopRight",
                 x: x + width - 16,
                 y,
             },
@@ -400,26 +400,26 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         for (let i = 0; i < stories; i += 1) {
             output.push({
-                thing: "BuildingMiddleLeft",
+                actor: "BuildingMiddleLeft",
                 x,
                 y,
             });
             output.push({
-                thing: "BuildingMiddleWindow",
+                actor: "BuildingMiddleWindow",
                 x: x + 16,
                 y,
                 width: width - 32,
                 height: 16,
             });
             output.push({
-                thing: "BuildingMiddleMiddle",
+                actor: "BuildingMiddleMiddle",
                 x: x + 16,
                 y: y + 16,
                 width: width - 32,
                 height: 16,
             });
             output.push({
-                thing: "BuildingMiddleRight",
+                actor: "BuildingMiddleRight",
                 x: x + width - 16,
                 y,
             });
@@ -428,13 +428,13 @@ export class MapMacros extends Section<FullScreenPokemon> {
         }
 
         output.push({
-            thing: "BuildingMiddleLeft",
+            actor: "BuildingMiddleLeft",
             x,
             y,
             height: 16,
         });
         output.push({
-            thing: "BuildingMiddleRight",
+            actor: "BuildingMiddleRight",
             x: x + width - 16,
             y,
             height: 16,
@@ -442,7 +442,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (reference.door) {
             const door: any = {
-                thing: "Door",
+                actor: "Door",
                 x: x + doorOffset,
                 y,
                 entrance: reference.entrance,
@@ -455,7 +455,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
             }
 
             output.push({
-                thing: "BuildingMiddleMiddle",
+                actor: "BuildingMiddleMiddle",
                 x: x + 16,
                 y,
                 height: 16,
@@ -463,34 +463,34 @@ export class MapMacros extends Section<FullScreenPokemon> {
             });
             output.push(door);
             output.push({
-                thing: "BuildingMiddleMiddle",
+                actor: "BuildingMiddleMiddle",
                 x: x + doorOffset + 32,
                 y,
                 height: 16,
                 width: width - doorOffset - 48,
             });
             output.push({
-                thing: "BuildingBottomLeft",
+                actor: "BuildingBottomLeft",
                 x,
                 y: y + 16,
                 width: doorOffset,
             });
             output.push({
-                thing: "BuildingBottomRight",
+                actor: "BuildingBottomRight",
                 x: x + doorOffset + 32,
                 y: y + 16,
                 width: width - doorOffset - 32,
             });
         } else {
             output.push({
-                thing: "BuildingMiddleMiddle",
+                actor: "BuildingMiddleMiddle",
                 x: x + 16,
                 y,
                 width: width - 32,
                 height: 16,
             });
             output.push({
-                thing: "BuildingBottom",
+                actor: "BuildingBottom",
                 x,
                 y: y + 16,
                 width,
@@ -499,7 +499,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (reference.label) {
             output.push({
-                thing: reference.label + "Label",
+                actor: reference.label + "Label",
                 x: x + 64,
                 y,
             });
@@ -525,23 +525,23 @@ export class MapMacros extends Section<FullScreenPokemon> {
         if (reference.right) {
             if (reference.top) {
                 output.push({
-                    thing: "MountainTopRight",
+                    actor: "MountainTopRight",
                     x: x + width - 32,
                     y,
                 });
                 output.push({
-                    thing: "MountainRight",
+                    actor: "MountainRight",
                     x: x + width - 32,
                     y: y + 16,
                 });
                 output.push({
-                    thing: "MountainTopRight",
+                    actor: "MountainTopRight",
                     x: x + width - 16,
                     y: y + 16,
                 });
             } else {
                 output.push({
-                    thing: "MountainRight",
+                    actor: "MountainRight",
                     x: x + width - 32,
                     y,
                     width: 32,
@@ -551,28 +551,28 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
             if (reference.bottom) {
                 output.push({
-                    thing: "MountainBottomRight",
+                    actor: "MountainBottomRight",
                     x: x + width - 32,
                     y: y + height - 32,
                 });
                 output.push({
-                    thing: "MountainRight",
+                    actor: "MountainRight",
                     x: x + width - 16,
                     y: y + height - 32,
                 });
                 output.push({
-                    thing: "MountainBottom",
+                    actor: "MountainBottom",
                     x: x + width - 32,
                     y: y + height - 16,
                 });
                 output.push({
-                    thing: "MountainBottomRight",
+                    actor: "MountainBottomRight",
                     x: x + width - 16,
                     y: y + height - 16,
                 });
             } else {
                 output.push({
-                    thing: "MountainRight",
+                    actor: "MountainRight",
                     x: x + width - 32,
                     y: y + height - 32,
                     width: 32,
@@ -582,7 +582,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
             if (height > 64) {
                 output.push({
-                    thing: "MountainRight",
+                    actor: "MountainRight",
                     x: x + width - 32,
                     y: y + 32,
                     width: 32,
@@ -596,23 +596,23 @@ export class MapMacros extends Section<FullScreenPokemon> {
         if (reference.left) {
             if (reference.top) {
                 output.push({
-                    thing: "MountainTopLeft",
+                    actor: "MountainTopLeft",
                     x: x + 16,
                     y,
                 });
                 output.push({
-                    thing: "MountainTopLeft",
+                    actor: "MountainTopLeft",
                     x,
                     y: y + 16,
                 });
                 output.push({
-                    thing: "MountainLeft",
+                    actor: "MountainLeft",
                     x: x + 16,
                     y: y + 16,
                 });
             } else {
                 output.push({
-                    thing: "MountainLeft",
+                    actor: "MountainLeft",
                     x,
                     y,
                     width: 32,
@@ -622,28 +622,28 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
             if (reference.bottom) {
                 output.push({
-                    thing: "MountainLeft",
+                    actor: "MountainLeft",
                     x,
                     y: y + height - 32,
                 });
                 output.push({
-                    thing: "MountainBottomLeft",
+                    actor: "MountainBottomLeft",
                     x: x + 16,
                     y: y + height - 32,
                 });
                 output.push({
-                    thing: "MountainBottomLeft",
+                    actor: "MountainBottomLeft",
                     x,
                     y: y + height - 16,
                 });
                 output.push({
-                    thing: "MountainBottom",
+                    actor: "MountainBottom",
                     x: x + 16,
                     y: y + height - 16,
                 });
             } else {
                 output.push({
-                    thing: "MountainLeft",
+                    actor: "MountainLeft",
                     x,
                     y: y + height - 32,
                     width: 32,
@@ -653,7 +653,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
             if (height > 64) {
                 output.push({
-                    thing: "MountainLeft",
+                    actor: "MountainLeft",
                     x,
                     y: y + 32,
                     width: 32,
@@ -667,7 +667,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (reference.top && width > 0) {
             output.push({
-                thing: "MountainTop",
+                actor: "MountainTop",
                 x,
                 y,
                 width,
@@ -680,7 +680,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
             if (reference.opening) {
                 if (openingOffset > 0) {
                     output.push({
-                        thing: "MountainBottom",
+                        actor: "MountainBottom",
                         x,
                         y: y + height - 32,
                         width: openingOffset,
@@ -688,7 +688,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
                     });
                 }
                 output.push({
-                    thing: "CaveOpening",
+                    actor: "CaveOpening",
                     x: x + openingOffset,
                     y: y + height - 32,
                     entrance: reference.entrance,
@@ -696,7 +696,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 });
                 if (openingOffset < width) {
                     output.push({
-                        thing: "MountainBottom",
+                        actor: "MountainBottom",
                         x: x + openingOffset + 32,
                         y: y + height - 32,
                         width: width - openingOffset - 32,
@@ -705,7 +705,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 }
             } else {
                 output.push({
-                    thing: "MountainBottom",
+                    actor: "MountainBottom",
                     x,
                     y: y + height - 32,
                     width,
@@ -717,7 +717,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (width > 0 && height > 0) {
             output.push({
-                thing: "Mountain",
+                actor: "Mountain",
                 x,
                 y,
                 width,
@@ -739,114 +739,114 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const y: number = reference.y || 0;
         const output: any = [
             {
-                thing: "FloorDiamonds",
+                actor: "FloorDiamonds",
                 width: 448,
                 height: 256,
                 x,
                 y,
             },
             {
-                thing: "SquareWallTop",
+                actor: "SquareWallTop",
                 x,
                 y,
                 height: 64,
             },
             {
-                thing: "HealingMachine",
+                actor: "HealingMachine",
                 x: x + 32,
                 y,
                 id: "HealingMachine",
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x: x + 32,
                 y,
                 width: 128,
             },
             {
-                thing: "PokeCenterPoster",
+                actor: "PokeCenterPoster",
                 x: x + 112,
                 y,
             },
             {
-                thing: "SquareWallTop",
+                actor: "SquareWallTop",
                 x: x + 160,
                 y,
                 height: 64,
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x: x + 192,
                 y,
                 width: 128,
             },
             {
-                thing: "StairsVertical",
+                actor: "StairsVertical",
                 x: x + 320,
                 y,
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x: x + 352,
                 y,
             },
             {
-                thing: "StairsVertical",
+                actor: "StairsVertical",
                 x: x + 384,
                 y,
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x: x + 416,
                 y,
             },
             {
-                thing: "Nurse",
+                actor: "Nurse",
                 id: "Nurse",
                 x: x + 96,
                 y: y + 32,
             },
             {
-                thing: "SquareWallFront",
+                actor: "SquareWallFront",
                 x,
                 y: y + 64,
             },
             {
-                thing: "PokeCenterDeskLeft",
+                actor: "PokeCenterDeskLeft",
                 x: x + 32,
                 y: y + 64,
             },
             {
-                thing: "PokeCenterDesk",
+                actor: "PokeCenterDesk",
                 x: x + 48,
                 y: y + 64,
                 width: 128,
             },
             {
-                thing: "CutsceneResponder",
+                actor: "CutsceneResponder",
                 x: x + 96,
                 y: y + 64,
                 cutscene: "PokeCenter",
                 keepAlive: true,
             },
             {
-                thing: "SquareWallFront",
+                actor: "SquareWallFront",
                 x: x + 160,
                 y: y + 64,
             },
             {
-                thing: "PokeCenterDesk",
+                actor: "PokeCenterDesk",
                 x: x + 192,
                 y: y + 64,
                 width: 128,
             },
             {
-                thing: "PokeCenterDeskBlocker",
+                actor: "PokeCenterDeskBlocker",
                 x: x + 320,
                 y: y + 64,
             },
             {
-                thing: "DeskWoman",
+                actor: "DeskWoman",
                 x: x + 352,
                 y: y + 64,
                 dialog: [
@@ -855,51 +855,51 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 ],
             },
             {
-                thing: "PokeCenterDeskBlocker",
+                actor: "PokeCenterDeskBlocker",
                 x: x + 384,
                 y: y + 64,
             },
             {
-                thing: "PokeCenterDesk",
+                actor: "PokeCenterDesk",
                 x: x + 416,
                 y: y + 64,
             },
             {
-                thing: "Buzzer",
+                actor: "Buzzer",
                 x: x + 112,
                 y: y + 76,
             },
             {
                 cutscene: "Computer",
-                thing: "Computer",
+                actor: "Computer",
                 x: x + 416,
                 y: y + 96,
             },
             {
-                thing: "SofaLeft",
+                actor: "SofaLeft",
                 x,
                 y: y + 128,
             },
             {
-                thing: "PottedPalmTree",
+                actor: "PottedPalmTree",
                 x,
                 y: y + 192,
                 width: 64,
             },
             {
-                thing: "PottedPalmTree",
+                actor: "PottedPalmTree",
                 x: x + 192,
                 y: y + 192,
                 width: 64,
             },
             {
-                thing: "PottedPalmTree",
+                actor: "PottedPalmTree",
                 x: x + 384,
                 y: y + 192,
                 width: 64,
             },
             {
-                thing: "Doormat",
+                actor: "Doormat",
                 x: x + 96,
                 y: y + 224,
                 width: 64,
@@ -909,7 +909,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (reference.transport) {
             output.push({
-                thing: "HiddenTransporter",
+                actor: "HiddenTransporter",
                 x: x + 96,
                 y: y + 224,
                 width: 64,
@@ -920,7 +920,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (!reference.excludeCoolTrainer) {
             output.push({
-                thing: "CoolTrainerM",
+                actor: "CoolTrainerM",
                 x,
                 y: y + 128,
                 offsetX: 7,
@@ -951,98 +951,98 @@ export class MapMacros extends Section<FullScreenPokemon> {
         const y: number = reference.y || 0;
         const output: any[] = [
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x,
                 y,
                 width: 64,
                 height: 16,
             },
             {
-                thing: "FloorDiamonds",
+                actor: "FloorDiamonds",
                 x,
                 y: y + 32,
                 width: 256,
                 height: 224,
             },
             {
-                thing: "FloorDiamondsDark",
+                actor: "FloorDiamondsDark",
                 x,
                 y: y + 64,
                 height: 32,
             },
             {
-                thing: "StoreFridge",
+                actor: "StoreFridge",
                 x: x + 64,
                 y,
                 width: 128,
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x: x + 192,
                 y,
                 width: 64,
                 height: 16,
             },
             {
-                thing: "StoreSaleBin",
+                actor: "StoreSaleBin",
                 x,
                 y: y + 16,
                 width: 64,
             },
             {
-                thing: "StoreSaleBin",
+                actor: "StoreSaleBin",
                 x: x + 192,
                 y: y + 16,
                 width: 64,
             },
             {
-                thing: "StoreAisle",
+                actor: "StoreAisle",
                 x,
                 y: y + 96,
                 height: 32,
             },
             {
-                thing: "StoreAisle",
+                actor: "StoreAisle",
                 x: x + 128,
                 y: y + 96,
                 width: 128,
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x,
                 y: y + 128,
             },
             {
-                thing: "WallIndoorHorizontalBandsDark",
+                actor: "WallIndoorHorizontalBandsDark",
                 x: x + 32,
                 y: y + 128,
                 height: 16,
             },
             {
-                thing: "FloorDiamondsDark",
+                actor: "FloorDiamondsDark",
                 x: x + 64,
                 y: y + 128,
                 height: 96,
             },
             {
-                thing: "SquareWallTop",
+                actor: "SquareWallTop",
                 x: x + 32,
                 y: y + 144,
                 height: 64,
             },
             {
-                thing: "Cashier",
+                actor: "Cashier",
                 x,
                 y: y + 160,
                 direction: 1,
             },
             {
-                thing: "FloorDiamondsDark",
+                actor: "FloorDiamondsDark",
                 x,
                 y: y + 160,
             },
             {
-                thing: "Register",
+                actor: "Register",
                 x: x + 32,
                 y: y + 160,
                 id: reference.responderId,
@@ -1053,23 +1053,23 @@ export class MapMacros extends Section<FullScreenPokemon> {
                 dialog: reference.responderDialog,
             },
             {
-                thing: "PokeCenterDeskLeft",
+                actor: "PokeCenterDeskLeft",
                 x,
                 y: y + 192,
             },
             {
-                thing: "PokeCenterDesk",
+                actor: "PokeCenterDesk",
                 x: x + 16,
                 y: y + 192,
                 width: 48,
             },
             {
-                thing: "FloorDiamondsDark",
+                actor: "FloorDiamondsDark",
                 x,
                 y: y + 224,
             },
             {
-                thing: "Doormat",
+                actor: "Doormat",
                 x: x + 96,
                 y: y + 224,
                 width: 64,
@@ -1079,7 +1079,7 @@ export class MapMacros extends Section<FullScreenPokemon> {
 
         if (reference.transport) {
             output.push({
-                thing: "HiddenTransporter",
+                actor: "HiddenTransporter",
                 x: x + 96,
                 y: y + 224,
                 width: 64,
